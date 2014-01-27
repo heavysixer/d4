@@ -27,70 +27,70 @@ Terminology
 Examples
 ********
 
-  ::
+::
 
-    // Simple example
-    var columnChart = window.d4.columnChart()
+  // Simple example
+  var columnChart = window.d4.columnChart()
 
-    d3.select(domElement)
-      .datum(data)
-      .call(columnChart);
+  d3.select(domElement)
+    .datum(data)
+    .call(columnChart);
 
-  ::
+::
 
-    // Overriding the default accessors of a chart feature
-    var columnChart = window.d4.columnChart()
-      .margin({
-        top: 15,
-        right: 10,
-        bottom: 30,
-        left: 0
+  // Overriding the default accessors of a chart feature
+  var columnChart = window.d4.columnChart()
+    .margin({
+      top: 15,
+      right: 10,
+      bottom: 30,
+      left: 0
+    })
+    .using('bars', function(bars){
+      bars
+      .x(function(d){
+        cumulativeX += d[0];
+        return this.x(cumulativeX - d[0]);
       })
-      .using('bars', function(bars){
-        bars
-        .x(function(d){
-          cumulativeX += d[0];
-          return this.x(cumulativeX - d[0]);
-        })
-        .width(function(d){
-          return this.x(d[0]);
-        })
+      .width(function(d){
+        return this.x(d[0]);
       })
+    })
 
-    d3.select(domElement)
-      .datum(data)
-      .call(columnChart);
+  d3.select(domElement)
+    .datum(data)
+    .call(columnChart);
 
-  ::
+::
 
-    // Mixing in a new feature for a chart
-    var columnChart = window.d4.columnChart()
-      .margin({
-        top: 15,
-        right: 10,
-        bottom: 30,
-        left: 0
+  // Mixing in a new feature for a chart
+  var columnChart = window.d4.columnChart()
+    .margin({
+      top: 15,
+      right: 10,
+      bottom: 30,
+      left: 0
+    })
+    .mixin({
+      'grid': d4.features.grid
+    }, 0)
+    .using('bars', function(bars){
+      bars
+      .x(function(d){
+        cumulativeX += d[0];
+        return this.x(cumulativeX - d[0]);
       })
-      .mixin({
-        'grid': d4.features.grid
-      }, 0)
-      .using('bars', function(bars){
-        bars
-        .x(function(d){
-          cumulativeX += d[0];
-          return this.x(cumulativeX - d[0]);
-        })
-        .width(function(d){
-          return this.x(d[0]);
-        })
+      .width(function(d){
+        return this.x(d[0]);
       })
+    })
 
-    d3.select(domElement)
-      .datum(data)
-      .call(columnChart);
+  d3.select(domElement)
+    .datum(data)
+    .call(columnChart);
 
-Examples
-********
+TODO
+****
 
  * Come up with a consistent way to specify dimensions for the chart.
  * Find a good way to set the range from inside a custom accessor.
