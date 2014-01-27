@@ -3,26 +3,26 @@ d4 (D3 DSL)
 
 Philosophy
 **********
-  * CSS is for styling
-    - The charts add hooks for styling but do not apply style themselves. For example,
-    a chart will assign a unique class name to a series but will rely on the designer to assign
-    the colors in CSS.
-    - The chart expects a basic data format, but does not do any of the parsing itself. The data
-    must be prepared before sending it into the chart.
+* CSS is for styling
+  - The charts add hooks for styling but do not apply style themselves. For example,
+  a chart will assign a unique class name to a series but will rely on the designer to assign
+  the colors in CSS.
+  - The chart expects a basic data format, but does not do any of the parsing itself. The data
+  must be prepared before sending it into the chart.
 
-  * The chart does not own the data
-    - Data is a stand alone object which can be controlled by many other components
-    - The chart should not get a copy of the data, it should reference the main object
-    - It should not change the data object. It can make non-permanent transformations.
+* The chart does not own the data
+  - Data is a stand alone object which can be controlled by many other components
+  - The chart should not get a copy of the data, it should reference the main object
+  - It should not change the data object. It can make non-permanent transformations.
 
-  * Declarative
+* Declarative
 
 
 Terminology
 ***********
-  * Chart - The data rendered by d3 into a graphical representation.
-  * Feature - A visual component of a chart, which helps convey meaning in the data
-  * Dimension - A segment of the data described by the chart.
+* Chart - The data rendered by d3 into a graphical representation.
+* Feature - A visual component of a chart, which helps convey meaning in the data
+* Dimension - A segment of the data described by the chart.
 
 Examples
 ********
@@ -92,5 +92,5 @@ Examples
 TODO
 ****
 
- * Come up with a consistent way to specify dimensions for the chart.
- * Find a good way to set the range from inside a custom accessor.
+* Come up with a consistent way to specify dimensions for the chart.
+* Find a good way to set the range from inside a custom accessor.
