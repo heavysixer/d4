@@ -31,12 +31,6 @@ Examples
 
     // Simple example
     var columnChart = window.d4.columnChart()
-      .margin({
-        top: 15,
-        right: 10,
-        bottom: 30,
-        left: 0
-      })
 
     d3.select(domElement)
       .datum(data)
@@ -52,10 +46,6 @@ Examples
         bottom: 30,
         left: 0
       })
-
-    d3.select(domElement)
-      .datum(data)
-      .call(columnChart);
       .using('bars', function(bars){
         bars
         .x(function(d){
@@ -81,10 +71,9 @@ Examples
         bottom: 30,
         left: 0
       })
-
-    d3.select(domElement)
-      .datum(data)
-      .call(columnChart);
+      .mixin({
+        'grid': d4.features.grid
+      }, 0)
       .using('bars', function(bars){
         bars
         .x(function(d){
@@ -95,24 +84,6 @@ Examples
           return this.x(d[0]);
         })
       })
-
-      .mixin({
-          'barAxisLabels': d4.features.columnLabels
-        })
-
-      .using('barAxisLabels', function(label) {
-          label
-            .x(function(d) {
-              cumulativeAxisLabelX += d[0];
-              return this.x(cumulativeAxisLabelX - d[0] / 2);
-            })
-            .y(function() {
-              return this.height - this.margin.bottom;
-            })
-            .text(function(d, i) {
-              return data.x.labels[i];
-            });
-        })
 
     d3.select(domElement)
       .datum(data)
