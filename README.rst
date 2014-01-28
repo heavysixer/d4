@@ -1,8 +1,12 @@
-d4 (D3 DSL)
------------
+D4
+---
+
+D4 is a reusable charting library DSL for D3. The goal of D4 is to allow developers
+to quickly build data-driven charts with little or no knowledge of D3 (initially.)
 
 Philosophy
 **********
+
 * CSS is for styling
   - The charts add hooks for styling but do not apply style themselves. For example,
   a chart will assign a unique class name to a series but will rely on the designer to assign
@@ -17,12 +21,39 @@ Philosophy
 
 * Declarative
 
-
 Terminology
 ***********
+
 * Chart - The data rendered by d3 into a graphical representation.
 * Feature - A visual component of a chart, which helps convey meaning in the data
 * Dimension - A segment of the data described by the chart.
+
+Base Charts
+***********
+
+* Area Chart (Coming Soon)
+* Column Chart
+* Line Chart
+* Mekko Chart (Coming Soon)
+* Pie Chart
+* Row Chart (Bar Chart)
+* Scatter Chart
+* Waterfall Chart
+
+Chart Feature Mix-ins
+*********************
+
+* Arrows
+* Column Labels
+* Column Series Connectors (Coming Soon)
+* Grid
+* Legend (Coming Soon)
+* Line Series
+* Reference Lines
+* Row Labels
+* Trend Line
+* X Axis
+* Y Axis
 
 Examples
 ********
