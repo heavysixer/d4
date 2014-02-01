@@ -1,0 +1,15 @@
+{
+  "name": "d4",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies" : {
+    "mocha" : "*",
+    "chai" : "*",
+    "sinon" : "*",
+    "grunt" : "*",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-uglify": "*",
+    "matchdep": "*",
+    "grunt-mocha-test": "*"
+  }
+}

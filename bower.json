@@ -1,0 +1,8 @@
+{
+  "name": "d4",
+  "description": "A friendly charting DSL for D3",
+  "main": "dist/d4.js",
+  "version": "0.0.0",
+  "dependencies": {}
+}
+

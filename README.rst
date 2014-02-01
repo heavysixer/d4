@@ -1,8 +1,8 @@
 D4
 ---
 
-D4 is a reusable charting library DSL for D3. The goal of D4 is to allow developers
-to quickly build data-driven charts with little or no knowledge of D3 (initially.)
+D4 is a friendly DSL charting library for D3. The goal of D4 is to allow developers
+to quickly build data-driven charts with little knowledge of the internals of D3.
 
 Philosophy
 **********
