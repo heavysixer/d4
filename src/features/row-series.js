@@ -18,7 +18,7 @@
 
         width: function(d) {
           return Math.abs(this.x(d[0]) - this.x(0));
-        },
+        }
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
@@ -39,7 +39,7 @@
         .attr('x1', this.x(0))
         .attr('x2', this.x(0))
         .attr('y1', 0)
-        .attr('y2', this.height)
+        .attr('y2', this.height);
         return bar;
       }
     };

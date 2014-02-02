@@ -38,7 +38,7 @@
 
         height: function(d) {
           return Math.abs(this.y(d[1]) - this.y(0));
-        },
+        }
       },
       render: function(scope, data) {
         ensureSeriesArray(data);

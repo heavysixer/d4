@@ -38,7 +38,7 @@
           .clamp(true);
 
       }
-      var maxSize = (this.parent.height - this.parent.margin.top - this.parent.margin.bottom)
+      var maxSize = (this.parent.height - this.parent.margin.top - this.parent.margin.bottom);
       this.parent.z.range([maxSize / data.length, maxSize / (data.length * 5)]);
     };
     var configureScales = function(data) {

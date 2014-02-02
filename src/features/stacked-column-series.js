@@ -19,7 +19,7 @@
 
         height: function(d) {
           return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
-        },
+        }
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);

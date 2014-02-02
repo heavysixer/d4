@@ -14,7 +14,7 @@
 
         r: function(d) {
           return this.z(d.values[2]);
-        },
+        }
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
