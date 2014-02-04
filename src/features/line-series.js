@@ -10,6 +10,10 @@
 
         y: function(d) {
           return this.y(d[1]);
+        },
+
+        classes: function(d, n) {
+          return 'line stroke series' + n;
         }
       },
       render: function(scope, data) {
@@ -23,9 +27,7 @@
         .attr('d', function(d) {
           return line(d.values);
         })
-        .attr('class', function(d, n) {
-          return 'line stroke series' + n;
-        });
+        .attr('class', scope.accessors.classes.bind(this));
         return lineSeries;
       }
     };

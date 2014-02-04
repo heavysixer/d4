@@ -18,6 +18,10 @@
 
         width: function(d) {
           return Math.abs(this.x(d[0]) - this.x(0));
+        },
+
+        classes: function(d, i) {
+          return d[0] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
         }
       },
       render: function(scope, data) {
@@ -25,9 +29,7 @@
         var bar = this.svg.select('.'+name).selectAll('.'+name).data(data);
         bar.enter().append('rect');
         bar.exit().remove();
-        bar.attr('class', function(d, i) {
-          return d[0] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
-        })
+        bar.attr('class', scope.accessors.classes.bind(this))
           .attr('x', scope.accessors.x.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('width', scope.accessors.width.bind(this))

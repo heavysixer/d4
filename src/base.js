@@ -1,6 +1,6 @@
 /* global d3: false */
 
-//  Functions "isObject", "each", "extend", "keys" based on Underscore.js 1.5.2
+//  Functions "each", "extend" based on Underscore.js 1.5.2
 //  http://underscorejs.org
 //  (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //  Underscore may be freely distributed under the MIT license.
@@ -78,7 +78,7 @@
         }
       }
     } else {
-      var keys = d4.keys(obj);
+      var keys = d3.keys(obj);
       for (i = 0, len = keys.length; i < len; i++) {
         if (iterator.call(context, obj[keys[i]], keys[i], obj) === breaker) {
           return;

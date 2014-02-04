@@ -11,10 +11,6 @@
 
         formatYAxis: function(yAxis) {
           return yAxis.orient('left');
-        },
-
-        klass: function(d,n) {
-          return 'stroke series' + n;
         }
       },
       render: function(scope) {

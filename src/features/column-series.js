@@ -38,6 +38,10 @@
 
         height: function(d) {
           return Math.abs(this.y(d[1]) - this.y(0));
+        },
+
+        classes: function(d, i) {
+          return d[1] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
         }
       },
       render: function(scope, data) {
@@ -55,9 +59,7 @@
         });
         bar.enter().append('rect');
         bar.exit().remove();
-        bar.attr('class', function(d, i) {
-          return d[1] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
-        })
+        bar.attr('class', scope.accessors.classes.bind(this))
           .attr('x', scope.accessors.x.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('width', scope.accessors.width.bind(this))

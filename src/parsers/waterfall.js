@@ -4,47 +4,47 @@
   'use strict';
 
   /**
-    The nested stack parser is useful for charts which take a data series
-    and wants to sort them across a dimension and then display the results.
-    The most common usecase would be a stacked column chart like this:
+    The waterfall parser is useful for waterfall charts where data items need to account
+    for the position of earlier values:
 
     _____________________
-    |    _               |
-    |   | |   _          |
-    |   |-|  | |   _     |
-    |   |-|  |-|  |-|    |
-    |   | |  |-|  |-|    |
+    |   _        _______ |
+    |  |_|___   | |  | | |
+    |      |_|__|_|  | | |
+    |                |_| |
     ----------------------
 
     This module makes use of the d3's "nest" data structure, and "stack" layout
     https://github.com/mbostock/d3/wiki/Arrays#-nest
     https://github.com/mbostock/d3/wiki/Stack-Layout
 
+
     Approach:
     Just like D3, this parser uses a chaining declaritiave style to build up
-    the necessary prerequistes to create the stacked data. Here is a simple
-    example:
-    var parser = d4.parsers.nestedStack()
+    the necessary prerequistes to create the waterfall data. Here is a simple
+    example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
+
+    var parser = d4.parsers.waterfall()
         .x(function() {
-          return 'title';
+          return 'category';
         })
         .y(function(){
-          return 'group';
+          return 'value';
         })
         .value(function() {
-          return 'values';
+          return 'value';
         });
 
-    var stackedData = parser(data);
+    var waterfallData = parser(data);
 
     Keep reading for more information on these various accessor functions.
 
     Benefits:
-    * Supports negative and positive stacked data series.
+    * Supports horizontal or vertical waterfalls
+    * Supports totaling series using a special "e" value in a data item.
 
     Limitations:
-    * The parser expects the stack will occur on the yAxis, which means it is only
-      suitable for column charts presently.
+    * Does not support stacked waterfalls.
 
     Accessor Methods:
     * x : - function which returns a key to access the x values in the data array
@@ -53,27 +53,23 @@
     * data : array - An array of objects with their dimensions specified
       like this:
 
-      var data = [{ "title": "3 Years", "group" : "one", "value": 30 },
-                  { "title": "3 Years", "group" : "two", "value": 20 },
-                  { "title": "3 Years", "group" : "three", "value": 10 },
-                  { "title": "5 Years", "group" : "one",  "value": 3 },
-                  { "title": "5 Years", "group" : "two", "value": 2 },
-                  { "title": "5 Years", "group" : "three", "value": 1 }]
+      var data = [
+      {"category" : "Category One", "value" : 23 },
+      {"category" : "Category Two", "value" : 55 },
+      {"category" : "Category Three", "value" : -10 },
+      {"category" : "Category Four", "value" : 5 },
+      {"category" : "Category Five", "value" : "e" }]
+
+    SPECIAL NOTE:
+    Waterfalls charts typically have the ability to display subtotals at any point.
+    In order to use this feature simply set the value of your subtotal column to "e."
 
     Example Usage:
     Given the example data and dimension variables above you can use this module
     in the following way:
 
     var parser = d4.parsers.nestedStack()
-    .x(function() {
-      return 'title';
-    })
-    .y(function(){
-      return 'group';
-    })
-    .value(function() {
-      return 'value';
-    })
+    .dimensions(dimensions)
     .call(data);
 
     The `parser` variable will now be an object containing the following structure:
@@ -95,9 +91,12 @@
 
     Taking these attributes one-by-one:
     * data - is an array of items stacked by D3
+    * value - an object with a key representing the value accessor and an array of values
+    * x - an object with a key representing the x accessor and an array of values
+    * y - an object with a key representing the y accessor and an array of values
 
   **/
-  d4.parsers.nestedStack = function nestedStack() {
+  d4.parsers.waterfall = function waterfall() {
 
     var opts = {
       x: {
@@ -132,11 +131,11 @@
       return nest.entries(items);
     };
 
-    // By default D3 doesn't handle stacks with negative values very well, we
-    // need to calulate or our y and y0 values for each group.
     var stackByDimension = function(key, items) {
-      var offsets = {};
-
+      var lastOffset = 0;
+      var noNaN = function(num){
+        return isNaN(num) ? 0 : num;
+      };
       var stack = d3.layout.stack()
         .values(function(d) {
           return d.values;
@@ -148,16 +147,26 @@
           return +d[opts.value.key];
         })
         .out(function(d, y0, y) {
-          d.y = y;
-          if (d.y >= 0) {
-            d.y0 = offsets[d[key] + 'Pos'] = offsets[d[key] + 'Pos'] || 0;
-            offsets[d[key] + 'Pos'] += y;
+          if(isNaN(y)){
+            if(isNaN(y0)){
+              y0 = lastOffset;
+            }
+            d.y0 = 0;
+            d.y = y0;
+            d[opts.value.key] = y0;
+            lastOffset = y0;
           } else {
-            d.y0 = offsets[d[key] + 'Neg'] = offsets[d[key] + 'Neg'] || 0;
-            offsets[d[key] + 'Neg'] -= Math.abs(y);
+            if(isNaN(y0)){
+              d.y0 = lastOffset;
+              lastOffset += y;
+            } else {
+              d.y0 = y0;
+            }
+            d.y = y;
+            d[opts.value.key] = noNaN(d[opts.value.key]);
           }
         });
-      stack(items.reverse());
+      stack(items);
     };
 
     var setDimension = function(dim, funct) {

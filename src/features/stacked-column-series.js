@@ -2,6 +2,10 @@
 (function() {
   'use strict';
   d4.features.stackedColumnSeries = function(name) {
+    var sign = function(val){
+      return (val > 0) ? 'positive' : 'negative';
+    };
+
     return {
       accessors: {
         x: function(d) {
@@ -19,6 +23,10 @@
 
         height: function(d) {
           return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
+        },
+
+        classes: function(d,i) {
+          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.yKey()];
         }
       },
       render: function(scope, data) {
@@ -27,7 +35,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i + ' ' + this.xKey();
+            return 'series'+ i + ' ' +  this.xKey();
           }.bind(this));
 
         group.selectAll('rect')
@@ -35,9 +43,7 @@
             return d.values;
           }.bind(this))
           .enter().append('rect')
-          .attr('class', function(d, i){
-            return 'fill item'+ i + ' ' + d[this.yKey()];
-          }.bind(this))
+          .attr('class', scope.accessors.classes.bind(this))
           .attr('x', scope.accessors.x.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('width', scope.accessors.width.bind(this))

@@ -19,7 +19,7 @@
           return d.name;
         },
 
-        klass: function(d,n) {
+        classes: function(d,n) {
           return 'stroke series' + n;
         }
       },
@@ -32,7 +32,7 @@
           .text(scope.accessors.text.bind(this))
           .attr('x', scope.accessors.x.bind(this))
           .attr('y', scope.accessors.y.bind(this))
-          .attr('class', scope.accessors.klass.bind(this));
+          .attr('class', scope.accessors.classes.bind(this));
         return label;
       }
     };

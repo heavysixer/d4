@@ -2,6 +2,10 @@
 (function() {
   'use strict';
   d4.features.stackedColumnLabels = function(name) {
+    var sign = function(val) {
+      return val > 0 ? 'positive' : 'negative';
+    };
+
     return {
       accessors: {
         x: function(d) {
@@ -24,7 +28,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
-            return 'series' + i + ' ' + this.xKey();
+            return 'series' + i + ' '+ sign(d.y) + ' ' + this.xKey();
           }.bind(this));
 
         var text = group.selectAll('text')
