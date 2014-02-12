@@ -3,17 +3,6 @@
   /* global d4: false */
   'use strict';
 
-  // By default the chart expects that the data series will contain properties
-  // for determining the x and y locations of the rects. It is assumed those
-  // keys will be named "x", and "y" but you can override them if you wish.
-  var xKey = function() {
-    return 'x';
-  };
-
-  var yKey = function() {
-    return 'y';
-  };
-
   var stackedColumnChartBuilder = function() {
     var configureX = function(data) {
       if (!this.parent.x) {
@@ -61,15 +50,13 @@
   };
 
   d4.stackedColumnChart = function stackedColumnChart() {
-    var chart = d4.baseChart({
-      accessors: ['xKey', 'yKey'],
-      xKey: xKey,
-      yKey: yKey
-    }, stackedColumnChartBuilder);
+    var chart = d4.baseChart({}, stackedColumnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
     }, {
       'columnLabels': d4.features.stackedColumnLabels
+    }, {
+      'connectors': d4.features.stackedColumnConnectors
     }, {
       'xAxis': d4.features.xAxis
     }, {

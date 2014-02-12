@@ -3,7 +3,12 @@
   /* global d4: false */
   'use strict';
 
-  var waterfallChartBuilder = function() {
+  // This accessor is meant to be overridden
+  var countGroups = function(){
+    return 1;
+  };
+
+  var groupedColumnChartBuilder = function() {
     var configureX = function(data) {
       if (!this.parent.x) {
         this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
@@ -19,12 +24,12 @@
       if (!this.parent.y) {
         this.parent.y = d3.scale.linear()
           .domain(d3.extent(data, function(d) {
-            return d[1];
+            return d[this.yKey()];
           }));
-        this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
-          .clamp(true)
-          .nice();
       }
+      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+        .clamp(true)
+        .nice();
     };
 
     var configureScales = function(data) {
@@ -49,14 +54,15 @@
     return builder;
   };
 
-  d4.waterfallChart = function waterfallChart() {
-    var chart = d4.baseChart({}, waterfallChartBuilder);
+  d4.groupedColumnChart = function groupedColumnChart() {
+    var chart = d4.baseChart({
+      accessors: ['countGroups'],
+      countGroups: countGroups
+    }, groupedColumnChartBuilder);
     [{
-      'bars': d4.features.stackedColumnSeries
-    },{
-      'connectors': d4.features.waterfallConnectors
+      'bars': d4.features.groupedColumnSeries
     }, {
-      'columnLabels': d4.features.stackedColumnLabels
+      'columnLabels': d4.features.groupedColumnLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
