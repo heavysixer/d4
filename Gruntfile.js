@@ -15,20 +15,12 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: ['src/**/*.js', 'test/tests/*.js'],
-        tasks: ['jshint']
+        tasks: ['jshint','test']
       }
     },
     jshint: {
       options: {
         jshintrc: '.jshintrc'
-      },
-      chart: {
-        options: {
-          browser: true
-        },
-        files: {
-          src: '<%= meta.srcFiles %>'
-        }
       },
       test: {
         options: {
@@ -40,6 +32,8 @@ module.exports = function(grunt) {
             setup: true,
             teardown: true,
             suite: true,
+            it: true,
+            describe: true,
             test: true,
             sinon: true
           }

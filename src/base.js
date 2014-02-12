@@ -1,6 +1,6 @@
 /* global d3: false */
 
-//  Functions "each", "extend" based on Underscore.js 1.5.2
+//  Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
 //  http://underscorejs.org
 //  (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //  Underscore may be freely distributed under the MIT license.
@@ -57,8 +57,6 @@
     root.d4 = d4;
   }
 
-  d4.VERSION = 0.5;
-
   // Create a default container for d4 chart features and parsers.
   d4.features = {};
   d4.parsers = {};
@@ -86,19 +84,33 @@
       }
     }
   };
+  var isFunction = function(obj) {
+    return !!(obj && obj.constructor && obj.call && obj.apply);
+  };
 
   var assert = function(message) {
     throw new Error('[d4] ' + message);
   };
+  var validateBuilder = function(builder){
+    each(['configure', 'render'], function(funct){
+      if(!builder[funct] || !isFunction(builder[funct])) {
+        assert('the supplied builder does not have a '+ funct +' function');
+      }
+    });
+    return builder;
+  };
 
   var assignDefaultBuilder = function(defaultBuilder) {
     if (!this.builder) {
-      this.builder = defaultBuilder.bind(this)();
+      this.builder = validateBuilder(defaultBuilder.bind(this)());
     }
     return this;
   };
 
   var assignDefaults = function(config, defaultBuilder) {
+    if(!defaultBuilder){
+      assert('no builder defined');
+    }
     var opts = d4.merge({
       width: 400,
       height: 400,
@@ -121,7 +133,7 @@
       this.builder.configure(data);
       this.builder.render(data);
     } else {
-      d4.assert('no builder defined');
+      assert('no builder defined');
     }
   };
 

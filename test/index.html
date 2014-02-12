@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <script src="lib/aight.js"></script>
     <script src="lib/mocha.js"></script>
-    <script src="lib/assert.js"></script>
+    <script src="lib/chai.js"></script>
+    <!-- <script src="lib/assert.js"></script> -->
     <script src="lib/sinon.js"></script>
     <script>
-      mocha.setup({
-        ui: 'tdd'
-      });
+      expect = chai.expect;
+      mocha.setup('bdd');
     </script>
     <link href="lib/mocha.css" rel="stylesheet"></link>
     <title>d4 test suite</title>
@@ -23,6 +23,7 @@
     <div id="test"></div>
     <script>
       if (navigator.userAgent.indexOf('PhantomJS') === -1) {
+        mocha.checkLeaks();
         mocha.run();
       }
     </script>
