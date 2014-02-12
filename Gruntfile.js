@@ -70,9 +70,24 @@ module.exports = function(grunt) {
           ' *  Date: <%= grunt.template.today("yyyy-mm-dd") %>\n' +
           ' */\n'
       },
+      test: {
+        files: {
+          'test/lib/d4.js': '<%= meta.srcFiles %>'
+        }
+      },
       release: {
         files: {
           'd4.js': '<%= meta.srcFiles %>'
+        }
+      }
+    },
+    plato: {
+      quality: {
+        options: {
+          jshintrc: '.jshintrc'
+        },
+        files: {
+          'reports/plato': ['<%= meta.srcFiles %>']
         }
       }
     },
@@ -94,8 +109,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha');
+  grunt.loadNpmTasks('grunt-plato');
 
-  grunt.registerTask('test', ['mocha']);
+  grunt.registerTask('test', ['concat', 'mocha']);
+  grunt.registerTask('quality', ['plato']);
   grunt.registerTask('default', ['jshint', 'test']);
   grunt.registerTask('release', ['default', 'concat', 'uglify']);
 };

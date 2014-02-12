@@ -18,5 +18,5 @@
     "white" : false,
     "trailing": true,
     "smarttabs": true,
-    "predef" : ["d3","d4"]
+    "predef" : ["d3","d4","assert","chai","setup","teardown","suite","test","sinon"]
 }

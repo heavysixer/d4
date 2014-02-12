@@ -35,7 +35,7 @@
         }
       },
 
-      render: function(scope, data) {
+      render: function(scope) {
         this.featuresGroup.append('g').attr('class', name);
         var lines = this.svg.select('.' + name).selectAll('.' + name).data(function(d) {
           return d.map(function(o) {
@@ -46,28 +46,28 @@
         lines.exit().remove();
         lines
         .attr('class', scope.accessors.classes.bind(this))
-        .attr('x1', function(d, i) {
+        .attr('x1', function() {
           // if(i === 0){
           //   return 0;
           // }
           // return scope.accessors.x1.bind(this)(data[i - 1].values[0]);
         }.bind(this))
 
-        .attr('y1', function(d, i) {
+        .attr('y1', function() {
           // if(i === 0){
           //   return 0;
           // }
           // return scope.accessors.y1.bind(this)(data[i - 1].values[0]);
         }.bind(this))
 
-        .attr('x2', function(d, i) {
+        .attr('x2', function() {
           // if(i === 0){
           //   return 0;
           // }
           // return scope.accessors.x1.bind(this)(data[i - 1].values[0]);
         }.bind(this))
 
-        .attr('y2', function(d, i) {
+        .attr('y2', function() {
           // if(i === 0){
           //   return 0;
           // }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <script src="lib/aight.js"></script>
+    <script src="lib/mocha.js"></script>
+    <script src="lib/assert.js"></script>
+    <script src="lib/sinon.js"></script>
+    <script>
+      mocha.setup({
+        ui: 'tdd'
+      });
+    </script>
+    <link href="lib/mocha.css" rel="stylesheet"></link>
+    <title>d4 test suite</title>
+    <script src="lib/d3.v3.js"></script>
+    <script src="lib/d4.js"></script>
+    <script src="tests/base.js"></script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <div id="test"></div>
+    <script>
+      if (navigator.userAgent.indexOf('PhantomJS') === -1) {
+        mocha.run();
+      }
+    </script>
+  </body>
+</html>

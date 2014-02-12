@@ -33,6 +33,7 @@ Base Charts
 
 * Area Chart (Coming Soon)
 * Column Chart
+* Grouped Column Chart
 * Line Chart
 * Mekko Chart (Coming Soon)
 * Pie Chart
@@ -94,14 +95,9 @@ Examples
 
 ::
 
-  // Mixing in a new feature for a chart
+  // Mixing feature in or out of a chart
   var columnChart = window.d4.columnChart()
-    .margin({
-      top: 15,
-      right: 10,
-      bottom: 30,
-      left: 0
-    })
+    .mixout('yAxis')
     .mixin({
       'grid': d4.features.grid
     }, 0)
@@ -120,8 +116,8 @@ Examples
     .datum(data)
     .call(columnChart);
 
-TODO
-****
-
-* Come up with a consistent way to specify dimensions for the chart.
+Roadmap
+*******
+* Allow mouse events
+* Allow for multiple charts within the same SVG element
 * Find a good way to set the range from inside a custom accessor.
