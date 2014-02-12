@@ -6,7 +6,7 @@
 //  Underscore may be freely distributed under the MIT license.
 /*
   API:
-  var columnChart = window.d4.columnChart()
+  var columnChart = d4.columnChart()
     .margin({
       top: 15,
       right: 10,
@@ -84,6 +84,7 @@
       }
     }
   };
+
   var isFunction = function(obj) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
   };
@@ -91,6 +92,7 @@
   var assert = function(message) {
     throw new Error('[d4] ' + message);
   };
+
   var validateBuilder = function(builder){
     each(['configure', 'render'], function(funct){
       if(!builder[funct] || !isFunction(builder[funct])) {
@@ -116,6 +118,12 @@
       height: 400,
       features: {},
       mixins: [],
+      xKey : function() {
+        return 'x';
+      },
+      yKey : function() {
+        return 'y';
+      },
       margin: {
         top: 0,
         right: 0,
@@ -124,7 +132,7 @@
       }
     }, config);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
-    opts.accessors = ['margin', 'width', 'height', 'x', 'y'].concat(config.accessors || []);
+    opts.accessors = ['margin', 'width', 'height', 'x', 'y', 'xKey', 'yKey'].concat(config.accessors || []);
     return opts;
   };
 

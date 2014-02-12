@@ -53,7 +53,8 @@ module.exports = function(grunt) {
     },
     mocha: {
       options: {
-        run: true
+        run: true,
+        log: true
       },
       src: ['test/index.html']
     },
