@@ -9,7 +9,9 @@
     return {
       accessors: {
         x: function(d,i) {
-          return this.x(d[this.xKey()]) + this.x.rangeBand() / this.countGroups() * i;
+          var width = this.x.rangeBand() / this.countGroups();
+          var xPos = this.x(d[this.xKey()]) + width * i;
+          return xPos;
         },
 
         y: function(d) {
@@ -17,7 +19,9 @@
         },
 
         width: function() {
-          return this.x.rangeBand() / this.countGroups();
+          var width = this.x.rangeBand() / this.countGroups();
+          var gutter = width * 0.1;
+          return width - gutter;
         },
 
         height: function(d) {
