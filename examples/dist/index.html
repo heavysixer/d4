@@ -1,8 +1,39 @@
-<!DOCTYPE html><!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]--><!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]--><!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]--><!--[if gt IE 8]><!--><html class=no-js><!--<![endif]--><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>examples</title><meta name=description content=""><meta name=viewport content="width=device-width"><!-- Place favicon.ico and apple-touch-icon.png in the root directory --><link rel=stylesheet href=styles/6a9a8eb9.vendor.css><link rel=stylesheet href=styles/a5896f90.main.css><script src=bower_components/modernizr/modernizr.js></script><body><!--[if lt IE 10]>
+<!DOCTYPE html><!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]--><!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]--><!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]--><!--[if gt IE 8]><!--><html class=no-js><!--<![endif]--><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><title>examples</title><meta name=description content=""><meta name=viewport content="width=device-width"><!-- Place favicon.ico and apple-touch-icon.png in the root directory --><link rel=stylesheet href=styles/dbf37632.vendor.css><link rel=stylesheet href=styles/a5896f90.main.css><script src=bower_components/modernizr/modernizr.js></script><body><!--[if lt IE 10]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]--><div class=container><div class=header><ul class="nav nav-pills pull-right"><li class=active><a href=#>Getting Started</a></li><li><a href=#>Examples</a></li><li><a href=#>Annotated Source</a></li></ul><h3 class=text-muted>d4 examples</h3></div><div class=jumbotron><h1>D4</h1><p class=lead>A friendly charting DSL for D3</p></div><div class="row marketing"><div class=col-lg-6><h4>Introduction</h4><p>D4 is a friendly DSL charting library for D3. The goal of D4 is to allow developers to quickly build data-driven charts with little knowledge of the internals of D3.</p><h4>Getting Started</h4><p>Follow a few simple steps to get D4 up and running with your data.</p><h4>Next Steps</h4><p>Check out the examples, or browse the annotated source.</p></div></div><div class=footer><p>&copy; Mark Daggett 2014</p></div></div><script src=scripts/bb218a37.vendor.js></script><!-- Google Analytics: change UA-XXXXX-X to be your site's ID. --><script>(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');</script><script src=scripts/c6b52431.plugins.js></script><script src=scripts/d41d8cd9.main.js></script>
+        <![endif]--><div class=container><div class=header><ul class="nav nav-pills pull-right"><li class=active><a data-toggle=tab href=#introduction>Introduction</a></li><li><a data-toggle=tab href=#getting_started>Getting Started</a></li><li><a data-toggle=tab href=#examples>Examples</a></li></ul><h3 class=text-muted>d4 examples</h3></div><div class=jumbotron><h1>D4</h1><p class=lead>A friendly charting DSL for D3</p></div><div class="row marketing"><div class="col-lg-6 tab-content"><div id=introduction class="tab-pane active"><h3>Introduction</h3><p>D4 is a friendly DSL charting library for D3. The goal of D4 is to allow developers to quickly build data-driven charts with little knowledge of the internals of D3.</p><h4>Next Steps</h4><p>Check out the examples, or browse the annotated source.</p></div><div id=getting_started class=tab-pane><h3>Getting Started</h3><p>Follow a few simple steps to get D4 up and running with your data.</p><h4>Installation</h4><h4>Hello World</h4></div><div id=examples class=tab-pane><h3>Examples</h3><pre><code id=code class=language-javascript>
+        function getCompletions(token, context) {
+        var found = [], start = token.string;
+        function maybeAdd(str) {
+            if (str.indexOf(start) == 0) found.push(str);
+        }
+        function gatherCompletions(obj) {
+            if (typeof obj == "string") forEach(stringProps, maybeAdd);
+            else if (obj instanceof Array) forEach(arrayProps, maybeAdd);
+            else if (obj instanceof Function) forEach(funcProps, maybeAdd);
+            for (var name in obj) maybeAdd(name);
+        }
+
+        if (context) {
+            // If this is a property, see if it belongs to some object we can
+            // find in the current environment.
+            var obj = context.pop(), base;
+            if (obj.className == "js-variable")
+            base = window[obj.string];
+            else if (obj.className == "js-string")
+            base = "";
+            else if (obj.className == "js-atom")
+            base = 1;
+            while (base != null && context.length)
+            base = base[context.pop().string];
+            if (base != null) gatherCompletions(base);
+        }
+        else {
+            // If not, just look in the window object and any local scope
+            // (reading into JS mode internals to get at the local variables)
+            for (var v = token.state.localVars; v; v = v.next) maybeAdd(v.name);
+            gatherCompletions(window);
+            forEach(keywords, maybeAdd);
+        }
+        return found;
+        }
+                               </code></pre></div></div></div><div class=footer><p>&copy; Mark Daggett 2014</p></div></div><script src=scripts/bb218a37.vendor.js></script><script src=scripts/7f8663fd.plugins.js></script><script src=scripts/d41d8cd9.main.js></script>
