@@ -29,7 +29,7 @@ describe('d4.base', function() {
     it('should require a config and builder object', function() {
       expect(function() {
         d4.baseChart();
-      }).to.throw(Error, '[d4] no builder defined');
+      }).to.throw(Error, '[d4] No builder defined');
     });
 
     describe('when defining a builder', function(){
@@ -44,7 +44,7 @@ describe('d4.base', function() {
         };
         expect(function(){
           d4.baseChart({}, badBuilder);
-        }).to.throw(Error, '[d4] the supplied builder does not have a configure function');
+        }).to.throw(Error, '[d4] The supplied builder does not have a configure function');
 
         badBuilder = function() {
           return { configure : 'foo' };
@@ -52,7 +52,7 @@ describe('d4.base', function() {
 
         expect(function(){
           d4.baseChart({}, badBuilder);
-        }).to.throw(Error, '[d4] the supplied builder does not have a configure function');
+        }).to.throw(Error, '[d4] The supplied builder does not have a configure function');
       });
 
       it('should require the builder to have a render function', function(){
@@ -61,7 +61,7 @@ describe('d4.base', function() {
         };
         expect(function(){
           d4.baseChart({}, badBuilder);
-        }).to.throw(Error, '[d4] the supplied builder does not have a render function');
+        }).to.throw(Error, '[d4] The supplied builder does not have a render function');
 
         badBuilder = function() {
           return { configure : function() {}, render : 'foo' };
@@ -69,7 +69,7 @@ describe('d4.base', function() {
 
         expect(function(){
           d4.baseChart({}, badBuilder);
-        }).to.throw(Error, '[d4] the supplied builder does not have a render function');
+        }).to.throw(Error, '[d4] The supplied builder does not have a render function');
       });
     });
 
@@ -114,7 +114,7 @@ describe('d4.base', function() {
       var chart = d4.columnChart();
       expect(function(){
         chart.mixin();
-      }).to.throw(Error, '[d4] you need to supply an object to mixin');
+      }).to.throw(Error, '[d4] You need to supply an object to mixin');
     });
 
     it('should add the newly mixed in feature into the list of features', function(){
@@ -146,6 +146,76 @@ describe('d4.base', function() {
       expect(chart.features()).to.not.include('grid3');
       chart.mixin({ 'grid3' : d4.features.grid }, 1000);
       expect(chart.features()[chart.features().length - 1]).to.equal('grid3');
+    });
+  });
+
+  describe('#mixout()', function(){
+    it('should allow you to mix out an existing feature from a chart', function(){
+      var chart = d4.columnChart();
+      expect(chart.features()).to.include('bars');
+      chart.mixout('bars');
+      expect(chart.features()).to.not.include('bars');
+    });
+
+    it('should require a feature name to mixout of the chart', function(){
+      var chart = d4.columnChart();
+      expect(function(){
+        chart.mixout();
+      }).to.throw(Error, '[d4] A name is required in order to mixout a chart feature.');
+    });
+  });
+
+  describe('#using()', function(){
+    it('should throw an error if you try to use a non-existent feature', function(){
+      var chart = d4.columnChart();
+      expect(function(){
+        chart.using('foo', function(){});
+      }).to.throw(Error, '[d4] Could not find feature: "foo", maybe you forgot to mix it in?');
+    });
+
+    it('should allow you to use a feature of a chart', function(){
+      var chart = d4.columnChart();
+      chart.using('bars', function(bars){
+        expect(bars.accessors).to.not.be.an('undefined');
+      });
+    });
+
+    it('should throw an error is you try and use a feature without supplying a function', function(){
+      var chart = d4.columnChart();
+      expect(function(){
+        chart.using('bars');
+      }).to.throw(Error, '[d4] You must supply a continuation function in order to use a chart feature.');
+    });
+  });
+
+  describe('#builder()', function(){
+    it('should require a valid builder function to use as a builder', function(){
+      var chart = d4.columnChart();
+      var badBuilder = function() {
+        return { configure : 'foo' };
+      };
+      expect(function(){
+        chart.builder(badBuilder);
+      }).to.throw(Error, '[d4] The supplied builder does not have a configure function');
+    });
+
+    it('should allow you to replace the default builder with your custom one', function(){
+      var chart = d4.columnChart();
+      var chartData = [1,2,3];
+      chart.builder(function(){
+        return {
+          configure : function(data) {
+                expect(data).to.equal(chartData);
+              },
+          render : function(data) {
+                expect(data).to.equal(chartData);
+              }
+        };
+      });
+
+      d3.select('test')
+        .datum(chartData)
+        .call(chart);
     });
   });
 });

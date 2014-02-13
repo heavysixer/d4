@@ -88,14 +88,18 @@
     return !!(obj && obj.constructor && obj.call && obj.apply);
   };
 
+  var isNotFunction = function(obj) {
+    return !isFunction(obj);
+  };
+
   var assert = function(message) {
     throw new Error('[d4] ' + message);
   };
 
   var validateBuilder = function(builder){
     each(['configure', 'render'], function(funct){
-      if(!builder[funct] || !isFunction(builder[funct])) {
-        assert('the supplied builder does not have a '+ funct +' function');
+      if(!builder[funct] || isNotFunction(builder[funct])) {
+        assert('The supplied builder does not have a '+ funct +' function');
       }
     });
     return builder;
@@ -110,7 +114,7 @@
 
   var assignDefaults = function(config, defaultBuilder) {
     if(!defaultBuilder){
-      assert('no builder defined');
+      assert('No builder defined');
     }
     var opts = d4.merge({
       width: 400,
@@ -140,7 +144,7 @@
       this.builder.configure(data);
       this.builder.render(data);
     } else {
-      assert('no builder defined');
+      assert('No builder defined');
     }
   };
 
@@ -166,7 +170,7 @@
   // `index` is optional and will place a mixin at a specific 'layer.'
   d4.mixin = function(feature, index) {
     if (!feature) {
-      assert('you need to supply an object to mixin.');
+      assert('You need to supply an object to mixin.');
     }
     var name = d3.keys(feature)[0];
     feature[name] = feature[name](name);
@@ -193,14 +197,21 @@
   };
 
   d4.mixout = function(name) {
+    if (!name) {
+      assert('A name is required in order to mixout a chart feature.');
+    }
+
     delete this.features[name];
     this.mixins = this.mixins.filter(function(val){ return val !== name; });
   };
 
   d4.using = function(name, funct) {
     var feature = this.features[name];
+    if (isNotFunction(funct)) {
+      assert('You must supply a continuation function in order to use a chart feature.');
+    }
     if (!feature) {
-      assert('Could not find feature: "' + name + '"');
+      assert('Could not find feature: "' + name + '", maybe you forgot to mix it in?');
     } else {
       funct.bind(this)(feature);
     }
@@ -237,17 +248,12 @@
     };
 
     chart.builder = function(funct) {
-      funct.bind(chart)(opts);
+      validateBuilder(funct.bind(chart)(opts));
       return chart;
     };
 
     chart.features = function() {
       return opts.mixins;
-    };
-
-    chart.svg = function(funct) {
-      funct(opts.svg);
-      return chart;
     };
 
     return chart;
