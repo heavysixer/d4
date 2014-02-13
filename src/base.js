@@ -57,7 +57,6 @@
     root.d4 = d4;
   }
 
-  // Create a default container for d4 chart features and parsers.
   d4.features = {};
   d4.parsers = {};
 
@@ -166,11 +165,14 @@
   // Specify the feature to mixin.
   // `index` is optional and will place a mixin at a specific 'layer.'
   d4.mixin = function(feature, index) {
+    if (!feature) {
+      assert('you need to supply an object to mixin.');
+    }
     var name = d3.keys(feature)[0];
     feature[name] = feature[name](name);
     d4.extend(this.features, feature);
     if(typeof index !== 'undefined'){
-      index = Math.max(Math.min(index, this.mixins.length - 1),0);
+      index = Math.max(Math.min(index, this.mixins.length),0);
       this.mixins.splice(index, 0, name);
     } else {
       this.mixins.push(name);
@@ -237,6 +239,10 @@
     chart.builder = function(funct) {
       funct.bind(chart)(opts);
       return chart;
+    };
+
+    chart.features = function() {
+      return opts.mixins;
     };
 
     chart.svg = function(funct) {

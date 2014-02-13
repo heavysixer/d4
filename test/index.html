@@ -6,7 +6,7 @@
     <script src="lib/aight.js"></script>
     <script src="lib/mocha.js"></script>
     <script src="lib/chai.js"></script>
-    <!-- <script src="lib/assert.js"></script> -->
+    <script src="lib/sinon-chai.js"></script>
     <script src="lib/sinon.js"></script>
     <script>
       expect = chai.expect;
@@ -23,6 +23,7 @@
     <div id="test"></div>
     <script>
       if (navigator.userAgent.indexOf('PhantomJS') === -1) {
+        chai.use(sinonChai);
         mocha.checkLeaks();
         mocha.run();
       }

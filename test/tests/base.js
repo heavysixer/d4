@@ -20,8 +20,8 @@ describe('d4.base', function() {
     before(function() {
       this.builder = function() {
         return {
-          configure: function() {},
-          render: function() {}
+          configure : function() {},
+          render : function() {}
         };
       };
     });
@@ -92,7 +92,7 @@ describe('d4.base', function() {
 
   describe('#merge()',function(){
     it('should take two objects and merge them into a new object', function(){
-      var a = {a : 'foo'}, b = {b : 'bar'};
+      var a = { a : 'foo' }, b = { b : 'bar' };
       var c = d4.merge(a,b);
       expect(c.a).to.equal('foo');
       expect(c.b).to.equal('bar');
@@ -102,7 +102,7 @@ describe('d4.base', function() {
 
   describe('#extend()', function(){
     it('should extend one object with the properties of another', function(){
-      var a = {a : 'baz' }, b = { a : 'foo', bar : function(){return 'bar'; }};
+      var a = {a : 'baz' }, b = { a : 'foo', bar : function(){ return 'bar'; }};
       d4.extend(a,b);
       expect(a.a).to.equal('foo');
       expect(a.bar()).to.equal('bar');
@@ -110,9 +110,42 @@ describe('d4.base', function() {
   });
 
   describe('#mixin()', function(){
-    it('should allow you to mixin new features into a chart', function(){
-      var column = d4.columnChart();
-      column.mixin('foo');
+    it('should require a valid object to mixin', function(){
+      var chart = d4.columnChart();
+      expect(function(){
+        chart.mixin();
+      }).to.throw(Error, '[d4] you need to supply an object to mixin');
+    });
+
+    it('should add the newly mixed in feature into the list of features', function(){
+      var chart = d4.columnChart();
+      ['bars', 'barLabels', 'xAxis', 'yAxis'].forEach(function(feature){
+        expect(chart.features()).to.include(feature);
+      });
+      expect(chart.features()).to.not.include('grid');
+      chart.mixin({ 'grid' : d4.features.grid });
+      expect(chart.features()).to.include('grid');
+    });
+
+    it('should add a feature in a specific index', function(){
+      var chart = d4.columnChart();
+      expect(chart.features()).to.not.include('grid');
+      chart.mixin({ 'grid' : d4.features.grid }, 0);
+      expect(chart.features()[0]).to.equal('grid');
+    });
+
+    it('should convert a negative index to zero', function(){
+      var chart = d4.columnChart();
+      expect(chart.features()).to.not.include('grid2');
+      chart.mixin({ 'grid2' : d4.features.grid }, -1);
+      expect(chart.features()[0]).to.equal('grid2');
+    });
+
+    it('should add a feature to the end if the index is larger than the features array length', function(){
+      var chart = d4.columnChart();
+      expect(chart.features()).to.not.include('grid3');
+      chart.mixin({ 'grid3' : d4.features.grid }, 1000);
+      expect(chart.features()[chart.features().length - 1]).to.equal('grid3');
     });
   });
 });
