@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}} | {{site.title}}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{{assets}}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{assets}}/css/prism.css">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{assets}}/css/main.css">
+    <link rel="stylesheet" href="{{assets}}/css/d4.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+
+      {{> navbar-top }}
+
+      <div class="container" role="main">
+
+        {{> body }}
+
+      </div>
+      <div class="footer">
+          <p>&copy; Mark Daggett 2014</p>
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{assets}}/js/bootstrap.min.js"></script>
+    <script src="{{assets}}/vendor/prism.js"></script>
+  </body>
+</html>
