@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>examples</title>
+        <title>d4 Examples</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -37,19 +37,19 @@
                     <li><a data-toggle="tab" href="#getting_started">Getting Started</a></li>
                     <li><a data-toggle="tab" href="#examples">Examples</a></li>
                 </ul>
-                <h3 class="text-muted">d4 examples</h3>
+                <h3 class="text-muted">d4: Reusable d3 Charts</h3>
             </div>
 
             <div class="jumbotron">
-                <h1>D4</h1>
-                <p class="lead">A friendly charting DSL for D3</p>
+                <h1>d4</h1>
+                <p class="lead">A friendly charting DSL for d3</p>
             </div>
 
             <div class="row marketing">
                 <div class="col-lg-6 tab-content">
                   <div id="introduction" class="tab-pane active">
                     <h3>Introduction</h3>
-                    <p>D4 is a friendly DSL charting library for D3. The goal of D4 is to allow developers
+                    <p>d4 is a friendly DSL charting library for D3. The goal of d4 is to allow developers
 to quickly build data-driven charts with little knowledge of the internals of D3.</p>
 
                     <h4>Next Steps</h4>
@@ -58,54 +58,118 @@ to quickly build data-driven charts with little knowledge of the internals of D3
 
                   <div id="getting_started" class="tab-pane">
                     <h3>Getting Started</h3>
-                    <p>Follow a few simple steps to get D4 up and running with your data.</p>
+                    <p>Follow a few simple steps to get d4 up and running with your data.</p>
 
                     <h4>Installation</h4>
+                    <p>Either download d4 directly from the repository
+                      or install it using a package manager like bower.</p>
+                    <pre><code>
+$ bower install d4
+                    </code></pre>
+                    <p>Once you have a local copy of d4 simply include it after d3
+                      in your source file.</p>
+                      <pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;!-- sensible defaults for styles -->
+  &lt;link href="d4.css" rel="stylesheet" />
+&lt;/head&gt;
+&lt;body&gt;
+  ...
+&lt;script src="d3.js">&lt;/script>
+&lt;script src="d4.js">&lt;/script>
+&lt;/body>
+&lt;/html>
+                       </code></pre>
 
-                    <h4>Hello World</h4>
+                    <h4 class="prependTop">Hello World</h4>
+                    <p>Here is the most basic example, which uses all the preset defaults provided by d4.</p>
+                      <pre><code class="language-javascript">
+var data = [
+  { x : '2010', y : 5 },
+  { x : '2011', y : 15 },
+  { x : '2012', y : 20 }
+];
+var columnChart = d4.columnChart();
+
+d3.select('test')
+  .datum(data)
+  .call(columnChart);</code>
+                      </pre>
+
+                      <h4 class="prependTop">Overriding the defaults</h4>
+                      <p>Of course, it is very rare for charts to be fit for purpose right out of the box.
+                        Therefore d4 strives to make configuration as natural as possible. d4 uses
+                        a declarative chaining style, which should feel very familiar to even developers
+                        new to D3.<p>
+                      <pre><code class="language-javascript">
+var data = [
+  { x : '2010', y : 5 },
+  { x : '2011', y : 15 },
+  { x : '2012', y : 20 }
+];
+var columnChart = d4.columnChart()
+.margin({
+  top: 15,
+  right: 10,
+  bottom: 30,
+  left: 0
+});
+
+d3.select('test')
+  .datum(data)
+  .call(columnChart);
+                      </code></pre>
+                      <h4 class="prependTop">Mix it up</h4>
+                      <p>In d4 charts are composed of features, which are visual components of a chart.
+                        Features in d4 help convey meaning in the data, and can easily be mixed in or out of a chart.<p>
+                      <pre><code class="language-javascript">
+var data = [
+  { x : '2010', y : 5 },
+  { x : '2011', y : 15 },
+  { x : '2012', y : 20 }
+];
+
+// Create a column chart without a yAxis, but with a grid in the background.
+var columnChart = d4.columnChart()
+.mixout('yAxis')
+.mixin('grid', d4.features.grid, 0)
+
+d3.select('test')
+  .datum(data)
+  .call(columnChart);
+                    </code></pre>
+
+                    <h4 class="prependTop">Using features</h4>
+                    <p>d4 allows developers to control individual features of the chart in a clear declarative style.<p>
+                    <pre><code class="language-javascript">
+var data = [
+  { x : '2010', y : 5 },
+  { x : '2011', y : 15 },
+  { x : '2012', y : 20 }
+];
+
+// create a column chart without a yAxis, but with a grid in the background.
+var columnChart = d4.columnChart()
+.using('bars', functions(bars){
+  bars
+  .classes(function(d, i){
+    return d[1] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
+  });
+});
+
+d3.select('test')
+  .datum(data)
+  .call(columnChart);
+                    </code></pre>
 
                   </div>
 
                   <div id="examples" class="tab-pane">
                     <h3>Examples</h3>
                     <pre><code id="code" class="language-javascript">
-        function getCompletions(token, context) {
-        var found = [], start = token.string;
-        function maybeAdd(str) {
-            if (str.indexOf(start) == 0) found.push(str);
-        }
-        function gatherCompletions(obj) {
-            if (typeof obj == "string") forEach(stringProps, maybeAdd);
-            else if (obj instanceof Array) forEach(arrayProps, maybeAdd);
-            else if (obj instanceof Function) forEach(funcProps, maybeAdd);
-            for (var name in obj) maybeAdd(name);
-        }
-
-        if (context) {
-            // If this is a property, see if it belongs to some object we can
-            // find in the current environment.
-            var obj = context.pop(), base;
-            if (obj.className == "js-variable")
-            base = window[obj.string];
-            else if (obj.className == "js-string")
-            base = "";
-            else if (obj.className == "js-atom")
-            base = 1;
-            while (base != null && context.length)
-            base = base[context.pop().string];
-            if (base != null) gatherCompletions(base);
-        }
-        else {
-            // If not, just look in the window object and any local scope
-            // (reading into JS mode internals to get at the local variables)
-            for (var v = token.state.localVars; v; v = v.next) maybeAdd(v.name);
-            gatherCompletions(window);
-            forEach(keywords, maybeAdd);
-        }
-        return found;
-        }
-                               </code></pre>
-
+                    </code></pre>
                   </div>
 
                 </div>

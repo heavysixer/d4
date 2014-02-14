@@ -6,20 +6,29 @@ to quickly build data-driven charts with little knowledge of the internals of D3
 
 Philosophy
 **********
+Many charting libraries do a poor job when it comes to separations of concerns.
+They attempt to be an all-in-one tool, which is at odds with how modern
+applications are built. Developers do not want a monolith that owns
+the data transformation, visual aesthetics, and interactivity. This leads to
+enormous libraries with huge config files, where every minutia about the chart
+must be decided upon beforehand. This typically means developers must first
+learn a specialized API in order to control even simple aspects of the chart
+which would be better delegated to other technologies. d4's attempts to do just
+enough, by enforcing these rules:
 
-* CSS is for styling
-  - The charts add hooks for styling but do not apply style themselves. For example,
-  a chart will assign a unique class name to a series but will rely on the designer to assign
-  the colors in CSS.
-  - The chart expects a basic data format, but does not do any of the parsing itself. The data
-  must be prepared before sending it into the chart.
+*CSS is for styling*
 
-* The chart does not own the data
-  - Data is a stand alone object which can be controlled by many other components
-  - The chart should not get a copy of the data, it should reference the main object
-  - It should not change the data object. It can make non-permanent transformations.
+Many charting libraries make internal decisions on visual aesthetics, which may
+remove control from the designer, who may or may not understand JavaScript let
+alone the charting API. Choices on visual design like series colors and font
+sizes are best made in CSS. d4 exposes convenient hooks in the generated markup
+to allow visual designer to get precise control over the look and feel without
+needing deep knowledge of d4.
 
-* Declarative
+*The chart does not own the data*
+Data is a stand-alone object, which can be controlled by many other items on
+the page. It should not change the data object. It can make non-permanent
+transformations.
 
 Terminology
 ***********
