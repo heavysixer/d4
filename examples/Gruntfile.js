@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 
     watch: {
       assemble: {
-        files: ['<%= config.src %>/{content,data,templates}/{,*/}*.{md,hbs,yml}','README.md'],
+        files: ['<%= config.src %>/{content,data,templates}/**/*.{md,hbs,yml}', 'README.md'],
         tasks: ['assemble']
       },
       livereload: {
@@ -61,7 +61,6 @@ module.exports = function(grunt) {
         }
       }
     },
-
     assemble: {
       pages: {
         options: {
@@ -70,10 +69,17 @@ module.exports = function(grunt) {
           layout: '<%= config.src %>/templates/layouts/default.hbs',
           data: '<%= config.src %>/data/*.{json,yml}',
           partials: '<%= config.src %>/templates/partials/*.hbs',
-          plugins: ['assemble-contrib-permalinks','assemble-contrib-sitemap'],
+          plugins: ['assemble-contrib-permalinks', 'assemble-contrib-sitemap']
         },
         files: {
-          '<%= config.dist %>/': ['<%= config.src %>/templates/pages/*.hbs']
+          '<%= config.dist %>/': ['<%= config.src %>/templates/pages/*.hbs'],
+          '<%= config.dist %>/charts/column/': ['<%= config.src %>/content/charts/column/*.hbs'],
+          '<%= config.dist %>/charts/grouped-column/': ['<%= config.src %>/content/charts/grouped-column/*.hbs'],
+          '<%= config.dist %>/charts/line/': ['<%= config.src %>/content/charts/line/*.hbs'],
+          '<%= config.dist %>/charts/row/': ['<%= config.src %>/content/charts/row/*.hbs'],
+          '<%= config.dist %>/charts/scatter/': ['<%= config.src %>/content/charts/scatter/*.hbs'],
+          '<%= config.dist %>/charts/stacked-column/': ['<%= config.src %>/content/charts/stacked-column/*.hbs'],
+          '<%= config.dist %>/charts/waterfall/': ['<%= config.src %>/content/charts/waterfall/*.hbs']
         }
       }
     },
