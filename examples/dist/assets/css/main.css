@@ -14,6 +14,95 @@ body {
     margin-top: 20px;
 }
 
+
+table {
+max-width: 100%;
+background-color: transparent
+}
+th {
+text-align: left
+}
+.content table {
+width: 100%;
+margin-bottom: 20px
+}
+.content table>thead>tr>th,.content table>tbody>tr>th,.content table>tfoot>tr>th,.content table>thead>tr>td,.content table>tbody>tr>td,.content table>tfoot>tr>td {
+padding: 8px;
+line-height: 1.428571429;
+vertical-align: top;
+border-top: 1px solid #ddd
+}
+.content table>thead>tr>th {
+vertical-align: bottom;
+border-bottom: 2px solid #ddd
+}
+.content table>caption+thead>tr:first-child>th,.content table>colgroup+thead>tr:first-child>th,.content table>thead:first-child>tr:first-child>th,.content table>caption+thead>tr:first-child>td,.content table>colgroup+thead>tr:first-child>td,.content table>thead:first-child>tr:first-child>td {
+border-top: 0
+}
+.content table>tbody+tbody {
+border-top: 2px solid #ddd
+}
+.content table .content table {
+background-color: #fff
+}
+.content table-condensed>thead>tr>th,.content table-condensed>tbody>tr>th,.content table-condensed>tfoot>tr>th,.content table-condensed>thead>tr>td,.content table-condensed>tbody>tr>td,.content table-condensed>tfoot>tr>td {
+padding: 5px
+}
+.content table-bordered {
+border: 1px solid #ddd
+}
+.content table-bordered>thead>tr>th,.content table-bordered>tbody>tr>th,.content table-bordered>tfoot>tr>th,.content table-bordered>thead>tr>td,.content table-bordered>tbody>tr>td,.content table-bordered>tfoot>tr>td {
+border: 1px solid #ddd
+}
+.content table-bordered>thead>tr>th,.content table-bordered>thead>tr>td {
+border-bottom-width: 2px
+}
+.content table-striped>tbody>tr:nth-child(odd)>td,.content table-striped>tbody>tr:nth-child(odd)>th {
+background-color: #f9f9f9
+}
+.content table-hover>tbody>tr:hover>td,.content table-hover>tbody>tr:hover>th {
+background-color: #f5f5f5
+}
+table col[class*=col-] {
+position: static;
+float: none;
+display: table-column
+}
+table td[class*=col-],table th[class*=col-] {
+position: static;
+float: none;
+display: table-cell
+}
+.content table>thead>tr>td.active,.content table>tbody>tr>td.active,.content table>tfoot>tr>td.active,.content table>thead>tr>th.active,.content table>tbody>tr>th.active,.content table>tfoot>tr>th.active,.content table>thead>tr.active>td,.content table>tbody>tr.active>td,.content table>tfoot>tr.active>td,.content table>thead>tr.active>th,.content table>tbody>tr.active>th,.content table>tfoot>tr.active>th {
+background-color: #f5f5f5
+}
+.content table-hover>tbody>tr>td.active:hover,.content table-hover>tbody>tr>th.active:hover,.content table-hover>tbody>tr.active:hover>td,.content table-hover>tbody>tr.active:hover>th {
+background-color: #e8e8e8
+}
+.content table>thead>tr>td.success,.content table>tbody>tr>td.success,.content table>tfoot>tr>td.success,.content table>thead>tr>th.success,.content table>tbody>tr>th.success,.content table>tfoot>tr>th.success,.content table>thead>tr.success>td,.content table>tbody>tr.success>td,.content table>tfoot>tr.success>td,.content table>thead>tr.success>th,.content table>tbody>tr.success>th,.content table>tfoot>tr.success>th {
+background-color: #dff0d8
+}
+.content table-hover>tbody>tr>td.success:hover,.content table-hover>tbody>tr>th.success:hover,.content table-hover>tbody>tr.success:hover>td,.content table-hover>tbody>tr.success:hover>th {
+background-color: #d0e9c6
+}
+.content table>thead>tr>td.info,.content table>tbody>tr>td.info,.content table>tfoot>tr>td.info,.content table>thead>tr>th.info,.content table>tbody>tr>th.info,.content table>tfoot>tr>th.info,.content table>thead>tr.info>td,.content table>tbody>tr.info>td,.content table>tfoot>tr.info>td,.content table>thead>tr.info>th,.content table>tbody>tr.info>th,.content table>tfoot>tr.info>th {
+background-color: #d9edf7
+}
+.content table-hover>tbody>tr>td.info:hover,.content table-hover>tbody>tr>th.info:hover,.content table-hover>tbody>tr.info:hover>td,.content table-hover>tbody>tr.info:hover>th {
+background-color: #c4e3f3
+}
+.content table>thead>tr>td.warning,.content table>tbody>tr>td.warning,.content table>tfoot>tr>td.warning,.content table>thead>tr>th.warning,.content table>tbody>tr>th.warning,.content table>tfoot>tr>th.warning,.content table>thead>tr.warning>td,.content table>tbody>tr.warning>td,.content table>tfoot>tr.warning>td,.content table>thead>tr.warning>th,.content table>tbody>tr.warning>th,.content table>tfoot>tr.warning>th {
+background-color: #fcf8e3
+}
+.content table-hover>tbody>tr>td.warning:hover,.content table-hover>tbody>tr>th.warning:hover,.content table-hover>tbody>tr.warning:hover>td,.content table-hover>tbody>tr.warning:hover>th {
+background-color: #faf2cc
+}
+.content table>thead>tr>td.danger,.content table>tbody>tr>td.danger,.content table>tfoot>tr>td.danger,.content table>thead>tr>th.danger,.content table>tbody>tr>th.danger,.content table>tfoot>tr>th.danger,.content table>thead>tr.danger>td,.content table>tbody>tr.danger>td,.content table>tfoot>tr.danger>td,.content table>thead>tr.danger>th,.content table>tbody>tr.danger>th,.content table>tfoot>tr.danger>th {
+background-color: #f2dede
+}
+.content table-hover>tbody>tr>td.danger:hover,.content table-hover>tbody>tr>th.danger:hover,.content table-hover>tbody>tr.danger:hover>td,.content table-hover>tbody>tr.danger:hover>th {
+background-color: #ebcccc
+}
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,

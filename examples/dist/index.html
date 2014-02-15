@@ -26,9 +26,9 @@
       
 <div class="header">
     <ul class="nav nav-pills pull-right">
-        <li class="active"><a data-toggle="tab" href="#introduction">Introduction</a></li>
-        <li><a data-toggle="tab" href="#getting_started">Getting Started</a></li>
-        <li><a data-toggle="tab" href="#examples">Examples</a></li>
+        <li><a href="index.html">Introduction</a></li>
+        <li><a href="getting_started.html">Getting Started</a></li>
+        <li><a href="examples.html">Examples</a></li>
     </ul>
     <h3 class="text-muted">d4: Reusable d3 Charts</h3>
 </div>
@@ -42,9 +42,8 @@
 </div>
 
 <div class="row marketing">
-    <div class="col-lg-6 tab-content">
-      <div id="introduction" class="tab-pane active">
-        <h2 id="d4">D4</h2>
+    <div class="col-lg-6">
+      <h2 id="d4">D4</h2>
 <p>D4 is a friendly DSL charting library for D3. The goal of D4 is to allow developers
 to quickly build data-driven charts with little knowledge of the internals of D3.</p>
 <h4 id="quick-start">Quick Start</h4>
@@ -114,189 +113,6 @@ charts in d3.</p>
 <li>Allow for multiple charts within the same SVG element</li>
 <li>Find a good way to set the range from inside a custom accessor.</li>
 </ul>
-
-      </div>
-
-      <div id="getting_started" class="tab-pane">
-        
-                    <h3>Getting Started</h3>
-                    <p>Follow a few simple steps to get d4 up and running with your data.</p>
-
-                    <h4>Installation</h4>
-                    <p>Either download d4 directly from the repository
-                      or install it using a package manager like bower.</p>
-                    <pre><code>
-$ bower install d4
-                    </code></pre>
-                    <p>Once you have a local copy of d4 simply include it after d3
-                      in your source file.</p>
-                      <pre><code>
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;!-- sensible defaults for styles -->
-  &lt;link href="d4.css" rel="stylesheet" />
-&lt;/head&gt;
-&lt;body&gt;
-  ...
-&lt;script src="d3.js">&lt;/script>
-&lt;script src="d4.js">&lt;/script>
-&lt;/body>
-&lt;/html>
-                       </code></pre>
-
-                    <h4 class="prependTop">Hello World</h4>
-                    <p>Here is the most basic example, which uses all the preset defaults provided by d4.</p>
-                      <pre><code class="language-javascript">
-var data = [
-  { x : '2010', y : 5 },
-  { x : '2011', y : 15 },
-  { x : '2012', y : 20 }
-];
-var columnChart = d4.columnChart();
-
-d3.select('test')
-  .datum(data)
-  .call(columnChart);</code>
-                      </pre>
-
-                      <h4 class="prependTop">Overriding the defaults</h4>
-                      <p>Of course, it is very rare for charts to be fit for purpose right out of the box.
-                        Therefore d4 strives to make configuration as natural as possible. d4 uses
-                        a declarative chaining style, which should feel very familiar to even developers
-                        new to D3.<p>
-                      <pre><code class="language-javascript">
-var data = [
-  { x : '2010', y : 5 },
-  { x : '2011', y : 15 },
-  { x : '2012', y : 20 }
-];
-var columnChart = d4.columnChart()
-.margin({
-  top: 15,
-  right: 10,
-  bottom: 30,
-  left: 0
-});
-
-d3.select('test')
-  .datum(data)
-  .call(columnChart);
-                      </code></pre>
-                      <h4 class="prependTop">Mix it up</h4>
-                      <p>In d4 charts are composed of features, which are visual components of a chart.
-                        Features in d4 help convey meaning in the data, and can easily be mixed in or out of a chart.<p>
-                      <pre><code class="language-javascript">
-var data = [
-  { x : '2010', y : 5 },
-  { x : '2011', y : 15 },
-  { x : '2012', y : 20 }
-];
-
-// Create a column chart without a yAxis, but with a grid in the background.
-var columnChart = d4.columnChart()
-.mixout('yAxis')
-.mixin('grid', d4.features.grid, 0)
-
-d3.select('test')
-  .datum(data)
-  .call(columnChart);
-                    </code></pre>
-
-                    <h4 class="prependTop">Using features</h4>
-                    <p>d4 allows developers to control individual features of the chart in a clear declarative style.<p>
-                    <pre><code class="language-javascript">
-var data = [
-  { x : '2010', y : 5 },
-  { x : '2011', y : 15 },
-  { x : '2012', y : 20 }
-];
-
-// create a column chart without a yAxis, but with a grid in the background.
-var columnChart = d4.columnChart()
-.using('bars', functions(bars){
-  bars
-  .classes(function(d, i){
-    return d[1] < 0 ? 'negative' + i : 'positive' + i;
-  });
-});
-
-d3.select('test')
-  .datum(data)
-  .call(columnChart);
-                    </code></pre>
-      </div>
-
-      <div id="examples" class="tab-pane">
-        
-<h3>Examples</h3>
-<p>
-  This section demonstrates the various, charts, features and
-  parsers that come bundled with d4. The charts you
-  find here can be considered the canon of charts common to
-  financial and business applications. If you have an idea
-  for a more exotic breed, please do submit a pull-request!
-</p>
-
-<h4>Charts</h4>
-<p>The following section demonstrates mostly boilerplate
-  examples of the common chart. It is relatively trivial to
-  make a chart type. Most of the hard work is in writing the
-  features themselves.
-</p>
-
-
-<dl>
-  <dt>Column Chart</dt>
-  
-    <dd><a href ="charts/column/basic.html">Basic Column Chart</a></dd>
-  
-</dl>
-
-<dl>
-  <dt>Grouped Column Chart</dt>
-  
-    <dd><a href ="charts/grouped-column/basic.html">Basic Grouped Column Chart</a></dd>
-  
-</dl>
-
-<dl>
-  <dt>Line Chart</dt>
-  
-    <dd><a href ="charts/line/basic.html">Basic Line Chart</a></dd>
-  
-</dl>
-
-<dl>
-  <dt>Row Chart</dt>
-  
-    <dd><a href ="charts/row/basic.html">Basic Row Chart</a></dd>
-  
-</dl>
-
-<dl>
-  <dt>Scatter Plot</dt>
-  
-    <dd><a href ="charts/scatter/basic.html">Basic Scatter Plot</a></dd>
-  
-</dl>
-
-<dl>
-  <dt>Stacked Column</dt>
-  
-    <dd><a href ="charts/stacked-column/basic.html">Basic Stacked Column</a></dd>
-  
-</dl>
-
-<dl>
-  <dt>Waterfall Chart</dt>
-  
-    <dd><a href ="charts/waterfall/basic.html">Basic Waterfall Chart</a></dd>
-  
-</dl>
-
-
-      </div>
 
     </div>
 </div>
