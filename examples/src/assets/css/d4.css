@@ -1,3 +1,9 @@
 .d4 .column-label {
     text-anchor: middle;
 }
+
+.d4 .zeroLine line {
+    stroke: black;
+    stroke-width:2px;
+    stroke-linecap: round;
+}

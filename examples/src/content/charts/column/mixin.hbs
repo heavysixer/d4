@@ -1,0 +1,98 @@
+---
+title: Mix-in Example
+categories:
+  - Column Chart
+---
+<h5>{{title}}</h5>
+<p>
+  When creating charts in d4 you have two paths you can take. You can either
+  write your chart from scratch where you choose all the features you will need,
+  or use a preexisting chart and mix-in features you want.
+</p>
+<p>
+  In this example we want a reference line to run horizontally across the chart
+  exactly where the zero line occurs. This is very useful in instances where
+  you want to clearly delineate positive and negative series. Unfortunately,
+  the column chart doesn't come with any reference line by default. This is no
+  problem though, we'll just mix one in!
+</p>
+<p>
+  d4's mixin function expects an object where the key is a unique name to reference
+  the mixin, and the value property is a d4 feature e.g.:
+  <pre><code class="language-javascript">
+    myChart.mixin({ 'someName' : d4.features.someFeature })
+  </code></pre>
+<hr/>
+<script type="text/javascript" charset="utf-8">
+'use strict';
+
+$(document).ready(function(){
+  var data = [
+      { x: '2010', y:-50 },
+      { x: '2011', y:50 },
+      { x: '2012', y:30 },
+      { x: '2013', y:20 },
+      { x: '2014', y:10 },
+    ];
+  var chart = d4.columnChart()
+  .mixin({ 'zeroLine' : d4.features.referenceLine })
+  .using('zeroLine', function(zeroLine){
+    zeroLine
+    .x1(function(){
+      return 0;
+    })
+    .x2(function(){
+      return this.width - this.margin.left - this.margin.right;
+    })
+    .y1(function(){
+      return this.y(0);
+    })
+    .y2(function(){
+      return this.y(0);
+    });
+  });
+
+  d3.select('#example')
+  .datum(data)
+  .call(chart);
+});
+
+</script>
+<div id="example"></div>
+<h6>CSS File</h6>
+<pre><code class="language-css">
+  /* Style for our reference line */
+  .d4 .zeroLine line {
+      stroke: black;
+      stroke-width:2px;
+      stroke-linecap: round;
+  }
+</code></pre>
+
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript">
+  var data = [
+      { x: '2010', y:10 },
+      { x: '2011', y:10 },
+      { x: '2012', y:10 },
+      { x: '2013', y:10 },
+      { x: '2014', y:10 },
+    ];
+  var chart = d4.columnChart()
+  .mixin('zeroLine', d4.features.referenceLine)
+  .using('zeroLine', function(zeroLine){
+    zeroLine
+    .x1(function(d){
+    })
+    .x2(function(d){
+    })
+    .y1(function(d){
+    })
+    .y2(function(d){
+    })
+  });
+
+  d3.select('#example')
+  .datum(data)
+  .call(chart);
+</code></pre>

@@ -141,9 +141,9 @@ pre[data-line] {
 	background: -webkit-linear-gradient(left, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
 	background: -o-linear-gradient(left, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
 	background: linear-gradient(left, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
-
+	
 	pointer-events: none;
-
+	
 	line-height: inherit;
 	white-space: pre;
 }
@@ -165,7 +165,7 @@ pre[data-line] {
 		text-shadow: none;
 		box-shadow: 0 1px white;
 	}
-
+	
 	.line-highlight[data-end]:after {
 		content: attr(data-end);
 		top: auto;
@@ -227,4 +227,7 @@ pre.line-numbers > code {
 
 .token.lf:before {
 	content: '␊';
+}
+.token a {
+	color: inherit;
 }
