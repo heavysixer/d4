@@ -9,7 +9,8 @@
         },
 
         y: function(d) {
-          return d[this.yKey()] < 0 ? this.y(d[this.yKey()]) + 10 : this.y(d[this.yKey()]) - 5;
+          var height = Math.abs(this.y(d[this.yKey()]) - this.y(0));
+          return (d[this.yKey()] < 0 ? this.y(d[this.yKey()]) - height : this.y(d[this.yKey()])) - 5;
         },
 
         text: function(d) {

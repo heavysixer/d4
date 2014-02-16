@@ -133,10 +133,10 @@
         return 'y';
       },
       margin: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0
+        top: 20,
+        right: 20,
+        bottom: 20,
+        left: 20
       }
     }, config);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
@@ -861,7 +861,8 @@
         },
 
         y: function(d) {
-          return d[this.yKey()] < 0 ? this.y(d[this.yKey()]) + 10 : this.y(d[this.yKey()]) - 5;
+          var height = Math.abs(this.y(d[this.yKey()]) - this.y(0));
+          return (d[this.yKey()] < 0 ? this.y(d[this.yKey()]) - height : this.y(d[this.yKey()])) - 5;
         },
 
         text: function(d) {

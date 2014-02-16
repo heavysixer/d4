@@ -1,0 +1,64 @@
+---
+title: Custom Data Dimensions
+categories:
+  - Column Chart
+---
+<h5>{{title}}</h5>
+<p>
+  By default d4 expects a data objet where `x` and `y` keys define the chart
+  dimensions. These can easily be overridden as the following example demonstrates:
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8">
+'use strict';
+
+$(document).ready(function(){
+  // By default d4 expects a series object, which uses the following format:
+  // { x : '2010', y : 10 }.
+  // The default format is not desired and so we'll override it.
+  var data = [
+    ['2010', -10],
+    ['2011', 20],
+    ['2012', 30],
+    ['2013', 40],
+    ['2014', 50]
+  ];
+  var chart = d4.columnChart()
+  .xKey(function(d){
+    return 0;
+  })
+  .yKey(function(d){
+    return 1;
+  })
+  d3.select('#example')
+  .datum(data)
+  .call(chart);
+});
+
+</script>
+<div id="example"></div>
+<pre><code id="code" class="language-javascript">
+  // By default d4 expects a series object, which uses the following format:
+  // { x : '2010', y : 10 }.
+  // However, our incoming data format is an array, so we'll simply use the
+  // xKey and yKey dimension functions to return either 0 or 1, which will
+  // access the correct array index.
+  var data = [
+    ['2010', -10],
+    ['2011', 20],
+    ['2012', 30],
+    ['2013', 40],
+    ['2014', 50]
+  ];
+  var chart = d4.columnChart()
+  .xKey(function(d){
+    return 0;
+  })
+  .yKey(function(d){
+    return 1;
+  })
+  d3.select('#example')
+  .datum(data)
+  .call(chart);
+});
+</code></pre>
