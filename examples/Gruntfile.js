@@ -18,6 +18,7 @@
 module.exports = function(grunt) {
 
   require('time-grunt')(grunt);
+  require('load-grunt-tasks')(grunt, {pattern: ['grunt-*', 'assemble']});
 
   // Project configuration.
   grunt.initConfig({
@@ -29,7 +30,7 @@ module.exports = function(grunt) {
 
     watch: {
       assemble: {
-        files: ['<%= config.src %>/{content,data,templates}/**/*.{md,hbs,yml}','<%= config.src %>/../../docs/**/*.{md,hbs,yml}'],
+        files: ['<%= config.src %>/{content,data,templates}/**/*.{md,hbs,yml}', '<%= config.src %>/../../docs/**/*.{md,hbs,yml}'],
         tasks: ['assemble']
       },
       livereload: {
@@ -44,7 +45,6 @@ module.exports = function(grunt) {
         ]
       }
     },
-
     connect: {
       options: {
         port: 9000,
@@ -61,6 +61,23 @@ module.exports = function(grunt) {
         }
       }
     },
+
+    useminPrepare: {
+      html: '<%= config.dist %>/index.html',
+      options: {
+        dest: '<%= config.dist %>'
+      }
+    },
+    usemin: {
+      html: ['<%= config.dist %>/**/*.html'],
+      css: ['<%= config.dist %>/assets/css/{,*/}*.css'],
+      options: {
+        dirs: ['<%= config.dist %>']
+      }
+    },
+
+
+
     assemble: {
       pages: {
         options: {
@@ -90,10 +107,11 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.loadNpmTasks('assemble');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+  // grunt.loadNpmTasks('assemble');
+  // grunt.loadNpmTasks('grunt-contrib-clean');
+  // grunt.loadNpmTasks('grunt-usemin');
+  // grunt.loadNpmTasks('grunt-contrib-connect');
+  // grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('server', [
     'clean',
@@ -104,7 +122,11 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean',
-    'assemble'
+    'assemble',
+    'useminPrepare',
+    'concat',
+    'usemin',
+    'uglify'
   ]);
 
   grunt.registerTask('default', [

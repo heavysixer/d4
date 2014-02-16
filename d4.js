@@ -1,6 +1,6 @@
 /*! d4 - v0.1.0
  *  License: MIT Expat
- *  Date: 2014-02-13
+ *  Date: 2014-02-16
  */
 /* global d3: false */
 

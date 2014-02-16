@@ -23,7 +23,7 @@
   <body>
     <div class="container">
 
-
+      
 <div class="header">
     <ul class="nav nav-pills pull-right">
         <li><a href="/index.html">Introduction</a></li>
@@ -35,25 +35,22 @@
 
       <div class="container" role="main">
 
-
+        
 
 column chart example.
 <script type="text/javascript" charset="utf-8">
-'use strict';
-$.ready(function(){
-  var data = [
-      {x: '2010', y:10 },
-      {x: '2011', y:10 },
-      {x: '2012', y:10 },
-      {x: '2013', y:10 },
-      {x: '2014', y:10 },
-    ];
-  var chart = d4.columnChart();
+var data = [
+    {x: '2010', y:10 },
+    {x: '2011', y:10 },
+    {x: '2012', y:10 },
+    {x: '2013', y:10 },
+    {x: '2014', y:10 },
+  ];
+var chart = d4.columnChart();
 
-  d3.select('someDomElement')
-  .datum(data)
-  .call(chart);
-});
+d3.select('someDomElement')
+.datum(data)
+.call(chart);
 
 </script>
 <div id="example"></div>
@@ -67,12 +64,7 @@ $.ready(function(){
       </div>
     </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../../assets/vendor/bootstrap.min.js"></script>
-    <script src="../../assets/vendor/prism.js"></script>
-    <script src="../../assets/vendor/d3.v3.js"></script>
-    <script src="../../assets/js/d4.js"></script>
+    <script src="../../assets/js/vendor.js"></script>
+
   </body>
 </html>

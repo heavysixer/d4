@@ -1,3 +1,5 @@
 node_modules
 reports
 .DS_Store
+.tmp
+bower_components
