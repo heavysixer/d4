@@ -22,9 +22,8 @@ var mountFolder = function (connect, dir) {
 // '<%= app.src %>/templates/pages/**/*.hbs'
 
 module.exports = function(grunt) {
-
-  require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt, {pattern: ['grunt-*', 'assemble']});
+  require('time-grunt')(grunt);
 
   var appConfig = {
     src: 'src',
@@ -50,8 +49,8 @@ module.exports = function(grunt) {
         },
         files: [
           '{.tmp,<%= app.src %>}/**/*.html',
-          '.tmp/assets/{,*/}*.css',
-          '<%= app.dist %>/{,*/}*.html',
+          '.tmp/assets/css/{,*/}*.css',
+          '<%= app.src %>/{,*/}*.html',
           '{.tmp,<%= app.src %>}/scripts/**/*.js',
           '<%= app.src %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
@@ -89,18 +88,50 @@ module.exports = function(grunt) {
         url: 'http://<%= connect.options.hostname %>:<%= connect.options.port %>'
       }
     },
+    clean: {
+      dist: {
+        files: [{
+          dot: true,
+          src: [
+            '.tmp',
+            '<%= app.dist %>/*',
+            '!<%= app.dist %>/.git*'
+          ]
+        }]
+      },
+      server: '.tmp'
+    },
+
+    useminPrepare: {
+      html: '<%= app.src %>/index.html',
+      options: {
+        dest: '<%= app.dist %>'
+      }
+    },
+
+    usemin: {
+      html: ['<%= app.dist %>/**/*.html'],
+      css: ['<%= app.dist %>/assets/css/{,*/}*.css'],
+      options: {
+        dirs: ['<%= app.dist %>']
+      }
+    },
+
+    cssmin: {
+    },
+
     copy: {
       dist: {
         files: [{
           expand: true,
           dot: true,
-          cwd: '<%= app.src %>',
+          cwd: '.tmp',
           dest: '<%= app.dist %>',
           src: [
             '*.{ico,txt}',
             '.htaccess',
-            'scripts/data/{,*/}*.json',
             'images/{,*/}*.{webp,gif}',
+            '**/*.html',
             'assets/css/fonts/{,*/}*.*'
           ]
         }, {
@@ -131,53 +162,25 @@ module.exports = function(grunt) {
       ]
     },
 
-    useminPrepare: {
-      html: '<%= app.src %>/index.html',
-      options: {
-        dest: '<%= app.dist %>'
-      }
-    },
-    usemin: {
-      html: ['<%= app.dist %>/**/*.html'],
-      css: ['<%= app.dist %>/assets/css/{,*/}*.css'],
-      options: {
-        dirs: ['<%= app.dist %>']
-      }
-    },
-    clean: {
-      dist: {
-        files: [{
-          dot: true,
-          src: [
-            '.tmp',
-            '<%= app.dist %>/*',
-            '!<%= app.dist %>/.git*'
-          ]
-        }]
-      },
-      server: '.tmp'
-    },
-    cssmin: {
-    },
     assemble: {
       pages: {
         options: {
           flatten: true,
-          assets: '<%= app.dist %>/assets',
+          assets: '.tmp/assets',
           layout: '<%= app.src %>/templates/layouts/default.hbs',
           data: '<%= app.src %>/data/*.{json,yml}',
           partials: '<%= app.src %>/templates/partials/*.hbs',
           plugins: ['assemble-contrib-permalinks', 'assemble-contrib-sitemap']
         },
         files: {
-          '<%= app.dist %>/': ['<%= app.src %>/templates/pages/*.hbs'],
-          '<%= app.dist %>/charts/column/': ['<%= app.src %>/content/charts/column/*.hbs'],
-          '<%= app.dist %>/charts/grouped-column/': ['<%= app.src %>/content/charts/grouped-column/*.hbs'],
-          '<%= app.dist %>/charts/line/': ['<%= app.src %>/content/charts/line/*.hbs'],
-          '<%= app.dist %>/charts/row/': ['<%= app.src %>/content/charts/row/*.hbs'],
-          '<%= app.dist %>/charts/scatter/': ['<%= app.src %>/content/charts/scatter/*.hbs'],
-          '<%= app.dist %>/charts/stacked-column/': ['<%= app.src %>/content/charts/stacked-column/*.hbs'],
-          '<%= app.dist %>/charts/waterfall/': ['<%= app.src %>/content/charts/waterfall/*.hbs']
+          '.tmp/': ['<%= app.src %>/templates/pages/*.hbs'],
+          '.tmp/charts/column/': ['<%= app.src %>/content/charts/column/*.hbs'],
+          '.tmp/charts/grouped-column/': ['<%= app.src %>/content/charts/grouped-column/*.hbs'],
+          '.tmp/charts/line/': ['<%= app.src %>/content/charts/line/*.hbs'],
+          '.tmp/charts/row/': ['<%= app.src %>/content/charts/row/*.hbs'],
+          '.tmp/charts/scatter/': ['<%= app.src %>/content/charts/scatter/*.hbs'],
+          '.tmp/charts/stacked-column/': ['<%= app.src %>/content/charts/stacked-column/*.hbs'],
+          '.tmp/charts/waterfall/': ['<%= app.src %>/content/charts/waterfall/*.hbs']
         }
       }
     },
@@ -191,7 +194,6 @@ module.exports = function(grunt) {
       'clean:server',
       'assemble',
       'concurrent:server',
-      'autoprefixer',
       'connect:livereload',
       'open',
       'watch'
