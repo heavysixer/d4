@@ -51,7 +51,7 @@ module.exports = function(grunt) {
           '{.tmp,<%= app.src %>}/**/*.html',
           '.tmp/assets/css/{,*/}*.css',
           '<%= app.src %>/{,*/}*.html',
-          '{.tmp,<%= app.src %>}/scripts/**/*.js',
+          '{.tmp,<%= app.src %>}/assets/js/**/*.js',
           '<%= app.src %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }

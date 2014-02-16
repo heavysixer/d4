@@ -292,8 +292,8 @@
         this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
         this.parent.x = d3.scale.ordinal()
           .domain(data.map(function(d) {
-            return d[0];
-          }))
+            return d[this.xKey()];
+          }.bind(this.parent)))
           .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
       }
     };
@@ -302,8 +302,8 @@
       if (!this.parent.y) {
         this.parent.y = d3.scale.linear()
           .domain(d3.extent(data, function(d) {
-            return d[1];
-          }));
+            return d[this.yKey()];
+          }.bind(this.parent)));
       }
       this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
         .clamp(true)
@@ -857,15 +857,15 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[0]) + (this.x.rangeBand() / 2);
+          return this.x(d[this.xKey()]) + (this.x.rangeBand() / 2);
         },
 
         y: function(d) {
-          return d[1] < 0 ? this.y(d[1]) + 10 : this.y(d[1]) - 5;
+          return d[this.yKey()] < 0 ? this.y(d[this.yKey()]) + 10 : this.y(d[this.yKey()]) - 5;
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[1]);
+          return d3.format('').call(this, d[this.yKey()]);
         }
       },
       render: function(scope, data) {
@@ -897,14 +897,6 @@
       return (val) instanceof Array;
     };
 
-    // A column series needs to be three arrays deep eg:
-    // [
-    //  [ "series 1", [1,2,3]],
-    //  [ "series 2", [3,5,6]]
-    // ]
-    // In the cases where a single multi-dimensional array is provided we will
-    // assume they are not supplying the outer series array, in which case we
-    // wrap the data in an array and return it.
     var ensureSeriesArray = function(data) {
       if (isArray(data) && isArray(data[0]) && isArray(data[0][1])) {
         return data;
@@ -916,11 +908,11 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[0]);
+          return this.x(d[this.xKey()]);
         },
 
         y: function(d) {
-          return d[1] < 0 ? this.y(0) : this.y(d[1]);
+          return d[this.yKey()] < 0 ? this.y(0) : this.y(d[this.yKey()]);
         },
 
         width: function() {
@@ -928,11 +920,11 @@
         },
 
         height: function(d) {
-          return Math.abs(this.y(d[1]) - this.y(0));
+          return Math.abs(this.y(d[this.yKey()]) - this.y(0));
         },
 
         classes: function(d, i) {
-          return d[1] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
+          return d[this.yKey()] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
         }
       },
       render: function(scope, data) {

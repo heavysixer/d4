@@ -5,15 +5,15 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[0]) + (this.x.rangeBand() / 2);
+          return this.x(d[this.xKey()]) + (this.x.rangeBand() / 2);
         },
 
         y: function(d) {
-          return d[1] < 0 ? this.y(d[1]) + 10 : this.y(d[1]) - 5;
+          return d[this.yKey()] < 0 ? this.y(d[this.yKey()]) + 10 : this.y(d[this.yKey()]) - 5;
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[1]);
+          return d3.format('').call(this, d[this.yKey()]);
         }
       },
       render: function(scope, data) {
