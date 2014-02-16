@@ -7,3 +7,10 @@
     stroke-width:2px;
     stroke-linecap: round;
 }
+
+#custom_css .d4 .bar.negative.fill {
+    fill: darkred;
+}
+#custom_css .d4 .bar.positive.fill {
+    fill: steelblue;
+}
