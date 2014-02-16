@@ -47,7 +47,33 @@
 <p>D4 is a friendly DSL charting library for D3. The goal of D4 is to allow developers
 to quickly build data-driven charts with little knowledge of the internals of D3.</p>
 <h4 id="quick-start">Quick Start</h4>
-<p>(instructions on how to install and get up and running.)</p>
+<p>Either download d4 directly from the repository or install it using a package manager like bower.</p>
+<pre><code>$ bower install d4</code></pre>
+<p>Once you have a local copy of d4 simply include it after d3 in your source file.</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;!-- sensible defaults for styles --&gt;
+  &lt;link href=&quot;d4.css&quot; rel=&quot;stylesheet&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  ...
+&lt;script src=&quot;d3.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;d4.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<h5 id="hello-world">Hello World</h5>
+<p>Here is the most basic example, which uses all the preset defaults provided by d4.</p>
+<pre><code>var data = [
+  { x : &#39;2010&#39;, y : 5 },
+  { x : &#39;2011&#39;, y : 15 },
+  { x : &#39;2012&#39;, y : 20 }
+];
+var columnChart = d4.columnChart();
+
+d3.select(&#39;test&#39;)
+  .datum(data)
+  .call(columnChart);</code></pre>
 <h3 id="philosophy">Philosophy</h3>
 <hr>
 <p>Many charting libraries do a poor job when it comes to separations of concerns.

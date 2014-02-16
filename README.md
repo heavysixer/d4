@@ -5,7 +5,39 @@ to quickly build data-driven charts with little knowledge of the internals of D3
 
 #### Quick Start
 
-(instructions on how to install and get up and running.)
+Either download d4 directly from the repository or install it using a package manager like bower.
+
+    $ bower install d4
+
+Once you have a local copy of d4 simply include it after d3 in your source file.
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <!-- sensible defaults for styles -->
+      <link href="d4.css" rel="stylesheet" />
+    </head>
+    <body>
+      ...
+    <script src="d3.js"></script>
+    <script src="d4.js"></script>
+    </body>
+    </html>
+
+#####Hello World
+Here is the most basic example, which uses all the preset defaults provided by d4.
+
+    var data = [
+      { x : '2010', y : 5 },
+      { x : '2011', y : 15 },
+      { x : '2012', y : 20 }
+    ];
+    var columnChart = d4.columnChart();
+
+    d3.select('someDomElement')
+      .datum(data)
+      .call(columnChart);
+
 ### Philosophy
 * * *
 
