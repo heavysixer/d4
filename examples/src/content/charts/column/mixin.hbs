@@ -1,5 +1,5 @@
 ---
-title: Mix-in Example
+title: Mixin Example
 categories:
   - Column Chart
 ---
@@ -22,7 +22,9 @@ categories:
   <pre><code class="language-javascript">
     myChart.mixin({ 'someName' : d4.features.someFeature })
   </code></pre>
-<hr/>
+  <hr/>
+</p>
+
 <script type="text/javascript" charset="utf-8">
 'use strict';
 
@@ -72,24 +74,28 @@ $(document).ready(function(){
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript">
   var data = [
-      { x: '2010', y:10 },
-      { x: '2011', y:10 },
-      { x: '2012', y:10 },
-      { x: '2013', y:10 },
+      { x: '2010', y:-50 },
+      { x: '2011', y:50 },
+      { x: '2012', y:30 },
+      { x: '2013', y:20 },
       { x: '2014', y:10 },
     ];
   var chart = d4.columnChart()
-  .mixin('zeroLine', d4.features.referenceLine)
+  .mixin({ 'zeroLine' : d4.features.referenceLine })
   .using('zeroLine', function(zeroLine){
     zeroLine
-    .x1(function(d){
+    .x1(function(){
+      return 0;
     })
-    .x2(function(d){
+    .x2(function(){
+      return this.width - this.margin.left - this.margin.right;
     })
-    .y1(function(d){
+    .y1(function(){
+      return this.y(0);
     })
-    .y2(function(d){
-    })
+    .y2(function(){
+      return this.y(0);
+    });
   });
 
   d3.select('#example')
