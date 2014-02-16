@@ -5,5 +5,21 @@ categories:
 ---
 
 column chart example.
+<script type="text/javascript" charset="utf-8">
+var data = [
+    {x: '2010', y:10 },
+    {x: '2011', y:10 },
+    {x: '2012', y:10 },
+    {x: '2013', y:10 },
+    {x: '2014', y:10 },
+  ];
+var chart = d4.columnChart();
+
+d3.select('someDomElement')
+.datum(data)
+.call(chart);
+
+</script>
+<div id="example"></div>
 <pre><code id="code" class="language-javascript">
 </code></pre>

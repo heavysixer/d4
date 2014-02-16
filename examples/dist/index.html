@@ -26,9 +26,9 @@
       
 <div class="header">
     <ul class="nav nav-pills pull-right">
-        <li><a href="index.html">Introduction</a></li>
-        <li><a href="getting_started.html">Getting Started</a></li>
-        <li><a href="examples.html">Examples</a></li>
+        <li><a href="/index.html">Introduction</a></li>
+        <li><a href="/getting_started.html">Getting Started</a></li>
+        <li><a href="/examples.html">Examples</a></li>
     </ul>
     <h3 class="text-muted">d4: Reusable d3 Charts</h3>
 </div>
@@ -71,7 +71,7 @@ to quickly build data-driven charts with little knowledge of the internals of D3
 ];
 var columnChart = d4.columnChart();
 
-d3.select(&#39;test&#39;)
+d3.select(&#39;someDomElement&#39;)
   .datum(data)
   .call(columnChart);</code></pre>
 <h3 id="philosophy">Philosophy</h3>
@@ -153,7 +153,9 @@ charts in d3.</p>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/vendor/bootstrap.min.js"></script>
     <script src="assets/vendor/prism.js"></script>
+    <script src="assets/vendor/d3.v3.js"></script>
+    <script src="assets/js/d4.js"></script>
   </body>
 </html>
