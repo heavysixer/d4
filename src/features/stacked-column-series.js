@@ -13,6 +13,7 @@
         },
 
         y: function(d) {
+          console.log(d)
           var yVal = d.y0 + d.y;
           return  yVal < 0 ? this.y(d.y0) : this.y(yVal);
         },
@@ -35,7 +36,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.xKey();
+            return 'series'+ i + ' ' +  this.yKey();
           }.bind(this));
 
         group.selectAll('rect')

@@ -657,23 +657,33 @@
   'use strict';
 
   var stackedColumnChartBuilder = function() {
+    var extractValues = function(data, key) {
+      var values = data.map(function(obj){
+        return obj.values.map(function(i){
+          return i[key];
+        }.bind(this));
+      }.bind(this));
+      return d3.merge(values);
+    };
+
     var configureX = function(data) {
       if (!this.parent.x) {
+        var xData = extractValues(data, this.parent.xKey());
         this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
         this.parent.x = d3.scale.ordinal()
-          .domain(data.map(function(d) {
-            return d.x;
-          }))
+          .domain(xData)
           .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
       }
     };
 
     var configureY = function(data) {
       if (!this.parent.y) {
-        this.parent.y = d3.scale.linear()
-          .domain(d3.extent(data, function(d) {
-            return d[1];
-          }));
+        var ext = d3.extent(d3.merge(data.map(function(obj){
+          return d3.extent(obj.values, function(d){
+            return d.y + d.y0;
+          });
+        })));
+        this.parent.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
       }
       this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
         .clamp(true)
@@ -1486,6 +1496,7 @@
         },
 
         y: function(d) {
+          console.log(d)
           var yVal = d.y0 + d.y;
           return  yVal < 0 ? this.y(d.y0) : this.y(yVal);
         },
@@ -1508,7 +1519,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.xKey();
+            return 'series'+ i + ' ' +  this.yKey();
           }.bind(this));
 
         group.selectAll('rect')
