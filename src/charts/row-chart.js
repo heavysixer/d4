@@ -8,8 +8,8 @@
       if (!this.parent.x) {
         this.parent.x = d3.scale.linear()
           .domain(d3.extent(data, function(d) {
-            return d[0];
-          }));
+            return d[this.parent.xKey()];
+          }.bind(this)));
       }
       this.parent.x.range([0, this.parent.width - this.parent.margin.right - this.parent.margin.left])
       .clamp(true)
@@ -21,8 +21,8 @@
         this.parent.yRoundBands = this.parent.yRoundBands || 0.3;
         this.parent.y = d3.scale.ordinal()
           .domain(data.map(function(d) {
-            return d[1];
-          }))
+            return d[this.parent.yKey()];
+          }.bind(this)))
           .rangeRoundBands([0, this.parent.height - this.parent.margin.top - this.parent.margin.bottom], this.parent.yRoundBands);
       }
     };
@@ -49,7 +49,14 @@
   };
 
   d4.rowChart = function rowChart() {
-    var chart = d4.baseChart({}, rowChartBuilder);
+    var chart = d4.baseChart({
+      margin: {
+        top: 20,
+        right: 40,
+        bottom: 20,
+        left: 40
+      }
+    }, rowChartBuilder);
     [{
       'bars': d4.features.rowSeries
     }, {
