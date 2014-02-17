@@ -8,27 +8,35 @@ categories:
 
 <h5>{{title}}</h5>
 <p>
-  The following demonstrates the most basic example of the grouped column chart. This
-  chart uses the default settings from d4.
+  The grouped column chart is used to compare a series of data elements grouped
+  along the xAxis. This chart is often useful in conjunction with a stacked column
+  chart because they can use the same data series, and where the stacked column highlights
+  the sum of the data series across an axis the grouped column can be used to show the
+  relative distribution.
 </p>
+<p>
+  This example also demonstrates one of the various data parsers available to
+  developers using d4. In this example, we use the <code>nestedGroup</code> parser
+  which makes it trivial for the developer to prepare the incoming data in a way
+  that the chart expects it.
 <hr/>
 <script type="text/javascript" charset="utf-8">
 'use strict';
 
 $(document).ready(function(){
   var data = [
-      { year: '2010', unitsSold:100, salesman : 'Bob' },
+      { year: '2010', unitsSold:-100, salesman : 'Bob' },
       { year: '2011', unitsSold:200, salesman : 'Bob' },
       { year: '2012', unitsSold:300, salesman : 'Bob' },
       { year: '2013', unitsSold:400, salesman : 'Bob' },
       { year: '2014', unitsSold:500, salesman : 'Bob' },
       { year: '2010', unitsSold:100, salesman : 'Gina' },
       { year: '2011', unitsSold:100, salesman : 'Gina' },
-      { year: '2012', unitsSold:100, salesman : 'Gina' },
+      { year: '2012', unitsSold:-100, salesman : 'Gina' },
       { year: '2013', unitsSold:500, salesman : 'Gina' },
       { year: '2014', unitsSold:600, salesman : 'Gina' },
       { year: '2010', unitsSold:400, salesman : 'Average' },
-      { year: '2011', unitsSold:400, salesman : 'Average' },
+      { year: '2011', unitsSold:0, salesman : 'Average' },
       { year: '2012', unitsSold:400, salesman : 'Average' },
       { year: '2013', unitsSold:400, salesman : 'Average' },
       { year: '2014', unitsSold:400, salesman : 'Average' }
@@ -55,7 +63,7 @@ $(document).ready(function(){
   })
   .countGroups(function(){
     return parsedData.data[0].values.length;
-  })
+  });
 
   d3.select('#example')
   .datum(parsedData.data)
@@ -67,21 +75,21 @@ $(document).ready(function(){
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript">
   var data = [
-      { year: '2010', unitsSold:100, salesman : 'Bob' },
-      { year: '2011', unitsSold:200, salesman : 'Bob' },
-      { year: '2012', unitsSold:300, salesman : 'Bob' },
-      { year: '2013', unitsSold:400, salesman : 'Bob' },
-      { year: '2014', unitsSold:500, salesman : 'Bob' },
-      { year: '2010', unitsSold:100, salesman : 'Gina' },
-      { year: '2011', unitsSold:100, salesman : 'Gina' },
-      { year: '2012', unitsSold:100, salesman : 'Gina' },
-      { year: '2013', unitsSold:500, salesman : 'Gina' },
-      { year: '2014', unitsSold:600, salesman : 'Gina' },
-      { year: '2010', unitsSold:400, salesman : 'Average' },
-      { year: '2011', unitsSold:400, salesman : 'Average' },
-      { year: '2012', unitsSold:400, salesman : 'Average' },
-      { year: '2013', unitsSold:400, salesman : 'Average' },
-      { year: '2014', unitsSold:400, salesman : 'Average' }
+      { year: '2010', unitsSold:-100, salesman : 'Bob' },
+      { year: '2011', unitsSold:200,  salesman : 'Bob' },
+      { year: '2012', unitsSold:300,  salesman : 'Bob' },
+      { year: '2013', unitsSold:400,  salesman : 'Bob' },
+      { year: '2014', unitsSold:500,  salesman : 'Bob' },
+      { year: '2010', unitsSold:100,  salesman : 'Gina' },
+      { year: '2011', unitsSold:100,  salesman : 'Gina' },
+      { year: '2012', unitsSold:-100, salesman : 'Gina' },
+      { year: '2013', unitsSold:500,  salesman : 'Gina' },
+      { year: '2014', unitsSold:600,  salesman : 'Gina' },
+      { year: '2010', unitsSold:400,  salesman : 'Average' },
+      { year: '2011', unitsSold:0,    salesman : 'Average' },
+      { year: '2012', unitsSold:400,  salesman : 'Average' },
+      { year: '2013', unitsSold:400,  salesman : 'Average' },
+      { year: '2014', unitsSold:400,  salesman : 'Average' }
     ];
 
   var parsedData = d4.parsers.nestedGroup()
@@ -104,6 +112,8 @@ $(document).ready(function(){
     return 'unitsSold';
   })
   .countGroups(function(){
+    // We need a way to tell the chart how many
+    // groups should appear on the xAxis.
     return parsedData.data[0].values.length;
   })
 
