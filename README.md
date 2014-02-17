@@ -52,7 +52,7 @@ which would be better delegated to other technologies. d4's attempts to do just
 enough, by enforcing these rules:
 
 
-##### CSS is for styling
+#### CSS is for styling
 
 Many charting libraries make internal decisions on visual aesthetics, which may
 remove control from the designer, who may or may not understand JavaScript let
@@ -61,13 +61,16 @@ sizes are best made in CSS. d4 exposes convenient hooks in the generated markup
 to allow visual designer to get precise control over the look and feel without
 needing deep knowledge of d4.
 
-##### Context over configuration
-
-##### The chart does not own the data
+#### The chart does not own the data
 
 Data is a stand-alone object, which can be controlled by many other items on
 the page. It should not change the data object. It can make non-permanent
 transformations.
+
+#### Context over configuration
+
+There is a software design concept called "convention over configuration," which states that software should be specify a collection of opinionated defaults, that developers should accept. The goal of this approach is to
+lessen the number of obvious choices a developer must make before they are able to use the software. Instead, configuration should be saved for instances where the defaults do not apply. d4 takes a slight deviation from this approach and instead suggests that configuration should be highly contextual to the object you are changing. Instead of making choices in some abstract config file, developers instead  use a highly declarative API to make changes directly to the object they want augment.
 
 ### Terminology
 * * *

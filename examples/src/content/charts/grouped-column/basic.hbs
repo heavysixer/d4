@@ -2,4 +2,112 @@
 title: Basic Grouped Column Chart
 categories:
   - Grouped Column Chart
+  - Intermediate Concepts
+  - Parsers
 ---
+
+<h5>{{title}}</h5>
+<p>
+  The following demonstrates the most basic example of the grouped column chart. This
+  chart uses the default settings from d4.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8">
+'use strict';
+
+$(document).ready(function(){
+  var data = [
+      { year: '2010', unitsSold:100, salesman : 'Bob' },
+      { year: '2011', unitsSold:200, salesman : 'Bob' },
+      { year: '2012', unitsSold:300, salesman : 'Bob' },
+      { year: '2013', unitsSold:400, salesman : 'Bob' },
+      { year: '2014', unitsSold:500, salesman : 'Bob' },
+      { year: '2010', unitsSold:100, salesman : 'Gina' },
+      { year: '2011', unitsSold:100, salesman : 'Gina' },
+      { year: '2012', unitsSold:100, salesman : 'Gina' },
+      { year: '2013', unitsSold:500, salesman : 'Gina' },
+      { year: '2014', unitsSold:600, salesman : 'Gina' },
+      { year: '2010', unitsSold:400, salesman : 'Average' },
+      { year: '2011', unitsSold:400, salesman : 'Average' },
+      { year: '2012', unitsSold:400, salesman : 'Average' },
+      { year: '2013', unitsSold:400, salesman : 'Average' },
+      { year: '2014', unitsSold:400, salesman : 'Average' }
+    ];
+
+  var parsedData = d4.parsers.nestedGroup()
+    .x(function(){
+      return 'year';
+    })
+    .y(function(){
+      return 'unitsSold';
+    })
+    .value(function(){
+      return 'unitsSold';
+    })(data);
+
+  var chart = d4.groupedColumnChart()
+  .width($('#example').width())
+  .xKey(function(){
+    return 'year';
+  })
+  .yKey(function(){
+    return 'unitsSold';
+  })
+  .countGroups(function(){
+    return parsedData.data[0].values.length;
+  })
+
+  d3.select('#example')
+  .datum(parsedData.data)
+  .call(chart);
+});
+
+</script>
+<div id="example"></div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript">
+  var data = [
+      { year: '2010', unitsSold:100, salesman : 'Bob' },
+      { year: '2011', unitsSold:200, salesman : 'Bob' },
+      { year: '2012', unitsSold:300, salesman : 'Bob' },
+      { year: '2013', unitsSold:400, salesman : 'Bob' },
+      { year: '2014', unitsSold:500, salesman : 'Bob' },
+      { year: '2010', unitsSold:100, salesman : 'Gina' },
+      { year: '2011', unitsSold:100, salesman : 'Gina' },
+      { year: '2012', unitsSold:100, salesman : 'Gina' },
+      { year: '2013', unitsSold:500, salesman : 'Gina' },
+      { year: '2014', unitsSold:600, salesman : 'Gina' },
+      { year: '2010', unitsSold:400, salesman : 'Average' },
+      { year: '2011', unitsSold:400, salesman : 'Average' },
+      { year: '2012', unitsSold:400, salesman : 'Average' },
+      { year: '2013', unitsSold:400, salesman : 'Average' },
+      { year: '2014', unitsSold:400, salesman : 'Average' }
+    ];
+
+  var parsedData = d4.parsers.nestedGroup()
+    .x(function(){
+      return 'year';
+    })
+    .y(function(){
+      return 'unitsSold';
+    })
+    .value(function(){
+      return 'unitsSold';
+    })(data);
+
+  var chart = d4.groupedColumnChart()
+  .width($('#example').width())
+  .xKey(function(){
+    return 'year';
+  })
+  .yKey(function(){
+    return 'unitsSold';
+  })
+  .countGroups(function(){
+    return parsedData.data[0].values.length;
+  })
+
+  d3.select('#example')
+  .datum(parsedData.data)
+  .call(chart);
+</code></pre>

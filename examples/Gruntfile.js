@@ -40,7 +40,7 @@ module.exports = function(grunt) {
     app: appConfig,
     watch: {
       assemble: {
-        files: ['<%= app.src %>/{assets,content,data,templates}/**/*.{md,hbs,yml,css}', '<%= app.src %>/../../docs/**/*.{md,hbs,yml}'],
+        files: ['<%= app.src %>/{assets,content,data,templates}/**/*.{md,hbs,yml,css}', '<%= app.src %>/../../docs/**/*.{md,hbs,yml}', '<%= app.src %>/../../README.md'],
         tasks: ['assemble']
       },
       livereload: {

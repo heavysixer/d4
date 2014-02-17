@@ -1,6 +1,6 @@
 /*! d4 - v0.1.0
  *  License: MIT Expat
- *  Date: 2014-02-16
+ *  Date: 2014-02-17
  */
 /* global d3: false */
 
@@ -136,7 +136,7 @@
         top: 20,
         right: 20,
         bottom: 20,
-        left: 20
+        left: 40
       }
     }, config);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
@@ -359,23 +359,30 @@
   };
 
   var groupedColumnChartBuilder = function() {
+    var extractValues = function(data, key) {
+      var values = data.map(function(obj){
+        return obj.values.map(function(i){
+          return i[key];
+        }.bind(this));
+      }.bind(this));
+      return d3.merge(values);
+    };
+
     var configureX = function(data) {
+      var xData = extractValues(data, this.parent.xKey());
       if (!this.parent.x) {
         this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
         this.parent.x = d3.scale.ordinal()
-          .domain(data.map(function(d) {
-            return d.x;
-          }))
+          .domain(xData)
           .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
       }
     };
 
     var configureY = function(data) {
       if (!this.parent.y) {
-        this.parent.y = d3.scale.linear()
-          .domain(d3.extent(data, function(d) {
-            return d[this.yKey()];
-          }));
+        var yData = extractValues(data, this.parent.yKey());
+        var ext = d3.extent(yData);
+        this.parent.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
       }
       this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
         .clamp(true)
@@ -1035,6 +1042,7 @@
           }.bind(this));
         text.exit().remove();
         text.enter().append('text')
+          .attr('class', 'column-label')
           .text(scope.accessors.text.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));

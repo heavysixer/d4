@@ -34,6 +34,7 @@
           }.bind(this));
         text.exit().remove();
         text.enter().append('text')
+          .attr('class', 'column-label')
           .text(scope.accessors.text.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));

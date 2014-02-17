@@ -132,7 +132,7 @@
         top: 20,
         right: 20,
         bottom: 20,
-        left: 20
+        left: 40
       }
     }, config);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
