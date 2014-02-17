@@ -61,6 +61,7 @@ sizes are best made in CSS. d4 exposes convenient hooks in the generated markup
 to allow visual designer to get precise control over the look and feel without
 needing deep knowledge of d4.
 
+##### Context over configuration
 
 ##### The chart does not own the data
 

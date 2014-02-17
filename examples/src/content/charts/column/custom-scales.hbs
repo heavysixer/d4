@@ -1,0 +1,129 @@
+---
+title: Custom Scales
+categories:
+  - Column Chart
+  - Intermediate Concepts
+---
+<h5>{{title}}</h5>
+<p>
+  d3 uses the concept of <a href="https://github.com/mbostock/d3/wiki/Scales">scales</a>
+  to define how data will be plotted along the axes. By default the column chart
+  assumes the y scale will always be linear and the x scale will always be ordinal.
+  However, this can easily be changed by overriding the scales, which we'll see
+  in the following example, where we want a column chart that has linear axes
+  for both X and Y.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8">
+'use strict';
+
+$(document).ready(function() {
+  var element = $('#example');
+  var data = [
+    { x: 200, y: 1 },
+    { x: 100, y: 10 },
+    { x: 400, y: 20 },
+    { x: 300, y: -30 },
+    { x: 400, y: 40 },
+    { x: 500, y: 50 }
+  ];
+
+  var cumulativeLabelX = 0;
+  var cumulativeX = 0;
+  var margin = {
+      top: 15,
+      right: 40,
+      bottom: 40,
+      left: 30
+    };
+  var xScale = function(){
+    var sum = d3.sum(data, function (d) {
+      return d.x;
+    });
+    return d3.scale.linear().domain([0, sum]).range([0, element.width() - margin.left - margin.right]).clamp(true);
+  };
+
+  var chart = d4.columnChart()
+    .width(element.width())
+    .margin(margin)
+    .x(xScale())
+    .using('bars', function(bars){
+      bars
+      .x(function (d) {
+        cumulativeX += d[this.xKey()];
+        return this.x(cumulativeX - d[this.xKey()]);
+      })
+      .width(function (d) {
+        return this.x(d[this.xKey()]);
+      });
+    })
+
+    .using('barLabels', function (label) {
+      label
+        .x(function (d) {
+          cumulativeLabelX += d[this.xKey()];
+          return this.x(cumulativeLabelX - d[this.xKey()] / 2);
+        })
+    });
+
+  d3.select(element[0])
+    .datum(data)
+    .call(chart);
+
+});
+
+</script>
+<div id="example"></div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript">
+  var element = $('#example');
+  var data = [
+    { x: 200, y: 1 },
+    { x: 100, y: 10 },
+    { x: 400, y: 20 },
+    { x: 300, y: -30 },
+    { x: 400, y: 40 },
+    { x: 500, y: 50 }
+  ];
+  var cumulativeLabelX = 0;
+  var cumulativeX = 0;
+  var margin = {
+      top: 15,
+      right: 40,
+      bottom: 40,
+      left: 30
+    };
+  var xScale = function(){
+    var sum = d3.sum(data, function (d) {
+      return d.x;
+    });
+    return d3.scale.linear().domain([0, sum]).range([0, element.width() - margin.left - margin.right]).clamp(true);
+  };
+
+  var chart = d4.columnChart()
+    .width(element.width())
+    .margin(margin)
+    .x(xScale())
+    .using('bars', function(bars){
+      bars
+      .x(function (d) {
+        cumulativeX += d[this.xKey()];
+        return this.x(cumulativeX - d[this.xKey()]);
+      })
+      .width(function (d) {
+        return this.x(d[this.xKey()]);
+      });
+    })
+
+    .using('barLabels', function (label) {
+      label
+        .x(function (d) {
+          cumulativeLabelX += d[this.xKey()];
+          return this.x(cumulativeLabelX - d[this.xKey()] / 2);
+        })
+    });
+
+  d3.select('#example')
+    .datum(data)
+    .call(chart);
+</code></pre>
