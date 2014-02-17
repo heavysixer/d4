@@ -132,6 +132,9 @@
       yKey : function() {
         return 'y';
       },
+      valueKey: function(){
+        return 'y';
+      },
       margin: {
         top: 20,
         right: 20,
@@ -140,7 +143,7 @@
       }
     }, config);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
-    opts.accessors = ['margin', 'width', 'height', 'x', 'y', 'xKey', 'yKey'].concat(config.accessors || []);
+    opts.accessors = ['margin', 'width', 'height', 'x', 'y', 'xKey', 'yKey', 'valueKey'].concat(config.accessors || []);
     return opts;
   };
 
@@ -1451,11 +1454,13 @@
         y: function(d) {
           var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
           var yVal = d.y0 + d.y;
-          return yVal < 0 ? this.y(d.y0) - halfHeight : this.y(yVal) + halfHeight;
+          return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
         },
 
         text: function(d) {
-          return d3.format('').call(this, d.value);
+          if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
+            return d3.format('').call(this, d[this.valueKey()]);
+          }
         }
       },
       render: function(scope, data) {
@@ -1474,6 +1479,7 @@
         text.exit().remove();
         text.enter().append('text')
           .text(scope.accessors.text.bind(this))
+          .attr('class', 'column-label')
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));
       }
@@ -1496,7 +1502,6 @@
         },
 
         y: function(d) {
-          console.log(d)
           var yVal = d.y0 + d.y;
           return  yVal < 0 ? this.y(d.y0) : this.y(yVal);
         },

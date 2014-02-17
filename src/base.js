@@ -128,6 +128,9 @@
       yKey : function() {
         return 'y';
       },
+      valueKey: function(){
+        return 'y';
+      },
       margin: {
         top: 20,
         right: 20,
@@ -136,7 +139,7 @@
       }
     }, config);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
-    opts.accessors = ['margin', 'width', 'height', 'x', 'y', 'xKey', 'yKey'].concat(config.accessors || []);
+    opts.accessors = ['margin', 'width', 'height', 'x', 'y', 'xKey', 'yKey', 'valueKey'].concat(config.accessors || []);
     return opts;
   };
 

@@ -14,3 +14,16 @@
 #custom_css .d4 .bar.positive.fill {
     fill: steelblue;
 }
+
+#stacked_column .d4 .series0 .bar.fill, #stacked_column .average {
+    fill: steelblue;
+    background-color: steelblue;
+}
+#stacked_column .d4 .series1 .bar.fill, #stacked_column .gina {
+    fill: bisque;
+    background-color: bisque;
+}
+#stacked_column .d4 .series2 .bar.fill, #stacked_column .bob {
+    fill: darkslategrey;
+    background-color: darkslategrey;
+}
