@@ -750,25 +750,34 @@
   var waterfallChartBuilder = function() {
     var configureX = function(data) {
       if (!this.parent.x) {
-        this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
+        var keys = data.map(function(d){
+          return d.key;
+        }.bind(this));
+
         this.parent.x = d3.scale.ordinal()
-          .domain(data.map(function(d) {
-            return d.x;
-          }))
-          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
+        .domain(keys)
+        .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands || 0.3);
       }
     };
 
     var configureY = function(data) {
       if (!this.parent.y) {
-        this.parent.y = d3.scale.linear()
-          .domain(d3.extent(data, function(d) {
-            return d[1];
-          }));
-        this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
-          .clamp(true)
-          .nice();
+        var ext = d3.extent(d3.merge(data.map(function(datum) {
+            return d3.extent(datum.values, function(d) {
+
+              // This is anti-intuative but the stack only returns y and y0 even
+              // when it applies to the x dimension;
+              return d.y + d.y0;
+            });
+          })));
+        ext[0] = Math.min(0, ext[0]);
+        this.parent.y =  d3.scale.linear()
+          .domain(ext);
       }
+      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+        .clamp(true)
+        .nice();
+
     };
 
     var configureScales = function(data) {
@@ -796,10 +805,11 @@
   d4.waterfallChart = function waterfallChart() {
     var chart = d4.baseChart({}, waterfallChartBuilder);
     [{
-      'bars': d4.features.stackedColumnSeries
-    },{
-      'connectors': d4.features.waterfallConnectors
-    }, {
+      'bars': d4.features.waterfallColumnSeries
+    },
+    { 'connectors': d4.features.waterfallConnectors
+    },
+    {
       'columnLabels': d4.features.stackedColumnLabels
     }, {
       'xAxis': d4.features.xAxis
@@ -808,6 +818,7 @@
     }].forEach(function(feature) {
       chart.mixin(feature);
     });
+
     return chart;
   };
 }).call(this);
@@ -1625,6 +1636,61 @@
 
 /* global d4: false */
 (function() {
+  'use strict';
+  d4.features.waterfallColumnSeries = function(name) {
+    var sign = function(val){
+      return (val > 0) ? 'positive' : 'negative';
+    };
+
+    return {
+      accessors: {
+        x: function(d) {
+          return this.x(d[this.xKey()]);
+        },
+
+        y: function(d) {
+          var yVal = (d.y0 + d.y) - Math.min(0, d.y);
+          return this.y(yVal);
+        },
+
+        width: function() {
+          return this.x.rangeBand();
+        },
+
+        height: function(d) {
+          return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
+        },
+
+        classes: function(d,i) {
+          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.yKey()];
+        }
+      },
+      render: function(scope, data) {
+        this.featuresGroup.append('g').attr('class', name);
+        var group = this.svg.select('.' + name).selectAll('.group')
+          .data(data)
+          .enter().append('g')
+          .attr('class', function(d,i) {
+            return 'series'+ i + ' ' +  this.yKey();
+          }.bind(this));
+
+        group.selectAll('rect')
+          .data(function(d) {
+            return d.values;
+          }.bind(this))
+          .enter().append('rect')
+          .attr('class', scope.accessors.classes.bind(this))
+          .attr('x', scope.accessors.x.bind(this))
+          .attr('y', scope.accessors.y.bind(this))
+          .attr('width', scope.accessors.width.bind(this))
+          .attr('height', scope.accessors.height.bind(this));
+      }
+    };
+  };
+}).call(this);
+
+/* global d4: false */
+(function() {
 
   /*
     Orthogonal Series Connectors connect column series together by using a
@@ -1633,25 +1699,18 @@
   */
   'use strict';
   d4.features.waterfallConnectors = function(name) {
-
     return {
       accessors: {
-        x1: function(d) {
-          var width = 0;
-          var xVal = (d.y0 + d.y) - Math.max(0, d.y);
-          if(d.y > 0){
-            width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
-          }
-          return this.x(xVal) + width;
-
+        x: function(d) {
+          return this.x(d[this.xKey()]);
         },
 
-        y1: function(d) {
-          return this.y(d[this.yKey()]);
+        y: function(d) {
+          return this.y(d.y0 + d.y);
         },
 
         span: function(){
-          return this.y.rangeBand();
+          return this.x.rangeBand();
         },
 
         classes : function(d, i){
@@ -1674,28 +1733,28 @@
           if(i === 0){
             return 0;
           }
-          return scope.accessors.x1.bind(this)(data[i - 1].values[0]);
+          return scope.accessors.x.bind(this)(data[i - 1].values[0]);
         }.bind(this))
 
         .attr('y1', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return scope.accessors.y1.bind(this)(data[i - 1].values[0]);
+          return scope.accessors.y.bind(this)(data[i - 1].values[0]);
         }.bind(this))
 
         .attr('x2', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return scope.accessors.x1.bind(this)(data[i - 1].values[0]);
+          return scope.accessors.x.bind(this)(d) + scope.accessors.span.bind(this)();
         }.bind(this))
 
         .attr('y2', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return scope.accessors.y1.bind(this)(d) + scope.accessors.span.bind(this)(d);
+          return scope.accessors.y.bind(this)(data[i - 1].values[0]);
         }.bind(this));
 
         return lines;
@@ -1720,6 +1779,7 @@
         this.featuresGroup.append('g').attr('class', 'x axis '+ name)
           .attr('transform', 'translate(0,' + (this.height - this.margin.top - this.margin.bottom) + ')')
           .call(formattedAxis);
+
       }
     };
   };
@@ -1884,7 +1944,7 @@
     };
 
     parser.nestKey = function(funct) {
-      opts.nestKey = funct.bind(opts)
+      opts.nestKey = funct.bind(opts);
       return parser;
     };
 
@@ -2219,6 +2279,10 @@
       },
       data: []
     };
+    opts.nestKey = function(){
+      return opts.x.key;
+    };
+
 
     var findValues = function(dimensions, items) {
       ['x', 'y', 'value'].forEach(function(k) {
@@ -2229,10 +2293,10 @@
       });
     };
 
-    var nestByDimension = function(stackKey, valueKey, items) {
+    var nestByDimension = function(key, valueKey, items) {
       var nest = d3.nest()
         .key(function(d) {
-          return d[stackKey];
+          return d[key];
         });
       return nest.entries(items);
     };
@@ -2285,10 +2349,15 @@
       }
 
       findValues(opts, opts.data);
-      opts.data = nestByDimension(opts.y.key, opts.value.key, opts.data);
+      opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
 
       stackByDimension(opts.x.key, opts.data);
       return opts;
+    };
+
+    parser.nestKey = function(funct) {
+      opts.nestKey = funct.bind(opts);
+      return parser;
     };
 
     parser.x = function(funct) {

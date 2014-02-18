@@ -113,6 +113,10 @@
       },
       data: []
     };
+    opts.nestKey = function(){
+      return opts.x.key;
+    };
+
 
     var findValues = function(dimensions, items) {
       ['x', 'y', 'value'].forEach(function(k) {
@@ -123,10 +127,10 @@
       });
     };
 
-    var nestByDimension = function(stackKey, valueKey, items) {
+    var nestByDimension = function(key, valueKey, items) {
       var nest = d3.nest()
         .key(function(d) {
-          return d[stackKey];
+          return d[key];
         });
       return nest.entries(items);
     };
@@ -179,10 +183,15 @@
       }
 
       findValues(opts, opts.data);
-      opts.data = nestByDimension(opts.y.key, opts.value.key, opts.data);
+      opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
 
       stackByDimension(opts.x.key, opts.data);
       return opts;
+    };
+
+    parser.nestKey = function(funct) {
+      opts.nestKey = funct.bind(opts);
+      return parser;
     };
 
     parser.x = function(funct) {

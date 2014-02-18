@@ -8,25 +8,18 @@
   */
   'use strict';
   d4.features.waterfallConnectors = function(name) {
-
     return {
       accessors: {
-        x1: function(d) {
-          var width = 0;
-          var xVal = (d.y0 + d.y) - Math.max(0, d.y);
-          if(d.y > 0){
-            width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
-          }
-          return this.x(xVal) + width;
-
+        x: function(d) {
+          return this.x(d[this.xKey()]);
         },
 
-        y1: function(d) {
-          return this.y(d[this.yKey()]);
+        y: function(d) {
+          return this.y(d.y0 + d.y);
         },
 
         span: function(){
-          return this.y.rangeBand();
+          return this.x.rangeBand();
         },
 
         classes : function(d, i){
@@ -49,28 +42,28 @@
           if(i === 0){
             return 0;
           }
-          return scope.accessors.x1.bind(this)(data[i - 1].values[0]);
+          return scope.accessors.x.bind(this)(data[i - 1].values[0]);
         }.bind(this))
 
         .attr('y1', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return scope.accessors.y1.bind(this)(data[i - 1].values[0]);
+          return scope.accessors.y.bind(this)(data[i - 1].values[0]);
         }.bind(this))
 
         .attr('x2', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return scope.accessors.x1.bind(this)(data[i - 1].values[0]);
+          return scope.accessors.x.bind(this)(d) + scope.accessors.span.bind(this)();
         }.bind(this))
 
         .attr('y2', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return scope.accessors.y1.bind(this)(d) + scope.accessors.span.bind(this)(d);
+          return scope.accessors.y.bind(this)(data[i - 1].values[0]);
         }.bind(this));
 
         return lines;

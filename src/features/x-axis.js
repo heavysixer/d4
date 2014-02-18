@@ -14,6 +14,7 @@
         this.featuresGroup.append('g').attr('class', 'x axis '+ name)
           .attr('transform', 'translate(0,' + (this.height - this.margin.top - this.margin.bottom) + ')')
           .call(formattedAxis);
+
       }
     };
   };

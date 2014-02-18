@@ -143,4 +143,4 @@ charts in d3.
 ####Roadmap
 * Allow mouse events
 * Allow for multiple charts within the same SVG element
-* Find a good way to set the range from inside a custom accessor.
+* Allow charts to specify min, max values which do not appear in the data series.

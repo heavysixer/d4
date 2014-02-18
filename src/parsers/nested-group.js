@@ -105,7 +105,7 @@
     };
 
     parser.nestKey = function(funct) {
-      opts.nestKey = funct.bind(opts)
+      opts.nestKey = funct.bind(opts);
       return parser;
     };
 

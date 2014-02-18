@@ -7,6 +7,12 @@
   stroke-width: 1px;
   shape-rendering: crispEdges;
 }
+.connectors line {
+  fill: none;
+  stroke: #ff0000;
+  stroke-width: 3px;
+  shape-rendering: crispEdges;
+}
 .d4 .line, .d4 path {
     fill: none;
     stroke: #222;
