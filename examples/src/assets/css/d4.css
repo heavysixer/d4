@@ -7,10 +7,15 @@
   stroke-width: 1px;
   shape-rendering: crispEdges;
 }
+.d4 .line, .d4 path {
+    fill: none;
+    stroke: #222;
+    stroke-width: 1px;
+}
 
 .d4 .zeroLine line {
-    stroke: black;
     stroke-width:2px;
+    stroke: #222;
     stroke-linecap: round;
 }
 

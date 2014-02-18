@@ -9,34 +9,30 @@ lead: A friendly charting DSL for d3
 </div>
 
 <div class="row marketing">
-    <div class="col-lg-6">
-      <h3>Examples</h3>
-      <p>
-        This section demonstrates the various, charts, features and
-        parsers that come bundled with d4. The charts you
-        find here can be considered the canon of charts common to
-        financial and business applications. If you have an idea
-        for a more exotic breed, please do submit a pull-request!
-      </p>
+  <div class="col-lg-6 col-md-12">
+    <h3>Examples</h3>
+    <p>
+      This section demonstrates the various, charts, features and
+      parsers that come bundled with d4. The charts you
+      find here can be considered the canon of charts common to
+      financial and business applications. If you have an idea
+      for a more exotic breed, please do submit a pull-request!
+    </p>
 
-      <h4>Charts</h4>
-      <p>The following section demonstrates mostly boilerplate
-        examples of the common chart. It is relatively trivial to
-        make a chart type. Most of the hard work is in writing the
-        features themselves.
-      </p>
-      <div class="alert alert-info">
-        Many of the basic d4 concepts are covered in the column chart examples.<br/>
-        If you are new to d4 this is a great place to start.
-      </div>
+    <h4>Charts</h4>
+    <p>The following section demonstrates mostly boilerplate
+      examples of the common chart. It is relatively trivial to
+      make a chart type. Most of the hard work is in writing the
+      features themselves.
+    </p>
 
-      {{#each categories}}
-      <dl>
-        <dt>{{category}}</dt>
-        {{#each pages}}
-          <dd><a href ="{{relative  ../../page.dest this.dest }}">{{data.title}}</a></dd>
-        {{/each}}
-      </dl>
+    {{#each categories}}
+    <dl>
+      <dt>{{category}}</dt>
+      {{#each pages}}
+        <dd><a href ="{{relative  ../../page.dest this.dest }}">{{data.title}}</a></dd>
       {{/each}}
+    </dl>
+    {{/each}}
   </div>
 </div>

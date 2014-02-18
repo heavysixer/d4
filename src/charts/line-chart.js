@@ -4,29 +4,34 @@
   'use strict';
 
   var lineChartBuilder = function() {
-    var mapDomain = function(data, key) {
-      return d3.extent(data.map(function(d) {
-        return d[key];
-      }));
+    var extractValues = function(data, key) {
+      var values = data.map(function(obj){
+        return obj.values.map(function(i){
+          return i[key];
+        }.bind(this));
+      }.bind(this));
+      return d3.merge(values);
     };
 
     var configureX = function(data) {
       if (!this.parent.x) {
-
-        this.parent.x = d3.time.scale(this.parent.x)
-          .domain(mapDomain(data, this.parent.xKey()))
-          .nice()
-          .clamp(true);
+        var xData = extractValues(data, this.parent.xKey());
+        this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
+        this.parent.x = d3.scale.ordinal()
+          .domain(xData)
+          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
       }
-      this.parent.x.range([0, this.parent.width - this.parent.margin.left - this.parent.margin.right]);
     };
 
     var configureY = function(data) {
       if (!this.parent.y) {
-        this.parent.y = d3.scale.linear()
-          .domain(mapDomain(data, this.parent.yKey()));
+        var yData = extractValues(data, this.parent.yKey());
+        var ext = d3.extent(yData);
+        this.parent.y = d3.scale.linear().domain(ext);
       }
-      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0]);
+      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+        .clamp(true)
+        .nice();
     };
 
     var configureScales = function(data) {

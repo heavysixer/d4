@@ -5,7 +5,8 @@
 
   /**
     The nested group parser is useful for grouped column charts where multiple
-    data items need to appear on the same axis value.
+    data items need to appear relative to the axis value, for example grouped
+    column charts or multi-series line charts.
 
     _____________________
     |           _        |
@@ -13,10 +14,8 @@
     |  | | |   | | |     |
     ----------------------
 
-    This module makes use of the d3's "nest" data structure, and "stack" layout
+    This module makes use of the d3's "nest" data structure layout
     https://github.com/mbostock/d3/wiki/Arrays#-nest
-    https://github.com/mbostock/d3/wiki/Stack-Layout
-
 
     Approach:
     Just like D3, this parser uses a chaining declaritiave style to build up
@@ -69,6 +68,9 @@
       },
       data: []
     };
+    opts.nestKey = function(){
+      return opts.x.key;
+    };
 
     var findValues = function(dimensions, items) {
       ['x', 'y', 'value'].forEach(function(k) {
@@ -79,10 +81,10 @@
       });
     };
 
-    var nestByDimension = function(stackKey, valueKey, items) {
+    var nestByDimension = function(key, valueKey, items) {
       var nest = d3.nest()
         .key(function(d) {
-          return d[stackKey];
+          return d[key];
         });
       return nest.entries(items);
     };
@@ -97,9 +99,14 @@
       }
 
       findValues(opts, opts.data);
-      opts.data = nestByDimension(opts.x.key, opts.value.key, opts.data);
+      opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
 
       return opts;
+    };
+
+    parser.nestKey = function(funct) {
+      opts.nestKey = funct.bind(opts)
+      return parser;
     };
 
     parser.x = function(funct) {

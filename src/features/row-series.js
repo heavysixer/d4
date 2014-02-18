@@ -35,13 +35,6 @@
           .attr('width', scope.accessors.width.bind(this))
           .attr('height', scope.accessors.height.bind(this));
 
-        this.featuresGroup.append('g').attr('class', 'x zero ' + name)
-        .append('line')
-        .attr('class', 'line')
-        .attr('x1', this.x(0))
-        .attr('x2', this.x(0))
-        .attr('y1', 0)
-        .attr('y2', this.height);
         return bar;
       }
     };

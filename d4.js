@@ -372,8 +372,8 @@
     };
 
     var configureX = function(data) {
-      var xData = extractValues(data, this.parent.xKey());
       if (!this.parent.x) {
+        var xData = extractValues(data, this.parent.xKey());
         this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
         this.parent.x = d3.scale.ordinal()
           .domain(xData)
@@ -440,29 +440,34 @@
   'use strict';
 
   var lineChartBuilder = function() {
-    var mapDomain = function(data, key) {
-      return d3.extent(data.map(function(d) {
-        return d[key];
-      }));
+    var extractValues = function(data, key) {
+      var values = data.map(function(obj){
+        return obj.values.map(function(i){
+          return i[key];
+        }.bind(this));
+      }.bind(this));
+      return d3.merge(values);
     };
 
     var configureX = function(data) {
       if (!this.parent.x) {
-
-        this.parent.x = d3.time.scale(this.parent.x)
-          .domain(mapDomain(data, this.parent.xKey()))
-          .nice()
-          .clamp(true);
+        var xData = extractValues(data, this.parent.xKey());
+        this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
+        this.parent.x = d3.scale.ordinal()
+          .domain(xData)
+          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
       }
-      this.parent.x.range([0, this.parent.width - this.parent.margin.left - this.parent.margin.right]);
     };
 
     var configureY = function(data) {
       if (!this.parent.y) {
-        this.parent.y = d3.scale.linear()
-          .domain(mapDomain(data, this.parent.yKey()));
+        var yData = extractValues(data, this.parent.yKey());
+        var ext = d3.extent(yData);
+        this.parent.y = d3.scale.linear().domain(ext);
       }
-      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0]);
+      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+        .clamp(true)
+        .nice();
     };
 
     var configureScales = function(data) {
@@ -1104,9 +1109,10 @@
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('.group')
-          .data(data)
-          .enter().append('g')
-          .attr('class', function(d,i) {
+          .data(data);
+          group.enter().append('g');
+          group.exit().remove();
+          group.attr('class', function(d,i) {
             return 'series'+ i + ' ' + this.xKey();
           }.bind(this));
 
@@ -1129,21 +1135,18 @@
 (function() {
   'use strict';
   d4.features.lineSeriesLabels = function(name) {
-
-    // Expects a data series in the following format:
-    // [{name: 'series1', values:[[dateObject, number],...]}]
     return {
       accessors: {
         x: function(d) {
-          return this.x(d.values[d.values.length - 1][0]);
+          return this.x(d.values[d.values.length - 1][this.xKey()]);
         },
 
         y: function(d) {
-          return this.y(d.values[d.values.length - 1][1]);
+          return this.y(d.values[d.values.length - 1][this.yKey()]);
         },
 
         text: function(d) {
-          return d.name;
+          return d.key;
         },
 
         classes: function(d,n) {
@@ -1159,6 +1162,9 @@
           .text(scope.accessors.text.bind(this))
           .attr('x', scope.accessors.x.bind(this))
           .attr('y', scope.accessors.y.bind(this))
+          .attr('data-key', function(d){
+            return d.key;
+          })
           .attr('class', scope.accessors.classes.bind(this));
         return label;
       }
@@ -1174,11 +1180,12 @@
         x: function(d) {
           return this.x(d[this.xKey()]);
         },
-
         y: function(d) {
           return this.y(d[this.yKey()]);
         },
-
+        interpolate: function() {
+          return 'basis';
+        },
         classes: function(d, n) {
           return 'line stroke series' + n;
         }
@@ -1186,16 +1193,24 @@
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var line = d3.svg.line()
+          .interpolate(scope.accessors.interpolate.bind(this)())
           .x(scope.accessors.x.bind(this))
           .y(scope.accessors.y.bind(this));
 
-        var lineSeries = this.svg.select('.'+name).selectAll('.'+name).data(data)
-        .enter().append('path')
-        .attr('d', function(d) {
-          return line(d[this.xKey()]);
-        }.bind(this))
-        .attr('class', scope.accessors.classes.bind(this));
-        return lineSeries;
+        var group = this.svg.select('.' + name).selectAll('.group')
+          .data(data);
+        group.exit().remove();
+        group.enter().append('g')
+          .attr('data-key', function(d) {
+            return d.key;
+          })
+          .attr('class', function(d, i) {
+            return 'series' + i;
+          }.bind(this))
+          .append('path')
+          .attr('d', function(d) {
+            return line(d.values);
+          });
       }
     };
   };
@@ -1308,13 +1323,6 @@
           .attr('width', scope.accessors.width.bind(this))
           .attr('height', scope.accessors.height.bind(this));
 
-        this.featuresGroup.append('g').attr('class', 'x zero ' + name)
-        .append('line')
-        .attr('class', 'line')
-        .attr('x1', this.x(0))
-        .attr('x2', this.x(0))
-        .attr('y1', 0)
-        .attr('y2', this.height);
         return bar;
       }
     };
@@ -1776,7 +1784,8 @@
 
   /**
     The nested group parser is useful for grouped column charts where multiple
-    data items need to appear on the same axis value.
+    data items need to appear relative to the axis value, for example grouped
+    column charts or multi-series line charts.
 
     _____________________
     |           _        |
@@ -1784,10 +1793,8 @@
     |  | | |   | | |     |
     ----------------------
 
-    This module makes use of the d3's "nest" data structure, and "stack" layout
+    This module makes use of the d3's "nest" data structure layout
     https://github.com/mbostock/d3/wiki/Arrays#-nest
-    https://github.com/mbostock/d3/wiki/Stack-Layout
-
 
     Approach:
     Just like D3, this parser uses a chaining declaritiave style to build up
@@ -1840,6 +1847,9 @@
       },
       data: []
     };
+    opts.nestKey = function(){
+      return opts.x.key;
+    };
 
     var findValues = function(dimensions, items) {
       ['x', 'y', 'value'].forEach(function(k) {
@@ -1850,10 +1860,10 @@
       });
     };
 
-    var nestByDimension = function(stackKey, valueKey, items) {
+    var nestByDimension = function(key, valueKey, items) {
       var nest = d3.nest()
         .key(function(d) {
-          return d[stackKey];
+          return d[key];
         });
       return nest.entries(items);
     };
@@ -1868,9 +1878,14 @@
       }
 
       findValues(opts, opts.data);
-      opts.data = nestByDimension(opts.x.key, opts.value.key, opts.data);
+      opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
 
       return opts;
+    };
+
+    parser.nestKey = function(funct) {
+      opts.nestKey = funct.bind(opts)
+      return parser;
     };
 
     parser.x = function(funct) {

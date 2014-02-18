@@ -3,7 +3,8 @@
 D4 is a friendly DSL charting library for D3. The goal of D4 is to allow developers
 to quickly build data-driven charts with little knowledge of the internals of D3.
 
-#### Quick Start
+### Quick Start
+* * *
 
 Either download d4 directly from the github repository or install it using a package manager like bower.
 
@@ -38,37 +39,28 @@ Here is the most basic example, which uses many of the preset defaults provided 
       .datum(data)
       .call(columnChart);
 
+#####Getting Fancy
 d4 allows you to quickly build up sophisticated charts using a declaritive and highly contextual API that allows you to mixin
 or mixout features from your chart.
 
     var data = [
-        { x: '2010', y:-50 },
-        { x: '2011', y:50 },
-        { x: '2012', y:30 },
-        { x: '2013', y:20 },
-        { x: '2014', y:10 },
-      ];
-    var chart = d4.columnChart()
-    .mixin({ 'zeroLine' : d4.features.referenceLine })
-    .using('zeroLine', function(zeroLine){
-      zeroLine
-      .x1(function(){
-        return 0;
-      })
-      .x2(function(){
-        return this.width - this.margin.left - this.margin.right;
-      })
-      .y1(function(){
-        return this.y(0);
-      })
-      .y2(function(){
-        return this.y(0);
-      });
-    });
+      { x : '2010', y : 5 },
+      { x : '2011', y : 15 },
+      { x : '2012', y : 20 }
+    ];
 
-    d3.select('#example')
-    .datum(data)
-    .call(chart);
+    // Create a column chart without a yAxis, but with a grid in the background.
+    var columnChart = d4.columnChart()
+    .mixout('yAxis')
+    .mixin('grid', d4.features.grid, 0)
+
+    d3.select('someDomElement')
+      .datum(data)
+      .call(columnChart);
+
+#####Additional Examples
+There are **many** more examples of d4 in the examples site inside the source code repository. Simply clone the repo and
+open the `examples/` folder in your favorite web browser.
 
 ### Philosophy
 * * *

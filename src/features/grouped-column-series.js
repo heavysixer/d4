@@ -35,9 +35,10 @@
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('.group')
-          .data(data)
-          .enter().append('g')
-          .attr('class', function(d,i) {
+          .data(data);
+          group.enter().append('g');
+          group.exit().remove();
+          group.attr('class', function(d,i) {
             return 'series'+ i + ' ' + this.xKey();
           }.bind(this));
 

@@ -2,21 +2,18 @@
 (function() {
   'use strict';
   d4.features.lineSeriesLabels = function(name) {
-
-    // Expects a data series in the following format:
-    // [{name: 'series1', values:[[dateObject, number],...]}]
     return {
       accessors: {
         x: function(d) {
-          return this.x(d.values[d.values.length - 1][0]);
+          return this.x(d.values[d.values.length - 1][this.xKey()]);
         },
 
         y: function(d) {
-          return this.y(d.values[d.values.length - 1][1]);
+          return this.y(d.values[d.values.length - 1][this.yKey()]);
         },
 
         text: function(d) {
-          return d.name;
+          return d.key;
         },
 
         classes: function(d,n) {
@@ -32,6 +29,9 @@
           .text(scope.accessors.text.bind(this))
           .attr('x', scope.accessors.x.bind(this))
           .attr('y', scope.accessors.y.bind(this))
+          .attr('data-key', function(d){
+            return d.key;
+          })
           .attr('class', scope.accessors.classes.bind(this));
         return label;
       }
