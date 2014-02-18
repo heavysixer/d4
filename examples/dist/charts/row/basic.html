@@ -19,6 +19,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="../../assets/js/jquery.js"></script>
   </head>
   <body>
     <div class="container">
@@ -36,6 +37,47 @@
       <div class="container" role="main">
 
         
+
+<h5>Basic Row Chart</h5>
+<p>
+  The following demonstrates the most basic example of the row chart. This
+  chart uses the default settings from d4.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8">
+'use strict';
+
+$(document).ready(function(){
+  var data = [
+      { y: '2010', x:-10 },
+      { y: '2011', x:20 },
+      { y: '2012', x:30 },
+      { y: '2013', x:40 },
+      { y: '2014', x:50 },
+    ];
+  var chart = d4.rowChart();
+  d3.select('#example')
+  .datum(data)
+  .call(chart);
+});
+
+</script>
+<div id="example"></div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript">
+  var data = [
+      { y: '2010', x:-10 },
+      { y: '2011', x:20 },
+      { y: '2012', x:30 },
+      { y: '2013', x:40 },
+      { y: '2014', x:50 },
+    ];
+  var chart = d4.rowChart();
+  d3.select('#example')
+  .datum(data)
+  .call(chart);
+</code></pre>
+
 
       </div>
       <div class="footer">

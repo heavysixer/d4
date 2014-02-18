@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Basic Column Chart | d4 Examples</title>
+    <title>Mixing out an existing feature | d4 Examples</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
@@ -37,10 +37,24 @@
       <div class="container" role="main">
 
         
-<h5>Basic Column Chart</h5>
+<h5>Mixing out an existing feature</h5>
 <p>
-  The following demonstrates the most basic example of the column chart. This
-  chart uses the default settings from d4.
+  When creating charts in d4 you have two paths you can take. You can either
+  write your chart from scratch where you choose all the features you will need,
+  or use a preexisting chart and mix-in features you want.
+</p>
+<p>
+  In this example we want a column chart without the <strong>yAxis</strong>, and so we'll just mix
+  it out. d4 expects you to reference a chart's feature by its accessor name,
+  which is defined in the chart's class. d4, also exposes the accessors of a
+  chart using <code class="language-javascript">features</code> function. Knowing
+  this we can find our xAxis accessor name like so:
+  <pre><code class="language-javascript">
+    d4.columnChart().features();
+    => ["bars", "barLabels", "xAxis", "yAxis"]
+  </code></pre>
+  Not surprisingly the accessor we are looking for is named <strong>yAxis</strong>.
+  Now that we know the name we can remove it from our column chart this way:
 </p>
 <hr/>
 <script type="text/javascript" charset="utf-8">
@@ -48,13 +62,15 @@
 
 $(document).ready(function(){
   var data = [
-      { x: '2010', y:-10 },
-      { x: '2011', y:20 },
+      { x: '2010', y:-50 },
+      { x: '2011', y:50 },
       { x: '2012', y:30 },
-      { x: '2013', y:40 },
-      { x: '2014', y:50 },
+      { x: '2013', y:20 },
+      { x: '2014', y:10 },
     ];
-  var chart = d4.columnChart();
+  var chart = d4.columnChart()
+  .mixout('yAxis');
+
   d3.select('#example')
   .datum(data)
   .call(chart);
@@ -65,13 +81,15 @@ $(document).ready(function(){
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript">
   var data = [
-      { x: '2010', y:10 },
-      { x: '2011', y:10 },
-      { x: '2012', y:10 },
-      { x: '2013', y:10 },
+      { x: '2010', y:-50 },
+      { x: '2011', y:50 },
+      { x: '2012', y:30 },
+      { x: '2013', y:20 },
       { x: '2014', y:10 },
     ];
-  var chart = d4.columnChart();
+  var chart = d4.columnChart()
+  .mixout('yAxis');
+
   d3.select('#example')
   .datum(data)
   .call(chart);

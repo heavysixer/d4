@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Basic Column Chart | d4 Examples</title>
+    <title>Custom CSS | d4 Examples</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
@@ -37,10 +37,20 @@
       <div class="container" role="main">
 
         
-<h5>Basic Column Chart</h5>
+<h5>Custom CSS</h5>
 <p>
-  The following demonstrates the most basic example of the column chart. This
-  chart uses the default settings from d4.
+  Many charting libraries make internal decisions on visual aesthetics, which may
+  remove control from the designer, who may or may not understand JavaScript let
+  alone the charting API. Choices on visual design like series colors and font
+  sizes are best made in CSS. d4 exposes convenient hooks in the generated markup
+  to allow visual designer to get precise control over the look and feel without
+  needing deep knowledge of d4.
+</p>
+<p>
+  In this example we want a column chart where negative and positive column series
+  are colored differently. This is easily accomplished using CSS, because by default
+  the d4 column series will append either <code class="language-css">.positive</code> or
+  <code class="language-css">.negative</code> depending on the value of the series.
 </p>
 <hr/>
 <script type="text/javascript" charset="utf-8">
@@ -48,30 +58,44 @@
 
 $(document).ready(function(){
   var data = [
-      { x: '2010', y:-10 },
-      { x: '2011', y:20 },
+      { x: '2010', y:-50 },
+      { x: '2011', y:50 },
       { x: '2012', y:30 },
-      { x: '2013', y:40 },
-      { x: '2014', y:50 },
+      { x: '2013', y:20 },
+      { x: '2014', y:10 },
     ];
-  var chart = d4.columnChart();
+  var chart = d4.columnChart()
+
   d3.select('#example')
   .datum(data)
   .call(chart);
 });
 
 </script>
-<div id="example"></div>
+<div id="custom_css">
+  <div id="example"></div>
+</div>
+<h6>CSS Code</h6>
+<pre><code class="language-css">
+  /* Style for our positive or negative column series */
+  .d4 .zeroLine line {
+      stroke: black;
+      stroke-width:2px;
+      stroke-linecap: round;
+  }
+</code></pre>
+
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript">
   var data = [
-      { x: '2010', y:10 },
-      { x: '2011', y:10 },
-      { x: '2012', y:10 },
-      { x: '2013', y:10 },
+      { x: '2010', y:-50 },
+      { x: '2011', y:50 },
+      { x: '2012', y:30 },
+      { x: '2013', y:20 },
       { x: '2014', y:10 },
     ];
-  var chart = d4.columnChart();
+  var chart = d4.columnChart()
+
   d3.select('#example')
   .datum(data)
   .call(chart);

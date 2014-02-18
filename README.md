@@ -5,11 +5,11 @@ to quickly build data-driven charts with little knowledge of the internals of D3
 
 #### Quick Start
 
-Either download d4 directly from the repository or install it using a package manager like bower.
+Either download d4 directly from the github repository or install it using a package manager like bower.
 
     $ bower install d4
 
-Once you have a local copy of d4 simply include it after d3 in your source file.
+Once you have a local copy of d4 simply include it **after** d3 in your source file.
 
     <!DOCTYPE html>
     <html>
@@ -25,7 +25,7 @@ Once you have a local copy of d4 simply include it after d3 in your source file.
     </html>
 
 #####Hello World
-Here is the most basic example, which uses all the preset defaults provided by d4.
+Here is the most basic example, which uses many of the preset defaults provided by d4.
 
     var data = [
       { x : '2010', y : 5 },
@@ -38,6 +38,38 @@ Here is the most basic example, which uses all the preset defaults provided by d
       .datum(data)
       .call(columnChart);
 
+d4 allows you to quickly build up sophisticated charts using a declaritive and highly contextual API that allows you to mixin
+or mixout features from your chart.
+
+    var data = [
+        { x: '2010', y:-50 },
+        { x: '2011', y:50 },
+        { x: '2012', y:30 },
+        { x: '2013', y:20 },
+        { x: '2014', y:10 },
+      ];
+    var chart = d4.columnChart()
+    .mixin({ 'zeroLine' : d4.features.referenceLine })
+    .using('zeroLine', function(zeroLine){
+      zeroLine
+      .x1(function(){
+        return 0;
+      })
+      .x2(function(){
+        return this.width - this.margin.left - this.margin.right;
+      })
+      .y1(function(){
+        return this.y(0);
+      })
+      .y2(function(){
+        return this.y(0);
+      });
+    });
+
+    d3.select('#example')
+    .datum(data)
+    .call(chart);
+
 ### Philosophy
 * * *
 
@@ -47,30 +79,29 @@ applications are built. Developers do not want a monolith that owns
 the data transformation, visual aesthetics, and interactivity. This leads to
 enormous libraries with huge config files, where every minutia about the chart
 must be decided upon beforehand. This typically means developers must first
-learn a specialized API in order to control even simple aspects of the chart
-which would be better delegated to other technologies. d4's attempts to do just
-enough, by enforcing these rules:
-
+learn a specialized API in order to control even the most basic aspects of the chart.
+d4 believes many of these responsibilities would be better delegated to other technologies.
+If developers were woodworkers then d4 would be a jig, which allows complex cuts to be made
+in fraction of the time it would normally take.
 
 #### CSS is for styling
 
 Many charting libraries make internal decisions on visual aesthetics, which may
-remove control from the designer, who may or may not understand JavaScript let
-alone the charting API. Choices on visual design like series colors and font
+remove control from the graphic designer, who may or may not understand JavaScript let
+alone a specialized charting API. Choices on visual design like the colors for data series and font
 sizes are best made in CSS. d4 exposes convenient hooks in the generated markup
 to allow visual designer to get precise control over the look and feel without
 needing deep knowledge of d4.
 
 #### The chart does not own the data
 
-Data is a stand-alone object, which can be controlled by many other items on
-the page. It should not change the data object. It can make non-permanent
+Data is a stand-alone object, which can be relied upon by many other scripts on
+the page. Therefore, a charting library should not change the data object. It can make non-permanent
 transformations.
 
 #### Context over configuration
 
-There is a software design concept called "convention over configuration," which states that software should be specify a collection of opinionated defaults, that developers should accept. The goal of this approach is to
-lessen the number of obvious choices a developer must make before they are able to use the software. Instead, configuration should be saved for instances where the defaults do not apply. d4 takes a slight deviation from this approach and instead suggests that configuration should be highly contextual to the object you are changing. Instead of making choices in some abstract config file, developers instead  use a highly declarative API to make changes directly to the object they want augment.
+There is a software design concept called "convention over configuration," which states that software should specify a collection of opinionated defaults for the developer. The goal of this approach is to lessen the number of obvious choices a developer must make before they are able to use the software. Instead, configuration should be saved for instances where the defaults do not apply. d4 extends this concept a bit and suggests that configuration should also be highly contextual to the object the developer needs changed. Instead of making choices in some abstract config file, developers instead use a highly declarative API to make changes directly to the object they want augment.
 
 ### Terminology
 * * *

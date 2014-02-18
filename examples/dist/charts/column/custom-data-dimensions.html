@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Basic Column Chart | d4 Examples</title>
+    <title>Custom Data Dimensions | d4 Examples</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
@@ -37,24 +37,33 @@
       <div class="container" role="main">
 
         
-<h5>Basic Column Chart</h5>
+<h5>Custom Data Dimensions</h5>
 <p>
-  The following demonstrates the most basic example of the column chart. This
-  chart uses the default settings from d4.
+  By default d4 expects a data objet where `x` and `y` keys define the chart
+  dimensions. These can easily be overridden as the following example demonstrates:
 </p>
 <hr/>
 <script type="text/javascript" charset="utf-8">
 'use strict';
 
 $(document).ready(function(){
+  // By default d4 expects a series object, which uses the following format:
+  // { x : '2010', y : 10 }.
+  // The default format is not desired and so we'll override it.
   var data = [
-      { x: '2010', y:-10 },
-      { x: '2011', y:20 },
-      { x: '2012', y:30 },
-      { x: '2013', y:40 },
-      { x: '2014', y:50 },
-    ];
-  var chart = d4.columnChart();
+    ['2010', -10],
+    ['2011', 20],
+    ['2012', 30],
+    ['2013', 40],
+    ['2014', 50]
+  ];
+  var chart = d4.columnChart()
+  .xKey(function(d){
+    return 0;
+  })
+  .yKey(function(d){
+    return 1;
+  })
   d3.select('#example')
   .datum(data)
   .call(chart);
@@ -64,17 +73,29 @@ $(document).ready(function(){
 <div id="example"></div>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript">
+  // By default d4 expects a series object, which uses the following format:
+  // { x : '2010', y : 10 }.
+  // However, our incoming data format is an array, so we'll simply use the
+  // xKey and yKey dimension functions to return either 0 or 1, which will
+  // access the correct array index.
   var data = [
-      { x: '2010', y:10 },
-      { x: '2011', y:10 },
-      { x: '2012', y:10 },
-      { x: '2013', y:10 },
-      { x: '2014', y:10 },
-    ];
-  var chart = d4.columnChart();
+    ['2010', -10],
+    ['2011', 20],
+    ['2012', 30],
+    ['2013', 40],
+    ['2014', 50]
+  ];
+  var chart = d4.columnChart()
+  .xKey(function(d){
+    return 0;
+  })
+  .yKey(function(d){
+    return 1;
+  })
   d3.select('#example')
   .datum(data)
   .call(chart);
+});
 </code></pre>
 
 
