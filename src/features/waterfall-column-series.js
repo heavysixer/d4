@@ -25,8 +25,15 @@
           return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
         },
 
-        classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.yKey()];
+        classes: function(d,i,n) {
+          var klass = sign(d.y);
+
+          // special cases for waterfalls, where we want to display
+          // the subtotal differently.
+          if(n > 0 && d.y0 === 0){
+            klass = 'subtotal';
+          }
+          return 'bar fill item'+ i + ' ' + klass + ' ' + d[this.yKey()];
         }
       },
       render: function(scope, data) {

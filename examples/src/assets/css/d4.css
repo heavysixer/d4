@@ -21,6 +21,9 @@
     stroke: #222;
     stroke-linecap: round;
 }
+/*
+  Examples
+*/
 
 #custom_css .d4 .bar.negative.fill, #waterfall  .d4 .bar.negative.fill {
     fill: darkred;
@@ -28,7 +31,9 @@
 #custom_css .d4 .bar.positive.fill, #waterfall .d4 .bar.positive.fill {
     fill: steelblue;
 }
-
+#waterfall .d4 .bar.subtotal.fill {
+    fill: lightblue;
+}
 #stacked_column .d4 .series0 .bar.fill, #stacked_column .average {
     fill: steelblue;
     background-color: steelblue;
