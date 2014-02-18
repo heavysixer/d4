@@ -5,11 +5,11 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[0]);
+          return this.x(d[this.xKey()]);
         },
 
         y: function(d) {
-          return this.y(d[1]);
+          return this.y(d[this.yKey()]);
         },
 
         classes: function(d, n) {
@@ -25,8 +25,8 @@
         var lineSeries = this.svg.select('.'+name).selectAll('.'+name).data(data)
         .enter().append('path')
         .attr('d', function(d) {
-          return line(d.values);
-        })
+          return line(d[this.xKey()]);
+        }.bind(this))
         .attr('class', scope.accessors.classes.bind(this));
         return lineSeries;
       }

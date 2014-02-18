@@ -1,6 +1,12 @@
 .d4 .column-label {
     text-anchor: middle;
 }
+.d4 .axis .domain, .d4 .axis .tick line {
+  fill: none;
+  stroke: #222;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
 
 .d4 .zeroLine line {
     stroke: black;

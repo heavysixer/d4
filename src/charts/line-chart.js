@@ -4,21 +4,17 @@
   'use strict';
 
   var lineChartBuilder = function() {
-    var mapDomain = function(data, index) {
-      var domain = [];
-      data.map(function(d) {
-        return d.values.map(function(v) {
-          domain.push(v[index]);
-        });
-      });
-      return d3.extent(domain);
+    var mapDomain = function(data, key) {
+      return d3.extent(data.map(function(d) {
+        return d[key];
+      }));
     };
 
     var configureX = function(data) {
       if (!this.parent.x) {
 
         this.parent.x = d3.time.scale(this.parent.x)
-          .domain(mapDomain(data, 0))
+          .domain(mapDomain(data, this.parent.xKey()))
           .nice()
           .clamp(true);
       }
@@ -28,7 +24,7 @@
     var configureY = function(data) {
       if (!this.parent.y) {
         this.parent.y = d3.scale.linear()
-          .domain(mapDomain(data, 1));
+          .domain(mapDomain(data, this.parent.yKey()));
       }
       this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0]);
     };

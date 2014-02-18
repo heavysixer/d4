@@ -440,21 +440,17 @@
   'use strict';
 
   var lineChartBuilder = function() {
-    var mapDomain = function(data, index) {
-      var domain = [];
-      data.map(function(d) {
-        return d.values.map(function(v) {
-          domain.push(v[index]);
-        });
-      });
-      return d3.extent(domain);
+    var mapDomain = function(data, key) {
+      return d3.extent(data.map(function(d) {
+        return d[key];
+      }));
     };
 
     var configureX = function(data) {
       if (!this.parent.x) {
 
         this.parent.x = d3.time.scale(this.parent.x)
-          .domain(mapDomain(data, 0))
+          .domain(mapDomain(data, this.parent.xKey()))
           .nice()
           .clamp(true);
       }
@@ -464,7 +460,7 @@
     var configureY = function(data) {
       if (!this.parent.y) {
         this.parent.y = d3.scale.linear()
-          .domain(mapDomain(data, 1));
+          .domain(mapDomain(data, this.parent.yKey()));
       }
       this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0]);
     };
@@ -1176,11 +1172,11 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[0]);
+          return this.x(d[this.xKey()]);
         },
 
         y: function(d) {
-          return this.y(d[1]);
+          return this.y(d[this.yKey()]);
         },
 
         classes: function(d, n) {
@@ -1196,8 +1192,8 @@
         var lineSeries = this.svg.select('.'+name).selectAll('.'+name).data(data)
         .enter().append('path')
         .attr('d', function(d) {
-          return line(d.values);
-        })
+          return line(d[this.xKey()]);
+        }.bind(this))
         .attr('class', scope.accessors.classes.bind(this));
         return lineSeries;
       }
