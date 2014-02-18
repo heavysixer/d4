@@ -68,12 +68,56 @@ $(document).ready(function(){
   d3.select('#example')
     .datum(parsedData.data)
     .call(chart);
-
 });
-
-
 </script>
-<div id="example"></div>
+<div id="waterfall">
+  <div id="example"></div>
+</div>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript">
+  var data = [{
+    'category': 'Job',
+    'value': 27
+  }, {
+    'category': 'Groceries',
+    'value': -3
+  }, {
+    'category': 'Allowance',
+    'value': 22
+  }, {
+    'category': 'Subtotal',
+    'value': 'e'
+  }, {
+    'category': 'Videos',
+    'value': -22
+  }, {
+    'category': 'Coffee',
+    'value': -4
+  }, {
+    'category': 'Total',
+    'value': 'e'
+  }];
+  var parsedData = d4.parsers.waterfall()
+    .x(function() {
+      return 'category';
+    })
+    .y(function() {
+      return 'value';
+    })
+    .nestKey(function() {
+      return 'category';
+    })(data);
+
+  var chart = d4.waterfallChart()
+    .width($('#example').width())
+    .xKey(function() {
+      return 'category';
+    })
+    .yKey(function() {
+      return 'value';
+    });
+
+  d3.select('#example')
+    .datum(parsedData.data)
+    .call(chart);
 </code></pre>

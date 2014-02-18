@@ -1,22 +1,19 @@
 .d4 .column-label {
     text-anchor: middle;
 }
+
 .d4 .axis .domain, .d4 .axis .tick line {
   fill: none;
   stroke: #222;
   stroke-width: 1px;
   shape-rendering: crispEdges;
 }
-.connectors line {
-  fill: none;
-  stroke: #ff0000;
-  stroke-width: 3px;
-  shape-rendering: crispEdges;
-}
-.d4 .line, .d4 path {
+
+.d4 .line, .d4 path, .d4 .connectors line {
     fill: none;
     stroke: #222;
     stroke-width: 1px;
+    shape-rendering: crispEdges;
 }
 
 .d4 .zeroLine line {
@@ -25,10 +22,10 @@
     stroke-linecap: round;
 }
 
-#custom_css .d4 .bar.negative.fill {
+#custom_css .d4 .bar.negative.fill, #waterfall  .d4 .bar.negative.fill {
     fill: darkred;
 }
-#custom_css .d4 .bar.positive.fill {
+#custom_css .d4 .bar.positive.fill, #waterfall .d4 .bar.positive.fill {
     fill: steelblue;
 }
 
