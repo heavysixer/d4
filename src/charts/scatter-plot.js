@@ -10,10 +10,11 @@
   var scatterPlotBuilder = function() {
     var configureX = function(data) {
       if (!this.parent.x) {
-        this.parent.x = d3.scale.linear()
-          .domain(data.map(function(d) {
+        var ext = d3.extent(data,function(d) {
             return d[this.parent.xKey()];
-          }.bind(this)))
+        }.bind(this))
+        this.parent.x = d3.scale.linear()
+          .domain(ext)
           .nice()
           .clamp(true);
       }
@@ -22,10 +23,11 @@
 
     var configureY = function(data) {
       if (!this.parent.y) {
-        this.parent.y = d3.scale.linear()
-          .domain(data.map(function(d) {
+        var ext = d3.extent(data,function(d) {
             return d[this.parent.yKey()];
-          }.bind(this)))
+        }.bind(this))
+        this.parent.y = d3.scale.linear()
+          .domain(ext)
           .nice()
           .clamp(true);
       }
@@ -34,13 +36,13 @@
 
     var configureZ = function(data) {
       if (!this.parent.z) {
-        this.parent.z = d3.scale.linear()
-          .domain(data.map(function(d) {
+        var ext = d3.extent(data,function(d) {
             return d[this.parent.zKey()];
-          }.bind(this)))
+        }.bind(this))
+        this.parent.z = d3.scale.linear()
+          .domain(ext)
           .nice()
           .clamp(true);
-
       }
       var maxSize = (this.parent.height - this.parent.margin.top - this.parent.margin.bottom);
       this.parent.z.range([maxSize / data.length, maxSize / (data.length * 5)]);
