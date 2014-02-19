@@ -11,30 +11,30 @@ categories:
 
 $(document).ready(function(){
   var data = [
-      { year: '2010', unitsSold:-100, salesman : 'Bob' },
-      { year: '2011', unitsSold:200,  salesman : 'Bob' },
-      { year: '2012', unitsSold:300,  salesman : 'Bob' },
-      { year: '2013', unitsSold:400,  salesman : 'Bob' },
-      { year: '2014', unitsSold:500,  salesman : 'Bob' },
-      { year: '2010', unitsSold:100,  salesman : 'Gina' },
-      { year: '2011', unitsSold:100,  salesman : 'Gina' },
-      { year: '2012', unitsSold:-100, salesman : 'Gina' },
-      { year: '2013', unitsSold:500,  salesman : 'Gina' },
-      { year: '2014', unitsSold:600,  salesman : 'Gina' },
-      { year: '2010', unitsSold:400,  salesman : 'Average' },
-      { year: '2011', unitsSold:0,    salesman : 'Average' },
-      { year: '2012', unitsSold:400,  salesman : 'Average' },
-      { year: '2013', unitsSold:400,  salesman : 'Average' },
-      { year: '2014', unitsSold:400,  salesman : 'Average' }
+      { age: 12, unitsSold: 0,    month: 1 },
+      { age: 22, unitsSold: 200,  month: 2 },
+      { age: 42, unitsSold: 300,  month: 3 },
+      { age: 32, unitsSold: 400,  month: 4 },
+      { age: 22, unitsSold: 500,  month: 5 },
+      { age: 12, unitsSold: 100,  month: 6 },
+      { age: 72, unitsSold: 100,  month: 7 },
+      { age: 42, unitsSold: -200, month: 8 },
+      { age: 32, unitsSold: 500,  month: 9 },
+      { age: 12, unitsSold: 600,  month: 10 },
+      { age: 62, unitsSold: 400,  month: 11 },
+      { age: 82, unitsSold: 0,    month: 12 },
+      { age: 92, unitsSold: 400,  month: 1 },
+      { age: 12, unitsSold: 400,  month: 2 },
+      { age: 2 , unitsSold: 400,  month: 2 }
     ];
 
   var chart = d4.scatterPlot()
   .width($('#example').width())
   .xKey(function(){
-    return 'year';
+    return 'age';
   })
   .yKey(function(){
-    return 'unitsSold';
+    return 'month';
   })
   .zKey(function(){
     return 'unitsSold';
