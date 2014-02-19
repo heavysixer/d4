@@ -9,8 +9,10 @@
 
 'use strict';
 var LIVERELOAD_PORT = 35729;
-var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
-var mountFolder = function (connect, dir) {
+var lrSnippet = require('connect-livereload')({
+  port: LIVERELOAD_PORT
+});
+var mountFolder = function(connect, dir) {
   return connect.static(require('path').resolve(dir));
 };
 
@@ -22,7 +24,9 @@ var mountFolder = function (connect, dir) {
 // '<%= app.src %>/templates/pages/**/*.hbs'
 
 module.exports = function(grunt) {
-  require('load-grunt-tasks')(grunt, {pattern: ['grunt-*', 'assemble']});
+  require('load-grunt-tasks')(grunt, {
+    pattern: ['grunt-*', 'assemble']
+  });
   require('time-grunt')(grunt);
 
   var appConfig = {
@@ -41,7 +45,7 @@ module.exports = function(grunt) {
     watch: {
       assemble: {
         files: ['<%= app.src %>/{assets,content,data,templates}/**/*.{md,hbs,yml,css}', '<%= app.src %>/../../docs/**/*.{md,hbs,yml}', '<%= app.src %>/../../README.md'],
-        tasks: ['copy:styles','assemble']
+        tasks: ['copy:styles', 'assemble']
       },
       livereload: {
         options: {
@@ -64,7 +68,7 @@ module.exports = function(grunt) {
       },
       livereload: {
         options: {
-          middleware: function (connect) {
+          middleware: function(connect) {
             return [
               lrSnippet,
               mountFolder(connect, '.tmp'),
@@ -74,7 +78,7 @@ module.exports = function(grunt) {
         },
         dist: {
           options: {
-            middleware: function (connect) {
+            middleware: function(connect) {
               return [
                 mountFolder(connect, appConfig.dist)
               ];
@@ -103,7 +107,7 @@ module.exports = function(grunt) {
     },
 
     useminPrepare: {
-      html: '<%= app.src %>/index.html',
+      html: '.tmp/index.html',
       options: {
         dest: '<%= app.dist %>'
       }
@@ -111,29 +115,42 @@ module.exports = function(grunt) {
 
     usemin: {
       html: ['<%= app.dist %>/**/*.html'],
-      css: ['<%= app.dist %>/assets/css/{,*/}*.css'],
       options: {
         dirs: ['<%= app.dist %>']
       }
     },
 
-    cssmin: {
-    },
+    cssmin: {},
 
     copy: {
       dist: {
         files: [{
           expand: true,
           dot: true,
-          cwd: '.tmp',
+          cwd: '<%= app.src %>',
           dest: '<%= app.dist %>',
           src: [
             '*.{ico,txt}',
             '.htaccess',
             'images/{,*/}*.{webp,gif}',
-            '**/*.html',
-            'assets/css/fonts/{,*/}*.*'
+            'assets/fonts/{,*/}*.*'
           ]
+        }, {
+          expand: true,
+          dot: true,
+          cwd: '.tmp',
+          dest: '<%= app.dist %>',
+          src: ['**/*.html']
+        }, {
+          expand: true,
+          cwd: '<%= app.src %>/assets/css/',
+          dest: '<%= app.dist %>/assets/css/',
+          src: ['**/*.*']
+        }, {
+          expand: true,
+          cwd: '<%= app.src %>/assets/fonts/',
+          dest: '<%= app.dist %>/assets/fonts/',
+          src: ['**/*.*']
         }, {
           expand: true,
           cwd: '.tmp/images',
@@ -187,7 +204,7 @@ module.exports = function(grunt) {
       }
     },
   });
-  grunt.registerTask('server', function (target) {
+  grunt.registerTask('server', function(target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
     }
@@ -206,7 +223,10 @@ module.exports = function(grunt) {
     'clean:dist',
     'assemble',
     'useminPrepare',
+    'concurrent:dist',
+    'concat',
     'copy:dist',
+    'uglify',
     'usemin',
   ]);
 

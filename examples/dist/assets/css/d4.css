@@ -1,0 +1,47 @@
+.d4 .column-label {
+    text-anchor: middle;
+}
+
+.d4 .axis .domain, .d4 .axis .tick line {
+  fill: none;
+  stroke: #222;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+
+.d4 .line, .d4 path, .d4 .connectors line {
+    fill: none;
+    stroke: #222;
+    stroke-width: 1px;
+}
+
+.d4 .zeroLine line {
+    stroke-width:2px;
+    stroke: #222;
+    stroke-linecap: round;
+}
+/*
+  Examples
+*/
+
+#custom_css .d4 .bar.negative.fill, #waterfall  .d4 .bar.negative.fill {
+    fill: darkred;
+}
+#custom_css .d4 .bar.positive.fill, #waterfall .d4 .bar.positive.fill {
+    fill: steelblue;
+}
+#waterfall .d4 .bar.subtotal.fill {
+    fill: lightblue;
+}
+#stacked_column .d4 .series0 .bar.fill, #stacked_column .average {
+    fill: steelblue;
+    background-color: steelblue;
+}
+#stacked_column .d4 .series1 .bar.fill, #stacked_column .gina {
+    fill: bisque;
+    background-color: bisque;
+}
+#stacked_column .d4 .series2 .bar.fill, #stacked_column .bob {
+    fill: darkslategrey;
+    background-color: darkslategrey;
+}
