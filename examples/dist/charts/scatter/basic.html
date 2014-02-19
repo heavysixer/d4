@@ -44,6 +44,39 @@
 'use strict';
 
 $(document).ready(function(){
+  var data = [
+      { year: '2010', unitsSold:-100, salesman : 'Bob' },
+      { year: '2011', unitsSold:200,  salesman : 'Bob' },
+      { year: '2012', unitsSold:300,  salesman : 'Bob' },
+      { year: '2013', unitsSold:400,  salesman : 'Bob' },
+      { year: '2014', unitsSold:500,  salesman : 'Bob' },
+      { year: '2010', unitsSold:100,  salesman : 'Gina' },
+      { year: '2011', unitsSold:100,  salesman : 'Gina' },
+      { year: '2012', unitsSold:-100, salesman : 'Gina' },
+      { year: '2013', unitsSold:500,  salesman : 'Gina' },
+      { year: '2014', unitsSold:600,  salesman : 'Gina' },
+      { year: '2010', unitsSold:400,  salesman : 'Average' },
+      { year: '2011', unitsSold:0,    salesman : 'Average' },
+      { year: '2012', unitsSold:400,  salesman : 'Average' },
+      { year: '2013', unitsSold:400,  salesman : 'Average' },
+      { year: '2014', unitsSold:400,  salesman : 'Average' }
+    ];
+
+  var chart = d4.scatterPlot()
+  .width($('#example').width())
+  .xKey(function(){
+    return 'year';
+  })
+  .yKey(function(){
+    return 'unitsSold';
+  })
+  .zKey(function(){
+    return 'unitsSold';
+  });
+
+  d3.select('#example')
+  .datum(data)
+  .call(chart);
 });
 </script>
 <div id="stacked_column">
