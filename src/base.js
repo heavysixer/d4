@@ -97,10 +97,10 @@
     throw new Error('[d4] ' + message);
   };
 
-  var validateBuilder = function(builder){
-    each(['configure', 'render'], function(funct){
-      if(!builder[funct] || isNotFunction(builder[funct])) {
-        assert('The supplied builder does not have a '+ funct +' function');
+  var validateBuilder = function(builder) {
+    each(['configure', 'render'], function(funct) {
+      if (!builder[funct] || isNotFunction(builder[funct])) {
+        assert('The supplied builder does not have a ' + funct + ' function');
       }
     });
     return builder;
@@ -114,7 +114,7 @@
   };
 
   var assignDefaults = function(config, defaultBuilder) {
-    if(!defaultBuilder){
+    if (!defaultBuilder) {
       assert('No builder defined');
     }
     var opts = d4.merge({
@@ -122,13 +122,13 @@
       height: 400,
       features: {},
       mixins: [],
-      xKey : function() {
+      xKey: function() {
         return 'x';
       },
-      yKey : function() {
+      yKey: function() {
         return 'y';
       },
-      valueKey: function(){
+      valueKey: function() {
         return 'y';
       },
       margin: {
@@ -170,6 +170,14 @@
     };
   };
 
+  var extractOverrides = function(feature) {
+    if (feature.overrides) {
+      return feature.overrides();
+    } else {
+      return {};
+    }
+  };
+
   // Specify the feature to mixin.
   // `index` is optional and will place a mixin at a specific 'layer.'
   d4.mixin = function(feature, index) {
@@ -177,10 +185,11 @@
       assert('You need to supply an object to mixin.');
     }
     var name = d3.keys(feature)[0];
-    feature[name] = feature[name](name);
+    var overrides = extractOverrides(feature, name);
+    feature[name] = d4.merge(feature[name](name), overrides);
     d4.extend(this.features, feature);
-    if(typeof index !== 'undefined'){
-      index = Math.max(Math.min(index, this.mixins.length),0);
+    if (typeof index !== 'undefined') {
+      index = Math.max(Math.min(index, this.mixins.length), 0);
       this.mixins.splice(index, 0, name);
     } else {
       this.mixins.push(name);
@@ -206,7 +215,9 @@
     }
 
     delete this.features[name];
-    this.mixins = this.mixins.filter(function(val){ return val !== name; });
+    this.mixins = this.mixins.filter(function(val) {
+      return val !== name;
+    });
   };
 
   d4.using = function(name, funct) {
@@ -271,7 +282,13 @@
     each(Array.prototype.slice.call(arguments, 1), function(source) {
       if (source) {
         for (var prop in source) {
-          obj[prop] = source[prop];
+          if (source[prop] && source[prop].constructor &&
+            source[prop].constructor === Object) {
+            obj[prop] = obj[prop] || {};
+            d4.extend(obj[prop], source[prop]);
+          } else {
+            obj[prop] = source[prop];
+          }
         }
       }
     });

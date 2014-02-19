@@ -4,36 +4,51 @@
   'use strict';
 
   // This accessor can be overridden
-  var orientation = function(){
+  var orientation = function() {
     return 'vertical';
   };
 
+  var columnLabelOverrides = function(){
+    return {
+      accessors : {
+        y: function(d) {
+          var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
+          console.log(halfHeight);
+          if(d.y < 0){
+            halfHeight *=-1;
+          }
+          var yVal = d.y0 + d.y;
+          return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+        }
+      }
+    };
+  };
 
   var waterfallChartBuilder = function() {
     var configureX = function(data) {
       if (!this.parent.x) {
-        var keys = data.map(function(d){
+        var keys = data.map(function(d) {
           return d.key;
         }.bind(this));
 
         this.parent.x = d3.scale.ordinal()
-        .domain(keys)
-        .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands || 0.3);
+          .domain(keys)
+          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands || 0.3);
       }
     };
 
     var configureY = function(data) {
       if (!this.parent.y) {
         var ext = d3.extent(d3.merge(data.map(function(datum) {
-            return d3.extent(datum.values, function(d) {
+          return d3.extent(datum.values, function(d) {
 
-              // This is anti-intuative but the stack only returns y and y0 even
-              // when it applies to the x dimension;
-              return d.y + d.y0;
-            });
-          })));
+            // This is anti-intuative but the stack only returns y and y0 even
+            // when it applies to the x dimension;
+            return d.y + d.y0;
+          });
+        })));
         ext[0] = Math.min(0, ext[0]);
-        this.parent.y =  d3.scale.linear()
+        this.parent.y = d3.scale.linear()
           .domain(ext);
       }
       this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
@@ -71,11 +86,11 @@
     }, waterfallChartBuilder);
     [{
       'bars': d4.features.waterfallColumnSeries
-    },
-    { 'connectors': d4.features.waterfallConnectors
-    },
-    {
-      'columnLabels': d4.features.stackedColumnLabels
+    }, {
+      'connectors': d4.features.waterfallConnectors
+    }, {
+      'columnLabels': d4.features.stackedColumnLabels,
+      'overrides' : columnLabelOverrides
     }, {
       'xAxis': d4.features.xAxis
     }, {

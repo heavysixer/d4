@@ -31,6 +31,7 @@
     "grunt-node-inspector": "~0.1.2",
     "chai": "~1.9.0",
     "sinon": "~1.8.1",
-    "sinon-chai": "~2.5.0"
+    "sinon-chai": "~2.5.0",
+    "chai-spies": "~0.5.1"
   }
 }

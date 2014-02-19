@@ -1,6 +1,6 @@
 /*! d4 - v0.1.0
  *  License: MIT Expat
- *  Date: 2014-02-18
+ *  Date: 2014-02-19
  */
 /* global d3: false */
 
@@ -101,10 +101,10 @@
     throw new Error('[d4] ' + message);
   };
 
-  var validateBuilder = function(builder){
-    each(['configure', 'render'], function(funct){
-      if(!builder[funct] || isNotFunction(builder[funct])) {
-        assert('The supplied builder does not have a '+ funct +' function');
+  var validateBuilder = function(builder) {
+    each(['configure', 'render'], function(funct) {
+      if (!builder[funct] || isNotFunction(builder[funct])) {
+        assert('The supplied builder does not have a ' + funct + ' function');
       }
     });
     return builder;
@@ -118,7 +118,7 @@
   };
 
   var assignDefaults = function(config, defaultBuilder) {
-    if(!defaultBuilder){
+    if (!defaultBuilder) {
       assert('No builder defined');
     }
     var opts = d4.merge({
@@ -126,13 +126,13 @@
       height: 400,
       features: {},
       mixins: [],
-      xKey : function() {
+      xKey: function() {
         return 'x';
       },
-      yKey : function() {
+      yKey: function() {
         return 'y';
       },
-      valueKey: function(){
+      valueKey: function() {
         return 'y';
       },
       margin: {
@@ -174,6 +174,14 @@
     };
   };
 
+  var extractOverrides = function(feature) {
+    if (feature.overrides) {
+      return feature.overrides();
+    } else {
+      return {};
+    }
+  };
+
   // Specify the feature to mixin.
   // `index` is optional and will place a mixin at a specific 'layer.'
   d4.mixin = function(feature, index) {
@@ -181,10 +189,11 @@
       assert('You need to supply an object to mixin.');
     }
     var name = d3.keys(feature)[0];
-    feature[name] = feature[name](name);
+    var overrides = extractOverrides(feature, name);
+    feature[name] = d4.merge(feature[name](name), overrides);
     d4.extend(this.features, feature);
-    if(typeof index !== 'undefined'){
-      index = Math.max(Math.min(index, this.mixins.length),0);
+    if (typeof index !== 'undefined') {
+      index = Math.max(Math.min(index, this.mixins.length), 0);
       this.mixins.splice(index, 0, name);
     } else {
       this.mixins.push(name);
@@ -210,7 +219,9 @@
     }
 
     delete this.features[name];
-    this.mixins = this.mixins.filter(function(val){ return val !== name; });
+    this.mixins = this.mixins.filter(function(val) {
+      return val !== name;
+    });
   };
 
   d4.using = function(name, funct) {
@@ -275,7 +286,13 @@
     each(Array.prototype.slice.call(arguments, 1), function(source) {
       if (source) {
         for (var prop in source) {
-          obj[prop] = source[prop];
+          if (source[prop] && source[prop].constructor &&
+            source[prop].constructor === Object) {
+            obj[prop] = obj[prop] || {};
+            d4.extend(obj[prop], source[prop]);
+          } else {
+            obj[prop] = source[prop];
+          }
         }
       }
     });
@@ -748,36 +765,51 @@
   'use strict';
 
   // This accessor can be overridden
-  var orientation = function(){
+  var orientation = function() {
     return 'vertical';
   };
 
+  var columnLabelOverrides = function(){
+    return {
+      accessors : {
+        y: function(d) {
+          var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
+          console.log(halfHeight);
+          if(d.y < 0){
+            halfHeight *=-1;
+          }
+          var yVal = d.y0 + d.y;
+          return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+        }
+      }
+    };
+  };
 
   var waterfallChartBuilder = function() {
     var configureX = function(data) {
       if (!this.parent.x) {
-        var keys = data.map(function(d){
+        var keys = data.map(function(d) {
           return d.key;
         }.bind(this));
 
         this.parent.x = d3.scale.ordinal()
-        .domain(keys)
-        .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands || 0.3);
+          .domain(keys)
+          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands || 0.3);
       }
     };
 
     var configureY = function(data) {
       if (!this.parent.y) {
         var ext = d3.extent(d3.merge(data.map(function(datum) {
-            return d3.extent(datum.values, function(d) {
+          return d3.extent(datum.values, function(d) {
 
-              // This is anti-intuative but the stack only returns y and y0 even
-              // when it applies to the x dimension;
-              return d.y + d.y0;
-            });
-          })));
+            // This is anti-intuative but the stack only returns y and y0 even
+            // when it applies to the x dimension;
+            return d.y + d.y0;
+          });
+        })));
         ext[0] = Math.min(0, ext[0]);
-        this.parent.y =  d3.scale.linear()
+        this.parent.y = d3.scale.linear()
           .domain(ext);
       }
       this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
@@ -815,11 +847,11 @@
     }, waterfallChartBuilder);
     [{
       'bars': d4.features.waterfallColumnSeries
-    },
-    { 'connectors': d4.features.waterfallConnectors
-    },
-    {
-      'columnLabels': d4.features.stackedColumnLabels
+    }, {
+      'connectors': d4.features.waterfallConnectors
+    }, {
+      'columnLabels': d4.features.stackedColumnLabels,
+      'overrides' : columnLabelOverrides
     }, {
       'xAxis': d4.features.xAxis
     }, {
