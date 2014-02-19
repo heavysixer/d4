@@ -3,13 +3,17 @@
   /* global d4: false */
   'use strict';
 
+  var zKey = function(){
+    return 'z';
+  };
+
   var scatterPlotBuilder = function() {
     var configureX = function(data) {
       if (!this.parent.x) {
-        d3.scale.linear()
+        this.parent.x = d3.scale.linear()
           .domain(data.map(function(d) {
-            return d[0];
-          }))
+            return d[this.parent.xKey()];
+          }.bind(this)))
           .nice()
           .clamp(true);
       }
@@ -20,8 +24,8 @@
       if (!this.parent.y) {
         this.parent.y = d3.scale.linear()
           .domain(data.map(function(d) {
-            return d[1];
-          }))
+            return d[this.parent.yKey()];
+          }.bind(this)))
           .nice()
           .clamp(true);
       }
@@ -32,8 +36,8 @@
       if (!this.parent.z) {
         this.parent.z = d3.scale.linear()
           .domain(data.map(function(d) {
-            return d[2];
-          }))
+            return d[this.parent.zKey()];
+          }.bind(this)))
           .nice()
           .clamp(true);
 
@@ -65,7 +69,8 @@
 
   d4.scatterPlot = function() {
     var chart = d4.baseChart({
-      accessors: ['z']
+      accessors: ['z', 'zKey'],
+      zKey: zKey
     }, scatterPlotBuilder);
     [{
       'scatterSeries': d4.features.scatterSeries
