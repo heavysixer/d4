@@ -6,13 +6,7 @@ categories:
 
 <h5>{{title}}</h5>
 <p>
-  The waterfall chart visually tallies the cumulative result of negative and
-  positive values over a data series. In addition to specifying the normal
-  positive and negative values d4's also lets you designate a column as a subtotal
-  column by passing in an "e" as the value key, which may be a familiar convention
-  if you have used <a href="http://www.think-cell.com/en/support/documentation/waterfall.shtml" target="_new">think-cell</a>.
-</p>
-<p>
+  This waterfall chart is an example of the ability of some d4 chart to change orientation between horizontal and vertical.
   This example also demonstrates one of the various data parsers available to
   developers using d4. In this example, we use the <code>waterfall</code> parser
   which makes it trivial for the developer to prepare the incoming data in a way
@@ -47,10 +41,10 @@ $(document).ready(function(){
   }];
   var parsedData = d4.parsers.waterfall()
     .x(function() {
-      return 'category';
+      return 'value';
     })
     .y(function() {
-      return 'value';
+      return 'category';
     })
     .nestKey(function() {
       return 'category';
@@ -58,11 +52,14 @@ $(document).ready(function(){
 
   var chart = d4.waterfallChart()
     .width($('#example').width())
+    .orientation(function(){
+      return 'horizontal';
+    })
     .xKey(function() {
-      return 'category';
+      return 'value';
     })
     .yKey(function() {
-      return 'value';
+      return 'category';
     });
 
   d3.select('#example')

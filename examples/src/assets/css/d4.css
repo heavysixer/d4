@@ -13,7 +13,6 @@
     fill: none;
     stroke: #222;
     stroke-width: 1px;
-    shape-rendering: crispEdges;
 }
 
 .d4 .zeroLine line {

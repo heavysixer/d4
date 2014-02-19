@@ -3,6 +3,12 @@
   /* global d4: false */
   'use strict';
 
+  // This accessor can be overridden
+  var orientation = function(){
+    return 'vertical';
+  };
+
+
   var waterfallChartBuilder = function() {
     var configureX = function(data) {
       if (!this.parent.x) {
@@ -59,7 +65,10 @@
   };
 
   d4.waterfallChart = function waterfallChart() {
-    var chart = d4.baseChart({}, waterfallChartBuilder);
+    var chart = d4.baseChart({
+      accessors: ['orientation'],
+      orientation: orientation
+    }, waterfallChartBuilder);
     [{
       'bars': d4.features.waterfallColumnSeries
     },

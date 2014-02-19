@@ -47,7 +47,8 @@
       <h2 id="d4">D4</h2>
 <p>D4 is a friendly DSL charting library for D3. The goal of D4 is to allow developers
 to quickly build data-driven charts with little knowledge of the internals of D3.</p>
-<h4 id="quick-start">Quick Start</h4>
+<h3 id="quick-start">Quick Start</h3>
+<hr>
 <p>Either download d4 directly from the github repository or install it using a package manager like bower.</p>
 <pre><code>$ bower install d4</code></pre>
 <p>Once you have a local copy of d4 simply include it <strong>after</strong> d3 in your source file.</p>
@@ -75,8 +76,26 @@ var columnChart = d4.columnChart();
 d3.select(&#39;someDomElement&#39;)
   .datum(data)
   .call(columnChart);</code></pre>
+<h5 id="getting-fancy">Getting Fancy</h5>
 <p>d4 allows you to quickly build up sophisticated charts using a declaritive and highly contextual API that allows you to mixin
 or mixout features from your chart.</p>
+<pre><code>var data = [
+  { x : &#39;2010&#39;, y : 5 },
+  { x : &#39;2011&#39;, y : 15 },
+  { x : &#39;2012&#39;, y : 20 }
+];
+
+// Create a column chart without a yAxis, but with a grid in the background.
+var columnChart = d4.columnChart()
+.mixout(&#39;yAxis&#39;)
+.mixin(&#39;grid&#39;, d4.features.grid, 0)
+
+d3.select(&#39;someDomElement&#39;)
+  .datum(data)
+  .call(columnChart);</code></pre>
+<h5 id="additional-examples">Additional Examples</h5>
+<p>There are <strong>many</strong> more examples of d4 in the examples site inside the source code repository. Simply clone the repo and
+open the <code>examples/</code> folder in your favorite web browser.</p>
 <h3 id="philosophy">Philosophy</h3>
 <hr>
 <p>Many charting libraries do a poor job when it comes to separations of concerns.
@@ -143,7 +162,7 @@ charts in d3.</p>
 <ul>
 <li>Allow mouse events</li>
 <li>Allow for multiple charts within the same SVG element</li>
-<li>Find a good way to set the range from inside a custom accessor.</li>
+<li>Allow charts to specify min, max values which do not appear in the data series.</li>
 </ul>
 
     </div>
