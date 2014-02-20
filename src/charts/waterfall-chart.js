@@ -8,14 +8,32 @@
     return 'vertical';
   };
 
-  var columnLabelOverrides = function(){
+  var columnSeriesOverrides = function() {
     return {
-      accessors : {
+      accessors: {
+        y: function(d) {
+          var yVal = (d.y0 + d.y) - Math.min(0, d.y);
+          return this.y(yVal);
+        },
+
+        classes: function(d, i, n) {
+          var klass = (d.y > 0) ? 'positive' : 'negative';
+          if (n > 0 && d.y0 === 0) {
+            klass = 'subtotal';
+          }
+          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.yKey()];
+        }
+      }
+    };
+  };
+  var columnLabelOverrides = function() {
+    return {
+      accessors: {
         y: function(d) {
           var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
           console.log(halfHeight);
-          if(d.y < 0){
-            halfHeight *=-1;
+          if (d.y < 0) {
+            halfHeight *= -1;
           }
           var yVal = d.y0 + d.y;
           return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
@@ -85,12 +103,13 @@
       orientation: orientation
     }, waterfallChartBuilder);
     [{
-      'bars': d4.features.waterfallColumnSeries
+      'bars': d4.features.stackedColumnSeries,
+      'overrides': columnSeriesOverrides
     }, {
       'connectors': d4.features.waterfallConnectors
     }, {
       'columnLabels': d4.features.stackedColumnLabels,
-      'overrides' : columnLabelOverrides
+      'overrides': columnLabelOverrides
     }, {
       'xAxis': d4.features.xAxis
     }, {
