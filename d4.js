@@ -382,7 +382,7 @@
   'use strict';
 
   // This accessor is meant to be overridden
-  var countGroups = function(){
+  var groupsOf = function(){
     return 1;
   };
 
@@ -441,8 +441,8 @@
 
   d4.groupedColumnChart = function groupedColumnChart() {
     var chart = d4.baseChart({
-      accessors: ['countGroups'],
-      countGroups: countGroups
+      accessors: ['groupsOf'],
+      groupsOf: groupsOf
     }, groupedColumnChartBuilder);
     [{
       'bars': d4.features.groupedColumnSeries
@@ -1160,7 +1160,7 @@
     return {
       accessors: {
         x: function(d, i) {
-          var width = this.x.rangeBand() / this.countGroups();
+          var width = this.x.rangeBand() / this.groupsOf;
           var xPos = this.x(d[this.xKey]) + width * i;
           var gutter = width * 0.1;
           return xPos + width/2 - gutter;
@@ -1209,7 +1209,7 @@
     return {
       accessors: {
         x: function(d,i) {
-          var width = this.x.rangeBand() / this.countGroups();
+          var width = this.x.rangeBand() / this.groupsOf;
           var xPos = this.x(d[this.xKey]) + width * i;
           return xPos;
         },
@@ -1219,7 +1219,7 @@
         },
 
         width: function() {
-          var width = this.x.rangeBand() / this.countGroups();
+          var width = this.x.rangeBand() / this.groupsOf;
           var gutter = width * 0.1;
           return width - gutter;
         },

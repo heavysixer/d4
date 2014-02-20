@@ -58,8 +58,8 @@
 
   d4.groupedColumnChart = function groupedColumnChart() {
     var chart = d4.baseChart({
-      accessors: ['countGroups'],
-      countGroups: 1
+      accessors: ['groupsOf'],
+      groupsOf: 1
     }, groupedColumnChartBuilder);
     [{
       'bars': d4.features.groupedColumnSeries

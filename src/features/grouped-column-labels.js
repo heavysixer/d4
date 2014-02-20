@@ -5,7 +5,7 @@
     return {
       accessors: {
         x: function(d, i) {
-          var width = this.x.rangeBand() / this.countGroups();
+          var width = this.x.rangeBand() / this.groupsOf;
           var xPos = this.x(d[this.xKey]) + width * i;
           var gutter = width * 0.1;
           return xPos + width/2 - gutter;
