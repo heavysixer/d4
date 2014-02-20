@@ -49,9 +49,9 @@ $(document).ready(function(){
   ];
   var chart = d4.columnChart()
   .xKey(0)
-  .yKey(1)
+  .yKey(1);
+
   d3.select('#example')
   .datum(data)
   .call(chart);
-});
 </code></pre>

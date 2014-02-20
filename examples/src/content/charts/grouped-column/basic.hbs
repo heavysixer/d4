@@ -100,17 +100,9 @@ $(document).ready(function(){
 
   var chart = d4.groupedColumnChart()
   .width($('#example').width())
-  .xKey(function(){
-    return 'year';
-  })
-  .yKey(function(){
-    return 'unitsSold';
-  })
-  .countGroups(function(){
-    // We need a way to tell the chart how many
-    // groups should appear on the xAxis.
-    return parsedData.data[0].values.length;
-  })
+  .xKey('year')
+  .yKey('unitsSold')
+  .groupsOf(parsedData.data[0].values.length);
 
   d3.select('#example')
   .datum(parsedData.data)
