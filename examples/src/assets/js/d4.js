@@ -177,7 +177,7 @@
 
   var extractOverrides = function(feature) {
     if (feature.overrides) {
-      return feature.overrides();
+      return feature.overrides(this);
     } else {
       return {};
     }
@@ -190,7 +190,7 @@
       assert('You need to supply an object to mixin.');
     }
     var name = d3.keys(feature)[0];
-    var overrides = extractOverrides(feature, name);
+    var overrides = extractOverrides.bind(this)(feature, name);
     feature[name] = d4.merge(feature[name](name), overrides);
     d4.extend(this.features, feature);
     if (typeof index !== 'undefined') {

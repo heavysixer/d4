@@ -6,13 +6,17 @@ categories:
 
 <h5>{{title}}</h5>
 <p>
-  <strong>Coming Soon</strong><br/>
-  This waterfall chart is an example of the ability of some d4 chart to change orientation between horizontal and vertical.
-  This example also demonstrates one of the various data parsers available to
-  developers using d4. In this example, we use the <code>waterfall</code> parser
-  which makes it trivial for the developer to prepare the incoming data in a way
-  that the chart expects it.
-
+  This waterfall chart is an example of the ability of some d4 chart to change
+  orientation between horizontal and vertical. We do this by supplying an
+  <code>orientation</code> accessor. This example also demonstrates  one of the
+  various data parsers available to developers using d4. In this  example, we
+  use the <code>waterfall</code> parser which makes it trivial for the developer
+  to prepare the incoming data in a way that the chart expects it.
+</p>
+<p>
+  This example also mixes in a zero line to visually demarcate where the series
+  elements dip below zero. This is especially helpful in charts like the
+  waterfall, which are often used for financial analysis.
 </p>
 <hr/>
 <script type="text/javascript" charset="utf-8">
@@ -36,7 +40,7 @@ $(document).ready(function(){
     'value': -22
   }, {
     'category': 'Coffee',
-    'value': -4
+    'value': -40
   }, {
     'category': 'Total',
     'value': 'e'
@@ -69,13 +73,32 @@ $(document).ready(function(){
     .yKey(function() {
       return 'category';
     })
-    .valueKey(function(){
+    .valueKey(function() {
       return 'value';
     })
+    .mixin({
+      'zeroLine': d4.features.referenceLine
+    }, 0)
+    .using('zeroLine', function(zero) {
+      zero
+        .x1(function() {
+          return this.x(0);
+        })
+        .x2(function() {
+          return this.x(0);
+        })
+        .y1(function() {
+          return this.y(0);
+        })
+        .y2(function() {
+          return this.height - this.margin.top - this.margin.bottom;
+        });
+    });
 
   d3.select('#example')
     .datum(parsedData.data)
     .call(chart);
+
 });
 
 </script>
@@ -97,15 +120,28 @@ $(document).ready(function(){
 </code></pre>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript">
-  var data = [
-  { 'category': 'Job',       'value': 27  },
-  { 'category': 'Groceries', 'value': -3  },
-  { 'category': 'Allowance', 'value': 22  },
-  { 'category': 'Subtotal',  'value': 'e' },
-  { 'category': 'Videos',    'value': -22 },
-  { 'category': 'Coffee',    'value': -4  },
-  { 'category': 'Total',     'value': 'e' }
-  ];
+  var data = [{
+    'category': 'Job',
+    'value': 27
+  }, {
+    'category': 'Groceries',
+    'value': -3
+  }, {
+    'category': 'Allowance',
+    'value': 22
+  }, {
+    'category': 'Subtotal',
+    'value': 'e'
+  }, {
+    'category': 'Videos',
+    'value': -22
+  }, {
+    'category': 'Coffee',
+    'value': -40
+  }, {
+    'category': 'Total',
+    'value': 'e'
+  }];
   var parsedData = d4.parsers.waterfall()
     .x(function() {
       return 'value';
@@ -134,9 +170,27 @@ $(document).ready(function(){
     .yKey(function() {
       return 'category';
     })
-    .valueKey(function(){
+    .valueKey(function() {
       return 'value';
     })
+    .mixin({
+      'zeroLine': d4.features.referenceLine
+    }, 0)
+    .using('zeroLine', function(zero) {
+      zero
+        .x1(function() {
+          return this.x(0);
+        })
+        .x2(function() {
+          return this.x(0);
+        })
+        .y1(function() {
+          return this.y(0);
+        })
+        .y2(function() {
+          return this.height - this.margin.top - this.margin.bottom;
+        });
+    });
 
   d3.select('#example')
     .datum(parsedData.data)
