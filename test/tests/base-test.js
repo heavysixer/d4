@@ -29,8 +29,7 @@ describe('d4.base', function() {
     it('should require a config and builder object', function() {
       expect(function() {
         d4.baseChart();
-      }).to.
-      throw (Error, '[d4] No builder defined');
+      }).to.throw(Error, '[d4] No builder defined');
     });
 
     describe('when defining a builder', function() {
@@ -45,8 +44,7 @@ describe('d4.base', function() {
         };
         expect(function() {
           d4.baseChart({}, badBuilder);
-        }).to.
-        throw (Error, '[d4] The supplied builder does not have a configure function');
+        }).to.throw(Error, '[d4] The supplied builder does not have a configure function');
 
         badBuilder = function() {
           return {
@@ -56,8 +54,7 @@ describe('d4.base', function() {
 
         expect(function() {
           d4.baseChart({}, badBuilder);
-        }).to.
-        throw (Error, '[d4] The supplied builder does not have a configure function');
+        }).to.throw (Error, '[d4] The supplied builder does not have a configure function');
       });
 
       it('should require the builder to have a render function', function() {
@@ -68,8 +65,7 @@ describe('d4.base', function() {
         };
         expect(function() {
           d4.baseChart({}, badBuilder);
-        }).to.
-        throw (Error, '[d4] The supplied builder does not have a render function');
+        }).to.throw (Error, '[d4] The supplied builder does not have a render function');
 
         badBuilder = function() {
           return {
@@ -80,8 +76,7 @@ describe('d4.base', function() {
 
         expect(function() {
           d4.baseChart({}, badBuilder);
-        }).to.
-        throw (Error, '[d4] The supplied builder does not have a render function');
+        }).to.throw (Error, '[d4] The supplied builder does not have a render function');
       });
     });
 
@@ -116,6 +111,27 @@ describe('d4.base', function() {
       expect(c.b).to.equal('bar');
       expect(a).to.not.equal(c);
     });
+
+    it('should allow deep merges of two objects', function(){
+      var a = {
+        hello : {
+          foo : 'foo',
+          baz : 'woof'
+        }
+      },
+      b = {
+        hello : {
+          bar : 'bar',
+          baz : 'baz'
+        },
+        hi : 'hi'
+      };
+      var c = d4.merge(a, b);
+      expect(c.hello.foo).to.equal('foo');
+      expect(c.hello.bar).to.equal('bar');
+      expect(c.hello.baz).to.equal('baz');
+      expect(c.hi).to.equal('hi');
+    });
   });
 
   describe('#extend()', function() {
@@ -139,8 +155,7 @@ describe('d4.base', function() {
       var chart = d4.columnChart();
       expect(function() {
         chart.mixin();
-      }).to.
-      throw (Error, '[d4] You need to supply an object to mixin');
+      }).to.throw (Error, '[d4] You need to supply an object to mixin');
     });
 
     it('should add the newly mixed in feature into the list of features', function() {
@@ -240,8 +255,7 @@ describe('d4.base', function() {
       var chart = d4.columnChart();
       expect(function() {
         chart.mixout();
-      }).to.
-      throw (Error, '[d4] A name is required in order to mixout a chart feature.');
+      }).to.throw (Error, '[d4] A name is required in order to mixout a chart feature.');
     });
   });
 
@@ -250,8 +264,7 @@ describe('d4.base', function() {
       var chart = d4.columnChart();
       expect(function() {
         chart.using('foo', function() {});
-      }).to.
-      throw (Error, '[d4] Could not find feature: "foo", maybe you forgot to mix it in?');
+      }).to.throw (Error, '[d4] Could not find feature: "foo", maybe you forgot to mix it in?');
     });
 
     it('should allow you to use a feature of a chart', function() {
@@ -265,8 +278,7 @@ describe('d4.base', function() {
       var chart = d4.columnChart();
       expect(function() {
         chart.using('bars');
-      }).to.
-      throw (Error, '[d4] You must supply a continuation function in order to use a chart feature.');
+      }).to.throw (Error, '[d4] You must supply a continuation function in order to use a chart feature.');
     });
   });
 
@@ -280,8 +292,7 @@ describe('d4.base', function() {
       };
       expect(function() {
         chart.builder(badBuilder);
-      }).to.
-      throw (Error, '[d4] The supplied builder does not have a configure function');
+      }).to.throw (Error, '[d4] The supplied builder does not have a configure function');
     });
 
     it('should allow you to replace the default builder with your custom one', function() {

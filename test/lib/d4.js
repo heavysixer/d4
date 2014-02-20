@@ -1000,18 +1000,6 @@
 (function() {
   'use strict';
   d4.features.columnSeries = function(name) {
-    var isArray = function(val) {
-      return (val) instanceof Array;
-    };
-
-    var ensureSeriesArray = function(data) {
-      if (isArray(data) && isArray(data[0]) && isArray(data[0][1])) {
-        return data;
-      } else {
-        return [data];
-      }
-    };
-
     return {
       accessors: {
         x: function(d) {
@@ -1035,7 +1023,6 @@
         }
       },
       render: function(scope, data) {
-        ensureSeriesArray(data);
         this.featuresGroup.append('g').attr('class', name);
         var series = this.svg.select('.' + name).selectAll('.' + name + 'Series').data(data);
         series.enter().append('g');
