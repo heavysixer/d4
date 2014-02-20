@@ -5,16 +5,16 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey()]) + (this.x.rangeBand() / 2);
+          return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
         },
 
         y: function(d) {
-          var height = Math.abs(this.y(d[this.yKey()]) - this.y(0));
-          return (d[this.yKey()] < 0 ? this.y(d[this.yKey()]) - height : this.y(d[this.yKey()])) - 5;
+          var height = Math.abs(this.y(d[this.yKey]) - this.y(0));
+          return (d[this.yKey] < 0 ? this.y(d[this.yKey]) - height : this.y(d[this.yKey])) - 5;
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.yKey()]);
+          return d3.format('').call(this, d[this.yKey]);
         }
       },
       render: function(scope, data) {

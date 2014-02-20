@@ -20,7 +20,7 @@
 
     var configureX = function(data) {
       if (!this.parent.x) {
-        var xData = extractValues(data, this.parent.xKey());
+        var xData = extractValues(data, this.parent.xKey);
         this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
         this.parent.x = d3.scale.ordinal()
           .domain(xData)
@@ -30,7 +30,7 @@
 
     var configureY = function(data) {
       if (!this.parent.y) {
-        var yData = extractValues(data, this.parent.yKey());
+        var yData = extractValues(data, this.parent.yKey);
         var ext = d3.extent(yData);
         this.parent.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
       }

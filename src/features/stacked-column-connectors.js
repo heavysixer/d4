@@ -23,7 +23,7 @@
         },
 
         y1: function(d) {
-          return this.y(d[this.yKey()]);
+          return this.y(d[this.yKey]);
         },
 
         span: function(){

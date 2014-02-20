@@ -8,7 +8,7 @@
       if (!this.parent.x) {
         this.parent.x = d3.scale.linear()
           .domain(d3.extent(data, function(d) {
-            return d[this.parent.xKey()];
+            return d[this.parent.xKey];
           }.bind(this)));
       }
       this.parent.x.range([0, this.parent.width - this.parent.margin.right - this.parent.margin.left])
@@ -21,7 +21,7 @@
         this.parent.yRoundBands = this.parent.yRoundBands || 0.3;
         this.parent.y = d3.scale.ordinal()
           .domain(data.map(function(d) {
-            return d[this.parent.yKey()];
+            return d[this.parent.yKey];
           }.bind(this)))
           .rangeRoundBands([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0], this.parent.yRoundBands);
       }

@@ -11,11 +11,11 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey()]);
+          return this.x(d[this.xKey]);
         },
 
         y: function(d) {
-          return d[this.yKey()] < 0 ? this.y(0) : this.y(d[this.yKey()]);
+          return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);
         },
 
         width: function() {
@@ -23,11 +23,11 @@
         },
 
         height: function(d) {
-          return Math.abs(this.y(d[this.yKey()]) - this.y(0));
+          return Math.abs(this.y(d[this.yKey]) - this.y(0));
         },
 
         classes: function(d, i) {
-          return d[this.yKey()] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
+          return d[this.yKey] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
         }
       },
       render: function(scope, data) {

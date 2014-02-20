@@ -15,7 +15,7 @@
 
     var configureX = function(data) {
       if (!this.parent.x) {
-        var xData = extractValues(data, this.parent.xKey());
+        var xData = extractValues(data, this.parent.xKey);
         this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
         this.parent.x = d3.scale.ordinal()
           .domain(xData)

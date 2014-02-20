@@ -3,16 +3,12 @@
   /* global d4: false */
   'use strict';
 
-  var zKey = function(){
-    return 'z';
-  };
-
   var scatterPlotBuilder = function() {
     var configureX = function(data) {
       if (!this.parent.x) {
-        var ext = d3.extent(data,function(d) {
-            return d[this.parent.xKey()];
-        }.bind(this))
+        var ext = d3.extent(data, function(d) {
+          return d[this.parent.xKey];
+        }.bind(this));
         this.parent.x = d3.scale.linear()
           .domain(ext)
           .nice()
@@ -23,9 +19,9 @@
 
     var configureY = function(data) {
       if (!this.parent.y) {
-        var ext = d3.extent(data,function(d) {
-            return d[this.parent.yKey()];
-        }.bind(this))
+        var ext = d3.extent(data, function(d) {
+          return d[this.parent.yKey];
+        }.bind(this));
         this.parent.y = d3.scale.linear()
           .domain(ext)
           .nice()
@@ -36,9 +32,9 @@
 
     var configureZ = function(data) {
       if (!this.parent.z) {
-        var ext = d3.extent(data,function(d) {
-            return d[this.parent.zKey()];
-        }.bind(this))
+        var ext = d3.extent(data, function(d) {
+          return d[this.parent.zKey];
+        }.bind(this));
         this.parent.z = d3.scale.linear()
           .domain(ext)
           .nice()
@@ -72,7 +68,7 @@
   d4.scatterPlot = function() {
     var chart = d4.baseChart({
       accessors: ['z', 'zKey'],
-      zKey: zKey
+      zKey: 'z'
     }, scatterPlotBuilder);
     [{
       'scatterSeries': d4.features.scatterSeries

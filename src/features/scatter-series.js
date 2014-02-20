@@ -5,15 +5,15 @@
     return {
       accessors: {
         cx: function(d) {
-          return this.x(d[this.xKey()]);
+          return this.x(d[this.xKey]);
         },
 
         cy: function(d) {
-          return this.y(d[this.yKey()]);
+          return this.y(d[this.yKey]);
         },
 
         r: function(d) {
-          return this.z(d[this.zKey()]);
+          return this.z(d[this.zKey]);
         },
 
         classes : function(d, i) {

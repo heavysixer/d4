@@ -9,7 +9,7 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey()]);
+          return this.x(d[this.xKey]);
         },
 
         y: function(d) {
@@ -26,7 +26,7 @@
         },
 
         classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.yKey()];
+          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.yKey];
         }
       },
       render: function(scope, data) {
@@ -35,7 +35,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.yKey();
+            return 'series'+ i + ' ' +  this.yKey;
           }.bind(this));
 
         group.selectAll('rect')

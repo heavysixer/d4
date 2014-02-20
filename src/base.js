@@ -117,21 +117,14 @@
     if (!defaultBuilder) {
       assert('No builder defined');
     }
-    // FIXME: Make xKey, yKey and valueKey just properites not functions;
     var opts = d4.merge({
       width: 400,
       height: 400,
       features: {},
       mixins: [],
-      xKey: function() {
-        return 'x';
-      },
-      yKey: function() {
-        return 'y';
-      },
-      valueKey: function() {
-        return 'y';
-      },
+      xKey: 'x',
+      yKey: 'y',
+      valueKey: 'y',
       margin: {
         top: 20,
         right: 20,
@@ -173,7 +166,7 @@
 
   var extractOverrides = function(feature) {
     if (feature.overrides) {
-      return feature.overrides();
+      return feature.overrides(this);
     } else {
       return {};
     }
@@ -186,7 +179,7 @@
       assert('You need to supply an object to mixin.');
     }
     var name = d3.keys(feature)[0];
-    var overrides = extractOverrides(feature, name);
+    var overrides = extractOverrides.bind(this)(feature, name);
     feature[name] = d4.merge(feature[name](name), overrides);
     d4.extend(this.features, feature);
     if (typeof index !== 'undefined') {

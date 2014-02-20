@@ -121,21 +121,14 @@
     if (!defaultBuilder) {
       assert('No builder defined');
     }
-    // FIXME: Make xKey, yKey and valueKey just properites not functions;
     var opts = d4.merge({
       width: 400,
       height: 400,
       features: {},
       mixins: [],
-      xKey: function() {
-        return 'x';
-      },
-      yKey: function() {
-        return 'y';
-      },
-      valueKey: function() {
-        return 'y';
-      },
+      xKey: 'x',
+      yKey: 'y',
+      valueKey: 'y',
       margin: {
         top: 20,
         right: 20,
@@ -327,7 +320,7 @@
         this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
         this.parent.x = d3.scale.ordinal()
           .domain(data.map(function(d) {
-            return d[this.xKey()];
+            return d[this.xKey];
           }.bind(this.parent)))
           .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
       }
@@ -337,7 +330,7 @@
       if (!this.parent.y) {
         this.parent.y = d3.scale.linear()
           .domain(d3.extent(data, function(d) {
-            return d[this.yKey()];
+            return d[this.yKey];
           }.bind(this.parent)));
       }
       this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
@@ -405,7 +398,7 @@
 
     var configureX = function(data) {
       if (!this.parent.x) {
-        var xData = extractValues(data, this.parent.xKey());
+        var xData = extractValues(data, this.parent.xKey);
         this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
         this.parent.x = d3.scale.ordinal()
           .domain(xData)
@@ -415,7 +408,7 @@
 
     var configureY = function(data) {
       if (!this.parent.y) {
-        var yData = extractValues(data, this.parent.yKey());
+        var yData = extractValues(data, this.parent.yKey);
         var ext = d3.extent(yData);
         this.parent.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
       }
@@ -483,7 +476,7 @@
 
     var configureX = function(data) {
       if (!this.parent.x) {
-        var xData = extractValues(data, this.parent.xKey());
+        var xData = extractValues(data, this.parent.xKey);
         this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
         this.parent.x = d3.scale.ordinal()
           .domain(xData)
@@ -493,7 +486,7 @@
 
     var configureY = function(data) {
       if (!this.parent.y) {
-        var yData = extractValues(data, this.parent.yKey());
+        var yData = extractValues(data, this.parent.yKey);
         var ext = d3.extent(yData);
         this.parent.y = d3.scale.linear().domain(ext);
       }
@@ -549,7 +542,7 @@
       if (!this.parent.x) {
         this.parent.x = d3.scale.linear()
           .domain(d3.extent(data, function(d) {
-            return d[this.parent.xKey()];
+            return d[this.parent.xKey];
           }.bind(this)));
       }
       this.parent.x.range([0, this.parent.width - this.parent.margin.right - this.parent.margin.left])
@@ -562,7 +555,7 @@
         this.parent.yRoundBands = this.parent.yRoundBands || 0.3;
         this.parent.y = d3.scale.ordinal()
           .domain(data.map(function(d) {
-            return d[this.parent.yKey()];
+            return d[this.parent.yKey];
           }.bind(this)))
           .rangeRoundBands([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0], this.parent.yRoundBands);
       }
@@ -617,16 +610,12 @@
   /* global d4: false */
   'use strict';
 
-  var zKey = function(){
-    return 'z';
-  };
-
   var scatterPlotBuilder = function() {
     var configureX = function(data) {
       if (!this.parent.x) {
-        var ext = d3.extent(data,function(d) {
-            return d[this.parent.xKey()];
-        }.bind(this))
+        var ext = d3.extent(data, function(d) {
+          return d[this.parent.xKey];
+        }.bind(this));
         this.parent.x = d3.scale.linear()
           .domain(ext)
           .nice()
@@ -637,9 +626,9 @@
 
     var configureY = function(data) {
       if (!this.parent.y) {
-        var ext = d3.extent(data,function(d) {
-            return d[this.parent.yKey()];
-        }.bind(this))
+        var ext = d3.extent(data, function(d) {
+          return d[this.parent.yKey];
+        }.bind(this));
         this.parent.y = d3.scale.linear()
           .domain(ext)
           .nice()
@@ -650,9 +639,9 @@
 
     var configureZ = function(data) {
       if (!this.parent.z) {
-        var ext = d3.extent(data,function(d) {
-            return d[this.parent.zKey()];
-        }.bind(this))
+        var ext = d3.extent(data, function(d) {
+          return d[this.parent.zKey];
+        }.bind(this));
         this.parent.z = d3.scale.linear()
           .domain(ext)
           .nice()
@@ -686,7 +675,7 @@
   d4.scatterPlot = function() {
     var chart = d4.baseChart({
       accessors: ['z', 'zKey'],
-      zKey: zKey
+      zKey: 'z'
     }, scatterPlotBuilder);
     [{
       'scatterSeries': d4.features.scatterSeries
@@ -718,7 +707,7 @@
 
     var configureX = function(data) {
       if (!this.parent.x) {
-        var xData = extractValues(data, this.parent.xKey());
+        var xData = extractValues(data, this.parent.xKey);
         this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
         this.parent.x = d3.scale.ordinal()
           .domain(xData)
@@ -800,13 +789,13 @@
             var yVal = (d.y0 + d.y) - Math.min(0, d.y);
             return this.y(yVal);
           } else {
-            return this.y(d[this.yKey()]);
+            return this.y(d[this.yKey]);
           }
         },
 
         x: function(d) {
           if (this.orientation() === 'vertical') {
-            return this.x(d[this.xKey()]);
+            return this.x(d[this.xKey]);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
             return this.x(xVal);
@@ -834,7 +823,7 @@
           if (n > 0 && d.y0 === 0) {
             klass = 'subtotal';
           }
-          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.yKey()];
+          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.yKey];
         }
       }
     };
@@ -849,12 +838,12 @@
             var yVal = (d.y0 + d.y) - Math.max(0, d.y);
             return this.y(yVal) - 10 - height;
           } else {
-            return this.y(d[this.yKey()]) + (this.y.rangeBand() / 2);
+            return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);
           }
         },
         x: function(d) {
           if (this.orientation() === 'vertical') {
-            return this.x(d[this.xKey()]) + (this.x.rangeBand() / 2);
+            return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
             var width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
@@ -862,7 +851,7 @@
           }
         },
         text: function(d) {
-          return d3.format('').call(this, d[this.valueKey()]);
+          return d3.format('').call(this, d[this.valueKey]);
         }
       }
     };
@@ -1035,16 +1024,16 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey()]) + (this.x.rangeBand() / 2);
+          return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
         },
 
         y: function(d) {
-          var height = Math.abs(this.y(d[this.yKey()]) - this.y(0));
-          return (d[this.yKey()] < 0 ? this.y(d[this.yKey()]) - height : this.y(d[this.yKey()])) - 5;
+          var height = Math.abs(this.y(d[this.yKey]) - this.y(0));
+          return (d[this.yKey] < 0 ? this.y(d[this.yKey]) - height : this.y(d[this.yKey])) - 5;
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.yKey()]);
+          return d3.format('').call(this, d[this.yKey]);
         }
       },
       render: function(scope, data) {
@@ -1075,11 +1064,11 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey()]);
+          return this.x(d[this.xKey]);
         },
 
         y: function(d) {
-          return d[this.yKey()] < 0 ? this.y(0) : this.y(d[this.yKey()]);
+          return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);
         },
 
         width: function() {
@@ -1087,11 +1076,11 @@
         },
 
         height: function(d) {
-          return Math.abs(this.y(d[this.yKey()]) - this.y(0));
+          return Math.abs(this.y(d[this.yKey]) - this.y(0));
         },
 
         classes: function(d, i) {
-          return d[this.yKey()] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
+          return d[this.yKey] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
         }
       },
       render: function(scope, data) {
@@ -1172,17 +1161,17 @@
       accessors: {
         x: function(d, i) {
           var width = this.x.rangeBand() / this.countGroups();
-          var xPos = this.x(d[this.xKey()]) + width * i;
+          var xPos = this.x(d[this.xKey]) + width * i;
           var gutter = width * 0.1;
           return xPos + width/2 - gutter;
         },
 
         y: function(d) {
-          return (d[this.yKey()] < 0 ? this.y(0) : this.y(d[this.yKey()])) -5;
+          return (d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey])) -5;
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.yKey()]);
+          return d3.format('').call(this, d[this.yKey]);
         }
       },
       render: function(scope, data) {
@@ -1191,7 +1180,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i +  ' ' + this.xKey();
+            return 'series'+ i +  ' ' + this.xKey;
           }.bind(this));
 
         var text = group.selectAll('text')
@@ -1221,12 +1210,12 @@
       accessors: {
         x: function(d,i) {
           var width = this.x.rangeBand() / this.countGroups();
-          var xPos = this.x(d[this.xKey()]) + width * i;
+          var xPos = this.x(d[this.xKey]) + width * i;
           return xPos;
         },
 
         y: function(d) {
-          return d[this.yKey()] < 0 ? this.y(0) : this.y(d[this.yKey()]);
+          return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);
         },
 
         width: function() {
@@ -1236,11 +1225,11 @@
         },
 
         height: function(d) {
-          return Math.abs(this.y(d[this.yKey()]) - this.y(0));
+          return Math.abs(this.y(d[this.yKey]) - this.y(0));
         },
 
         classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d[this.yKey()]) + ' ' + d[this.yKey()];
+          return 'bar fill item'+ i + ' ' + sign(d[this.yKey]) + ' ' + d[this.yKey];
         }
       },
       render: function(scope, data) {
@@ -1250,7 +1239,7 @@
           group.enter().append('g');
           group.exit().remove();
           group.attr('class', function(d,i) {
-            return 'series'+ i + ' ' + this.xKey();
+            return 'series'+ i + ' ' + this.xKey;
           }.bind(this));
 
         group.selectAll('rect')
@@ -1275,11 +1264,11 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d.values[d.values.length - 1][this.xKey()]);
+          return this.x(d.values[d.values.length - 1][this.xKey]);
         },
 
         y: function(d) {
-          return this.y(d.values[d.values.length - 1][this.yKey()]);
+          return this.y(d.values[d.values.length - 1][this.yKey]);
         },
 
         text: function(d) {
@@ -1315,10 +1304,10 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey()]);
+          return this.x(d[this.xKey]);
         },
         y: function(d) {
-          return this.y(d[this.yKey()]);
+          return this.y(d[this.yKey]);
         },
         interpolate: function() {
           return 'basis';
@@ -1397,15 +1386,15 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(Math.min(0, d[this.xKey()])) + Math.abs(this.x(d[this.xKey()]) - this.x(0)) + 20;
+          return this.x(Math.min(0, d[this.xKey])) + Math.abs(this.x(d[this.xKey]) - this.x(0)) + 20;
         },
 
         y: function(d) {
-          return this.y(d[this.yKey()]) + (this.y.rangeBand() / 2);
+          return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.xKey()]);
+          return d3.format('').call(this, d[this.xKey]);
         }
       },
       render: function(scope, data) {
@@ -1430,11 +1419,11 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(Math.min(0, d[this.xKey()]));
+          return this.x(Math.min(0, d[this.xKey]));
         },
 
         y: function(d) {
-          return this.y(d[this.yKey()]);
+          return this.y(d[this.yKey]);
         },
 
         height: function() {
@@ -1442,11 +1431,11 @@
         },
 
         width: function(d) {
-          return Math.abs(this.x(d[this.xKey()]) - this.x(0));
+          return Math.abs(this.x(d[this.xKey]) - this.x(0));
         },
 
         classes: function(d, i) {
-          return d[this.xKey()] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
+          return d[this.xKey] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
         }
       },
       render: function(scope, data) {
@@ -1473,15 +1462,15 @@
     return {
       accessors: {
         cx: function(d) {
-          return this.x(d[this.xKey()]);
+          return this.x(d[this.xKey]);
         },
 
         cy: function(d) {
-          return this.y(d[this.yKey()]);
+          return this.y(d[this.yKey]);
         },
 
         r: function(d) {
-          return this.z(d[this.zKey()]);
+          return this.z(d[this.zKey]);
         },
 
         classes : function(d, i) {
@@ -1528,7 +1517,7 @@
         },
 
         y1: function(d) {
-          return this.y(d[this.yKey()]);
+          return this.y(d[this.yKey]);
         },
 
         span: function(){
@@ -1596,7 +1585,7 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey()]) + (this.x.rangeBand() / 2);
+          return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
         },
 
         y: function(d) {
@@ -1607,7 +1596,7 @@
 
         text: function(d) {
           if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
-            return d3.format('').call(this, d[this.valueKey()]);
+            return d3.format('').call(this, d[this.valueKey]);
           }
         }
       },
@@ -1617,7 +1606,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
-            return 'series' + i + ' '+ sign(d.y) + ' ' + this.xKey();
+            return 'series' + i + ' '+ sign(d.y) + ' ' + this.xKey;
           }.bind(this));
 
         var text = group.selectAll('text')
@@ -1646,7 +1635,7 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey()]);
+          return this.x(d[this.xKey]);
         },
 
         y: function(d) {
@@ -1663,7 +1652,7 @@
         },
 
         classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.yKey()];
+          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.yKey];
         }
       },
       render: function(scope, data) {
@@ -1672,7 +1661,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.yKey();
+            return 'series'+ i + ' ' +  this.yKey;
           }.bind(this));
 
         group.selectAll('rect')
@@ -1781,13 +1770,13 @@
             }
             return this.x(xVal) + width;
           } else {
-            return this.x(d[this.xKey()]);
+            return this.x(d[this.xKey]);
           }
         },
 
         y: function(d) {
           if(this.orientation() === 'horizontal'){
-            return this.y(d[this.yKey()]);
+            return this.y(d[this.yKey]);
           } else {
             return this.y(d.y0 + d.y);
           }

@@ -25,12 +25,9 @@ $(document).ready(function(){
     ['2014', 50]
   ];
   var chart = d4.columnChart()
-  .xKey(function(d){
-    return 0;
-  })
-  .yKey(function(d){
-    return 1;
-  })
+  .xKey(0)
+  .yKey(1);
+
   d3.select('#example')
   .datum(data)
   .call(chart);
@@ -42,9 +39,7 @@ $(document).ready(function(){
 <pre><code id="code" class="language-javascript">
   // By default d4 expects a series object, which uses the following format:
   // { x : '2010', y : 10 }.
-  // However, our incoming data format is an array, so we'll simply use the
-  // xKey and yKey dimension functions to return either 0 or 1, which will
-  // access the correct array index.
+  // The default format is not desired and so we'll override it.
   var data = [
     ['2010', -10],
     ['2011', 20],
@@ -53,12 +48,8 @@ $(document).ready(function(){
     ['2014', 50]
   ];
   var chart = d4.columnChart()
-  .xKey(function(d){
-    return 0;
-  })
-  .yKey(function(d){
-    return 1;
-  })
+  .xKey(0)
+  .yKey(1)
   d3.select('#example')
   .datum(data)
   .call(chart);

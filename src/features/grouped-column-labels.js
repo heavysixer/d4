@@ -6,17 +6,17 @@
       accessors: {
         x: function(d, i) {
           var width = this.x.rangeBand() / this.countGroups();
-          var xPos = this.x(d[this.xKey()]) + width * i;
+          var xPos = this.x(d[this.xKey]) + width * i;
           var gutter = width * 0.1;
           return xPos + width/2 - gutter;
         },
 
         y: function(d) {
-          return (d[this.yKey()] < 0 ? this.y(0) : this.y(d[this.yKey()])) -5;
+          return (d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey])) -5;
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.yKey()]);
+          return d3.format('').call(this, d[this.yKey]);
         }
       },
       render: function(scope, data) {
@@ -25,7 +25,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i +  ' ' + this.xKey();
+            return 'series'+ i +  ' ' + this.xKey;
           }.bind(this));
 
         var text = group.selectAll('text')

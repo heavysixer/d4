@@ -9,7 +9,7 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey()]) + (this.x.rangeBand() / 2);
+          return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
         },
 
         y: function(d) {
@@ -20,7 +20,7 @@
 
         text: function(d) {
           if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
-            return d3.format('').call(this, d[this.valueKey()]);
+            return d3.format('').call(this, d[this.valueKey]);
           }
         }
       },
@@ -30,7 +30,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
-            return 'series' + i + ' '+ sign(d.y) + ' ' + this.xKey();
+            return 'series' + i + ' '+ sign(d.y) + ' ' + this.xKey;
           }.bind(this));
 
         var text = group.selectAll('text')

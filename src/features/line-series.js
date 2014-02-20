@@ -5,10 +5,10 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey()]);
+          return this.x(d[this.xKey]);
         },
         y: function(d) {
-          return this.y(d[this.yKey()]);
+          return this.y(d[this.yKey]);
         },
         interpolate: function() {
           return 'basis';

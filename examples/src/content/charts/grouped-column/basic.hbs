@@ -56,12 +56,8 @@ $(document).ready(function(){
 
   var chart = d4.groupedColumnChart()
   .width($('#example').width())
-  .xKey(function(){
-    return 'year';
-  })
-  .yKey(function(){
-    return 'unitsSold';
-  })
+  .xKey('year')
+  .yKey('unitsSold')
   .countGroups(function(){
     return parsedData.data[0].values.length;
   });

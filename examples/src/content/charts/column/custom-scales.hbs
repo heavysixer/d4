@@ -50,19 +50,19 @@ $(document).ready(function() {
     .using('bars', function(bars){
       bars
       .x(function (d) {
-        cumulativeX += d[this.xKey()];
-        return this.x(cumulativeX - d[this.xKey()]);
+        cumulativeX += d[this.xKey];
+        return this.x(cumulativeX - d[this.xKey]);
       })
       .width(function (d) {
-        return this.x(d[this.xKey()]);
+        return this.x(d[this.xKey]);
       });
     })
 
     .using('barLabels', function (label) {
       label
         .x(function (d) {
-          cumulativeLabelX += d[this.xKey()];
-          return this.x(cumulativeLabelX - d[this.xKey()] / 2);
+          cumulativeLabelX += d[this.xKey];
+          return this.x(cumulativeLabelX - d[this.xKey] / 2);
         })
     });
 
@@ -85,6 +85,7 @@ $(document).ready(function() {
     { x: 400, y: 40 },
     { x: 500, y: 50 }
   ];
+
   var cumulativeLabelX = 0;
   var cumulativeX = 0;
   var margin = {
@@ -107,23 +108,23 @@ $(document).ready(function() {
     .using('bars', function(bars){
       bars
       .x(function (d) {
-        cumulativeX += d[this.xKey()];
-        return this.x(cumulativeX - d[this.xKey()]);
+        cumulativeX += d[this.xKey];
+        return this.x(cumulativeX - d[this.xKey]);
       })
       .width(function (d) {
-        return this.x(d[this.xKey()]);
+        return this.x(d[this.xKey]);
       });
     })
 
     .using('barLabels', function (label) {
       label
         .x(function (d) {
-          cumulativeLabelX += d[this.xKey()];
-          return this.x(cumulativeLabelX - d[this.xKey()] / 2);
+          cumulativeLabelX += d[this.xKey];
+          return this.x(cumulativeLabelX - d[this.xKey] / 2);
         })
     });
 
-  d3.select('#example')
+  d3.select(element[0])
     .datum(data)
     .call(chart);
 </code></pre>
