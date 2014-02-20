@@ -121,6 +121,7 @@
     if (!defaultBuilder) {
       assert('No builder defined');
     }
+    // FIXME: Make xKey, yKey and valueKey just properites not functions;
     var opts = d4.merge({
       width: 400,
       height: 400,
@@ -199,6 +200,10 @@
       this.mixins.push(name);
     }
 
+    /*
+      FIXME: see fixme note related to the chart accessor functions, the same
+    problem applies here.
+    */
     var accessors = this.features[name].accessors;
     if (accessors) {
       d3.keys(accessors).forEach(function(functName) {
@@ -240,6 +245,16 @@
     var opts = assignDefaults(config, defaultBuilder);
     var chart = applyScaffold(opts);
 
+    /*
+      FIXME: d4 wraps the inner property object `opts` in a series of class
+    functions. For example: `chart.width(300)` will set the internal
+    `opts.width` property to 300. Additionally chart.width() will return 300.
+    However, this behavior creates ambiguity in API because it is unclear to the
+    developer which accessors require functions and which can simply supply
+    values. Ideally the API should support something like this:
+    chart.xKey('foo') or chart.xKey(function(){ return 'foo'; })
+    Presently only the latter is allowed, which is confusing.
+    */
     chart.accessors = opts.accessors;
     chart.accessors.forEach(function(accessor) {
       chart[accessor] = function(attr) {
@@ -549,7 +564,7 @@
           .domain(data.map(function(d) {
             return d[this.parent.yKey()];
           }.bind(this)))
-          .rangeRoundBands([0, this.parent.height - this.parent.margin.top - this.parent.margin.bottom], this.parent.yRoundBands);
+          .rangeRoundBands([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0], this.parent.yRoundBands);
       }
     };
 
@@ -776,12 +791,42 @@
     return 'vertical';
   };
 
+  // FIXME: It would be nice not to continually have to check the orientation.
   var columnSeriesOverrides = function() {
     return {
       accessors: {
         y: function(d) {
-          var yVal = (d.y0 + d.y) - Math.min(0, d.y);
-          return this.y(yVal);
+          if (this.orientation() === 'vertical') {
+            var yVal = (d.y0 + d.y) - Math.min(0, d.y);
+            return this.y(yVal);
+          } else {
+            return this.y(d[this.yKey()]);
+          }
+        },
+
+        x: function(d) {
+          if (this.orientation() === 'vertical') {
+            return this.x(d[this.xKey()]);
+          } else {
+            var xVal = (d.y0 + d.y) - Math.max(0, d.y);
+            return this.x(xVal);
+          }
+        },
+
+        width: function(d) {
+          if (this.orientation() === 'vertical') {
+            return this.x.rangeBand();
+          } else {
+            return Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
+          }
+        },
+
+        height: function(d) {
+          if (this.orientation() === 'vertical') {
+            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
+          } else {
+            return this.y.rangeBand();
+          }
         },
 
         classes: function(d, i, n) {
@@ -794,37 +839,103 @@
       }
     };
   };
+
   var columnLabelOverrides = function() {
     return {
       accessors: {
         y: function(d) {
-          var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
-          console.log(halfHeight);
-          if (d.y < 0) {
-            halfHeight *= -1;
+          if (this.orientation() === 'vertical') {
+            var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
+            if (d.y < 0) {
+              halfHeight *= -1;
+            }
+            var yVal = d.y0 + d.y;
+            return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+          } else {
+            return this.y(d[this.yKey()]) + (this.y.rangeBand() / 2);
           }
-          var yVal = d.y0 + d.y;
-          return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+        },
+        x: function(d) {
+          if (this.orientation() === 'vertical') {
+            return this.x(d[this.xKey()]) + (this.x.rangeBand() / 2);
+          } else {
+            var xVal = (d.y0 + d.y) - Math.max(0, d.y);
+            var width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
+            return this.x(xVal) + 10 + width;
+          }
+        },
+        text: function(d){
+          if(this.orientation() === 'vertical') {
+            if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
+              return d3.format('').call(this, d[this.valueKey()]);
+            }
+          }else{
+            return d3.format('').call(this, d[this.valueKey()]);
+          }
+
         }
       }
     };
   };
 
   var waterfallChartBuilder = function() {
-    var configureX = function(data) {
-      if (!this.parent.x) {
+    // var configureX = function(data) {
+    //   if (!this.parent.x) {
+    //     var keys = data.map(function(d) {
+    //       return d.key;
+    //     }.bind(this));
+    //
+    //     this.parent.x = d3.scale.ordinal()
+    //       .domain(keys)
+    //       .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands || 0.3);
+    //   }
+    // };
+    //
+    // var configureY = function(data) {
+    //   if (!this.parent.y) {
+    //     var ext = d3.extent(d3.merge(data.map(function(datum) {
+    //       return d3.extent(datum.values, function(d) {
+    //
+    //         // This is anti-intuative but the stack only returns y and y0 even
+    //         // when it applies to the x dimension;
+    //         return d.y + d.y0;
+    //       });
+    //     })));
+    //     ext[0] = Math.min(0, ext[0]);
+    //     this.parent.y = d3.scale.linear()
+    //       .domain(ext);
+    //   }
+    //   this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+    //     .clamp(true)
+    //     .nice();
+    //
+    // };
+
+    var rangeBoundsFor = function(dimension) {
+      var rangeBounds;
+      if (dimension === 'x') {
+        rangeBounds = [0, this.parent.width - this.parent.margin.left - this.parent.margin.right];
+        return (this.parent.orientation().toLowerCase() === 'vertical') ? rangeBounds.reverse() : rangeBounds;
+      } else {
+        rangeBounds = [0, this.parent.height - this.parent.margin.top - this.parent.margin.bottom];
+        return (this.parent.orientation().toLowerCase() === 'vertical') ? rangeBounds.reverse() : rangeBounds;
+      }
+    };
+
+    var setOrdinal = function(dimension, data) {
+      if (!this.parent[dimension]) {
         var keys = data.map(function(d) {
           return d.key;
         }.bind(this));
 
-        this.parent.x = d3.scale.ordinal()
+        this.parent[dimension] = d3.scale.ordinal()
           .domain(keys)
-          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands || 0.3);
+          .rangeRoundBands(rangeBoundsFor.bind(this)(dimension), this.parent.xRoundBands || 0.3);
       }
     };
 
-    var configureY = function(data) {
-      if (!this.parent.y) {
+    var setLinear = function(dimension, data) {
+      if (!this.parent[dimension]) {
         var ext = d3.extent(d3.merge(data.map(function(datum) {
           return d3.extent(datum.values, function(d) {
 
@@ -834,18 +945,22 @@
           });
         })));
         ext[0] = Math.min(0, ext[0]);
-        this.parent.y = d3.scale.linear()
+        this.parent[dimension] = d3.scale.linear()
           .domain(ext);
       }
-      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+      this.parent[dimension].range(rangeBoundsFor.bind(this)(dimension))
         .clamp(true)
         .nice();
-
     };
 
     var configureScales = function(data) {
-      configureX.bind(this)(data);
-      configureY.bind(this)(data);
+      if (this.parent.orientation().toLowerCase() === 'vertical') {
+        setOrdinal.bind(this)('x', data);
+        setLinear.bind(this)('y', data);
+      } else {
+        setOrdinal.bind(this)('y', data);
+        setLinear.bind(this)('x', data);
+      }
     };
 
     var builder = {
@@ -1701,15 +1816,32 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey()]);
+          if(this.orientation() === 'horizontal'){
+            var width = 0;
+            var xVal = (d.y0 + d.y) - Math.max(0, d.y);
+            if(d.y > 0){
+              width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
+            }
+            return this.x(xVal) + width;
+          } else {
+            return this.x(d[this.xKey()]);
+          }
         },
 
         y: function(d) {
-          return this.y(d.y0 + d.y);
+          if(this.orientation() === 'horizontal'){
+            return this.y(d[this.yKey()]);
+          } else {
+            return this.y(d.y0 + d.y);
+          }
         },
 
         span: function(){
-          return this.x.rangeBand();
+          if(this.orientation() === 'horizontal'){
+            return this.y.rangeBand();
+          } else {
+            return this.x.rangeBand();
+          }
         },
 
         classes : function(d, i){
@@ -1746,14 +1878,22 @@
           if(i === 0){
             return 0;
           }
-          return scope.accessors.x.bind(this)(d) + scope.accessors.span.bind(this)();
+          if(this.orientation() === 'vertical') {
+            return scope.accessors.x.bind(this)(d) + scope.accessors.span.bind(this)();
+          } else {
+            return scope.accessors.x.bind(this)(data[i - 1].values[0]);
+          }
         }.bind(this))
 
         .attr('y2', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return scope.accessors.y.bind(this)(data[i - 1].values[0]);
+          if(this.orientation() === 'vertical') {
+            return scope.accessors.y.bind(this)(data[i - 1].values[0]);
+          }else {
+            return scope.accessors.y.bind(this)(d) + scope.accessors.span.bind(this)(d);
+          }
         }.bind(this));
 
         return lines;

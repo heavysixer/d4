@@ -23,7 +23,7 @@
           .domain(data.map(function(d) {
             return d[this.parent.yKey()];
           }.bind(this)))
-          .rangeRoundBands([0, this.parent.height - this.parent.margin.top - this.parent.margin.bottom], this.parent.yRoundBands);
+          .rangeRoundBands([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0], this.parent.yRoundBands);
       }
     };
 

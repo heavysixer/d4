@@ -8,12 +8,42 @@
     return 'vertical';
   };
 
+  // FIXME: It would be nice not to continually have to check the orientation.
   var columnSeriesOverrides = function() {
     return {
       accessors: {
         y: function(d) {
-          var yVal = (d.y0 + d.y) - Math.min(0, d.y);
-          return this.y(yVal);
+          if (this.orientation() === 'vertical') {
+            var yVal = (d.y0 + d.y) - Math.min(0, d.y);
+            return this.y(yVal);
+          } else {
+            return this.y(d[this.yKey()]);
+          }
+        },
+
+        x: function(d) {
+          if (this.orientation() === 'vertical') {
+            return this.x(d[this.xKey()]);
+          } else {
+            var xVal = (d.y0 + d.y) - Math.max(0, d.y);
+            return this.x(xVal);
+          }
+        },
+
+        width: function(d) {
+          if (this.orientation() === 'vertical') {
+            return this.x.rangeBand();
+          } else {
+            return Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
+          }
+        },
+
+        height: function(d) {
+          if (this.orientation() === 'vertical') {
+            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
+          } else {
+            return this.y.rangeBand();
+          }
         },
 
         classes: function(d, i, n) {
@@ -26,37 +56,103 @@
       }
     };
   };
+
   var columnLabelOverrides = function() {
     return {
       accessors: {
         y: function(d) {
-          var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
-          console.log(halfHeight);
-          if (d.y < 0) {
-            halfHeight *= -1;
+          if (this.orientation() === 'vertical') {
+            var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
+            if (d.y < 0) {
+              halfHeight *= -1;
+            }
+            var yVal = d.y0 + d.y;
+            return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+          } else {
+            return this.y(d[this.yKey()]) + (this.y.rangeBand() / 2);
           }
-          var yVal = d.y0 + d.y;
-          return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+        },
+        x: function(d) {
+          if (this.orientation() === 'vertical') {
+            return this.x(d[this.xKey()]) + (this.x.rangeBand() / 2);
+          } else {
+            var xVal = (d.y0 + d.y) - Math.max(0, d.y);
+            var width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
+            return this.x(xVal) + 10 + width;
+          }
+        },
+        text: function(d){
+          if(this.orientation() === 'vertical') {
+            if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
+              return d3.format('').call(this, d[this.valueKey()]);
+            }
+          }else{
+            return d3.format('').call(this, d[this.valueKey()]);
+          }
+
         }
       }
     };
   };
 
   var waterfallChartBuilder = function() {
-    var configureX = function(data) {
-      if (!this.parent.x) {
+    // var configureX = function(data) {
+    //   if (!this.parent.x) {
+    //     var keys = data.map(function(d) {
+    //       return d.key;
+    //     }.bind(this));
+    //
+    //     this.parent.x = d3.scale.ordinal()
+    //       .domain(keys)
+    //       .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands || 0.3);
+    //   }
+    // };
+    //
+    // var configureY = function(data) {
+    //   if (!this.parent.y) {
+    //     var ext = d3.extent(d3.merge(data.map(function(datum) {
+    //       return d3.extent(datum.values, function(d) {
+    //
+    //         // This is anti-intuative but the stack only returns y and y0 even
+    //         // when it applies to the x dimension;
+    //         return d.y + d.y0;
+    //       });
+    //     })));
+    //     ext[0] = Math.min(0, ext[0]);
+    //     this.parent.y = d3.scale.linear()
+    //       .domain(ext);
+    //   }
+    //   this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+    //     .clamp(true)
+    //     .nice();
+    //
+    // };
+
+    var rangeBoundsFor = function(dimension) {
+      var rangeBounds;
+      if (dimension === 'x') {
+        rangeBounds = [0, this.parent.width - this.parent.margin.left - this.parent.margin.right];
+        return (this.parent.orientation().toLowerCase() === 'vertical') ? rangeBounds.reverse() : rangeBounds;
+      } else {
+        rangeBounds = [0, this.parent.height - this.parent.margin.top - this.parent.margin.bottom];
+        return (this.parent.orientation().toLowerCase() === 'vertical') ? rangeBounds.reverse() : rangeBounds;
+      }
+    };
+
+    var setOrdinal = function(dimension, data) {
+      if (!this.parent[dimension]) {
         var keys = data.map(function(d) {
           return d.key;
         }.bind(this));
 
-        this.parent.x = d3.scale.ordinal()
+        this.parent[dimension] = d3.scale.ordinal()
           .domain(keys)
-          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands || 0.3);
+          .rangeRoundBands(rangeBoundsFor.bind(this)(dimension), this.parent.xRoundBands || 0.3);
       }
     };
 
-    var configureY = function(data) {
-      if (!this.parent.y) {
+    var setLinear = function(dimension, data) {
+      if (!this.parent[dimension]) {
         var ext = d3.extent(d3.merge(data.map(function(datum) {
           return d3.extent(datum.values, function(d) {
 
@@ -66,18 +162,22 @@
           });
         })));
         ext[0] = Math.min(0, ext[0]);
-        this.parent.y = d3.scale.linear()
+        this.parent[dimension] = d3.scale.linear()
           .domain(ext);
       }
-      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+      this.parent[dimension].range(rangeBoundsFor.bind(this)(dimension))
         .clamp(true)
         .nice();
-
     };
 
     var configureScales = function(data) {
-      configureX.bind(this)(data);
-      configureY.bind(this)(data);
+      if (this.parent.orientation().toLowerCase() === 'vertical') {
+        setOrdinal.bind(this)('x', data);
+        setLinear.bind(this)('y', data);
+      } else {
+        setOrdinal.bind(this)('y', data);
+        setLinear.bind(this)('x', data);
+      }
     };
 
     var builder = {

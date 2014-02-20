@@ -117,6 +117,7 @@
     if (!defaultBuilder) {
       assert('No builder defined');
     }
+    // FIXME: Make xKey, yKey and valueKey just properites not functions;
     var opts = d4.merge({
       width: 400,
       height: 400,
@@ -195,6 +196,10 @@
       this.mixins.push(name);
     }
 
+    /*
+      FIXME: see fixme note related to the chart accessor functions, the same
+    problem applies here.
+    */
     var accessors = this.features[name].accessors;
     if (accessors) {
       d3.keys(accessors).forEach(function(functName) {
@@ -236,6 +241,16 @@
     var opts = assignDefaults(config, defaultBuilder);
     var chart = applyScaffold(opts);
 
+    /*
+      FIXME: d4 wraps the inner property object `opts` in a series of class
+    functions. For example: `chart.width(300)` will set the internal
+    `opts.width` property to 300. Additionally chart.width() will return 300.
+    However, this behavior creates ambiguity in API because it is unclear to the
+    developer which accessors require functions and which can simply supply
+    values. Ideally the API should support something like this:
+    chart.xKey('foo') or chart.xKey(function(){ return 'foo'; })
+    Presently only the latter is allowed, which is confusing.
+    */
     chart.accessors = opts.accessors;
     chart.accessors.forEach(function(accessor) {
       chart[accessor] = function(attr) {
