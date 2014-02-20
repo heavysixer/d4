@@ -3,11 +3,6 @@
   /* global d4: false */
   'use strict';
 
-  // This accessor is meant to be overridden
-  var countGroups = function(){
-    return 1;
-  };
-
   var groupedColumnChartBuilder = function() {
     var extractValues = function(data, key) {
       var values = data.map(function(obj){
@@ -64,7 +59,7 @@
   d4.groupedColumnChart = function groupedColumnChart() {
     var chart = d4.baseChart({
       accessors: ['countGroups'],
-      countGroups: countGroups
+      countGroups: 1
     }, groupedColumnChartBuilder);
     [{
       'bars': d4.features.groupedColumnSeries

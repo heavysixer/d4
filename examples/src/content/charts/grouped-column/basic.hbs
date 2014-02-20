@@ -58,9 +58,7 @@ $(document).ready(function(){
   .width($('#example').width())
   .xKey('year')
   .yKey('unitsSold')
-  .countGroups(function(){
-    return parsedData.data[0].values.length;
-  });
+  .countGroups(parsedData.data[0].values.length);
 
   d3.select('#example')
   .datum(parsedData.data)

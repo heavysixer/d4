@@ -28,7 +28,6 @@
         .attr('r', scope.accessors.r.bind(this))
         .attr('cx', scope.accessors.cx.bind(this))
         .attr('cy', scope.accessors.cy.bind(this));
-
         return dot;
       }
     };
