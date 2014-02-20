@@ -12,51 +12,56 @@ Either download d4 directly from the github repository or install it using a pac
 
 Once you have a local copy of d4 simply include it **after** d3 in your source file.
 
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <!-- sensible defaults for styles -->
-      <link href="d4.css" rel="stylesheet" />
-    </head>
-    <body>
-      ...
-    <script src="d3.js"></script>
-    <script src="d4.js"></script>
-    </body>
-    </html>
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- sensible defaults for styles -->
+  <link href="d4.css" rel="stylesheet" />
+</head>
+<body>
+  ...
+<script src="d3.js"></script>
+<script src="d4.js"></script>
+</body>
+</html>
+```
 
 #####Hello World
 Here is the most basic example, which uses many of the preset defaults provided by d4.
 
-    var data = [
-      { x : '2010', y : 5 },
-      { x : '2011', y : 15 },
-      { x : '2012', y : 20 }
-    ];
-    var columnChart = d4.columnChart();
+```javascript
+var data = [
+  { x : '2010', y : 5 },
+  { x : '2011', y : 15 },
+  { x : '2012', y : 20 }
+];
+var columnChart = d4.columnChart();
 
-    d3.select('someDomElement')
-      .datum(data)
-      .call(columnChart);
-
+d3.select('someDomElement')
+  .datum(data)
+  .call(columnChart);
+```
 #####Getting Fancy
 d4 allows you to quickly build up sophisticated charts using a declaritive and highly contextual API that allows you to mixin
 or mixout features from your chart.
 
-    var data = [
-      { x : '2010', y : 5 },
-      { x : '2011', y : 15 },
-      { x : '2012', y : 20 }
-    ];
+```javascript
+var data = [
+  { x : '2010', y : 5 },
+  { x : '2011', y : 15 },
+  { x : '2012', y : 20 }
+];
 
-    // Create a column chart without a yAxis, but with a grid in the background.
-    var columnChart = d4.columnChart()
-    .mixout('yAxis')
-    .mixin('grid', d4.features.grid, 0)
+// Create a column chart without a yAxis, but with a grid in the background.
+var columnChart = d4.columnChart()
+.mixout('yAxis')
+.mixin('grid', d4.features.grid, 0)
 
-    d3.select('someDomElement')
-      .datum(data)
-      .call(columnChart);
+d3.select('someDomElement')
+  .datum(data)
+  .call(columnChart);
+```
 
 #####Additional Examples
 There are **many** more examples of d4 in the examples site inside the source code repository. Simply clone the repo and
