@@ -88,7 +88,13 @@ $(document).ready(function(){
 
   var chart = d4.waterfallChart()
     .width($('#example').width())
-    .orientation(function(){
+    .margin({
+      top: 20,
+      right: 20,
+      bottom: 20,
+      left: 100
+    })
+    .orientation(function() {
       return 'horizontal';
     })
     .xKey(function() {
@@ -96,12 +102,16 @@ $(document).ready(function(){
     })
     .yKey(function() {
       return 'category';
-    });
+    })
+    .valueKey(function(){
+      return 'value';
+    })
 
-  d3.select('#example1')
+  d3.select('#example')
     .datum(parsedData.data)
     .call(chart);
 });
+
 </script>
 <div id="waterfall">
   <div id="example"></div>
@@ -121,6 +131,50 @@ $(document).ready(function(){
 </code></pre>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript">
+  var data = [
+  { 'category': 'Job',       'value': 27  },
+  { 'category': 'Groceries', 'value': -3  },
+  { 'category': 'Allowance', 'value': 22  },
+  { 'category': 'Subtotal',  'value': 'e' },
+  { 'category': 'Videos',    'value': -22 },
+  { 'category': 'Coffee',    'value': -4  },
+  { 'category': 'Total',     'value': 'e' }
+  ];
+  var parsedData = d4.parsers.waterfall()
+    .x(function() {
+      return 'value';
+    })
+    .y(function() {
+      return 'category';
+    })
+    .nestKey(function() {
+      return 'category';
+    })(data);
+
+  var chart = d4.waterfallChart()
+    .width($('#example').width())
+    .margin({
+      top: 20,
+      right: 20,
+      bottom: 20,
+      left: 100
+    })
+    .orientation(function() {
+      return 'horizontal';
+    })
+    .xKey(function() {
+      return 'value';
+    })
+    .yKey(function() {
+      return 'category';
+    })
+    .valueKey(function(){
+      return 'value';
+    })
+
+  d3.select('#example')
+    .datum(parsedData.data)
+    .call(chart);
 </code></pre>
 
 
