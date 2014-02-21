@@ -2,8 +2,6 @@
  *  License: MIT Expat
  *  Date: 2014-02-21
  */
-/*! global d3: false */
-
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
   http://underscorejs.org
@@ -37,6 +35,11 @@
     .call(columnChart);
 */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
 
   var root = this;
@@ -182,8 +185,19 @@
     };
   };
 
-  // Specify the feature to mixin.
-  // `index` is optional and will place a mixin at a specific 'layer.'
+  /**
+   * Specifies a feature to be mixed into a given chart.
+   * The feature is an object where the key represents the feature name, and a
+   * value which is a function that when invoked returns a d4 feature object.
+   *
+   * Examples:
+   *
+   *      chart.mixin({ 'grid': d4.features.grid }, 0)
+   *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
+   *
+   * @param {Object} feature
+   * @param {Number} index - an optional number to specify the insertion layer.
+   */
   d4.mixin = function(feature, index) {
     if (!feature) {
       assert('You need to supply an object to mixin.');
@@ -199,7 +213,7 @@
       this.mixins.push(name);
     }
 
-    /*
+    /*!
       FIXME: see fixme note related to the chart accessor functions, the same
     problem applies here.
     */
@@ -244,7 +258,7 @@
     var opts = assignDefaults(config, defaultBuilder);
     var chart = applyScaffold(opts);
 
-    /*
+    /*!
       FIXME: d4 wraps the inner property object `opts` in a series of class
     functions. For example: `chart.width(300)` will set the internal
     `opts.width` property to 300. Additionally chart.width() will return 300.
@@ -966,8 +980,11 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
   d4.features.arrow = function(name) {
     return {
@@ -1032,8 +1049,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.columnLabels = function(name) {
     return {
@@ -1066,14 +1087,17 @@
   };
 }).call(this);
 
-/*! global d4: false */
-/*
+/*!
 
   DEPRECATION WARNING: This feature is deprecated in favor of using the nested
   column series renderer. Intrinsicly this makes sense because a normal column
   chart is mearly a stacked column chart with only one series.
 */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
   d4.features.columnSeries = function(name) {
     return {
@@ -1124,8 +1148,11 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
   d4.features.grid = function(name) {
 
@@ -1168,8 +1195,11 @@
     };
   };
 }).call(this);
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
   d4.features.groupedColumnLabels = function(name) {
     return {
@@ -1213,17 +1243,20 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
   d4.features.groupedColumnSeries = function(name) {
-    var sign = function(val){
+    var sign = function(val) {
       return (val > 0) ? 'positive' : 'negative';
     };
 
     return {
       accessors: {
-        x: function(d,i) {
+        x: function(d, i) {
           var width = this.x.rangeBand() / this.groupsOf;
           var xPos = this.x(d[this.xKey]) + width * i;
           return xPos;
@@ -1243,19 +1276,19 @@
           return Math.abs(this.y(d[this.yKey]) - this.y(0));
         },
 
-        classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d[this.yKey]) + ' ' + d[this.yKey];
+        classes: function(d, i) {
+          return 'bar fill item' + i + ' ' + sign(d[this.yKey]) + ' ' + d[this.yKey];
         }
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('.group')
           .data(data);
-          group.enter().append('g');
-          group.exit().remove();
-          group.attr('class', function(d,i) {
-            return 'series'+ i + ' ' + this.xKey;
-          }.bind(this));
+        group.enter().append('g');
+        group.exit().remove();
+        group.attr('class', function(d, i) {
+          return 'series' + i + ' ' + this.xKey;
+        }.bind(this));
 
         group.selectAll('rect')
           .data(function(d) {
@@ -1272,8 +1305,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.lineSeriesLabels = function(name) {
     return {
@@ -1312,8 +1349,12 @@
     };
   };
 }).call(this);
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.lineSeries = function(name) {
     return {
@@ -1357,8 +1398,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.referenceLine = function(name) {
     return {
@@ -1394,8 +1439,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.rowLabels = function(name) {
     return {
@@ -1427,8 +1476,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.rowSeries = function(name) {
     return {
@@ -1470,8 +1523,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.scatterSeries = function(name) {
     return {
@@ -1506,8 +1563,11 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
 
   /*
     Column connectors helpful when displaying a stacked column chart.
@@ -1588,8 +1648,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.stackedColumnLabels = function(name) {
     var sign = function(val) {
@@ -1638,8 +1702,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.stackedColumnSeries = function(name) {
     var sign = function(val){
@@ -1693,8 +1761,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.trendLine = function(name) {
     return {
@@ -1763,8 +1835,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
 
   /*
     Orthogonal Series Connectors connect column series together by using a
@@ -1862,8 +1938,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.xAxis = function(name) {
     return {
@@ -1884,8 +1964,12 @@
   };
 }).call(this);
 
-/*! global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
   d4.features.yAxis = function(name) {
 

@@ -181,8 +181,19 @@
     };
   };
 
-  // Specify the feature to mixin.
-  // `index` is optional and will place a mixin at a specific 'layer.'
+  /**
+   * Specifies a feature to be mixed into a given chart.
+   * The feature is an object where the key represents the feature name, and a
+   * value which is a function that when invoked returns a d4 feature object.
+   *
+   * Examples:
+   *
+   *      chart.mixin({ 'grid': d4.features.grid }, 0)
+   *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
+   *
+   * @param {Object} feature
+   * @param {Number} index - an optional number to specify the insertion layer.
+   */
   d4.mixin = function(feature, index) {
     if (!feature) {
       assert('You need to supply an object to mixin.');
@@ -198,7 +209,7 @@
       this.mixins.push(name);
     }
 
-    /*
+    /*!
       FIXME: see fixme note related to the chart accessor functions, the same
     problem applies here.
     */
@@ -243,7 +254,7 @@
     var opts = assignDefaults(config, defaultBuilder);
     var chart = applyScaffold(opts);
 
-    /*
+    /*!
       FIXME: d4 wraps the inner property object `opts` in a series of class
     functions. For example: `chart.width(300)` will set the internal
     `opts.width` property to 300. Additionally chart.width() will return 300.

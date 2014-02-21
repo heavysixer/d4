@@ -48,7 +48,7 @@ module.exports = function(grunt) {
     watch: {
       assemble: {
         files: ['<%= app.src %>/{assets,content,data,templates}/**/*.{md,hbs,yml,css}', '<%= app.src %>/../../docs/**/*.{md,hbs,yml}', '<%= app.src %>/../../README.md'],
-        tasks: ['copy:styles', 'assemble']
+        tasks: ['copy:styles', 'mox:build', 'assemble']
       },
       livereload: {
         options: {
@@ -185,12 +185,12 @@ module.exports = function(grunt) {
     },
     mox: {
       build: {
-        sourceFiles: ['../src/base.js'],
+        sourceFiles: ['../src/'],
         options: {
           name: '<%= meta.pkg.name %>',
           version: '<%= meta.pkg.version %>',
           template: 'file',
-          moxFile: '../docs/<%= meta.pkg.name %>-doc.json',
+          moxFile: '<%=app.src %>/data/<%= meta.pkg.name %>-doc.json',
           outputFile: '../docs/<%= meta.pkg.name %>-doc.md'
         }
       },
