@@ -92,12 +92,8 @@ $(document).ready(function(){
 
   var chart = d4.waterfallChart()
     .width($('#example').width())
-    .xKey(function() {
-      return 'category';
-    })
-    .yKey(function() {
-      return 'value';
-    });
+    .xKey('category')
+    .yKey('value');
 
   d3.select('#example')
     .datum(parsedData.data)
@@ -157,12 +153,8 @@ $(document).ready(function(){
 
   var chart = d4.waterfallChart()
     .width($('#example').width())
-    .xKey(function() {
-      return 'category';
-    })
-    .yKey(function() {
-      return 'value';
-    });
+    .xKey('category')
+    .yKey('value');
 
   d3.select('#example')
     .datum(parsedData.data)

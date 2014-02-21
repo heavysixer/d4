@@ -38,7 +38,7 @@
 
         
 <h5>Basic Scatter Plot</h5>
-<p>Coming Soon</p>
+<p>This is a basic example of the scatter plot.</p>
 <hr/>
 <script type="text/javascript" charset="utf-8">
 'use strict';
@@ -64,22 +64,16 @@ $(document).ready(function(){
 
   var chart = d4.scatterPlot()
   .width($('#example').width())
-  .xKey(function(){
-    return 'age';
-  })
-  .yKey(function(){
-    return 'month';
-  })
-  .zKey(function(){
-    return 'unitsSold';
-  });
+  .xKey('age')
+  .yKey('month')
+  .zKey('unitsSold');
 
   d3.select('#example')
   .datum(data)
   .call(chart);
 });
 </script>
-<div id="stacked_column">
+<div id="scatter">
   <div id="example"></div>
 </div>
 <h6>JavaScript Code</h6>
@@ -104,19 +98,14 @@ $(document).ready(function(){
 
   var chart = d4.scatterPlot()
   .width($('#example').width())
-  .xKey(function(){
-    return 'age';
-  })
-  .yKey(function(){
-    return 'month';
-  })
-  .zKey(function(){
-    return 'unitsSold';
-  });
+  .xKey('age')
+  .yKey('month')
+  .zKey('unitsSold');
 
   d3.select('#example')
   .datum(data)
   .call(chart);
+});
 </code></pre>
 
       </div>

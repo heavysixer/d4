@@ -52,6 +52,11 @@
   which makes it trivial for the developer to prepare the incoming data in a way
   that the chart expects it.
 </p>
+<p>
+  This example also mixes in a zero line to visually demarcate where the series
+  elements dip below zero. This is especially helpful in charts like the
+  stacked column, which are often used for financial analysis.
+</p>
 <hr/>
 <script type="text/javascript" charset="utf-8">
 'use strict';
@@ -88,11 +93,23 @@ $(document).ready(function(){
 
   var chart = d4.stackedColumnChart()
   .width($('#example').width())
-  .xKey(function(){
-    return 'year';
-  })
-  .yKey(function(){
-    return 'unitsSold';
+  .xKey('year')
+  .yKey('unitsSold')
+  .mixin({ 'zeroLine' : d4.features.referenceLine })
+  .using('zeroLine', function(zero) {
+    zero
+      .x1(function() {
+        return this.x(0);
+      })
+      .x2(function() {
+        return this.width - this.margin.left - this.margin.right;
+      })
+      .y1(function() {
+        return this.y(0);
+      })
+      .y2(function() {
+        return this.y(0);
+      });
   });
 
   d3.select('#example')
@@ -149,20 +166,29 @@ $(document).ready(function(){
     .y(function(){
       return 'salesman';
     })
-    .nestKey(function(){
-      return 'salesman';
-    })
     .value(function(){
       return 'unitsSold';
     })(data);
 
   var chart = d4.stackedColumnChart()
   .width($('#example').width())
-  .xKey(function(){
-    return 'year';
-  })
-  .yKey(function(){
-    return 'unitsSold';
+  .xKey('year')
+  .yKey('unitsSold')
+  .mixin({ 'zeroLine' : d4.features.referenceLine })
+  .using('zeroLine', function(zero) {
+    zero
+      .x1(function() {
+        return this.x(0);
+      })
+      .x2(function() {
+        return this.width - this.margin.left - this.margin.right;
+      })
+      .y1(function() {
+        return this.y(0);
+      })
+      .y2(function() {
+        return this.y(0);
+      });
   });
 
   d3.select('#example')

@@ -87,12 +87,8 @@ $(document).ready(function(){
 
   var chart = d4.lineChart()
   .width($('#example').width())
-  .xKey(function(){
-    return 'year';
-  })
-  .yKey(function(){
-    return 'unitsSold';
-  })
+  .xKey('year')
+  .yKey('unitsSold');
 
   d3.select('#example')
   .datum(parsedData.data)
@@ -136,12 +132,8 @@ $(document).ready(function(){
 
   var chart = d4.lineChart()
   .width($('#example').width())
-  .xKey(function(){
-    return 'year';
-  })
-  .yKey(function(){
-    return 'unitsSold';
-  })
+  .xKey('year')
+  .yKey('unitsSold');
 
   d3.select('#example')
   .datum(parsedData.data)
