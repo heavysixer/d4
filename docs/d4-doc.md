@@ -1,35 +1,39 @@
 # d4 -0.1.0
 
-## `../src/base.js`
+###### [base.js][0]
 
-* [`mixin`][0]
+* [`mixin`][1]
 
-## `../src/features/stacked-column-connectors.js`
+###### [column-chart.js][2]
 
-* [``][1]
+* [``][3]
 
-## `../src/features/waterfall-connectors.js`
+###### [nested-group.js][4]
 
-* [``][1]
+* [`nestedGroup`][5]
 
-## `../src/parsers/nested-group.js`
+###### [nested-stack.js][6]
 
-* [`nestedGroup`][2]
+* [`nestedStack`][7]
 
-## `../src/parsers/nested-stack.js`
+###### [waterfall.js][8]
 
-* [`nestedStack`][3]
+* [`waterfall`][9]
 
-## `../src/parsers/waterfall.js`
+###### [stacked-column-connectors.js][10]
 
-* [`waterfall`][4]
+* [``][3]
 
-## `../src/base.js`
+###### [waterfall-connectors.js][11]
 
-### `mixin`
+* [``][3]
 
-[\#][0]
-[Ⓣ][5]
+## base.js
+
+### mixin
+
+[\#][1]
+[Ⓣ][12]
 
 Specifies a feature to be mixed into a given chart.  
 The feature is an object where the key represents the feature name, and a  
@@ -48,39 +52,27 @@ Examples:
 
 ---
 
-## `../src/features/stacked-column-connectors.js`
+## column-chart.js
 
-### ``
+### 
 
-[\#][1]
-[Ⓣ][6]
+[\#][3]
+[Ⓣ][13]
 
-Column connectors helpful when displaying a stacked column chart.  
-A connector will not connect positve and negative columns. This is because  
-in a stacked column a negative column may move many series below its previous  
-location. This creates a messy collection of crisscrossing lines.
+Column Chart  
+@constructor
 
----
-
-## `../src/features/waterfall-connectors.js`
-
-### ``
-
-[\#][1]
-[Ⓣ][7]
-
-Orthogonal Series Connectors connect column series together by using a  
-line which bends only at 90 degrees. This connector type is most commonly  
-seen in charts such as waterfalls.
+The column chart has two axes (`x` and `y`). By default the column chart expects  
+linear values for the `y` and ordinal values on the `x`
 
 ---
 
-## `../src/parsers/nested-group.js`
+## nested-group.js
 
-### `nestedGroup`
+### nestedGroup
 
-[\#][2]
-[Ⓣ][8]
+[\#][5]
+[Ⓣ][14]
 
 The nested group parser is useful for grouped column charts where multiple  
 data items need to appear relative to the axis value, for example grouped  
@@ -93,7 +85,7 @@ column charts or multi-series line charts.
     ----------------------
     
     This module makes use of the d3's "nest" data structure layout
-    [https://github.com/mbostock/d3/wiki/Arrays#-nest][9]
+    [https://github.com/mbostock/d3/wiki/Arrays#-nest][15]
     
     Approach:
     Just like D3, this parser uses a chaining declaritiave style to build up
@@ -133,12 +125,12 @@ like this:
 
 ---
 
-## `../src/parsers/nested-stack.js`
+## nested-stack.js
 
-### `nestedStack`
+### nestedStack
 
-[\#][3]
-[Ⓣ][10]
+[\#][7]
+[Ⓣ][16]
 
 The nested stack parser is useful for charts which take a data series  
 and wants to sort them across a dimension and then display the results.  
@@ -153,8 +145,8 @@ The most common usecase would be a stacked column chart like this:
     ----------------------
     
     This module makes use of the d3's "nest" data structure, and "stack" layout
-    [https://github.com/mbostock/d3/wiki/Arrays#-nest][9]
-    [https://github.com/mbostock/d3/wiki/Stack-Layout][11]
+    [https://github.com/mbostock/d3/wiki/Arrays#-nest][15]
+    [https://github.com/mbostock/d3/wiki/Stack-Layout][17]
     
     Approach:
     Just like D3, this parser uses a chaining declaritiave style to build up
@@ -242,12 +234,12 @@ data - is an array of items stacked by D3
 
 ---
 
-## `../src/parsers/waterfall.js`
+## waterfall.js
 
-### `waterfall`
+### waterfall
 
-[\#][4]
-[Ⓣ][12]
+[\#][9]
+[Ⓣ][18]
 
 The waterfall parser is useful for waterfall charts where data items need to account  
 for the position of earlier values:
@@ -260,8 +252,8 @@ for the position of earlier values:
     ----------------------
     
     This module makes use of the d3's "nest" data structure, and "stack" layout
-    [https://github.com/mbostock/d3/wiki/Arrays#-nest][9]
-    [https://github.com/mbostock/d3/wiki/Stack-Layout][11]
+    [https://github.com/mbostock/d3/wiki/Arrays#-nest][15]
+    [https://github.com/mbostock/d3/wiki/Stack-Layout][17]
     
     
     Approach:
@@ -350,18 +342,53 @@ y - an object with a key representing the y accessor and an array of values
 
 ---
 
+## stacked-column-connectors.js
+
+### 
+
+[\#][3]
+[Ⓣ][19]
+
+Column connectors helpful when displaying a stacked column chart.  
+A connector will not connect positve and negative columns. This is because  
+in a stacked column a negative column may move many series below its previous  
+location. This creates a messy collection of crisscrossing lines.
+
+---
+
+## waterfall-connectors.js
+
+### 
+
+[\#][3]
+[Ⓣ][20]
+
+Orthogonal Series Connectors connect column series together by using a  
+line which bends only at 90 degrees. This connector type is most commonly  
+seen in charts such as waterfalls.
+
+---
 
 
-[0]: #mixin
-[1]: #
-[2]: #nestedgroup
-[3]: #nestedstack
-[4]: #waterfall
-[5]: #../src/base.js
-[6]: #../src/features/stacked-column-connectors.js
-[7]: #../src/features/waterfall-connectors.js
-[8]: #../src/parsers/nested-group.js
-[9]: https://github.com/mbostock/d3/wiki/Arrays#-nest
-[10]: #../src/parsers/nested-stack.js
-[11]: https://github.com/mbostock/d3/wiki/Stack-Layout
-[12]: #../src/parsers/waterfall.js
+
+[0]: #base-js
+[1]: #mixin
+[2]: #column-chart-js
+[3]: #
+[4]: #nested-group-js
+[5]: #nestedgroup
+[6]: #nested-stack-js
+[7]: #nestedstack
+[8]: #waterfall-js
+[9]: #waterfall
+[10]: #stacked-column-connectors-js
+[11]: #waterfall-connectors-js
+[12]: #base.js
+[13]: #column-chart.js
+[14]: #nested-group.js
+[15]: https://github.com/mbostock/d3/wiki/Arrays#-nest
+[16]: #nested-stack.js
+[17]: https://github.com/mbostock/d3/wiki/Stack-Layout
+[18]: #waterfall.js
+[19]: #stacked-column-connectors.js
+[20]: #waterfall-connectors.js

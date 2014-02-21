@@ -329,6 +329,13 @@
 
 }).call(this);
 
+/*
+ Column Chart
+ @constructor
+
+ The column chart has two axes (`x` and `y`). By default the column chart expects
+ linear values for the `y` and ordinal values on the `x`
+*/
 (function() {
   /*!
    * global d3: false
