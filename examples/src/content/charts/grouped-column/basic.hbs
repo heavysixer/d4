@@ -44,15 +44,9 @@ $(document).ready(function(){
     ];
 
   var parsedData = d4.parsers.nestedGroup()
-    .x(function(){
-      return 'year';
-    })
-    .y(function(){
-      return 'unitsSold';
-    })
-    .value(function(){
-      return 'unitsSold';
-    })(data);
+    .x('year')
+    .y('unitsSold')
+    .value('unitsSold')(data);
 
   var chart = d4.groupedColumnChart()
   .width($('#example').width())

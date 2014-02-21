@@ -1,6 +1,6 @@
 /*! d4 - v0.1.0
  *  License: MIT Expat
- *  Date: 2014-02-20
+ *  Date: 2014-02-21
  */
 /* global d3: false */
 
@@ -174,6 +174,12 @@
     } else {
       return {};
     }
+  };
+
+  d4.functor = function(funct) {
+    return isFunction(funct) ? funct : function() {
+      return funct;
+    };
   };
 
   // Specify the feature to mixin.
@@ -381,11 +387,6 @@
   /* global d4: false */
   'use strict';
 
-  // This accessor is meant to be overridden
-  var groupsOf = function(){
-    return 1;
-  };
-
   var groupedColumnChartBuilder = function() {
     var extractValues = function(data, key) {
       var values = data.map(function(obj){
@@ -442,7 +443,7 @@
   d4.groupedColumnChart = function groupedColumnChart() {
     var chart = d4.baseChart({
       accessors: ['groupsOf'],
-      groupsOf: groupsOf
+      groupsOf: 1
     }, groupedColumnChartBuilder);
     [{
       'bars': d4.features.groupedColumnSeries
@@ -2013,7 +2014,7 @@
     };
 
     var setDimension = function(dim, funct) {
-      opts[dim].key = funct();
+      opts[dim].key = d4.functor(funct)();
     };
 
     var parser = function(data) {
@@ -2214,7 +2215,7 @@
     };
 
     var setDimension = function(dim, funct) {
-      opts[dim].key = funct();
+      opts[dim].key = d4.functor(funct)();
     };
 
     var parser = function(data) {
@@ -2424,7 +2425,7 @@
     };
 
     var setDimension = function(dim, funct) {
-      opts[dim].key = funct();
+      opts[dim].key = d4.functor(funct)();
     };
 
     var parser = function(data) {
