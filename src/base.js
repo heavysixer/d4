@@ -3,32 +3,6 @@
   http://underscorejs.org
   (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
   Underscore may be freely distributed under the MIT license.
-
-  API:
-  var columnChart = d4.columnChart()
-    .margin({
-      top: 15,
-      right: 10,
-      bottom: 30,
-      left: 0
-    })
-    .mixin({
-      'grid': d4.features.grid
-    }, 0)
-    .using('bars', function(bars){
-      bars
-      .x(function(d){
-        cumulativeX += d[0];
-        return this.x(cumulativeX - d[0]);
-      })
-      .width(function(d){
-        return this.x(d[0]);
-      })
-    })
-
-  d3.select(e[0])
-    .datum(preparedValues)
-    .call(columnChart);
 */
 (function() {
   /*!
@@ -175,26 +149,7 @@
     }
   };
 
-  d4.functor = function(funct) {
-    return isFunction(funct) ? funct : function() {
-      return funct;
-    };
-  };
-
-  /**
-   * Specifies a feature to be mixed into a given chart.
-   * The feature is an object where the key represents the feature name, and a
-   * value which is a function that when invoked returns a d4 feature object.
-   *
-   * Examples:
-   *
-   *      chart.mixin({ 'grid': d4.features.grid }, 0)
-   *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
-   *
-   * @param {Object} feature
-   * @param {Number} index - an optional number to specify the insertion layer.
-   */
-  d4.mixin = function(feature, index) {
+  var mixin = function(feature, index) {
     if (!feature) {
       assert('You need to supply an object to mixin.');
     }
@@ -227,7 +182,7 @@
     }
   };
 
-  d4.mixout = function(name) {
+  var mixout = function(name) {
     if (!name) {
       assert('A name is required in order to mixout a chart feature.');
     }
@@ -238,7 +193,7 @@
     });
   };
 
-  d4.using = function(name, funct) {
+  var using = function(name, funct) {
     var feature = this.features[name];
     if (isNotFunction(funct)) {
       assert('You must supply a continuation function in order to use a chart feature.');
@@ -248,6 +203,24 @@
     } else {
       funct.bind(this)(feature);
     }
+  };
+
+  /**
+   * Based on D3's own functor function.
+   * > If the specified value is a function, returns the specified value. Otherwise,
+   * > returns a function that returns the specified value. This method is used
+   * > internally as a lazy way of upcasting constant values to functions, in
+   * > cases where a property may be specified either as a function or a constant.
+   * > For example, many D3 layouts allow properties to be specified this way,
+   * > and it simplifies the implementation if we automatically convert constant
+   * > values to functions.
+   *
+   * @param {Varies} funct - An function or other variable to be wrapped in a function
+   */
+  d4.functor = function(funct) {
+    return isFunction(funct) ? funct : function() {
+      return funct;
+    };
   };
 
   d4.baseChart = function(config, defaultBuilder) {
@@ -275,18 +248,65 @@
       };
     });
 
+    /**
+     * The heart of the d4 API is the `using` function, which allows you to
+     * contextually modify attributes of the chart or one of its features.
+     *
+     *##### Examples
+     *
+     *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
+     *      .using('zeroLine', function(zero) {
+     *        zero
+     *          .x1(function() {
+     *            return this.x(0);
+     *          })
+     *      });
+     *
+     * @param {String} name - accessor name for chart feature.
+     * @param {Function} funct - function which will perform the modifcation.
+     */
     chart.using = function(name, funct) {
-      d4.using.bind(opts)(name, funct);
+      using.bind(opts)(name, funct);
       return chart;
     };
 
+    /**
+     * Specifies a feature to be mixed into a given chart.
+     * The feature is an object where the key represents the feature name, and a
+     * value which is a function that when invoked returns a d4 feature object.
+     *
+     *##### Examples
+     *
+     *      // Mix in a feature at a specific depth
+     *      chart.mixin({ 'grid': d4.features.grid }, 0)
+     *
+     *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
+     *
+     * @param {Object} feature - an object describing the feature to mix in.
+     * @param {Integer} index - an optional number to specify the insertion layer.
+     */
     chart.mixin = function(feature, index) {
-      d4.mixin.bind(opts)(feature, index);
+      mixin.bind(opts)(feature, index);
       return chart;
     };
 
+    /**
+     * Specifies an existing feature of a chart to be removed (mixed out).
+     *
+     *##### Examples
+     *
+     *      // Mixout the yAxis which is provided as a default
+     *      var chart = d4.columnChart()
+     *      .mixout('yAxis');
+     *
+     *      // Now test that the feature has been removed.
+     *      console.log(chart.features());
+     *      => ["bars", "barLabels", "xAxis"]
+     *
+     * @param {String} name - accessor name for chart feature.
+     */
     chart.mixout = function(feature, index) {
-      d4.mixout.bind(opts)(feature, index);
+      mixout.bind(opts)(feature, index);
       return chart;
     };
 
@@ -295,6 +315,21 @@
       return chart;
     };
 
+    /**
+     * To see what features are currently mixed into your chart you can use
+     * this method.
+     *
+     *##### Examples
+     *
+     *      // Mixout the yAxis which is provided as a default
+     *      var chart = d4.columnChart()
+     *      .mixout('yAxis');
+     *
+     *      // Now test that the feature has been removed.
+     *      console.log(chart.features());
+     *      => ["bars", "barLabels", "xAxis"]
+     *
+     */
     chart.features = function() {
       return opts.mixins;
     };

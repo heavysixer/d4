@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home | d4 Examples</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/prism.css">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/d4.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="assets/js/jquery.js"></script>
+  </head>
+  <body>
+    <div class="container">
+
+      
+<div class="header">
+    <ul class="nav nav-pills pull-right">
+        <li><a href="/index.html">Introduction</a></li>
+        <li><a href="/getting_started.html">Getting Started</a></li>
+        <li><a href="/docs.html">Documentation</a></li>
+        <li><a href="/examples.html">Examples</a></li>
+    </ul>
+    <h3 class="text-muted">d4: Reusable d3 Charts</h3>
+</div>
+
+      <div class="container" role="main">
+
+        
+<div class='content'>
+    <div class="col-md-12">
+      <div class="alert alert-info">Documentation is in flux, many sections of d4 remain to be covered.</div>
+      <h1 id="d4-0-1-0">d4 -0.1.0</h1>
+<h6 id="-base-js-0-"><a href="#base-js">base.js</a></h6>
+<ul>
+<li><a href="#functor"><code>functor</code></a></li>
+<li><a href="#using"><code>using</code></a></li>
+<li><a href="#mixin"><code>mixin</code></a></li>
+<li><a href="#mixout"><code>mixout</code></a></li>
+<li><a href="#features"><code>features</code></a></li>
+</ul>
+<h6 id="-waterfall-connectors-js-6-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
+<ul>
+<li><a href="#waterfallconnectors"><code>waterfallConnectors</code></a></li>
+</ul>
+<h6 id="-nested-group-js-8-"><a href="#nested-group-js">nested-group.js</a></h6>
+<ul>
+<li><a href="#nestedgroup"><code>nestedGroup</code></a></li>
+</ul>
+<h6 id="-nested-stack-js-10-"><a href="#nested-stack-js">nested-stack.js</a></h6>
+<ul>
+<li><a href="#nestedstack"><code>nestedStack</code></a></li>
+</ul>
+<h6 id="-waterfall-js-12-"><a href="#waterfall-js">waterfall.js</a></h6>
+<ul>
+<li><a href="#waterfall"><code>waterfall</code></a></li>
+</ul>
+<h6 id="-column-chart-js-14-"><a href="#column-chart-js">column-chart.js</a></h6>
+<ul>
+<li><a href="#columnchart"><code>columnChart</code></a></li>
+</ul>
+<h6 id="-grouped-column-chart-js-16-"><a href="#grouped-column-chart-js">grouped-column-chart.js</a></h6>
+<ul>
+<li><a href="#groupedcolumnchart"><code>groupedColumnChart</code></a></li>
+</ul>
+<h6 id="-line-chart-js-18-"><a href="#line-chart-js">line-chart.js</a></h6>
+<ul>
+<li><a href="#linechart"><code>lineChart</code></a></li>
+</ul>
+<h6 id="-row-chart-js-20-"><a href="#row-chart-js">row-chart.js</a></h6>
+<ul>
+<li><a href="#rowchart"><code>rowChart</code></a></li>
+</ul>
+<h2 id="base-js">base.js</h2>
+<h3 id="functor">functor</h3>
+<p><a href="#functor">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>Based on D3&#39;s own functor function.</p>
+<blockquote>
+<p>If the specified value is a function, returns the specified value. Otherwise,<br>returns a function that returns the specified value. This method is used<br>internally as a lazy way of upcasting constant values to functions, in<br>cases where a property may be specified either as a function or a constant.<br>For example, many D3 layouts allow properties to be specified this way,<br>and it simplifies the implementation if we automatically convert constant<br>values to functions.</p>
+</blockquote>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>funct</code><em>(Varies) -- An function or other variable to be wrapped in a function</em></li>
+</ol>
+<hr>
+<h3 id="using">using</h3>
+<p><a href="#using">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br>contextually modify attributes of the chart or one of its features.</p>
+<h5 id="examples">Examples</h5>
+<pre><code> chart.mixin({ &#39;zeroLine&#39;: d4.features.referenceLine })
+ .using(&#39;zeroLine&#39;, function(zero) {
+   zero
+     .x1(function() {
+       return this.x(0);
+     })
+ });</code></pre>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code><em>(String) -- accessor name for chart feature.</em></li>
+<li><code>funct</code><em>(Function) -- function which will perform the modifcation.</em></li>
+</ol>
+<hr>
+<h3 id="mixin">mixin</h3>
+<p><a href="#mixin">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>Specifies a feature to be mixed into a given chart.<br>The feature is an object where the key represents the feature name, and a<br>value which is a function that when invoked returns a d4 feature object.</p>
+<h5 id="examples">Examples</h5>
+<pre><code> // Mix in a feature at a specific depth
+ chart.mixin({ &#39;grid&#39;: d4.features.grid }, 0)
+
+ chart.mixin({ &#39;zeroLine&#39;: d4.features.referenceLine })</code></pre>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>feature</code><em>(Object) -- an object describing the feature to mix in.</em></li>
+<li><code>index</code><em>(Integer) -- an optional number to specify the insertion layer.</em></li>
+</ol>
+<hr>
+<h3 id="mixout">mixout</h3>
+<p><a href="#mixout">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>Specifies an existing feature of a chart to be removed (mixed out).</p>
+<h5 id="examples">Examples</h5>
+<pre><code> // Mixout the yAxis which is provided as a default
+ var chart = d4.columnChart()
+ .mixout(&#39;yAxis&#39;);
+
+ // Now test that the feature has been removed.
+ console.log(chart.features());
+ =&gt; [&quot;bars&quot;, &quot;barLabels&quot;, &quot;xAxis&quot;]</code></pre>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code><em>(String) -- accessor name for chart feature.</em></li>
+</ol>
+<hr>
+<h3 id="features">features</h3>
+<p><a href="#features">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>To see what features are currently mixed into your chart you can use<br>this method.</p>
+<h5 id="examples">Examples</h5>
+<pre><code> // Mixout the yAxis which is provided as a default
+ var chart = d4.columnChart()
+ .mixout(&#39;yAxis&#39;);
+
+ // Now test that the feature has been removed.
+ console.log(chart.features());
+ =&gt; [&quot;bars&quot;, &quot;barLabels&quot;, &quot;xAxis&quot;]</code></pre>
+<hr>
+<h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
+<h3 id="waterfallconnectors">waterfallConnectors</h3>
+<p><a href="#waterfallconnectors">#</a>
+<a href="#waterfall-connectors-js">Ⓣ</a></p>
+<p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
+<p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>x</code> - Used in placement of the connector lines.<br><code>y</code> - Used in placement of the connector lines.<br><code>span</code> - calculates the length of the connector line<br><code>classes</code> - applies the class to the connector lines.</p>
+<hr>
+<h2 id="nested-group-js">nested-group.js</h2>
+<h3 id="nestedgroup">nestedGroup</h3>
+<p><a href="#nestedgroup">#</a>
+<a href="#nested-group-js">Ⓣ</a></p>
+<p>The nested group parser is useful for grouped column charts where multiple<br>data items need to appear relative to the axis value, for example grouped<br>column charts or multi-series line charts.</p>
+<pre><code>_____________________
+|           _        |
+|   _ _    | |_      |
+|  | | |   | | |     |
+----------------------</code></pre>
+<p>This module makes use of the d3&#39;s &quot;nest&quot; data structure layout</p>
+<p><a href="https://github.com/mbostock/d3/wiki/Arrays#-nest"><a href="https://github.com/mbostock/d3/wiki/Arrays\#-nest">https://github.com/mbostock/d3/wiki/Arrays\#-nest</a></a></p>
+<h4 id="approach">Approach</h4>
+<p>Just like D3, this parser uses a chaining declaritiave style to build up<br>the necessary prerequistes to create the waterfall data. Here is a simple<br>example. Given a data item structure like this: {&quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 }</p>
+<pre><code>var parser = d4.parsers.nestedGroup()
+    .x(&#39;category&#39;)
+    .y(&#39;value&#39;)
+    .value(&#39;value&#39;);
+
+var groupedColumnData = parser(data);</code></pre>
+<p>Keep reading for more information on these various accessor functions.</p>
+<h4 id="accessor-methods">Accessor Methods</h4>
+<p><code>x</code> - A function which returns a key to access the x values in the data array<br><code>y</code> - A function which returns a key to access the y values in the data array<br><code>value</code> - A function which returns a key to access the values in the data array.<br><code>data</code> - An array of objects with their dimensions specified like this:</p>
+<pre><code>var data = [
+{&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 },
+{&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category Two&quot;, &quot;value&quot; : 55 },
+{&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category Three&quot;, &quot;value&quot; : -10 },
+{&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category Four&quot;, &quot;value&quot; : 5 }]</code></pre>
+<hr>
+<h2 id="nested-stack-js">nested-stack.js</h2>
+<h3 id="nestedstack">nestedStack</h3>
+<p><a href="#nestedstack">#</a>
+<a href="#nested-stack-js">Ⓣ</a></p>
+<p>The nested stack parser is useful for charts which take a data series<br>and wants to sort them across a dimension and then display the results.<br>The most common usecase would be a stacked column chart like this:</p>
+<pre><code>_____________________
+|    _               |
+|   | |   _          |
+|   |-|  | |   _     |
+|   |-|  |-|  |-|    |
+|   | |  |-|  |-|    |
+----------------------</code></pre>
+<p>This module makes use of the d3&#39;s &quot;nest&quot; data structure, and &quot;stack&quot; layout</p>
+<p><a href="https://github.com/mbostock/d3/wiki/Arrays#-nest"><a href="https://github.com/mbostock/d3/wiki/Arrays\#-nest">https://github.com/mbostock/d3/wiki/Arrays\#-nest</a></a><br><a href="https://github.com/mbostock/d3/wiki/Stack-Layout"><a href="https://github.com/mbostock/d3/wiki/Stack-Layout">https://github.com/mbostock/d3/wiki/Stack-Layout</a></a></p>
+<h4 id="approach">Approach</h4>
+<p>Just like D3, this parser uses a chaining declaritiave style to build up<br>the necessary prerequistes to create the stacked data. Here is a simple<br>example:</p>
+<pre><code>    var parser = d4.parsers.nestedStack()
+        .x(function() {
+          return &#39;title&#39;;
+        })
+        .y(function(){
+          return &#39;group&#39;;
+        })
+        .value(function() {
+          return &#39;values&#39;;
+        });
+
+    var stackedData = parser(data);</code></pre>
+<p>Keep reading for more information on these various accessor functions.</p>
+<h5 id="benefits">Benefits</h5>
+<ul>
+<li>Supports negative and positive stacked data series.</li>
+</ul>
+<h5 id="limitations">Limitations</h5>
+<ul>
+<li>The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.</li>
+</ul>
+<h5 id="accessor-methods">Accessor Methods</h5>
+<p><code>x</code> : - function which returns a key to access the x values in the data array<br><code>y</code> : - function which returns a key to access the y values in the data array<br><code>value</code> : - function which returns a key to access the values in the data array.<br><code>data</code> : array - An array of objects with their dimensions specified like this:</p>
+<pre><code>var data = [{ &quot;title&quot;: &quot;3 Years&quot;, &quot;group&quot; : &quot;one&quot;, &quot;value&quot;: 30 },
+            { &quot;title&quot;: &quot;3 Years&quot;, &quot;group&quot; : &quot;two&quot;, &quot;value&quot;: 20 },
+            { &quot;title&quot;: &quot;3 Years&quot;, &quot;group&quot; : &quot;three&quot;, &quot;value&quot;: 10 },
+            { &quot;title&quot;: &quot;5 Years&quot;, &quot;group&quot; : &quot;one&quot;,  &quot;value&quot;: 3 },
+            { &quot;title&quot;: &quot;5 Years&quot;, &quot;group&quot; : &quot;two&quot;, &quot;value&quot;: 2 },
+            { &quot;title&quot;: &quot;5 Years&quot;, &quot;group&quot; : &quot;three&quot;, &quot;value&quot;: 1 }]</code></pre>
+<h5 id="example-usage">Example Usage</h5>
+<p>Given the example data and dimension variables above you can use this module<br>in the following way:</p>
+<pre><code>var parser = d4.parsers.nestedStack()
+.x(function() {
+  return &#39;title&#39;;
+})
+.y(function(){
+  return &#39;group&#39;;
+})
+.value(function() {
+  return &#39;value&#39;;
+})
+.call(data);</code></pre>
+<p>The <code>parser</code> variable will now be an object containing the following structure:</p>
+<pre><code>{
+  data: Array
+  value: {
+    key: string,
+    values: Array
+  },
+  x: {
+    key: string,
+    values: Array
+  },
+  y: {
+    key: string,
+    values: Array
+  }
+}</code></pre>
+<hr>
+<h2 id="waterfall-js">waterfall.js</h2>
+<h3 id="waterfall">waterfall</h3>
+<p><a href="#waterfall">#</a>
+<a href="#waterfall-js">Ⓣ</a></p>
+<p>The waterfall parser is useful for waterfall charts where data items need to account<br>for the position of earlier values:</p>
+<pre><code>_____________________
+|   _        _______ |
+|  |_|___   | |  | | |
+|      |_|__|_|  | | |
+|                |_| |
+----------------------
+
+This module makes use of the d3&#39;s &quot;nest&quot; data structure, and &quot;stack&quot; layout
+[https://github.com/mbostock/d3/wiki/Arrays#-nest][22]
+[https://github.com/mbostock/d3/wiki/Stack-Layout][23]
+
+
+Approach:
+Just like D3, this parser uses a chaining declaritiave style to build up
+the necessary prerequistes to create the waterfall data. Here is a simple
+example. Given a data item structure like this: {&quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 }
+
+var parser = d4.parsers.waterfall()
+    .x(function() {
+      return &#39;category&#39;;
+    })
+    .y(function(){
+      return &#39;value&#39;;
+    })
+    .value(function() {
+      return &#39;value&#39;;
+    });
+
+var waterfallData = parser(data);
+
+Keep reading for more information on these various accessor functions.
+
+Benefits:</code></pre>
+<p>Supports horizontal or vertical waterfalls<br>Supports totaling series using a special &quot;e&quot; value in a data item.</p>
+<pre><code>Limitations:</code></pre>
+<p>Does not support stacked waterfalls.</p>
+<pre><code>Accessor Methods:</code></pre>
+<p>x : - function which returns a key to access the x values in the data array<br>y : - function which returns a key to access the y values in the data array<br>value : - function which returns a key to access the values in the data array.<br>data : array - An array of objects with their dimensions specified<br>like this:</p>
+<pre><code>  var data = [
+  {&quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 },
+  {&quot;category&quot; : &quot;Category Two&quot;, &quot;value&quot; : 55 },
+  {&quot;category&quot; : &quot;Category Three&quot;, &quot;value&quot; : -10 },
+  {&quot;category&quot; : &quot;Category Four&quot;, &quot;value&quot; : 5 },
+  {&quot;category&quot; : &quot;Category Five&quot;, &quot;value&quot; : &quot;e&quot; }]
+
+SPECIAL NOTE:
+Waterfalls charts typically have the ability to display subtotals at any point.
+In order to use this feature simply set the value of your subtotal column to &quot;e.&quot;
+
+Example Usage:
+Given the example data and dimension variables above you can use this module
+in the following way:
+
+var parser = d4.parsers.nestedStack()
+.dimensions(dimensions)
+.call(data);
+
+The `parser` variable will now be an object containing the following structure:
+{
+  data: Array
+  value: {
+    key: string,
+    values: Array
+  },
+  x: {
+    key: string,
+    values: Array
+  },
+  y: {
+    key: string,
+    values: Array
+  }
+}
+
+Taking these attributes one-by-one:</code></pre>
+<p>data - is an array of items stacked by D3<br>value - an object with a key representing the value accessor and an array of values<br>x - an object with a key representing the x accessor and an array of values<br>y - an object with a key representing the y accessor and an array of values</p>
+<hr>
+<h2 id="column-chart-js">column-chart.js</h2>
+<h3 id="columnchart">columnChart</h3>
+<p><a href="#columnchart">#</a>
+<a href="#column-chart-js">Ⓣ</a></p>
+<p>The column chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br>linear values for the <code>y</code> and ordinal values on the <code>x</code>. The basic column chart<br>has four default features:</p>
+<p><strong>bars</strong> - series bars<br><strong>barLabels</strong> - data labels above the bars<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
+<h5 id="example-usage">Example Usage</h5>
+<pre><code>var data = [
+    { x: &#39;2010&#39;, y:-10 },
+    { x: &#39;2011&#39;, y:20 },
+    { x: &#39;2012&#39;, y:30 },
+    { x: &#39;2013&#39;, y:40 },
+    { x: &#39;2014&#39;, y:50 },
+  ];
+var chart = d4.columnChart();
+d3.select(&#39;#example&#39;)
+.datum(data)
+.call(chart);</code></pre>
+<p>By default d4 expects a series object, which uses the following format: <code>{ x : &#39;2010&#39;, y : 10 }</code>.<br>The default format may not be desired and so we&#39;ll override it:</p>
+<pre><code>var data = [
+  [&#39;2010&#39;, -10],
+  [&#39;2011&#39;, 20],
+  [&#39;2012&#39;, 30],
+  [&#39;2013&#39;, 40],
+  [&#39;2014&#39;, 50]
+];
+var chart = d4.columnChart()
+.xKey(0)
+.yKey(1);
+
+d3.select(&#39;#example&#39;)
+.datum(data)
+.call(chart);</code></pre>
+<hr>
+<h2 id="grouped-column-chart-js">grouped-column-chart.js</h2>
+<h3 id="groupedcolumnchart">groupedColumnChart</h3>
+<p><a href="#groupedcolumnchart">#</a>
+<a href="#grouped-column-chart-js">Ⓣ</a></p>
+<p>The grouped column chart is used to compare a series of data elements grouped<br>along the xAxis. This chart is often useful in conjunction with a stacked column<br>chart because they can use the same data series, and where the stacked column highlights<br>the sum of the data series across an axis the grouped column can be used to show the<br>relative distribution.</p>
+<p><strong>bars</strong> - series bars<br><strong>barLabels</strong> - data labels above the bars<br><strong>groupsOf</strong> - an integer representing the number of columns in each group<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
+<h5 id="example-usage">Example Usage</h5>
+<pre><code>var data = [
+  { year: &#39;2010&#39;, unitsSold:-100, salesman : &#39;Bob&#39; },
+  { year: &#39;2011&#39;, unitsSold:200, salesman : &#39;Bob&#39; },
+  { year: &#39;2012&#39;, unitsSold:300, salesman : &#39;Bob&#39; },
+  { year: &#39;2013&#39;, unitsSold:400, salesman : &#39;Bob&#39; },
+  { year: &#39;2014&#39;, unitsSold:500, salesman : &#39;Bob&#39; },
+  { year: &#39;2010&#39;, unitsSold:100, salesman : &#39;Gina&#39; },
+  { year: &#39;2011&#39;, unitsSold:100, salesman : &#39;Gina&#39; },
+  { year: &#39;2012&#39;, unitsSold:-100, salesman : &#39;Gina&#39; },
+  { year: &#39;2013&#39;, unitsSold:500, salesman : &#39;Gina&#39; },
+  { year: &#39;2014&#39;, unitsSold:600, salesman : &#39;Gina&#39; },
+  { year: &#39;2010&#39;, unitsSold:400, salesman : &#39;Average&#39; },
+  { year: &#39;2011&#39;, unitsSold:0, salesman : &#39;Average&#39; },
+  { year: &#39;2012&#39;, unitsSold:400, salesman : &#39;Average&#39; },
+  { year: &#39;2013&#39;, unitsSold:400, salesman : &#39;Average&#39; },
+  { year: &#39;2014&#39;, unitsSold:400, salesman : &#39;Average&#39; }
+];
+
+var parsedData = d4.parsers.nestedGroup()
+  .x(&#39;year&#39;)
+  .y(&#39;unitsSold&#39;)
+  .value(&#39;unitsSold&#39;)(data);
+
+var chart = d4.groupedColumnChart()
+.width($(&#39;#example&#39;).width())
+.xKey(&#39;year&#39;)
+.yKey(&#39;unitsSold&#39;)
+.groupsOf(parsedData.data[0].values.length);
+
+d3.select(&#39;#example&#39;)
+.datum(parsedData.data)
+.call(chart);</code></pre>
+<hr>
+<h2 id="line-chart-js">line-chart.js</h2>
+<h3 id="linechart">lineChart</h3>
+<p><a href="#linechart">#</a>
+<a href="#line-chart-js">Ⓣ</a></p>
+<p>The line series chart is used to compare a series of data elements grouped<br>along the xAxis.</p>
+<p><strong>lineSeries</strong> - series lines<br><strong>lineSeriesLabels</strong> - data labels beside the lines<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
+<h5 id="example-usage">Example Usage</h5>
+<pre><code>var data = [
+  { year: &#39;2010&#39;, unitsSold:-100, salesman : &#39;Bob&#39; },
+  { year: &#39;2011&#39;, unitsSold:200, salesman : &#39;Bob&#39; },
+  { year: &#39;2012&#39;, unitsSold:300, salesman : &#39;Bob&#39; },
+  { year: &#39;2013&#39;, unitsSold:400, salesman : &#39;Bob&#39; },
+  { year: &#39;2014&#39;, unitsSold:500, salesman : &#39;Bob&#39; },
+  { year: &#39;2010&#39;, unitsSold:100, salesman : &#39;Gina&#39; },
+  { year: &#39;2011&#39;, unitsSold:100, salesman : &#39;Gina&#39; },
+  { year: &#39;2012&#39;, unitsSold:-100, salesman : &#39;Gina&#39; },
+  { year: &#39;2013&#39;, unitsSold:500, salesman : &#39;Gina&#39; },
+  { year: &#39;2014&#39;, unitsSold:600, salesman : &#39;Gina&#39; },
+  { year: &#39;2010&#39;, unitsSold:400, salesman : &#39;Average&#39; },
+  { year: &#39;2011&#39;, unitsSold:0, salesman : &#39;Average&#39; },
+  { year: &#39;2012&#39;, unitsSold:400, salesman : &#39;Average&#39; },
+  { year: &#39;2013&#39;, unitsSold:400, salesman : &#39;Average&#39; },
+  { year: &#39;2014&#39;, unitsSold:400, salesman : &#39;Average&#39; }
+];
+var parsedData = d4.parsers.nestedGroup()
+  .x(function(){
+    return &#39;year&#39;;
+  })
+  .nestKey(function(){
+    return &#39;salesman&#39;;
+  })
+  .y(function(){
+    return &#39;unitsSold&#39;;
+  })
+  .value(function(){
+    return &#39;unitsSold&#39;;
+  })(data);
+
+var chart = d4.lineChart()
+.width($(&#39;#example&#39;).width())
+.xKey(&#39;year&#39;)
+.yKey(&#39;unitsSold&#39;);
+
+d3.select(&#39;#example&#39;)
+.datum(parsedData.data)
+.call(chart);</code></pre>
+<hr>
+<h2 id="row-chart-js">row-chart.js</h2>
+<h3 id="rowchart">rowChart</h3>
+<p><a href="#rowchart">#</a>
+<a href="#row-chart-js">Ⓣ</a></p>
+<p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br>linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br>has four default features:</p>
+<p><strong>bars</strong> - series bars<br><strong>rowLabels</strong> - data labels to the right of the bars<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
+<h5 id="example-usage">Example Usage</h5>
+<pre><code>var data = [
+      { y: &#39;2010&#39;, x:-10 },
+      { y: &#39;2011&#39;, x:20 },
+      { y: &#39;2012&#39;, x:30 },
+      { y: &#39;2013&#39;, x:40 },
+      { y: &#39;2014&#39;, x:50 },
+    ];
+  var chart = d4.rowChart();
+  d3.select(&#39;#example&#39;)
+  .datum(data)
+  .call(chart);</code></pre>
+<hr>
+
+    </div>
+</div>
+
+
+      </div>
+      <div class="footer">
+          <p>&copy; Mark Daggett 2014</p>
+      </div>
+    </div>
+
+    <script src="assets/js/vendor.js"></script>
+
+  </body>
+</html>

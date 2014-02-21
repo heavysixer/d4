@@ -50,6 +50,32 @@
     return builder;
   };
 
+  /*
+   The row chart has two axes (`x` and `y`). By default the column chart expects
+   linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart
+   has four default features:
+
+   * **bars** - series bars
+   * **rowLabels** - data labels to the right of the bars
+   * **xAxis** - the axis for the x dimension
+   * **yAxis** - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+          { y: '2010', x:-10 },
+          { y: '2011', x:20 },
+          { y: '2012', x:30 },
+          { y: '2013', x:40 },
+          { y: '2014', x:50 },
+        ];
+      var chart = d4.rowChart();
+      d3.select('#example')
+      .datum(data)
+      .call(chart);
+
+
+  */
   d4.rowChart = function rowChart() {
     var chart = d4.baseChart({
       margin: {

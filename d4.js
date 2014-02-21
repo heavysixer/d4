@@ -7,32 +7,6 @@
   http://underscorejs.org
   (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
   Underscore may be freely distributed under the MIT license.
-
-  API:
-  var columnChart = d4.columnChart()
-    .margin({
-      top: 15,
-      right: 10,
-      bottom: 30,
-      left: 0
-    })
-    .mixin({
-      'grid': d4.features.grid
-    }, 0)
-    .using('bars', function(bars){
-      bars
-      .x(function(d){
-        cumulativeX += d[0];
-        return this.x(cumulativeX - d[0]);
-      })
-      .width(function(d){
-        return this.x(d[0]);
-      })
-    })
-
-  d3.select(e[0])
-    .datum(preparedValues)
-    .call(columnChart);
 */
 (function() {
   /*!
@@ -179,26 +153,7 @@
     }
   };
 
-  d4.functor = function(funct) {
-    return isFunction(funct) ? funct : function() {
-      return funct;
-    };
-  };
-
-  /**
-   * Specifies a feature to be mixed into a given chart.
-   * The feature is an object where the key represents the feature name, and a
-   * value which is a function that when invoked returns a d4 feature object.
-   *
-   * Examples:
-   *
-   *      chart.mixin({ 'grid': d4.features.grid }, 0)
-   *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
-   *
-   * @param {Object} feature
-   * @param {Number} index - an optional number to specify the insertion layer.
-   */
-  d4.mixin = function(feature, index) {
+  var mixin = function(feature, index) {
     if (!feature) {
       assert('You need to supply an object to mixin.');
     }
@@ -231,7 +186,7 @@
     }
   };
 
-  d4.mixout = function(name) {
+  var mixout = function(name) {
     if (!name) {
       assert('A name is required in order to mixout a chart feature.');
     }
@@ -242,7 +197,7 @@
     });
   };
 
-  d4.using = function(name, funct) {
+  var using = function(name, funct) {
     var feature = this.features[name];
     if (isNotFunction(funct)) {
       assert('You must supply a continuation function in order to use a chart feature.');
@@ -252,6 +207,24 @@
     } else {
       funct.bind(this)(feature);
     }
+  };
+
+  /**
+   * Based on D3's own functor function.
+   * > If the specified value is a function, returns the specified value. Otherwise,
+   * > returns a function that returns the specified value. This method is used
+   * > internally as a lazy way of upcasting constant values to functions, in
+   * > cases where a property may be specified either as a function or a constant.
+   * > For example, many D3 layouts allow properties to be specified this way,
+   * > and it simplifies the implementation if we automatically convert constant
+   * > values to functions.
+   *
+   * @param {Varies} funct - An function or other variable to be wrapped in a function
+   */
+  d4.functor = function(funct) {
+    return isFunction(funct) ? funct : function() {
+      return funct;
+    };
   };
 
   d4.baseChart = function(config, defaultBuilder) {
@@ -279,18 +252,65 @@
       };
     });
 
+    /**
+     * The heart of the d4 API is the `using` function, which allows you to
+     * contextually modify attributes of the chart or one of its features.
+     *
+     *##### Examples
+     *
+     *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
+     *      .using('zeroLine', function(zero) {
+     *        zero
+     *          .x1(function() {
+     *            return this.x(0);
+     *          })
+     *      });
+     *
+     * @param {String} name - accessor name for chart feature.
+     * @param {Function} funct - function which will perform the modifcation.
+     */
     chart.using = function(name, funct) {
-      d4.using.bind(opts)(name, funct);
+      using.bind(opts)(name, funct);
       return chart;
     };
 
+    /**
+     * Specifies a feature to be mixed into a given chart.
+     * The feature is an object where the key represents the feature name, and a
+     * value which is a function that when invoked returns a d4 feature object.
+     *
+     *##### Examples
+     *
+     *      // Mix in a feature at a specific depth
+     *      chart.mixin({ 'grid': d4.features.grid }, 0)
+     *
+     *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
+     *
+     * @param {Object} feature - an object describing the feature to mix in.
+     * @param {Integer} index - an optional number to specify the insertion layer.
+     */
     chart.mixin = function(feature, index) {
-      d4.mixin.bind(opts)(feature, index);
+      mixin.bind(opts)(feature, index);
       return chart;
     };
 
+    /**
+     * Specifies an existing feature of a chart to be removed (mixed out).
+     *
+     *##### Examples
+     *
+     *      // Mixout the yAxis which is provided as a default
+     *      var chart = d4.columnChart()
+     *      .mixout('yAxis');
+     *
+     *      // Now test that the feature has been removed.
+     *      console.log(chart.features());
+     *      => ["bars", "barLabels", "xAxis"]
+     *
+     * @param {String} name - accessor name for chart feature.
+     */
     chart.mixout = function(feature, index) {
-      d4.mixout.bind(opts)(feature, index);
+      mixout.bind(opts)(feature, index);
       return chart;
     };
 
@@ -299,6 +319,21 @@
       return chart;
     };
 
+    /**
+     * To see what features are currently mixed into your chart you can use
+     * this method.
+     *
+     *##### Examples
+     *
+     *      // Mixout the yAxis which is provided as a default
+     *      var chart = d4.columnChart()
+     *      .mixout('yAxis');
+     *
+     *      // Now test that the feature has been removed.
+     *      console.log(chart.features());
+     *      => ["bars", "barLabels", "xAxis"]
+     *
+     */
     chart.features = function() {
       return opts.mixins;
     };
@@ -329,20 +364,12 @@
 
 }).call(this);
 
-/*
- Column Chart
- @constructor
-
- The column chart has two axes (`x` and `y`). By default the column chart expects
- linear values for the `y` and ordinal values on the `x`
-*/
 (function() {
   /*!
    * global d3: false
    * global d4: false
    */
   'use strict';
-
   var columnChartBuilder = function() {
     var configureX = function(data) {
       if (!this.parent.x) {
@@ -388,6 +415,49 @@
     return builder;
   };
 
+  /*
+   The column chart has two axes (`x` and `y`). By default the column chart expects
+   linear values for the `y` and ordinal values on the `x`. The basic column chart
+   has four default features:
+
+   * **bars** - series bars
+   * **barLabels** - data labels above the bars
+   * **xAxis** - the axis for the x dimension
+   * **yAxis** - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+        { x: '2010', y:-10 },
+        { x: '2011', y:20 },
+        { x: '2012', y:30 },
+        { x: '2013', y:40 },
+        { x: '2014', y:50 },
+      ];
+    var chart = d4.columnChart();
+    d3.select('#example')
+    .datum(data)
+    .call(chart);
+
+By default d4 expects a series object, which uses the following format: `{ x : '2010', y : 10 }`.
+The default format may not be desired and so we'll override it:
+
+    var data = [
+      ['2010', -10],
+      ['2011', 20],
+      ['2012', 30],
+      ['2013', 40],
+      ['2014', 50]
+    ];
+    var chart = d4.columnChart()
+    .xKey(0)
+    .yKey(1);
+
+    d3.select('#example')
+    .datum(data)
+    .call(chart);
+
+  */
   d4.columnChart = function columnChart() {
     var chart = d4.baseChart({}, columnChartBuilder);
     [{
@@ -465,6 +535,55 @@
     return builder;
   };
 
+  /*
+The grouped column chart is used to compare a series of data elements grouped
+along the xAxis. This chart is often useful in conjunction with a stacked column
+chart because they can use the same data series, and where the stacked column highlights
+the sum of the data series across an axis the grouped column can be used to show the
+relative distribution.
+
+   * **bars** - series bars
+   * **barLabels** - data labels above the bars
+   * **groupsOf** - an integer representing the number of columns in each group
+   * **xAxis** - the axis for the x dimension
+   * **yAxis** - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+      { year: '2010', unitsSold:-100, salesman : 'Bob' },
+      { year: '2011', unitsSold:200, salesman : 'Bob' },
+      { year: '2012', unitsSold:300, salesman : 'Bob' },
+      { year: '2013', unitsSold:400, salesman : 'Bob' },
+      { year: '2014', unitsSold:500, salesman : 'Bob' },
+      { year: '2010', unitsSold:100, salesman : 'Gina' },
+      { year: '2011', unitsSold:100, salesman : 'Gina' },
+      { year: '2012', unitsSold:-100, salesman : 'Gina' },
+      { year: '2013', unitsSold:500, salesman : 'Gina' },
+      { year: '2014', unitsSold:600, salesman : 'Gina' },
+      { year: '2010', unitsSold:400, salesman : 'Average' },
+      { year: '2011', unitsSold:0, salesman : 'Average' },
+      { year: '2012', unitsSold:400, salesman : 'Average' },
+      { year: '2013', unitsSold:400, salesman : 'Average' },
+      { year: '2014', unitsSold:400, salesman : 'Average' }
+    ];
+
+    var parsedData = d4.parsers.nestedGroup()
+      .x('year')
+      .y('unitsSold')
+      .value('unitsSold')(data);
+
+    var chart = d4.groupedColumnChart()
+    .width($('#example').width())
+    .xKey('year')
+    .yKey('unitsSold')
+    .groupsOf(parsedData.data[0].values.length);
+
+    d3.select('#example')
+    .datum(parsedData.data)
+    .call(chart);
+
+  */
   d4.groupedColumnChart = function groupedColumnChart() {
     var chart = d4.baseChart({
       accessors: ['groupsOf'],
@@ -544,6 +663,58 @@
     return builder;
   };
 
+  /*
+  The line series chart is used to compare a series of data elements grouped
+  along the xAxis.
+
+   * **lineSeries** - series lines
+   * **lineSeriesLabels** - data labels beside the lines
+   * **xAxis** - the axis for the x dimension
+   * **yAxis** - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+      { year: '2010', unitsSold:-100, salesman : 'Bob' },
+      { year: '2011', unitsSold:200, salesman : 'Bob' },
+      { year: '2012', unitsSold:300, salesman : 'Bob' },
+      { year: '2013', unitsSold:400, salesman : 'Bob' },
+      { year: '2014', unitsSold:500, salesman : 'Bob' },
+      { year: '2010', unitsSold:100, salesman : 'Gina' },
+      { year: '2011', unitsSold:100, salesman : 'Gina' },
+      { year: '2012', unitsSold:-100, salesman : 'Gina' },
+      { year: '2013', unitsSold:500, salesman : 'Gina' },
+      { year: '2014', unitsSold:600, salesman : 'Gina' },
+      { year: '2010', unitsSold:400, salesman : 'Average' },
+      { year: '2011', unitsSold:0, salesman : 'Average' },
+      { year: '2012', unitsSold:400, salesman : 'Average' },
+      { year: '2013', unitsSold:400, salesman : 'Average' },
+      { year: '2014', unitsSold:400, salesman : 'Average' }
+    ];
+    var parsedData = d4.parsers.nestedGroup()
+      .x(function(){
+        return 'year';
+      })
+      .nestKey(function(){
+        return 'salesman';
+      })
+      .y(function(){
+        return 'unitsSold';
+      })
+      .value(function(){
+        return 'unitsSold';
+      })(data);
+
+    var chart = d4.lineChart()
+    .width($('#example').width())
+    .xKey('year')
+    .yKey('unitsSold');
+
+    d3.select('#example')
+    .datum(parsedData.data)
+    .call(chart);
+
+  */
   d4.lineChart = function lineChart() {
     var chart = d4.baseChart({}, lineChartBuilder);
     [{
@@ -612,6 +783,32 @@
     return builder;
   };
 
+  /*
+   The row chart has two axes (`x` and `y`). By default the column chart expects
+   linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart
+   has four default features:
+
+   * **bars** - series bars
+   * **rowLabels** - data labels to the right of the bars
+   * **xAxis** - the axis for the x dimension
+   * **yAxis** - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+          { y: '2010', x:-10 },
+          { y: '2011', x:20 },
+          { y: '2012', x:30 },
+          { y: '2013', x:40 },
+          { y: '2014', x:50 },
+        ];
+      var chart = d4.rowChart();
+      d3.select('#example')
+      .datum(data)
+      .call(chart);
+
+
+  */
   d4.rowChart = function rowChart() {
     var chart = d4.baseChart({
       margin: {
@@ -1576,7 +1773,7 @@
    * global d4: false
    */
 
-  /*
+  /*!
     Column connectors helpful when displaying a stacked column chart.
     A connector will not connect positve and negative columns. This is because
     in a stacked column a negative column may move many series below its previous
@@ -1843,18 +2040,28 @@
 }).call(this);
 
 (function() {
+  'use strict';
   /*!
    * global d3: false
    * global d4: false
    */
 
+/*
+Waterfall connectors are orthogonal series connectors which visually join
+column series together by spanning the top or bottom of adjacent columns.
 
-  /*
-    Orthogonal Series Connectors connect column series together by using a
-    line which bends only at 90 degrees. This connector type is most commonly
-    seen in charts such as waterfalls.
-  */
-  'use strict';
+When using this feature in charts other than waterfall, be aware that the
+mixin expects an accessor property for `orientation`, which it uses to render
+the direction of the lines.
+
+##### Accessors
+
+`x` - Used in placement of the connector lines.
+`y` - Used in placement of the connector lines.
+`span` - calculates the length of the connector line
+`classes` - applies the class to the connector lines.
+
+*/
   d4.features.waterfallConnectors = function(name) {
     return {
       accessors: {
@@ -2033,9 +2240,9 @@
   'use strict';
 
   /**
-    The nested group parser is useful for grouped column charts where multiple
-    data items need to appear relative to the axis value, for example grouped
-    column charts or multi-series line charts.
+The nested group parser is useful for grouped column charts where multiple
+data items need to appear relative to the axis value, for example grouped
+column charts or multi-series line charts.
 
     _____________________
     |           _        |
@@ -2043,41 +2250,35 @@
     |  | | |   | | |     |
     ----------------------
 
-    This module makes use of the d3's "nest" data structure layout
-    https://github.com/mbostock/d3/wiki/Arrays#-nest
+This module makes use of the d3's "nest" data structure layout
 
-    Approach:
-    Just like D3, this parser uses a chaining declaritiave style to build up
-    the necessary prerequistes to create the waterfall data. Here is a simple
-    example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
+https://github.com/mbostock/d3/wiki/Arrays#-nest
+
+#### Approach
+Just like D3, this parser uses a chaining declaritiave style to build up
+the necessary prerequistes to create the waterfall data. Here is a simple
+example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
 
     var parser = d4.parsers.nestedGroup()
-        .x(function() {
-          return 'category';
-        })
-        .y(function(){
-          return 'value';
-        })
-        .value(function() {
-          return 'value';
-        });
+        .x('category')
+        .y('value')
+        .value('value');
 
     var groupedColumnData = parser(data);
 
-    Keep reading for more information on these various accessor functions.
+Keep reading for more information on these various accessor functions.
 
-    Accessor Methods:
-    * x : - function which returns a key to access the x values in the data array
-    * y : - function which returns a key to access the y values in the data array
-    * value : - function which returns a key to access the values in the data array.
-    * data : array - An array of objects with their dimensions specified
-      like this:
+#### Accessor Methods
+ * `x` - A function which returns a key to access the x values in the data array
+ * `y` - A function which returns a key to access the y values in the data array
+ * `value` - A function which returns a key to access the values in the data array.
+ * `data` - An array of objects with their dimensions specified like this:
 
-      var data = [
-      {"year" : "2010", "category" : "Category One", "value" : 23 },
-      {"year" : "2010", "category" : "Category Two", "value" : 55 },
-      {"year" : "2010", "category" : "Category Three", "value" : -10 },
-      {"year" : "2010", "category" : "Category Four", "value" : 5 }]
+    var data = [
+    {"year" : "2010", "category" : "Category One", "value" : 23 },
+    {"year" : "2010", "category" : "Category Two", "value" : 55 },
+    {"year" : "2010", "category" : "Category Three", "value" : -10 },
+    {"year" : "2010", "category" : "Category Four", "value" : 5 }]
 
   **/
   d4.parsers.nestedGroup = function nestedGroup() {
@@ -2163,9 +2364,9 @@
   'use strict';
 
   /**
-    The nested stack parser is useful for charts which take a data series
-    and wants to sort them across a dimension and then display the results.
-    The most common usecase would be a stacked column chart like this:
+  The nested stack parser is useful for charts which take a data series
+  and wants to sort them across a dimension and then display the results.
+  The most common usecase would be a stacked column chart like this:
 
     _____________________
     |    _               |
@@ -2175,53 +2376,56 @@
     |   | |  |-|  |-|    |
     ----------------------
 
-    This module makes use of the d3's "nest" data structure, and "stack" layout
-    https://github.com/mbostock/d3/wiki/Arrays#-nest
-    https://github.com/mbostock/d3/wiki/Stack-Layout
+This module makes use of the d3's "nest" data structure, and "stack" layout
 
-    Approach:
-    Just like D3, this parser uses a chaining declaritiave style to build up
-    the necessary prerequistes to create the stacked data. Here is a simple
-    example:
-    var parser = d4.parsers.nestedStack()
-        .x(function() {
-          return 'title';
-        })
-        .y(function(){
-          return 'group';
-        })
-        .value(function() {
-          return 'values';
-        });
+* https://github.com/mbostock/d3/wiki/Arrays#-nest
+* https://github.com/mbostock/d3/wiki/Stack-Layout
 
-    var stackedData = parser(data);
+#### Approach
 
-    Keep reading for more information on these various accessor functions.
+Just like D3, this parser uses a chaining declaritiave style to build up
+the necessary prerequistes to create the stacked data. Here is a simple
+example:
 
-    Benefits:
-    * Supports negative and positive stacked data series.
+        var parser = d4.parsers.nestedStack()
+            .x(function() {
+              return 'title';
+            })
+            .y(function(){
+              return 'group';
+            })
+            .value(function() {
+              return 'values';
+            });
 
-    Limitations:
-    * The parser expects the stack will occur on the yAxis, which means it is only
-      suitable for column charts presently.
+        var stackedData = parser(data);
 
-    Accessor Methods:
-    * x : - function which returns a key to access the x values in the data array
-    * y : - function which returns a key to access the y values in the data array
-    * value : - function which returns a key to access the values in the data array.
-    * data : array - An array of objects with their dimensions specified
-      like this:
+Keep reading for more information on these various accessor functions.
 
-      var data = [{ "title": "3 Years", "group" : "one", "value": 30 },
-                  { "title": "3 Years", "group" : "two", "value": 20 },
-                  { "title": "3 Years", "group" : "three", "value": 10 },
-                  { "title": "5 Years", "group" : "one",  "value": 3 },
-                  { "title": "5 Years", "group" : "two", "value": 2 },
-                  { "title": "5 Years", "group" : "three", "value": 1 }]
+##### Benefits
++ Supports negative and positive stacked data series.
 
-    Example Usage:
-    Given the example data and dimension variables above you can use this module
-    in the following way:
+##### Limitations
++ The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.
+
+##### Accessor Methods
+
+`x` : - function which returns a key to access the x values in the data array
+`y` : - function which returns a key to access the y values in the data array
+`value` : - function which returns a key to access the values in the data array.
+`data` : array - An array of objects with their dimensions specified like this:
+
+    var data = [{ "title": "3 Years", "group" : "one", "value": 30 },
+                { "title": "3 Years", "group" : "two", "value": 20 },
+                { "title": "3 Years", "group" : "three", "value": 10 },
+                { "title": "5 Years", "group" : "one",  "value": 3 },
+                { "title": "5 Years", "group" : "two", "value": 2 },
+                { "title": "5 Years", "group" : "three", "value": 1 }]
+
+##### Example Usage
+
+Given the example data and dimension variables above you can use this module
+in the following way:
 
     var parser = d4.parsers.nestedStack()
     .x(function() {
@@ -2235,7 +2439,8 @@
     })
     .call(data);
 
-    The `parser` variable will now be an object containing the following structure:
+The `parser` variable will now be an object containing the following structure:
+
     {
       data: Array
       value: {
@@ -2252,10 +2457,7 @@
       }
     }
 
-    Taking these attributes one-by-one:
-    * data - is an array of items stacked by D3
-
-  **/
+**/
   d4.parsers.nestedStack = function nestedStack() {
 
     var opts = {

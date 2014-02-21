@@ -4,9 +4,9 @@
   'use strict';
 
   /**
-    The nested stack parser is useful for charts which take a data series
-    and wants to sort them across a dimension and then display the results.
-    The most common usecase would be a stacked column chart like this:
+  The nested stack parser is useful for charts which take a data series
+  and wants to sort them across a dimension and then display the results.
+  The most common usecase would be a stacked column chart like this:
 
     _____________________
     |    _               |
@@ -16,53 +16,56 @@
     |   | |  |-|  |-|    |
     ----------------------
 
-    This module makes use of the d3's "nest" data structure, and "stack" layout
-    https://github.com/mbostock/d3/wiki/Arrays#-nest
-    https://github.com/mbostock/d3/wiki/Stack-Layout
+This module makes use of the d3's "nest" data structure, and "stack" layout
 
-    Approach:
-    Just like D3, this parser uses a chaining declaritiave style to build up
-    the necessary prerequistes to create the stacked data. Here is a simple
-    example:
-    var parser = d4.parsers.nestedStack()
-        .x(function() {
-          return 'title';
-        })
-        .y(function(){
-          return 'group';
-        })
-        .value(function() {
-          return 'values';
-        });
+* https://github.com/mbostock/d3/wiki/Arrays#-nest
+* https://github.com/mbostock/d3/wiki/Stack-Layout
 
-    var stackedData = parser(data);
+#### Approach
 
-    Keep reading for more information on these various accessor functions.
+Just like D3, this parser uses a chaining declaritiave style to build up
+the necessary prerequistes to create the stacked data. Here is a simple
+example:
 
-    Benefits:
-    * Supports negative and positive stacked data series.
+        var parser = d4.parsers.nestedStack()
+            .x(function() {
+              return 'title';
+            })
+            .y(function(){
+              return 'group';
+            })
+            .value(function() {
+              return 'values';
+            });
 
-    Limitations:
-    * The parser expects the stack will occur on the yAxis, which means it is only
-      suitable for column charts presently.
+        var stackedData = parser(data);
 
-    Accessor Methods:
-    * x : - function which returns a key to access the x values in the data array
-    * y : - function which returns a key to access the y values in the data array
-    * value : - function which returns a key to access the values in the data array.
-    * data : array - An array of objects with their dimensions specified
-      like this:
+Keep reading for more information on these various accessor functions.
 
-      var data = [{ "title": "3 Years", "group" : "one", "value": 30 },
-                  { "title": "3 Years", "group" : "two", "value": 20 },
-                  { "title": "3 Years", "group" : "three", "value": 10 },
-                  { "title": "5 Years", "group" : "one",  "value": 3 },
-                  { "title": "5 Years", "group" : "two", "value": 2 },
-                  { "title": "5 Years", "group" : "three", "value": 1 }]
+##### Benefits
++ Supports negative and positive stacked data series.
 
-    Example Usage:
-    Given the example data and dimension variables above you can use this module
-    in the following way:
+##### Limitations
++ The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.
+
+##### Accessor Methods
+
+`x` : - function which returns a key to access the x values in the data array
+`y` : - function which returns a key to access the y values in the data array
+`value` : - function which returns a key to access the values in the data array.
+`data` : array - An array of objects with their dimensions specified like this:
+
+    var data = [{ "title": "3 Years", "group" : "one", "value": 30 },
+                { "title": "3 Years", "group" : "two", "value": 20 },
+                { "title": "3 Years", "group" : "three", "value": 10 },
+                { "title": "5 Years", "group" : "one",  "value": 3 },
+                { "title": "5 Years", "group" : "two", "value": 2 },
+                { "title": "5 Years", "group" : "three", "value": 1 }]
+
+##### Example Usage
+
+Given the example data and dimension variables above you can use this module
+in the following way:
 
     var parser = d4.parsers.nestedStack()
     .x(function() {
@@ -76,7 +79,8 @@
     })
     .call(data);
 
-    The `parser` variable will now be an object containing the following structure:
+The `parser` variable will now be an object containing the following structure:
+
     {
       data: Array
       value: {
@@ -93,10 +97,7 @@
       }
     }
 
-    Taking these attributes one-by-one:
-    * data - is an array of items stacked by D3
-
-  **/
+**/
   d4.parsers.nestedStack = function nestedStack() {
 
     var opts = {
