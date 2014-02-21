@@ -1,5 +1,8 @@
-/* global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
   d4.features.arrow = function(name) {
     return {

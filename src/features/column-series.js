@@ -1,11 +1,14 @@
-/* global d4: false */
-/*
+/*!
 
   DEPRECATION WARNING: This feature is deprecated in favor of using the nested
   column series renderer. Intrinsicly this makes sense because a normal column
   chart is mearly a stacked column chart with only one series.
 */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
   d4.features.columnSeries = function(name) {
     return {

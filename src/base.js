@@ -1,6 +1,4 @@
-/* global d3: false */
-
-/*
+/*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
   http://underscorejs.org
   (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -33,6 +31,11 @@
     .call(columnChart);
 */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
   'use strict';
 
   var root = this;
@@ -170,6 +173,12 @@
     } else {
       return {};
     }
+  };
+
+  d4.functor = function(funct) {
+    return isFunction(funct) ? funct : function() {
+      return funct;
+    };
   };
 
   // Specify the feature to mixin.

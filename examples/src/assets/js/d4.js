@@ -2,9 +2,9 @@
  *  License: MIT Expat
  *  Date: 2014-02-21
  */
-/* global d3: false */
+/*! global d3: false */
 
-/*
+/*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
   http://underscorejs.org
   (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -316,8 +316,10 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var columnChartBuilder = function() {
@@ -383,8 +385,10 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var groupedColumnChartBuilder = function() {
@@ -461,8 +465,10 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var lineChartBuilder = function() {
@@ -534,8 +540,10 @@
   };
 }).call(this);
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var rowChartBuilder = function() {
@@ -607,8 +615,10 @@
   };
 }).call(this);
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var scatterPlotBuilder = function() {
@@ -692,8 +702,10 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var stackedColumnChartBuilder = function() {
@@ -772,8 +784,10 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   // This accessor can be overridden
@@ -952,7 +966,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.arrow = function(name) {
@@ -1018,7 +1032,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.columnLabels = function(name) {
@@ -1052,7 +1066,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 /*
 
   DEPRECATION WARNING: This feature is deprecated in favor of using the nested
@@ -1110,7 +1124,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.grid = function(name) {
@@ -1154,7 +1168,7 @@
     };
   };
 }).call(this);
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.groupedColumnLabels = function(name) {
@@ -1199,7 +1213,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.groupedColumnSeries = function(name) {
@@ -1258,7 +1272,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.lineSeriesLabels = function(name) {
@@ -1298,7 +1312,7 @@
     };
   };
 }).call(this);
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.lineSeries = function(name) {
@@ -1343,7 +1357,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.referenceLine = function(name) {
@@ -1380,7 +1394,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.rowLabels = function(name) {
@@ -1413,7 +1427,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.rowSeries = function(name) {
@@ -1456,7 +1470,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.scatterSeries = function(name) {
@@ -1492,7 +1506,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
 
   /*
@@ -1574,7 +1588,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.stackedColumnLabels = function(name) {
@@ -1624,7 +1638,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.stackedColumnSeries = function(name) {
@@ -1679,7 +1693,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.trendLine = function(name) {
@@ -1749,7 +1763,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
 
   /*
@@ -1848,7 +1862,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.xAxis = function(name) {
@@ -1870,7 +1884,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.yAxis = function(name) {
@@ -1923,8 +1937,8 @@
   };
 }).call(this);
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*! global d3: false */
+  /*! global d4: false */
   'use strict';
 
   /**
@@ -2053,8 +2067,8 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*! global d3: false */
+  /*! global d4: false */
   'use strict';
 
   /**
@@ -2250,8 +2264,8 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*! global d3: false */
+  /*! global d4: false */
   'use strict';
 
   /**

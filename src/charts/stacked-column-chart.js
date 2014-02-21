@@ -1,6 +1,8 @@
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var stackedColumnChartBuilder = function() {

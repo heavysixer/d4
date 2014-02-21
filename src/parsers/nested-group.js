@@ -1,6 +1,6 @@
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*! global d3: false */
+  /*! global d4: false */
   'use strict';
 
   /**
@@ -90,7 +90,7 @@
     };
 
     var setDimension = function(dim, funct) {
-      opts[dim].key = funct();
+      opts[dim].key = d4.functor(funct)();
     };
 
     var parser = function(data) {

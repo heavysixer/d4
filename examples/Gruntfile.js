@@ -42,6 +42,9 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     app: appConfig,
+    meta: {
+      pkg: grunt.file.readJSON('../package.json'),
+    },
     watch: {
       assemble: {
         files: ['<%= app.src %>/{assets,content,data,templates}/**/*.{md,hbs,yml,css}', '<%= app.src %>/../../docs/**/*.{md,hbs,yml}', '<%= app.src %>/../../README.md'],
@@ -180,6 +183,18 @@ module.exports = function(grunt) {
         'copy:styles'
       ]
     },
+    mox: {
+      build: {
+        sourceFiles: ['../src/base.js'],
+        options: {
+          name: '<%= meta.pkg.name %>',
+          version: '<%= meta.pkg.version %>',
+          template: 'file',
+          moxFile: '../docs/<%= meta.pkg.name %>-doc.json',
+          outputFile: '../docs/<%= meta.pkg.name %>-doc.md'
+        }
+      },
+    },
 
     assemble: {
       pages: {
@@ -211,6 +226,7 @@ module.exports = function(grunt) {
 
     grunt.task.run([
       'clean:server',
+      'mox:build',
       'assemble',
       'concurrent:server',
       'connect:livereload',
@@ -221,6 +237,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'mox:build',
     'assemble',
     'useminPrepare',
     'concurrent:dist',

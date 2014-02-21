@@ -36,7 +36,8 @@
     "grunt-contrib-uglify": "~0.3.2",
     "connect-livereload": "~0.3.2",
     "grunt-concurrent": "~0.4.3",
-    "grunt-open": "~0.2.3"
+    "grunt-open": "~0.2.3",
+    "grunt-mox": "0.0.10"
   },
   "licenses": [
     {

@@ -1,5 +1,9 @@
-/* global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
 
   /*
     Orthogonal Series Connectors connect column series together by using a

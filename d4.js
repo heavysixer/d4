@@ -1,10 +1,10 @@
 /*! d4 - v0.1.0
  *  License: MIT Expat
- *  Date: 2014-02-20
+ *  Date: 2014-02-21
  */
-/* global d3: false */
+/*! global d3: false */
 
-/*
+/*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
   http://underscorejs.org
   (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -176,6 +176,12 @@
     }
   };
 
+  d4.functor = function(funct) {
+    return isFunction(funct) ? funct : function() {
+      return funct;
+    };
+  };
+
   // Specify the feature to mixin.
   // `index` is optional and will place a mixin at a specific 'layer.'
   d4.mixin = function(feature, index) {
@@ -310,8 +316,10 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var columnChartBuilder = function() {
@@ -377,14 +385,11 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
-
-  // This accessor is meant to be overridden
-  var groupsOf = function(){
-    return 1;
-  };
 
   var groupedColumnChartBuilder = function() {
     var extractValues = function(data, key) {
@@ -442,7 +447,7 @@
   d4.groupedColumnChart = function groupedColumnChart() {
     var chart = d4.baseChart({
       accessors: ['groupsOf'],
-      groupsOf: groupsOf
+      groupsOf: 1
     }, groupedColumnChartBuilder);
     [{
       'bars': d4.features.groupedColumnSeries
@@ -460,8 +465,10 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var lineChartBuilder = function() {
@@ -533,8 +540,10 @@
   };
 }).call(this);
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var rowChartBuilder = function() {
@@ -606,8 +615,10 @@
   };
 }).call(this);
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var scatterPlotBuilder = function() {
@@ -691,8 +702,10 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   var stackedColumnChartBuilder = function() {
@@ -771,8 +784,10 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   // This accessor can be overridden
@@ -951,7 +966,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.arrow = function(name) {
@@ -1017,7 +1032,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.columnLabels = function(name) {
@@ -1051,7 +1066,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 /*
 
   DEPRECATION WARNING: This feature is deprecated in favor of using the nested
@@ -1109,7 +1124,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.grid = function(name) {
@@ -1153,7 +1168,7 @@
     };
   };
 }).call(this);
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.groupedColumnLabels = function(name) {
@@ -1198,7 +1213,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.groupedColumnSeries = function(name) {
@@ -1257,7 +1272,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.lineSeriesLabels = function(name) {
@@ -1297,7 +1312,7 @@
     };
   };
 }).call(this);
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.lineSeries = function(name) {
@@ -1342,7 +1357,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.referenceLine = function(name) {
@@ -1379,7 +1394,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.rowLabels = function(name) {
@@ -1412,7 +1427,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.rowSeries = function(name) {
@@ -1455,7 +1470,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.scatterSeries = function(name) {
@@ -1491,7 +1506,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
 
   /*
@@ -1573,7 +1588,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.stackedColumnLabels = function(name) {
@@ -1623,7 +1638,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.stackedColumnSeries = function(name) {
@@ -1678,7 +1693,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.trendLine = function(name) {
@@ -1748,7 +1763,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
 
   /*
@@ -1847,7 +1862,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.xAxis = function(name) {
@@ -1869,7 +1884,7 @@
   };
 }).call(this);
 
-/* global d4: false */
+/*! global d4: false */
 (function() {
   'use strict';
   d4.features.yAxis = function(name) {
@@ -1922,8 +1937,8 @@
   };
 }).call(this);
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*! global d3: false */
+  /*! global d4: false */
   'use strict';
 
   /**
@@ -2013,7 +2028,7 @@
     };
 
     var setDimension = function(dim, funct) {
-      opts[dim].key = funct();
+      opts[dim].key = d4.functor(funct)();
     };
 
     var parser = function(data) {
@@ -2052,8 +2067,8 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*! global d3: false */
+  /*! global d4: false */
   'use strict';
 
   /**
@@ -2214,7 +2229,7 @@
     };
 
     var setDimension = function(dim, funct) {
-      opts[dim].key = funct();
+      opts[dim].key = d4.functor(funct)();
     };
 
     var parser = function(data) {
@@ -2249,8 +2264,8 @@
 }).call(this);
 
 (function() {
-  /* global d3: false */
-  /* global d4: false */
+  /*! global d3: false */
+  /*! global d4: false */
   'use strict';
 
   /**
@@ -2424,7 +2439,7 @@
     };
 
     var setDimension = function(dim, funct) {
-      opts[dim].key = funct();
+      opts[dim].key = d4.functor(funct)();
     };
 
     var parser = function(data) {

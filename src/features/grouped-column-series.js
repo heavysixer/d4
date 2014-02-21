@@ -1,14 +1,17 @@
-/* global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
   d4.features.groupedColumnSeries = function(name) {
-    var sign = function(val){
+    var sign = function(val) {
       return (val > 0) ? 'positive' : 'negative';
     };
 
     return {
       accessors: {
-        x: function(d,i) {
+        x: function(d, i) {
           var width = this.x.rangeBand() / this.groupsOf;
           var xPos = this.x(d[this.xKey]) + width * i;
           return xPos;
@@ -28,19 +31,19 @@
           return Math.abs(this.y(d[this.yKey]) - this.y(0));
         },
 
-        classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d[this.yKey]) + ' ' + d[this.yKey];
+        classes: function(d, i) {
+          return 'bar fill item' + i + ' ' + sign(d[this.yKey]) + ' ' + d[this.yKey];
         }
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('.group')
           .data(data);
-          group.enter().append('g');
-          group.exit().remove();
-          group.attr('class', function(d,i) {
-            return 'series'+ i + ' ' + this.xKey;
-          }.bind(this));
+        group.enter().append('g');
+        group.exit().remove();
+        group.attr('class', function(d, i) {
+          return 'series' + i + ' ' + this.xKey;
+        }.bind(this));
 
         group.selectAll('rect')
           .data(function(d) {

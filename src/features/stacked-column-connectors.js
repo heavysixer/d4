@@ -1,5 +1,8 @@
-/* global d4: false */
 (function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
 
   /*
     Column connectors helpful when displaying a stacked column chart.
