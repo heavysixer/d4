@@ -8,37 +8,37 @@
 * [`mixout`][4]
 * [`features`][5]
 
-###### [waterfall-connectors.js][6]
+###### [column-chart.js][6]
 
-* [`waterfallConnectors`][7]
+* [`columnChart`][7]
 
-###### [nested-group.js][8]
+###### [grouped-column-chart.js][8]
 
-* [`nestedGroup`][9]
+* [`groupedColumnChart`][9]
 
-###### [nested-stack.js][10]
+###### [line-chart.js][10]
 
-* [`nestedStack`][11]
+* [`lineChart`][11]
 
-###### [waterfall.js][12]
+###### [row-chart.js][12]
 
-* [`waterfall`][13]
+* [`rowChart`][13]
 
-###### [column-chart.js][14]
+###### [waterfall-connectors.js][14]
 
-* [`columnChart`][15]
+* [`waterfallConnectors`][15]
 
-###### [grouped-column-chart.js][16]
+###### [nested-group.js][16]
 
-* [`groupedColumnChart`][17]
+* [`nestedGroup`][17]
 
-###### [line-chart.js][18]
+###### [nested-stack.js][18]
 
-* [`lineChart`][19]
+* [`nestedStack`][19]
 
-###### [row-chart.js][20]
+###### [waterfall.js][20]
 
-* [`rowChart`][21]
+* [`waterfall`][21]
 
 ## base.js
 
@@ -159,12 +159,214 @@ this method.
 
 ---
 
+## column-chart.js
+
+### columnChart
+
+[\#][7]
+[Ⓣ][6]
+
+The column chart has two axes (`x` and `y`). By default the column chart expects  
+linear values for the `y` and ordinal values on the `x`. The basic column chart  
+has four default features:
+
+**bars** - series bars  
+**barLabels** - data labels above the bars  
+**xAxis** - the axis for the x dimension  
+**yAxis** - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+        { x: '2010', y:-10 },
+        { x: '2011', y:20 },
+        { x: '2012', y:30 },
+        { x: '2013', y:40 },
+        { x: '2014', y:50 },
+      ];
+    var chart = d4.columnChart();
+    d3.select('#example')
+    .datum(data)
+    .call(chart);
+    
+
+By default d4 expects a series object, which uses the following format: `{ x : '2010', y : 10 }`.  
+The default format may not be desired and so we'll override it:
+
+    var data = [
+      ['2010', -10],
+      ['2011', 20],
+      ['2012', 30],
+      ['2013', 40],
+      ['2014', 50]
+    ];
+    var chart = d4.columnChart()
+    .xKey(0)
+    .yKey(1);
+    
+    d3.select('#example')
+    .datum(data)
+    .call(chart);
+    
+
+---
+
+## grouped-column-chart.js
+
+### groupedColumnChart
+
+[\#][9]
+[Ⓣ][8]
+
+The grouped column chart is used to compare a series of data elements grouped  
+along the xAxis. This chart is often useful in conjunction with a stacked column  
+chart because they can use the same data series, and where the stacked column highlights  
+the sum of the data series across an axis the grouped column can be used to show the  
+relative distribution.
+
+**bars** - series bars  
+**barLabels** - data labels above the bars  
+**groupsOf** - an integer representing the number of columns in each group  
+**xAxis** - the axis for the x dimension  
+**yAxis** - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+      { year: '2010', unitsSold:-100, salesman : 'Bob' },
+      { year: '2011', unitsSold:200, salesman : 'Bob' },
+      { year: '2012', unitsSold:300, salesman : 'Bob' },
+      { year: '2013', unitsSold:400, salesman : 'Bob' },
+      { year: '2014', unitsSold:500, salesman : 'Bob' },
+      { year: '2010', unitsSold:100, salesman : 'Gina' },
+      { year: '2011', unitsSold:100, salesman : 'Gina' },
+      { year: '2012', unitsSold:-100, salesman : 'Gina' },
+      { year: '2013', unitsSold:500, salesman : 'Gina' },
+      { year: '2014', unitsSold:600, salesman : 'Gina' },
+      { year: '2010', unitsSold:400, salesman : 'Average' },
+      { year: '2011', unitsSold:0, salesman : 'Average' },
+      { year: '2012', unitsSold:400, salesman : 'Average' },
+      { year: '2013', unitsSold:400, salesman : 'Average' },
+      { year: '2014', unitsSold:400, salesman : 'Average' }
+    ];
+    
+    var parsedData = d4.parsers.nestedGroup()
+      .x('year')
+      .y('unitsSold')
+      .value('unitsSold')(data);
+    
+    var chart = d4.groupedColumnChart()
+    .width($('#example').width())
+    .xKey('year')
+    .yKey('unitsSold')
+    .groupsOf(parsedData.data[0].values.length);
+    
+    d3.select('#example')
+    .datum(parsedData.data)
+    .call(chart);
+    
+
+---
+
+## line-chart.js
+
+### lineChart
+
+[\#][11]
+[Ⓣ][10]
+
+The line series chart is used to compare a series of data elements grouped  
+along the xAxis.
+
+**lineSeries** - series lines  
+**lineSeriesLabels** - data labels beside the lines  
+**xAxis** - the axis for the x dimension  
+**yAxis** - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+      { year: '2010', unitsSold:-100, salesman : 'Bob' },
+      { year: '2011', unitsSold:200, salesman : 'Bob' },
+      { year: '2012', unitsSold:300, salesman : 'Bob' },
+      { year: '2013', unitsSold:400, salesman : 'Bob' },
+      { year: '2014', unitsSold:500, salesman : 'Bob' },
+      { year: '2010', unitsSold:100, salesman : 'Gina' },
+      { year: '2011', unitsSold:100, salesman : 'Gina' },
+      { year: '2012', unitsSold:-100, salesman : 'Gina' },
+      { year: '2013', unitsSold:500, salesman : 'Gina' },
+      { year: '2014', unitsSold:600, salesman : 'Gina' },
+      { year: '2010', unitsSold:400, salesman : 'Average' },
+      { year: '2011', unitsSold:0, salesman : 'Average' },
+      { year: '2012', unitsSold:400, salesman : 'Average' },
+      { year: '2013', unitsSold:400, salesman : 'Average' },
+      { year: '2014', unitsSold:400, salesman : 'Average' }
+    ];
+    var parsedData = d4.parsers.nestedGroup()
+      .x(function(){
+        return 'year';
+      })
+      .nestKey(function(){
+        return 'salesman';
+      })
+      .y(function(){
+        return 'unitsSold';
+      })
+      .value(function(){
+        return 'unitsSold';
+      })(data);
+    
+    var chart = d4.lineChart()
+    .width($('#example').width())
+    .xKey('year')
+    .yKey('unitsSold');
+    
+    d3.select('#example')
+    .datum(parsedData.data)
+    .call(chart);
+    
+
+---
+
+## row-chart.js
+
+### rowChart
+
+[\#][13]
+[Ⓣ][12]
+
+The row chart has two axes (`x` and `y`). By default the column chart expects  
+linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
+has four default features:
+
+**bars** - series bars  
+**rowLabels** - data labels to the right of the bars  
+**xAxis** - the axis for the x dimension  
+**yAxis** - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+          { y: '2010', x:-10 },
+          { y: '2011', x:20 },
+          { y: '2012', x:30 },
+          { y: '2013', x:40 },
+          { y: '2014', x:50 },
+        ];
+      var chart = d4.rowChart();
+      d3.select('#example')
+      .datum(data)
+      .call(chart);
+    
+
+---
+
 ## waterfall-connectors.js
 
 ### waterfallConnectors
 
-[\#][7]
-[Ⓣ][6]
+[\#][15]
+[Ⓣ][14]
 
 Waterfall connectors are orthogonal series connectors which visually join  
 column series together by spanning the top or bottom of adjacent columns.
@@ -186,8 +388,8 @@ the direction of the lines.
 
 ### nestedGroup
 
-[\#][9]
-[Ⓣ][8]
+[\#][17]
+[Ⓣ][16]
 
 The nested group parser is useful for grouped column charts where multiple  
 data items need to appear relative to the axis value, for example grouped  
@@ -240,8 +442,8 @@ Keep reading for more information on these various accessor functions.
 
 ### nestedStack
 
-[\#][11]
-[Ⓣ][10]
+[\#][19]
+[Ⓣ][18]
 
 The nested stack parser is useful for charts which take a data series  
 and wants to sort them across a dimension and then display the results.  
@@ -349,8 +551,8 @@ The `parser` variable will now be an object containing the following structure:
 
 ### waterfall
 
-[\#][13]
-[Ⓣ][12]
+[\#][21]
+[Ⓣ][20]
 
 The waterfall parser is useful for waterfall charts where data items need to account  
 for the position of earlier values:
@@ -453,208 +655,6 @@ y - an object with a key representing the y accessor and an array of values
 
 ---
 
-## column-chart.js
-
-### columnChart
-
-[\#][15]
-[Ⓣ][14]
-
-The column chart has two axes (`x` and `y`). By default the column chart expects  
-linear values for the `y` and ordinal values on the `x`. The basic column chart  
-has four default features:
-
-**bars** - series bars  
-**barLabels** - data labels above the bars  
-**xAxis** - the axis for the x dimension  
-**yAxis** - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-        { x: '2010', y:-10 },
-        { x: '2011', y:20 },
-        { x: '2012', y:30 },
-        { x: '2013', y:40 },
-        { x: '2014', y:50 },
-      ];
-    var chart = d4.columnChart();
-    d3.select('#example')
-    .datum(data)
-    .call(chart);
-    
-
-By default d4 expects a series object, which uses the following format: `{ x : '2010', y : 10 }`.  
-The default format may not be desired and so we'll override it:
-
-    var data = [
-      ['2010', -10],
-      ['2011', 20],
-      ['2012', 30],
-      ['2013', 40],
-      ['2014', 50]
-    ];
-    var chart = d4.columnChart()
-    .xKey(0)
-    .yKey(1);
-    
-    d3.select('#example')
-    .datum(data)
-    .call(chart);
-    
-
----
-
-## grouped-column-chart.js
-
-### groupedColumnChart
-
-[\#][17]
-[Ⓣ][16]
-
-The grouped column chart is used to compare a series of data elements grouped  
-along the xAxis. This chart is often useful in conjunction with a stacked column  
-chart because they can use the same data series, and where the stacked column highlights  
-the sum of the data series across an axis the grouped column can be used to show the  
-relative distribution.
-
-**bars** - series bars  
-**barLabels** - data labels above the bars  
-**groupsOf** - an integer representing the number of columns in each group  
-**xAxis** - the axis for the x dimension  
-**yAxis** - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-      { year: '2010', unitsSold:-100, salesman : 'Bob' },
-      { year: '2011', unitsSold:200, salesman : 'Bob' },
-      { year: '2012', unitsSold:300, salesman : 'Bob' },
-      { year: '2013', unitsSold:400, salesman : 'Bob' },
-      { year: '2014', unitsSold:500, salesman : 'Bob' },
-      { year: '2010', unitsSold:100, salesman : 'Gina' },
-      { year: '2011', unitsSold:100, salesman : 'Gina' },
-      { year: '2012', unitsSold:-100, salesman : 'Gina' },
-      { year: '2013', unitsSold:500, salesman : 'Gina' },
-      { year: '2014', unitsSold:600, salesman : 'Gina' },
-      { year: '2010', unitsSold:400, salesman : 'Average' },
-      { year: '2011', unitsSold:0, salesman : 'Average' },
-      { year: '2012', unitsSold:400, salesman : 'Average' },
-      { year: '2013', unitsSold:400, salesman : 'Average' },
-      { year: '2014', unitsSold:400, salesman : 'Average' }
-    ];
-    
-    var parsedData = d4.parsers.nestedGroup()
-      .x('year')
-      .y('unitsSold')
-      .value('unitsSold')(data);
-    
-    var chart = d4.groupedColumnChart()
-    .width($('#example').width())
-    .xKey('year')
-    .yKey('unitsSold')
-    .groupsOf(parsedData.data[0].values.length);
-    
-    d3.select('#example')
-    .datum(parsedData.data)
-    .call(chart);
-    
-
----
-
-## line-chart.js
-
-### lineChart
-
-[\#][19]
-[Ⓣ][18]
-
-The line series chart is used to compare a series of data elements grouped  
-along the xAxis.
-
-**lineSeries** - series lines  
-**lineSeriesLabels** - data labels beside the lines  
-**xAxis** - the axis for the x dimension  
-**yAxis** - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-      { year: '2010', unitsSold:-100, salesman : 'Bob' },
-      { year: '2011', unitsSold:200, salesman : 'Bob' },
-      { year: '2012', unitsSold:300, salesman : 'Bob' },
-      { year: '2013', unitsSold:400, salesman : 'Bob' },
-      { year: '2014', unitsSold:500, salesman : 'Bob' },
-      { year: '2010', unitsSold:100, salesman : 'Gina' },
-      { year: '2011', unitsSold:100, salesman : 'Gina' },
-      { year: '2012', unitsSold:-100, salesman : 'Gina' },
-      { year: '2013', unitsSold:500, salesman : 'Gina' },
-      { year: '2014', unitsSold:600, salesman : 'Gina' },
-      { year: '2010', unitsSold:400, salesman : 'Average' },
-      { year: '2011', unitsSold:0, salesman : 'Average' },
-      { year: '2012', unitsSold:400, salesman : 'Average' },
-      { year: '2013', unitsSold:400, salesman : 'Average' },
-      { year: '2014', unitsSold:400, salesman : 'Average' }
-    ];
-    var parsedData = d4.parsers.nestedGroup()
-      .x(function(){
-        return 'year';
-      })
-      .nestKey(function(){
-        return 'salesman';
-      })
-      .y(function(){
-        return 'unitsSold';
-      })
-      .value(function(){
-        return 'unitsSold';
-      })(data);
-    
-    var chart = d4.lineChart()
-    .width($('#example').width())
-    .xKey('year')
-    .yKey('unitsSold');
-    
-    d3.select('#example')
-    .datum(parsedData.data)
-    .call(chart);
-    
-
----
-
-## row-chart.js
-
-### rowChart
-
-[\#][21]
-[Ⓣ][20]
-
-The row chart has two axes (`x` and `y`). By default the column chart expects  
-linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
-has four default features:
-
-**bars** - series bars  
-**rowLabels** - data labels to the right of the bars  
-**xAxis** - the axis for the x dimension  
-**yAxis** - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-          { y: '2010', x:-10 },
-          { y: '2011', x:20 },
-          { y: '2012', x:30 },
-          { y: '2013', x:40 },
-          { y: '2014', x:50 },
-        ];
-      var chart = d4.rowChart();
-      d3.select('#example')
-      .datum(data)
-      .call(chart);
-    
-
----
-
 
 
 [0]: #base-js
@@ -663,21 +663,21 @@ has four default features:
 [3]: #mixin
 [4]: #mixout
 [5]: #features
-[6]: #waterfall-connectors-js
-[7]: #waterfallconnectors
-[8]: #nested-group-js
-[9]: #nestedgroup
-[10]: #nested-stack-js
-[11]: #nestedstack
-[12]: #waterfall-js
-[13]: #waterfall
-[14]: #column-chart-js
-[15]: #columnchart
-[16]: #grouped-column-chart-js
-[17]: #groupedcolumnchart
-[18]: #line-chart-js
-[19]: #linechart
-[20]: #row-chart-js
-[21]: #rowchart
+[6]: #column-chart-js
+[7]: #columnchart
+[8]: #grouped-column-chart-js
+[9]: #groupedcolumnchart
+[10]: #line-chart-js
+[11]: #linechart
+[12]: #row-chart-js
+[13]: #rowchart
+[14]: #waterfall-connectors-js
+[15]: #waterfallconnectors
+[16]: #nested-group-js
+[17]: #nestedgroup
+[18]: #nested-stack-js
+[19]: #nestedstack
+[20]: #waterfall-js
+[21]: #waterfall
 [22]: https://github.com/mbostock/d3/wiki/Arrays#-nest
 [23]: https://github.com/mbostock/d3/wiki/Stack-Layout

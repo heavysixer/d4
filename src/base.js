@@ -114,10 +114,10 @@
     return opts;
   };
 
-  var build = function(data) {
-    if (this.builder) {
-      this.builder.configure(data);
-      this.builder.render(data);
+  var build = function(opts, data) {
+    if (opts.builder) {
+      opts.builder.configure(opts, data);
+      opts.builder.render(opts, data);
     } else {
       assert('No builder defined');
     }
@@ -136,7 +136,7 @@
     return function(selection) {
       selection.each(function(data) {
         scaffoldChart.bind(opts, this)(data);
-        build.bind(opts)(data);
+        build(opts, data);
       });
     };
   };

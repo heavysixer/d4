@@ -5,47 +5,44 @@
    */
   'use strict';
   var columnChartBuilder = function() {
-    var configureX = function(data) {
-      if (!this.parent.x) {
-        this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
-        this.parent.x = d3.scale.ordinal()
+    var configureX = function(chart, data) {
+      if (!chart.x) {
+        chart.xRoundBands = chart.xRoundBands || 0.3;
+        chart.x = d3.scale.ordinal()
           .domain(data.map(function(d) {
             return d[this.xKey];
-          }.bind(this.parent)))
-          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
+          }.bind(chart)))
+          .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
       }
     };
 
-    var configureY = function(data) {
-      if (!this.parent.y) {
-        this.parent.y = d3.scale.linear()
+    var configureY = function(chart, data) {
+      if (!chart.y) {
+        chart.y = d3.scale.linear()
           .domain(d3.extent(data, function(d) {
             return d[this.yKey];
-          }.bind(this.parent)));
+          }.bind(chart)));
       }
-      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
         .clamp(true)
         .nice();
     };
 
-    var configureScales = function(data) {
-      configureX.bind(this)(data);
-      configureY.bind(this)(data);
+    var configureScales = function(chart, data) {
+      configureX.bind(this)(chart, data);
+      configureY.bind(this)(chart, data);
     };
 
     var builder = {
-      configure: function(data) {
-        configureScales.bind(this)(data);
+      configure: function(chart, data) {
+        configureScales.bind(this)(chart, data);
       },
-      render: function(data) {
-        var parent = this.parent;
-        parent.mixins.forEach(function(name) {
-          parent.features[name].render.bind(parent)(parent.features[name], data);
+      render: function(chart, data) {
+        chart.mixins.forEach(function(name) {
+          chart.features[name].render.bind(chart)(chart.features[name], data);
         });
       }
     };
-
-    builder.parent = this;
     return builder;
   };
 

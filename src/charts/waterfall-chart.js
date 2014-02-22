@@ -71,6 +71,7 @@
             return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);
           }
         },
+
         x: function(d) {
           if (this.orientation() === 'vertical') {
             return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
@@ -80,6 +81,7 @@
             return this.x(xVal) + 10 + width;
           }
         },
+
         text: function(d) {
           return d3.format('').call(this, d[this.valueKey]);
         }
@@ -88,30 +90,30 @@
   };
 
   var waterfallChartBuilder = function() {
-    var rangeBoundsFor = function(dimension) {
+    var rangeBoundsFor = function(chart, dimension) {
       var rangeBounds;
       if (dimension === 'x') {
-        return [0, this.parent.width - this.parent.margin.left - this.parent.margin.right];
+        return [0, chart.width - chart.margin.left - chart.margin.right];
       } else {
-        rangeBounds = [0, this.parent.height - this.parent.margin.top - this.parent.margin.bottom];
-        return (this.parent.orientation().toLowerCase() === 'vertical') ? rangeBounds.reverse() : rangeBounds;
+        rangeBounds = [0, chart.height - chart.margin.top - chart.margin.bottom];
+        return (chart.orientation().toLowerCase() === 'vertical') ? rangeBounds.reverse() : rangeBounds;
       }
     };
 
-    var setOrdinal = function(dimension, data) {
-      if (!this.parent[dimension]) {
+    var setOrdinal = function(chart, dimension, data) {
+      if (!chart[dimension]) {
         var keys = data.map(function(d) {
           return d.key;
         }.bind(this));
 
-        this.parent[dimension] = d3.scale.ordinal()
+        chart[dimension] = d3.scale.ordinal()
           .domain(keys)
-          .rangeRoundBands(rangeBoundsFor.bind(this)(dimension), this.parent.xRoundBands || 0.3);
+          .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);
       }
     };
 
-    var setLinear = function(dimension, data) {
-      if (!this.parent[dimension]) {
+    var setLinear = function(chart, dimension, data) {
+      if (!chart[dimension]) {
         var ext = d3.extent(d3.merge(data.map(function(datum) {
           return d3.extent(datum.values, function(d) {
 
@@ -121,38 +123,35 @@
           });
         })));
         ext[0] = Math.min(0, ext[0]);
-        this.parent[dimension] = d3.scale.linear()
+        chart[dimension] = d3.scale.linear()
           .domain(ext);
       }
-      this.parent[dimension].range(rangeBoundsFor.bind(this)(dimension))
+      chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
         .clamp(true)
         .nice();
     };
 
-    var configureScales = function(data) {
-      if (this.parent.orientation().toLowerCase() === 'vertical') {
-        setOrdinal.bind(this)('x', data);
-        setLinear.bind(this)('y', data);
+    var configureScales = function(chart, data) {
+      if (chart.orientation().toLowerCase() === 'vertical') {
+        setOrdinal.bind(this)(chart, 'x', data);
+        setLinear.bind(this)(chart, 'y', data);
       } else {
-        setOrdinal.bind(this)('y', data);
-        setLinear.bind(this)('x', data);
+        setOrdinal.bind(this)(chart, 'y', data);
+        setLinear.bind(this)(chart, 'x', data);
       }
     };
 
     var builder = {
-      configure: function(data) {
-        configureScales.bind(this)(data);
+      configure: function(chart, data) {
+        configureScales.bind(this)(chart, data);
       },
 
-      render: function(data) {
-        var parent = this.parent;
-        parent.mixins.forEach(function(name) {
-          parent.features[name].render.bind(parent)(parent.features[name], data);
+      render: function(chart, data) {
+        chart.mixins.forEach(function(name) {
+          chart.features[name].render.bind(chart)(chart.features[name], data);
         });
       }
     };
-
-    builder.parent = this;
     return builder;
   };
 

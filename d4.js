@@ -1,6 +1,6 @@
 /*! d4 - v0.1.0
  *  License: MIT Expat
- *  Date: 2014-02-21
+ *  Date: 2014-02-22
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -118,10 +118,10 @@
     return opts;
   };
 
-  var build = function(data) {
-    if (this.builder) {
-      this.builder.configure(data);
-      this.builder.render(data);
+  var build = function(opts, data) {
+    if (opts.builder) {
+      opts.builder.configure(opts, data);
+      opts.builder.render(opts, data);
     } else {
       assert('No builder defined');
     }
@@ -140,7 +140,7 @@
     return function(selection) {
       selection.each(function(data) {
         scaffoldChart.bind(opts, this)(data);
-        build.bind(opts)(data);
+        build(opts, data);
       });
     };
   };
@@ -371,47 +371,44 @@
    */
   'use strict';
   var columnChartBuilder = function() {
-    var configureX = function(data) {
-      if (!this.parent.x) {
-        this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
-        this.parent.x = d3.scale.ordinal()
+    var configureX = function(chart, data) {
+      if (!chart.x) {
+        chart.xRoundBands = chart.xRoundBands || 0.3;
+        chart.x = d3.scale.ordinal()
           .domain(data.map(function(d) {
             return d[this.xKey];
-          }.bind(this.parent)))
-          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
+          }.bind(chart)))
+          .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
       }
     };
 
-    var configureY = function(data) {
-      if (!this.parent.y) {
-        this.parent.y = d3.scale.linear()
+    var configureY = function(chart, data) {
+      if (!chart.y) {
+        chart.y = d3.scale.linear()
           .domain(d3.extent(data, function(d) {
             return d[this.yKey];
-          }.bind(this.parent)));
+          }.bind(chart)));
       }
-      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
         .clamp(true)
         .nice();
     };
 
-    var configureScales = function(data) {
-      configureX.bind(this)(data);
-      configureY.bind(this)(data);
+    var configureScales = function(chart, data) {
+      configureX.bind(this)(chart, data);
+      configureY.bind(this)(chart, data);
     };
 
     var builder = {
-      configure: function(data) {
-        configureScales.bind(this)(data);
+      configure: function(chart, data) {
+        configureScales.bind(this)(chart, data);
       },
-      render: function(data) {
-        var parent = this.parent;
-        parent.mixins.forEach(function(name) {
-          parent.features[name].render.bind(parent)(parent.features[name], data);
+      render: function(chart, data) {
+        chart.mixins.forEach(function(name) {
+          chart.features[name].render.bind(chart)(chart.features[name], data);
         });
       }
     };
-
-    builder.parent = this;
     return builder;
   };
 
@@ -492,46 +489,43 @@ The default format may not be desired and so we'll override it:
       return d3.merge(values);
     };
 
-    var configureX = function(data) {
-      if (!this.parent.x) {
-        var xData = extractValues(data, this.parent.xKey);
-        this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
-        this.parent.x = d3.scale.ordinal()
+    var configureX = function(chart, data) {
+      if (!chart.x) {
+        var xData = extractValues(data, chart.xKey);
+        chart.xRoundBands = chart.xRoundBands || 0.3;
+        chart.x = d3.scale.ordinal()
           .domain(xData)
-          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
+          .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
       }
     };
 
-    var configureY = function(data) {
-      if (!this.parent.y) {
-        var yData = extractValues(data, this.parent.yKey);
+    var configureY = function(chart, data) {
+      if (!chart.y) {
+        var yData = extractValues(data, chart.yKey);
         var ext = d3.extent(yData);
-        this.parent.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
+        chart.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
       }
-      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
         .clamp(true)
         .nice();
     };
 
-    var configureScales = function(data) {
-      configureX.bind(this)(data);
-      configureY.bind(this)(data);
+    var configureScales = function(chart, data) {
+      configureX.bind(this)(chart, data);
+      configureY.bind(this)(chart, data);
     };
 
     var builder = {
-      configure: function(data) {
-        configureScales.bind(this)(data);
+      configure: function(chart, data) {
+        configureScales.bind(this)(chart, data);
       },
 
-      render: function(data) {
-        var parent = this.parent;
-        parent.mixins.forEach(function(name) {
-          parent.features[name].render.bind(parent)(parent.features[name], data);
+      render: function(chart, data) {
+        chart.mixins.forEach(function(name) {
+          chart.features[name].render.bind(chart)(chart.features[name], data);
         });
       }
     };
-
-    builder.parent = this;
     return builder;
   };
 
@@ -621,45 +615,42 @@ relative distribution.
       return d3.merge(values);
     };
 
-    var configureX = function(data) {
-      if (!this.parent.x) {
-        var xData = extractValues(data, this.parent.xKey);
-        this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
-        this.parent.x = d3.scale.ordinal()
+    var configureX = function(chart, data) {
+      if (!chart.x) {
+        var xData = extractValues(data, chart.xKey);
+        chart.xRoundBands = chart.xRoundBands || 0.3;
+        chart.x = d3.scale.ordinal()
           .domain(xData)
-          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
+          .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
       }
     };
 
-    var configureY = function(data) {
-      if (!this.parent.y) {
-        var yData = extractValues(data, this.parent.yKey);
+    var configureY = function(chart, data) {
+      if (!chart.y) {
+        var yData = extractValues(data, chart.yKey);
         var ext = d3.extent(yData);
-        this.parent.y = d3.scale.linear().domain(ext);
+        chart.y = d3.scale.linear().domain(ext);
       }
-      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
         .clamp(true)
         .nice();
     };
 
-    var configureScales = function(data) {
-      configureX.bind(this)(data);
-      configureY.bind(this)(data);
+    var configureScales = function(chart, data) {
+      configureX.bind(this)(chart, data);
+      configureY.bind(this)(chart, data);
     };
 
     var builder = {
-      configure: function(data) {
-        configureScales.bind(this)(data);
+      configure: function(chart, data) {
+        configureScales.bind(this)(chart, data);
       },
-      render: function(data) {
-        var parent = this.parent;
-        parent.mixins.forEach(function(name) {
-          parent.features[name].render.bind(parent)(parent.features[name], data);
+      render: function(chart, data) {
+        chart.mixins.forEach(function(name) {
+          chart.features[name].render.bind(chart)(chart.features[name], data);
         });
       }
     };
-
-    builder.parent = this;
     return builder;
   };
 
@@ -739,47 +730,44 @@ relative distribution.
   'use strict';
 
   var rowChartBuilder = function() {
-    var configureX = function(data) {
-      if (!this.parent.x) {
-        this.parent.x = d3.scale.linear()
+    var configureX = function(chart, data) {
+      if (!chart.x) {
+        chart.x = d3.scale.linear()
           .domain(d3.extent(data, function(d) {
-            return d[this.parent.xKey];
+            return d[chart.xKey];
           }.bind(this)));
       }
-      this.parent.x.range([0, this.parent.width - this.parent.margin.right - this.parent.margin.left])
+      chart.x.range([0, chart.width - chart.margin.right - chart.margin.left])
       .clamp(true)
       .nice();
     };
 
-    var configureY = function(data) {
-      if (!this.parent.y) {
-        this.parent.yRoundBands = this.parent.yRoundBands || 0.3;
-        this.parent.y = d3.scale.ordinal()
+    var configureY = function(chart, data) {
+      if (!chart.y) {
+        chart.yRoundBands = chart.yRoundBands || 0.3;
+        chart.y = d3.scale.ordinal()
           .domain(data.map(function(d) {
-            return d[this.parent.yKey];
+            return d[chart.yKey];
           }.bind(this)))
-          .rangeRoundBands([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0], this.parent.yRoundBands);
+          .rangeRoundBands([chart.height - chart.margin.top - chart.margin.bottom, 0], chart.yRoundBands);
       }
     };
 
-    var configureScales = function(data) {
-      configureX.bind(this)(data);
-      configureY.bind(this)(data);
+    var configureScales = function(chart, data) {
+      configureX.bind(this)(chart, data);
+      configureY.bind(this)(chart, data);
     };
 
     var builder = {
-      configure: function(data) {
-        configureScales.bind(this)(data);
+      configure: function(chart, data) {
+        configureScales.bind(this)(chart, data);
       },
-      render: function(data) {
-        var parent = this.parent;
-        parent.mixins.forEach(function(name) {
-          parent.features[name].render.bind(parent)(parent.features[name], data);
+      render: function(chart, data) {
+        chart.mixins.forEach(function(name) {
+          chart.features[name].render.bind(chart)(chart.features[name], data);
         });
       }
     };
-
-    builder.parent = this;
     return builder;
   };
 
@@ -840,64 +828,61 @@ relative distribution.
   'use strict';
 
   var scatterPlotBuilder = function() {
-    var configureX = function(data) {
-      if (!this.parent.x) {
+    var configureX = function(chart, data) {
+      if (!chart.x) {
         var ext = d3.extent(data, function(d) {
-          return d[this.parent.xKey];
+          return d[chart.xKey];
         }.bind(this));
-        this.parent.x = d3.scale.linear()
+        chart.x = d3.scale.linear()
           .domain(ext)
           .nice()
           .clamp(true);
       }
-      this.parent.x.range([0, this.parent.width - this.parent.margin.left - this.parent.margin.right]);
+      chart.x.range([0, chart.width - chart.margin.left - chart.margin.right]);
     };
 
-    var configureY = function(data) {
-      if (!this.parent.y) {
+    var configureY = function(chart, data) {
+      if (!chart.y) {
         var ext = d3.extent(data, function(d) {
-          return d[this.parent.yKey];
+          return d[chart.yKey];
         }.bind(this));
-        this.parent.y = d3.scale.linear()
+        chart.y = d3.scale.linear()
           .domain(ext)
           .nice()
           .clamp(true);
       }
-      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0]);
+      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0]);
     };
 
-    var configureZ = function(data) {
-      if (!this.parent.z) {
+    var configureZ = function(chart, data) {
+      if (!chart.z) {
         var ext = d3.extent(data, function(d) {
-          return d[this.parent.zKey];
+          return d[chart.zKey];
         }.bind(this));
-        this.parent.z = d3.scale.linear()
+        chart.z = d3.scale.linear()
           .domain(ext)
           .nice()
           .clamp(true);
       }
-      var maxSize = (this.parent.height - this.parent.margin.top - this.parent.margin.bottom);
-      this.parent.z.range([maxSize / data.length, maxSize / (data.length * 5)]);
+      var maxSize = (chart.height - chart.margin.top - chart.margin.bottom);
+      chart.z.range([maxSize / data.length, maxSize / (data.length * 5)]);
     };
-    var configureScales = function(data) {
-      configureX.bind(this)(data);
-      configureY.bind(this)(data);
-      configureZ.bind(this)(data);
+    var configureScales = function(chart, data) {
+      configureX.bind(this)(chart, data);
+      configureY.bind(this)(chart, data);
+      configureZ.bind(this)(chart, data);
     };
 
     var builder = {
-      configure: function(data) {
-        configureScales.bind(this)(data);
+      configure: function(chart, data) {
+        configureScales.bind(this)(chart, data);
       },
-      render: function(data) {
-        var parent = this.parent;
-        parent.mixins.forEach(function(name) {
-          parent.features[name].render.bind(parent)(parent.features[name], data);
+      render: function(chart, data) {
+        chart.mixins.forEach(function(name) {
+          chart.features[name].render.bind(chart)(chart.features[name], data);
         });
       }
     };
-
-    builder.parent = this;
     return builder;
   };
 
@@ -936,49 +921,46 @@ relative distribution.
       return d3.merge(values);
     };
 
-    var configureX = function(data) {
-      if (!this.parent.x) {
-        var xData = extractValues(data, this.parent.xKey);
-        this.parent.xRoundBands = this.parent.xRoundBands || 0.3;
-        this.parent.x = d3.scale.ordinal()
+    var configureX = function(chart, data) {
+      if (!chart.x) {
+        var xData = extractValues(data, chart.xKey);
+        chart.xRoundBands = chart.xRoundBands || 0.3;
+        chart.x = d3.scale.ordinal()
           .domain(xData)
-          .rangeRoundBands([0, this.parent.width - this.parent.margin.left - this.parent.margin.right], this.parent.xRoundBands);
+          .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
       }
     };
 
-    var configureY = function(data) {
-      if (!this.parent.y) {
+    var configureY = function(chart, data) {
+      if (!chart.y) {
         var ext = d3.extent(d3.merge(data.map(function(obj){
           return d3.extent(obj.values, function(d){
             return d.y + d.y0;
           });
         })));
-        this.parent.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
+        chart.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
       }
-      this.parent.y.range([this.parent.height - this.parent.margin.top - this.parent.margin.bottom, 0])
+      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
         .clamp(true)
         .nice();
     };
 
-    var configureScales = function(data) {
-      configureX.bind(this)(data);
-      configureY.bind(this)(data);
+    var configureScales = function(chart, data) {
+      configureX.bind(this)(chart, data);
+      configureY.bind(this)(chart, data);
     };
 
     var builder = {
-      configure: function(data) {
-        configureScales.bind(this)(data);
+      configure: function(chart, data) {
+        configureScales.bind(this)(chart, data);
       },
 
-      render: function(data) {
-        var parent = this.parent;
-        parent.mixins.forEach(function(name) {
-          parent.features[name].render.bind(parent)(parent.features[name], data);
+      render: function(chart, data) {
+        chart.mixins.forEach(function(name) {
+          chart.features[name].render.bind(chart)(chart.features[name], data);
         });
       }
     };
-
-    builder.parent = this;
     return builder;
   };
 
@@ -1074,6 +1056,7 @@ relative distribution.
             return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);
           }
         },
+
         x: function(d) {
           if (this.orientation() === 'vertical') {
             return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
@@ -1083,6 +1066,7 @@ relative distribution.
             return this.x(xVal) + 10 + width;
           }
         },
+
         text: function(d) {
           return d3.format('').call(this, d[this.valueKey]);
         }
@@ -1091,30 +1075,30 @@ relative distribution.
   };
 
   var waterfallChartBuilder = function() {
-    var rangeBoundsFor = function(dimension) {
+    var rangeBoundsFor = function(chart, dimension) {
       var rangeBounds;
       if (dimension === 'x') {
-        return [0, this.parent.width - this.parent.margin.left - this.parent.margin.right];
+        return [0, chart.width - chart.margin.left - chart.margin.right];
       } else {
-        rangeBounds = [0, this.parent.height - this.parent.margin.top - this.parent.margin.bottom];
-        return (this.parent.orientation().toLowerCase() === 'vertical') ? rangeBounds.reverse() : rangeBounds;
+        rangeBounds = [0, chart.height - chart.margin.top - chart.margin.bottom];
+        return (chart.orientation().toLowerCase() === 'vertical') ? rangeBounds.reverse() : rangeBounds;
       }
     };
 
-    var setOrdinal = function(dimension, data) {
-      if (!this.parent[dimension]) {
+    var setOrdinal = function(chart, dimension, data) {
+      if (!chart[dimension]) {
         var keys = data.map(function(d) {
           return d.key;
         }.bind(this));
 
-        this.parent[dimension] = d3.scale.ordinal()
+        chart[dimension] = d3.scale.ordinal()
           .domain(keys)
-          .rangeRoundBands(rangeBoundsFor.bind(this)(dimension), this.parent.xRoundBands || 0.3);
+          .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);
       }
     };
 
-    var setLinear = function(dimension, data) {
-      if (!this.parent[dimension]) {
+    var setLinear = function(chart, dimension, data) {
+      if (!chart[dimension]) {
         var ext = d3.extent(d3.merge(data.map(function(datum) {
           return d3.extent(datum.values, function(d) {
 
@@ -1124,38 +1108,35 @@ relative distribution.
           });
         })));
         ext[0] = Math.min(0, ext[0]);
-        this.parent[dimension] = d3.scale.linear()
+        chart[dimension] = d3.scale.linear()
           .domain(ext);
       }
-      this.parent[dimension].range(rangeBoundsFor.bind(this)(dimension))
+      chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
         .clamp(true)
         .nice();
     };
 
-    var configureScales = function(data) {
-      if (this.parent.orientation().toLowerCase() === 'vertical') {
-        setOrdinal.bind(this)('x', data);
-        setLinear.bind(this)('y', data);
+    var configureScales = function(chart, data) {
+      if (chart.orientation().toLowerCase() === 'vertical') {
+        setOrdinal.bind(this)(chart, 'x', data);
+        setLinear.bind(this)(chart, 'y', data);
       } else {
-        setOrdinal.bind(this)('y', data);
-        setLinear.bind(this)('x', data);
+        setOrdinal.bind(this)(chart, 'y', data);
+        setLinear.bind(this)(chart, 'x', data);
       }
     };
 
     var builder = {
-      configure: function(data) {
-        configureScales.bind(this)(data);
+      configure: function(chart, data) {
+        configureScales.bind(this)(chart, data);
       },
 
-      render: function(data) {
-        var parent = this.parent;
-        parent.mixins.forEach(function(name) {
-          parent.features[name].render.bind(parent)(parent.features[name], data);
+      render: function(chart, data) {
+        chart.mixins.forEach(function(name) {
+          chart.features[name].render.bind(chart)(chart.features[name], data);
         });
       }
     };
-
-    builder.parent = this;
     return builder;
   };
 
