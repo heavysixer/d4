@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tooltips for data series | d4 Examples</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/prism.css">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/d4.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/js/jquery.js"></script>
+  </head>
+  <body>
+    <div class="container">
+
+      
+<div class="header">
+    <ul class="nav nav-pills pull-right">
+        <li><a href="/index.html">Introduction</a></li>
+        <li><a href="/getting_started.html">Getting Started</a></li>
+        <li><a href="/docs.html">Documentation</a></li>
+        <li><a href="/examples.html">Examples</a></li>
+    </ul>
+    <h3 class="text-muted">d4: Reusable d3 Charts</h3>
+</div>
+
+      <div class="container" role="main">
+
+        
+<h5>Tooltips for data series</h5>
+<p>This example demonstrates how to use an external tooltip library with d4.</p>
+<hr/>
+<script type="text/javascript" charset="utf-8">
+'use strict';
+
+$(document).ready(function(){
+  var data = [
+      { age: 12, unitsSold: 0,    month: 1 },
+      { age: 22, unitsSold: 200,  month: 2 },
+      { age: 42, unitsSold: 300,  month: 3 },
+      { age: 32, unitsSold: 400,  month: 4 },
+      { age: 22, unitsSold: 500,  month: 5 },
+      { age: 12, unitsSold: 100,  month: 6 },
+      { age: 72, unitsSold: 100,  month: 7 },
+      { age: 42, unitsSold: -200, month: 8 },
+      { age: 32, unitsSold: 500,  month: 9 },
+      { age: 12, unitsSold: 600,  month: 10 },
+      { age: 62, unitsSold: 400,  month: 11 },
+      { age: 82, unitsSold: 0,    month: 12 },
+      { age: 92, unitsSold: 400,  month: 1 },
+      { age: 12, unitsSold: 400,  month: 2 },
+      { age: 2 , unitsSold: 400,  month: 2 }
+    ];
+
+  var chart = d4.scatterPlot()
+  .width($('#example').width())
+  .xKey('age')
+  .yKey('month')
+  .zKey('unitsSold')
+  .using('circles', function(circle) {
+
+    // Note: d4 proxies the "on" function to d3, so it will work just like
+    // it does in d3
+    circle.on('mouseover', function(d) {
+      var title = 'Age: ' + d.age + '<br>' + 'Units Sold ' + d.unitsSold;
+      $(this).tooltip({
+        container: 'body',
+        placement: 'auto',
+        html: true,
+        title: title
+      });
+    });
+
+    circle.on('mouseup', function(d, i) {
+      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      var content = 'We sold: ' + d.unitsSold + ' widgets to ' + d.age + '<br>' + 'year olds during ' + monthNames[d.month] + '.';
+      $(this).popover({
+        container: 'body',
+        placement: 'left',
+        title: 'Bubble # ' + i,
+        html: true,
+        content: content
+      });
+    });
+  });
+
+  d3.select('#example')
+    .datum(data)
+    .call(chart);
+
+  // Note: Bootstrap's tooltips are opt-in meaning you need to first initialize
+  // the plugin before you can start to use it. For this reason, we must first
+  // initialize the tooltip looking for our svg circles with the dot class.
+  // Otherwise it would take two mouseovers before the tooltip showed up.
+  $('div').tooltip({
+    selector: '.dot'
+  });
+
+
+});
+</script>
+<div id="scatter">
+  <div id="example"></div>
+</div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript">
+  var data = [
+      { age: 12, unitsSold: 0,    month: 1 },
+      { age: 22, unitsSold: 200,  month: 2 },
+      { age: 42, unitsSold: 300,  month: 3 },
+      { age: 32, unitsSold: 400,  month: 4 },
+      { age: 22, unitsSold: 500,  month: 5 },
+      { age: 12, unitsSold: 100,  month: 6 },
+      { age: 72, unitsSold: 100,  month: 7 },
+      { age: 42, unitsSold: -200, month: 8 },
+      { age: 32, unitsSold: 500,  month: 9 },
+      { age: 12, unitsSold: 600,  month: 10 },
+      { age: 62, unitsSold: 400,  month: 11 },
+      { age: 82, unitsSold: 0,    month: 12 },
+      { age: 92, unitsSold: 400,  month: 1 },
+      { age: 12, unitsSold: 400,  month: 2 },
+      { age: 2 , unitsSold: 400,  month: 2 }
+    ];
+
+  var chart = d4.scatterPlot()
+  .width($('#example').width())
+  .xKey('age')
+  .yKey('month')
+  .zKey('unitsSold')
+  .using('circles', function(circle) {
+
+    // Note: d4 proxies the "on" function to d3, so it will work just like
+    // it does in d3
+    circle.on('mouseover', function(d) {
+      var title = 'Age: ' + d.age + '<br>' + 'Units Sold ' + d.unitsSold;
+      $(this).tooltip({
+        container: 'body',
+        placement: 'auto',
+        html: true,
+        title: title
+      });
+    });
+
+    circle.on('mouseup', function(d, i) {
+      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      var content = 'We sold: ' + d.unitsSold + ' widgets to ' + d.age + '<br>' + 'year olds during ' + monthNames[d.month] + '.';
+      $(this).popover({
+        container: 'body',
+        placement: 'left',
+        title: 'Bubble # ' + i,
+        html: true,
+        content: content
+      });
+    });
+  });
+
+  d3.select('#example')
+    .datum(data)
+    .call(chart);
+
+  // Note: Bootstrap's tooltips are opt-in meaning you need to first initialize
+  // the plugin before you can start to use it. For this reason, we must first
+  // initialize the tooltip looking for our svg circles with the dot class.
+  // Otherwise it would take two mouseovers before the tooltip showed up.
+  $('div').tooltip({
+    selector: '.dot'
+  });
+</code></pre>
+
+      </div>
+      <div class="footer">
+          <p>&copy; Mark Daggett 2014</p>
+      </div>
+    </div>
+
+    <script src="../../assets/js/vendor.js"></script>
+
+  </body>
+</html>
