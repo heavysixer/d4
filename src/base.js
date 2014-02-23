@@ -114,9 +114,28 @@
     return opts;
   };
 
+  /*!
+    d3 allows events to be bound to selections using the `#on()` function. We
+    want to allow the developer to bind to these events transparently. However,
+    we are not actually dealing with the d3 selection itself and so we need to
+    create this proxy which passes any custom events on to the correct selection.
+    For more information see the #selection.on documentation for d3:
+    https://github.com/mbostock/d3/wiki/Selections#wiki-animation--interaction
+  */
+  var addEventsProxy = function(feature, selection){
+    if(selection){
+      each(d3.keys(feature._proxiedFunctions), function(key){
+        each(feature._proxiedFunctions[key], function(proxiedArgs){
+          selection[key].apply(selection, proxiedArgs)
+        });
+      })
+    }
+  };
+
   var linkFeatures = function(opts, data) {
     opts.mixins.forEach(function(name) {
-      opts.features[name].render.bind(opts)(opts.features[name], data);
+      var selection = opts.features[name].render.bind(opts)(opts.features[name], data);
+      addEventsProxy(opts.features[name], selection);
     });
   };
 
@@ -155,6 +174,44 @@
     }
   };
 
+  var addToMixins = function(mixins, name, index){
+    if (typeof index !== 'undefined') {
+      index = Math.max(Math.min(index, mixins.length), 0);
+      mixins.splice(index, 0, name);
+    } else {
+      mixins.push(name);
+    }
+  };
+
+  var assignD3SelectionProxy = function(feature){
+    feature._proxiedFunctions = {
+      on : []
+    };
+    feature.on = function(){
+      feature._proxiedFunctions.on.push(Array.prototype.slice.call(arguments));
+    };
+  };
+
+  /*!
+    FIXME: see fixme note related to the chart accessor functions, the same
+  inconsistency applies here.
+  */
+  var assignMixinAccessors = function(feature){
+    assignD3SelectionProxy(feature);
+    var accessors = feature.accessors;
+    if (accessors) {
+      each(d3.keys(accessors), function(functName) {
+        feature[functName] = function(attr) {
+          if (!arguments.length) {
+            return feature.accessors[functName];
+          }
+          feature.accessors[functName] = attr;
+          return feature;
+        }.bind(this);
+      });
+    }
+  };
+
   var mixin = function(feature, index) {
     if (!feature) {
       assert('You need to supply an object to mixin.');
@@ -163,29 +220,8 @@
     var overrides = extractOverrides.bind(this)(feature, name);
     feature[name] = d4.merge(feature[name](name), overrides);
     d4.extend(this.features, feature);
-    if (typeof index !== 'undefined') {
-      index = Math.max(Math.min(index, this.mixins.length), 0);
-      this.mixins.splice(index, 0, name);
-    } else {
-      this.mixins.push(name);
-    }
-
-    /*!
-      FIXME: see fixme note related to the chart accessor functions, the same
-    problem applies here.
-    */
-    var accessors = this.features[name].accessors;
-    if (accessors) {
-      d3.keys(accessors).forEach(function(functName) {
-        this.features[name][functName] = function(attr) {
-          if (!arguments.length) {
-            return this.features[name].accessors[functName];
-          }
-          this.features[name].accessors[functName] = attr;
-          return this.features[name];
-        }.bind(this);
-      }, this);
-    }
+    addToMixins(this.mixins, name, index);
+    assignMixinAccessors(this.features[name]);
   };
 
   var mixout = function(name) {
@@ -209,24 +245,6 @@
     } else {
       funct.bind(this)(feature);
     }
-  };
-
-  /**
-   * Based on D3's own functor function.
-   * > If the specified value is a function, returns the specified value. Otherwise,
-   * > returns a function that returns the specified value. This method is used
-   * > internally as a lazy way of upcasting constant values to functions, in
-   * > cases where a property may be specified either as a function or a constant.
-   * > For example, many D3 layouts allow properties to be specified this way,
-   * > and it simplifies the implementation if we automatically convert constant
-   * > values to functions.
-   *
-   * @param {Varies} funct - An function or other variable to be wrapped in a function
-   */
-  d4.functor = function(funct) {
-    return isFunction(funct) ? funct : function() {
-      return funct;
-    };
   };
 
   d4.baseChart = function(config, defaultBuilder) {
@@ -316,6 +334,25 @@
       return chart;
     };
 
+    /**
+     * Specifies an object, which d4 uses to initialize the chart with. By default
+     * d4 expects charts to return a builder object, which will be used to
+     * configure defaults for the chart. Typically this means determining the
+     * the default value for the various axes. This accessor allows you to
+     * override the existing builder provided by a chart and use your own.
+     *
+     *##### Examples
+     *
+     *     myChart.builder = function(chart, data){
+     *         return {
+     *            configure: function(chart, data) {
+     *                configureScales.bind(this)(chart, data);
+     *            }
+     *         };
+     *     };
+     *
+     * @param {Function} funct - function which returns a builder object.
+     */
     chart.builder = function(funct) {
       validateBuilder(funct.bind(chart)(opts));
       return chart;
@@ -338,6 +375,24 @@
      */
     chart.features = function() {
       return opts.mixins;
+    };
+
+    /**
+     * Based on D3's own functor function.
+     * > If the specified value is a function, returns the specified value. Otherwise,
+     * > returns a function that returns the specified value. This method is used
+     * > internally as a lazy way of upcasting constant values to functions, in
+     * > cases where a property may be specified either as a function or a constant.
+     * > For example, many D3 layouts allow properties to be specified this way,
+     * > and it simplifies the implementation if we automatically convert constant
+     * > values to functions.
+     *
+     * @param {Varies} funct - An function or other variable to be wrapped in a function
+     */
+    d4.functor = function(funct) {
+      return isFunction(funct) ? funct : function() {
+        return funct;
+      };
     };
 
     return chart;

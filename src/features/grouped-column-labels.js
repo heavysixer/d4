@@ -41,6 +41,7 @@
           .text(scope.accessors.text.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));
+        return text;
       }
     };
   };

@@ -26,13 +26,15 @@
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var dot = this.svg.select('.'+name).selectAll('.'+name).data(data);
-        dot.enter().append('circle');
-        dot.attr('class', scope.accessors.classes.bind(this))
+        var dots = this.svg.select('.'+name).selectAll('.'+name).data(data);
+        dots.enter().append('circle');
+        dots.attr('class', scope.accessors.classes.bind(this))
         .attr('r', scope.accessors.r.bind(this))
         .attr('cx', scope.accessors.cx.bind(this))
         .attr('cy', scope.accessors.cy.bind(this));
-        return dot;
+
+        // returning a selection allows d4 to bind d3 events to it.
+        return dots;
       }
     };
   };

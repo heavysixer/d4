@@ -33,11 +33,49 @@ $(document).ready(function(){
   .width($('#example').width())
   .xKey('age')
   .yKey('month')
-  .zKey('unitsSold');
+  .zKey('unitsSold')
+  .using('circles', function(circle) {
+
+    // Note: d4 proxies the "on" function to d3, so it will work just like
+    // it does in d3
+    circle.on('mouseover', function(d) {
+      var title = 'Age: ' + d.age + '<br>' + 'Units Sold ' + d.unitsSold;
+      $(this).tooltip({
+        container: 'body',
+        placement: 'auto',
+        html: true,
+        title: title
+      });
+    });
+
+    circle.on('mouseup', function(d, i) {
+      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      var content = 'We sold: ' + d.unitsSold + ' widgets to ' + d.age + '<br>' + 'year olds during ' + monthNames[d.month] + '.';
+      $(this).popover({
+        container: 'body',
+        placement: 'left',
+        title: 'Bubble # ' + i,
+        html: true,
+        content: content
+      });
+    });
+  });
 
   d3.select('#example')
-  .datum(data)
-  .call(chart);
+    .datum(data)
+    .call(chart);
+
+  // Note: Bootstrap's tooltips are opt-in meaning you need to first initialize
+  // the plugin before you can start to use it. For this reason, we must first
+  // initialize the tooltip looking for our svg circles with the dot class.
+  // Otherwise it would take two mouseovers before the tooltip showed up.
+  $('div').tooltip({
+    selector: '.dot'
+  });
+
+
 });
 </script>
 <div id="scatter">
@@ -67,10 +105,45 @@ $(document).ready(function(){
   .width($('#example').width())
   .xKey('age')
   .yKey('month')
-  .zKey('unitsSold');
+  .zKey('unitsSold')
+  .using('circles', function(circle) {
+
+    // Note: d4 proxies the "on" function to d3, so it will work just like
+    // it does in d3
+    circle.on('mouseover', function(d) {
+      var title = 'Age: ' + d.age + '<br>' + 'Units Sold ' + d.unitsSold;
+      $(this).tooltip({
+        container: 'body',
+        placement: 'auto',
+        html: true,
+        title: title
+      });
+    });
+
+    circle.on('mouseup', function(d, i) {
+      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      var content = 'We sold: ' + d.unitsSold + ' widgets to ' + d.age + '<br>' + 'year olds during ' + monthNames[d.month] + '.';
+      $(this).popover({
+        container: 'body',
+        placement: 'left',
+        title: 'Bubble # ' + i,
+        html: true,
+        content: content
+      });
+    });
+  });
 
   d3.select('#example')
-  .datum(data)
-  .call(chart);
-});
+    .datum(data)
+    .call(chart);
+
+  // Note: Bootstrap's tooltips are opt-in meaning you need to first initialize
+  // the plugin before you can start to use it. For this reason, we must first
+  // initialize the tooltip looking for our svg circles with the dot class.
+  // Otherwise it would take two mouseovers before the tooltip showed up.
+  $('div').tooltip({
+    selector: '.dot'
+  });
 </code></pre>

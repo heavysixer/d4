@@ -42,16 +42,18 @@
             return 'series'+ i + ' ' +  this.yKey;
           }.bind(this));
 
-        group.selectAll('rect')
+        var rect = group.selectAll('rect')
           .data(function(d) {
             return d.values;
-          }.bind(this))
-          .enter().append('rect')
+          }.bind(this));
+
+        rect.enter().append('rect')
           .attr('class', scope.accessors.classes.bind(this))
           .attr('x', scope.accessors.x.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('width', scope.accessors.width.bind(this))
           .attr('height', scope.accessors.height.bind(this));
+        return rect;
       }
     };
   };

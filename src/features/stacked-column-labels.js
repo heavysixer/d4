@@ -47,6 +47,7 @@
           .attr('class', 'column-label')
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));
+        return text;
       }
     };
   };
