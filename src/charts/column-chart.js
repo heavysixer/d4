@@ -36,11 +36,6 @@
     var builder = {
       configure: function(chart, data) {
         configureScales.bind(this)(chart, data);
-      },
-      render: function(chart, data) {
-        chart.mixins.forEach(function(name) {
-          chart.features[name].render.bind(chart)(chart.features[name], data);
-        });
       }
     };
     return builder;

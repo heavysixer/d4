@@ -75,7 +75,7 @@
   };
 
   var validateBuilder = function(builder) {
-    each(['configure', 'render'], function(funct) {
+    each(['configure'], function(funct) {
       if (!builder[funct] || isNotFunction(builder[funct])) {
         assert('The supplied builder does not have a ' + funct + ' function');
       }
@@ -114,10 +114,16 @@
     return opts;
   };
 
+  var linkFeatures = function(opts, data) {
+    opts.mixins.forEach(function(name) {
+      opts.features[name].render.bind(opts)(opts.features[name], data);
+    });
+  };
+
   var build = function(opts, data) {
     if (opts.builder) {
       opts.builder.configure(opts, data);
-      opts.builder.render(opts, data);
+      linkFeatures(opts, data);
     } else {
       assert('No builder defined');
     }

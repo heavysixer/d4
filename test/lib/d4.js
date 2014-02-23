@@ -1,6 +1,6 @@
 /*! d4 - v0.1.0
  *  License: MIT Expat
- *  Date: 2014-02-22
+ *  Date: 2014-02-23
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -79,7 +79,7 @@
   };
 
   var validateBuilder = function(builder) {
-    each(['configure', 'render'], function(funct) {
+    each(['configure'], function(funct) {
       if (!builder[funct] || isNotFunction(builder[funct])) {
         assert('The supplied builder does not have a ' + funct + ' function');
       }
@@ -118,10 +118,16 @@
     return opts;
   };
 
+  var linkFeatures = function(opts, data) {
+    opts.mixins.forEach(function(name) {
+      opts.features[name].render.bind(opts)(opts.features[name], data);
+    });
+  };
+
   var build = function(opts, data) {
     if (opts.builder) {
       opts.builder.configure(opts, data);
-      opts.builder.render(opts, data);
+      linkFeatures(opts, data);
     } else {
       assert('No builder defined');
     }
@@ -402,11 +408,6 @@
     var builder = {
       configure: function(chart, data) {
         configureScales.bind(this)(chart, data);
-      },
-      render: function(chart, data) {
-        chart.mixins.forEach(function(name) {
-          chart.features[name].render.bind(chart)(chart.features[name], data);
-        });
       }
     };
     return builder;
@@ -518,12 +519,6 @@ The default format may not be desired and so we'll override it:
     var builder = {
       configure: function(chart, data) {
         configureScales.bind(this)(chart, data);
-      },
-
-      render: function(chart, data) {
-        chart.mixins.forEach(function(name) {
-          chart.features[name].render.bind(chart)(chart.features[name], data);
-        });
       }
     };
     return builder;
@@ -644,11 +639,6 @@ relative distribution.
     var builder = {
       configure: function(chart, data) {
         configureScales.bind(this)(chart, data);
-      },
-      render: function(chart, data) {
-        chart.mixins.forEach(function(name) {
-          chart.features[name].render.bind(chart)(chart.features[name], data);
-        });
       }
     };
     return builder;
@@ -761,11 +751,6 @@ relative distribution.
     var builder = {
       configure: function(chart, data) {
         configureScales.bind(this)(chart, data);
-      },
-      render: function(chart, data) {
-        chart.mixins.forEach(function(name) {
-          chart.features[name].render.bind(chart)(chart.features[name], data);
-        });
       }
     };
     return builder;
@@ -876,11 +861,6 @@ relative distribution.
     var builder = {
       configure: function(chart, data) {
         configureScales.bind(this)(chart, data);
-      },
-      render: function(chart, data) {
-        chart.mixins.forEach(function(name) {
-          chart.features[name].render.bind(chart)(chart.features[name], data);
-        });
       }
     };
     return builder;
@@ -953,12 +933,6 @@ relative distribution.
     var builder = {
       configure: function(chart, data) {
         configureScales.bind(this)(chart, data);
-      },
-
-      render: function(chart, data) {
-        chart.mixins.forEach(function(name) {
-          chart.features[name].render.bind(chart)(chart.features[name], data);
-        });
       }
     };
     return builder;
@@ -1129,12 +1103,6 @@ relative distribution.
     var builder = {
       configure: function(chart, data) {
         configureScales.bind(this)(chart, data);
-      },
-
-      render: function(chart, data) {
-        chart.mixins.forEach(function(name) {
-          chart.features[name].render.bind(chart)(chart.features[name], data);
-        });
       }
     };
     return builder;

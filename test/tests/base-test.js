@@ -57,27 +57,6 @@ describe('d4.base', function() {
         }).to.throw (Error, '[d4] The supplied builder does not have a configure function');
       });
 
-      it('should require the builder to have a render function', function() {
-        var badBuilder = function() {
-          return {
-            configure: function() {}
-          };
-        };
-        expect(function() {
-          d4.baseChart({}, badBuilder);
-        }).to.throw (Error, '[d4] The supplied builder does not have a render function');
-
-        badBuilder = function() {
-          return {
-            configure: function() {},
-            render: 'foo'
-          };
-        };
-
-        expect(function() {
-          d4.baseChart({}, badBuilder);
-        }).to.throw (Error, '[d4] The supplied builder does not have a render function');
-      });
     });
 
     describe('when defining a config object', function() {
