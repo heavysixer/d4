@@ -65,7 +65,7 @@
       zKey: 'z'
     }, scatterPlotBuilder);
     [{
-      'circles': d4.features.scatterSeries
+      'circles': d4.features.dotSeries
     }, {
       'xAxis': d4.features.xAxis
     }, {

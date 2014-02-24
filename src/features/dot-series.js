@@ -5,7 +5,7 @@
    */
 
   'use strict';
-  d4.features.scatterSeries = function(name) {
+  d4.features.dotSeries = function(name) {
     return {
       accessors: {
         cx: function(d) {
