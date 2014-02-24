@@ -1,6 +1,6 @@
 /*! d4 - v0.1.0
  *  License: MIT Expat
- *  Date: 2014-02-23
+ *  Date: 2014-02-24
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -130,9 +130,9 @@
     if(selection){
       each(d3.keys(feature._proxiedFunctions), function(key){
         each(feature._proxiedFunctions[key], function(proxiedArgs){
-          selection[key].apply(selection, proxiedArgs)
+          selection[key].apply(selection, proxiedArgs);
         });
-      })
+      });
     }
   };
 
@@ -381,25 +381,25 @@
       return opts.mixins;
     };
 
-    /**
-     * Based on D3's own functor function.
-     * > If the specified value is a function, returns the specified value. Otherwise,
-     * > returns a function that returns the specified value. This method is used
-     * > internally as a lazy way of upcasting constant values to functions, in
-     * > cases where a property may be specified either as a function or a constant.
-     * > For example, many D3 layouts allow properties to be specified this way,
-     * > and it simplifies the implementation if we automatically convert constant
-     * > values to functions.
-     *
-     * @param {Varies} funct - An function or other variable to be wrapped in a function
-     */
-    d4.functor = function(funct) {
-      return isFunction(funct) ? funct : function() {
-        return funct;
-      };
-    };
-
     return chart;
+  };
+
+  /**
+   * Based on D3's own functor function.
+   * > If the specified value is a function, returns the specified value. Otherwise,
+   * > returns a function that returns the specified value. This method is used
+   * > internally as a lazy way of upcasting constant values to functions, in
+   * > cases where a property may be specified either as a function or a constant.
+   * > For example, many D3 layouts allow properties to be specified this way,
+   * > and it simplifies the implementation if we automatically convert constant
+   * > values to functions.
+   *
+   * @param {Varies} funct - An function or other variable to be wrapped in a function
+   */
+  d4.functor = function(funct) {
+    return isFunction(funct) ? funct : function() {
+      return funct;
+    };
   };
 
   d4.merge = function(options, overrides) {
