@@ -151,3 +151,6 @@ charts in d3.
 * Allow mouse events
 * Allow for multiple charts within the same SVG element
 * Allow charts to specify min, max values which do not appear in the data series.
+
+####Integrate with your Rails app with ease!
+[d4-rails](https://github.com/gouravtiwari/d4-rails)
