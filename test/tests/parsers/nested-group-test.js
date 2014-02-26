@@ -42,6 +42,19 @@ describe('d4.parsers.nestedGroup', function() {
     (this.data);
     expect(parsedData.data.length).to.equal(2);
     expect(parsedData.data[0].key).to.equal('30');
+    expect(parsedData.data[1].key).to.equal('-30');
     expect(parsedData.value.key).to.equal('value');
+
+    var parsedData2 = d4.parsers.nestedGroup()
+    .x('a')
+    .y(function(){
+      return 'b';
+    })
+    .nestKey(function(){return 'c';})
+    (this.data);
+    expect(parsedData2.data.length).to.equal(2);
+    expect(parsedData2.data[0].key).to.equal('30');
+    expect(parsedData2.data[1].key).to.equal('-30');
+    expect(parsedData2.value.key).to.equal('value');
   });
 });
