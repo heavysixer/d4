@@ -473,119 +473,6 @@
    * global d4: false
    */
   'use strict';
-  var columnChartBuilder = function() {
-    var extractValues = function(data, key) {
-      var values = data.map(function(obj){
-        return obj.values.map(function(i){
-          return i[key];
-        }.bind(this));
-      }.bind(this));
-      return d3.merge(values);
-    };
-
-    var configureX = function(chart, data) {
-      if (!chart.x) {
-        var xData = extractValues(data, chart.xKey);
-        chart.xRoundBands = chart.xRoundBands || 0.3;
-        chart.x = d3.scale.ordinal()
-          .domain(xData)
-          .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
-      }
-    };
-
-    var configureY = function(chart, data) {
-      if (!chart.y) {
-        var ext = d3.extent(d3.merge(data.map(function(obj){
-          return d3.extent(obj.values, function(d){
-            return d[chart.yKey] + (d.y0 || 0);
-          });
-        })));
-        chart.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
-      }
-      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
-        .clamp(true)
-        .nice();
-    };
-
-    var configureScales = function(chart, data) {
-      configureX.bind(this)(chart, data);
-      configureY.bind(this)(chart, data);
-    };
-
-    var builder = {
-      configure: function(chart, data) {
-        configureScales.bind(this)(chart, data);
-      }
-    };
-    return builder;
-  };
-
-  /*
-   The column chart has two axes (`x` and `y`). By default the column chart expects
-   linear values for the `y` and ordinal values on the `x`. The basic column chart
-   has four default features:
-
-   * **bars** - series bars
-   * **barLabels** - data labels above the bars
-   * **xAxis** - the axis for the x dimension
-   * **yAxis** - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-        { x: '2010', y:-10 },
-        { x: '2011', y:20 },
-        { x: '2012', y:30 },
-        { x: '2013', y:40 },
-        { x: '2014', y:50 },
-      ];
-    var chart = d4.columnChart();
-    d3.select('#example')
-    .datum(data)
-    .call(chart);
-
-By default d4 expects a series object, which uses the following format: `{ x : '2010', y : 10 }`.
-The default format may not be desired and so we'll override it:
-
-    var data = [
-      ['2010', -10],
-      ['2011', 20],
-      ['2012', 30],
-      ['2013', 40],
-      ['2014', 50]
-    ];
-    var chart = d4.columnChart()
-    .xKey(0)
-    .yKey(1);
-
-    d3.select('#example')
-    .datum(data)
-    .call(chart);
-
-  */
-  d4.columnChart = function columnChart() {
-    var chart = d4.baseChart({}, columnChartBuilder);
-    [{
-      'bars': d4.features.stackedColumnSeries
-    }, {
-      'barLabels': d4.features.stackedColumnLabels
-    }, {
-      'xAxis': d4.features.xAxis
-    }, {
-      'yAxis': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
-  };
-}).call(this);
-
-(function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-  'use strict';
 
   var groupedColumnChartBuilder = function() {
     var extractValues = function(data, key) {
@@ -1023,7 +910,7 @@ relative distribution.
       if (!chart.y) {
         var ext = d3.extent(d3.merge(data.map(function(obj){
           return d3.extent(obj.values, function(d){
-            return d.y + d.y0;
+            return d[chart.yKey] + (d.y0 || 0);
           });
         })));
         chart.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
@@ -1046,12 +933,55 @@ relative distribution.
     return builder;
   };
 
-  d4.stackedColumnChart = function stackedColumnChart() {
+  /*
+   The column chart has two axes (`x` and `y`). By default the column chart expects
+   linear values for the `y` and ordinal values on the `x`. The basic column chart
+   has four default features:
+
+   * **bars** - series bars
+   * **barLabels** - data labels above the bars
+   * **xAxis** - the axis for the x dimension
+   * **yAxis** - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+        { x: '2010', y:-10 },
+        { x: '2011', y:20 },
+        { x: '2012', y:30 },
+        { x: '2013', y:40 },
+        { x: '2014', y:50 },
+      ];
+    var chart = d4.columnChart();
+    d3.select('#example')
+    .datum(data)
+    .call(chart);
+
+By default d4 expects a series object, which uses the following format: `{ x : '2010', y : 10 }`.
+The default format may not be desired and so we'll override it:
+
+    var data = [
+      ['2010', -10],
+      ['2011', 20],
+      ['2012', 30],
+      ['2013', 40],
+      ['2014', 50]
+    ];
+    var chart = d4.columnChart()
+    .xKey(0)
+    .yKey(1);
+
+    d3.select('#example')
+    .datum(data)
+    .call(chart);
+
+  */
+  d4.columnChart = d4.stackedColumnChart = function stackedColumnChart() {
     var chart = d4.baseChart({}, stackedColumnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
     }, {
-      'columnLabels': d4.features.stackedColumnLabels
+      'barLabels': d4.features.stackedColumnLabels
     }, {
       'connectors': d4.features.stackedColumnConnectors
     }, {
@@ -1305,105 +1235,6 @@ relative distribution.
           .attr('marker-end', 'url(#' + name + '-end)');
 
         return arrow;
-      }
-    };
-  };
-}).call(this);
-
-(function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
-  'use strict';
-  d4.features.columnLabels = function(name) {
-    return {
-      accessors: {
-        x: function(d) {
-          return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
-        },
-
-        y: function(d) {
-          var height = Math.abs(this.y(d[this.yKey]) - this.y(0));
-          return (d[this.yKey] < 0 ? this.y(d[this.yKey]) - height : this.y(d[this.yKey])) - 5;
-        },
-
-        text: function(d) {
-          return d3.format('').call(this, d[this.yKey]);
-        }
-      },
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
-        var label = this.svg.select('.'+name).selectAll('.'+name).data(data);
-        label.enter().append('text');
-        label.exit().remove();
-        label.attr('class', 'column-label')
-          .text(scope.accessors.text.bind(this))
-          .attr('x', scope.accessors.x.bind(this))
-          .attr('y', scope.accessors.y.bind(this));
-        return label;
-      }
-    };
-  };
-}).call(this);
-
-/*!
-
-  DEPRECATION WARNING: This feature is deprecated in favor of using the nested
-  column series renderer. Intrinsicly this makes sense because a normal column
-  chart is mearly a stacked column chart with only one series.
-*/
-(function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-  'use strict';
-  d4.features.columnSeries = function(name) {
-    return {
-      accessors: {
-        x: function(d) {
-          return this.x(d[this.xKey]);
-        },
-
-        y: function(d) {
-          return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);
-        },
-
-        width: function() {
-          return this.x.rangeBand();
-        },
-
-        height: function(d) {
-          return Math.abs(this.y(d[this.yKey]) - this.y(0));
-        },
-
-        classes: function(d, i) {
-          return d[this.yKey] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
-        }
-      },
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
-        var series = this.svg.select('.' + name).selectAll('.' + name + 'Series').data(data);
-        series.enter().append('g');
-        series.exit().remove();
-        series.attr('class', function(d, i) {
-          return 'series' + i;
-        });
-
-        var bar = series.selectAll('rect').data(function(d) {
-          return [d];
-        });
-        bar.enter().append('rect');
-        bar.exit().remove();
-        bar.attr('class', scope.accessors.classes.bind(this))
-          .attr('x', scope.accessors.x.bind(this))
-          .attr('y', scope.accessors.y.bind(this))
-          .attr('width', scope.accessors.width.bind(this))
-          .attr('height', scope.accessors.height.bind(this));
-
-        return bar;
       }
     };
   };
