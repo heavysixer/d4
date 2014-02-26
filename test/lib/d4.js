@@ -693,9 +693,9 @@ relative distribution.
   d4.lineChart = function lineChart() {
     var chart = d4.baseChart({}, lineChartBuilder);
     [{
-      'linesSeries': d4.features.lineSeries
+      'lineSeries': d4.features.lineSeries
     },{
-      'linesSeriesLabels': d4.features.lineSeriesLabels
+      'lineSeriesLabels': d4.features.lineSeriesLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {

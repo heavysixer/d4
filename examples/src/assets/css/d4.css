@@ -57,3 +57,33 @@
     stroke: darkslategrey;
     stroke-width: 2px;
 }
+
+#line_and_dot .d4 .series0 .dot {
+    fill: darkred;
+    fill-opacity: 0.6;
+    stroke: darkred;
+    stroke-width: 1px;
+}
+#line_and_dot .d4 .series0 path {
+    stroke: darkred;
+}
+
+#line_and_dot .d4 .series1 .dot {
+    fill: darkslategrey;
+    fill-opacity: 0.6;
+    stroke: darkslategrey;
+    stroke-width: 2px;
+}
+#line_and_dot .d4 .series1 path {
+    stroke: darkslategrey;
+}
+
+#line_and_dot .d4 .series2 .dot {
+    fill: steelblue;
+    fill-opacity: 0.6;
+    stroke: steelblue;
+    stroke-width: 2px;
+}
+#line_and_dot .d4 .series2 path {
+    stroke: steelblue;
+}
