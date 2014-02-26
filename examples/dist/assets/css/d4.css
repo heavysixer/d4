@@ -45,3 +45,15 @@
     fill: darkslategrey;
     background-color: darkslategrey;
 }
+#multi_scatter .d4 .series0 {
+    fill: bisque;
+    fill-opacity: 0.6;
+    stroke: bisque;
+    stroke-width: 1px;
+}
+#multi_scatter .d4 .series1 {
+    fill: darkslategrey;
+    fill-opacity: 0.6;
+    stroke: darkslategrey;
+    stroke-width: 2px;
+}

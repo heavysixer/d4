@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Multi-series Scatterplot | d4 Examples</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/prism.css">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/d4.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/js/jquery.js"></script>
+  </head>
+  <body>
+    <div class="container">
+
+      
+<div class="header">
+    <ul class="nav nav-pills pull-right">
+        <li><a href="/index.html">Introduction</a></li>
+        <li><a href="/getting_started.html">Getting Started</a></li>
+        <li><a href="/docs.html">Documentation</a></li>
+        <li><a href="/examples.html">Examples</a></li>
+    </ul>
+    <h3 class="text-muted">d4: Reusable d3 Charts</h3>
+</div>
+
+      <div class="container" role="main">
+
+        
+<h5>Multi-series Scatterplot</h5>
+<p>This examples how you can map multiple data series in a scatter plot</p>
+<hr/>
+<script type="text/javascript" charset="utf-8">
+'use strict';
+
+$(document).ready(function(){
+  var data = [
+      { age: 12, state: 'mo', unitsSold: 0,    month: 1 },
+      { age: 22, state: 'mo', unitsSold: 200,  month: 2 },
+      { age: 42, state: 'mo', unitsSold: 300,  month: 3 },
+      { age: 32, state: 'mo', unitsSold: 400,  month: 4 },
+      { age: 22, state: 'mo', unitsSold: 500,  month: 5 },
+      { age: 12, state: 'mo', unitsSold: 100,  month: 6 },
+      { age: 72, state: 'mo', unitsSold: 100,  month: 7 },
+      { age: 42, state: 'mo', unitsSold: -200, month: 8 },
+      { age: 32, state: 'ks', unitsSold: 500,  month: 9 },
+      { age: 12, state: 'ks', unitsSold: 600,  month: 10 },
+      { age: 62, state: 'ks', unitsSold: 400,  month: 11 },
+      { age: 82, state: 'ks', unitsSold: 0,    month: 12 },
+      { age: 92, state: 'ks', unitsSold: 400,  month: 1 },
+      { age: 12, state: 'ks', unitsSold: 400,  month: 2 },
+      { age: 2 , state: 'ks', unitsSold: 400,  month: 2 }
+    ];
+  var parsedData = d4.parsers.nestedGroup()
+    .x('age')
+    .y('month')
+    .nestKey('state')
+    .value('unitsSold')(data);
+
+  var chart = d4.scatterPlot()
+  .width($('#example').width())
+  .xKey('unitsSold')
+  .yKey('month')
+  .zKey('age');
+
+  d3.select('#example')
+  .datum(parsedData.data)
+  .call(chart);
+});
+</script>
+<div id="multi_scatter">
+  <div id="example"></div>
+</div>
+<h6>CSS Code</h6>
+<pre><code class="language-css">
+  #multi_scatter .d4 .series0 {
+      fill: bisque;
+      fill-opacity: 0.6;
+      stroke: bisque;
+      stroke-width: 1px;
+  }
+  #multi_scatter .d4 .series1 {
+      fill: darkslategrey;
+      fill-opacity: 0.6;
+      stroke: darkslategrey;
+      stroke-width: 2px;
+  }
+</code></pre>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript">
+  var data = [
+      { age: 12, state: 'mo', unitsSold: 0,    month: 1 },
+      { age: 22, state: 'mo', unitsSold: 200,  month: 2 },
+      { age: 42, state: 'mo', unitsSold: 300,  month: 3 },
+      { age: 32, state: 'mo', unitsSold: 400,  month: 4 },
+      { age: 22, state: 'mo', unitsSold: 500,  month: 5 },
+      { age: 12, state: 'mo', unitsSold: 100,  month: 6 },
+      { age: 72, state: 'mo', unitsSold: 100,  month: 7 },
+      { age: 42, state: 'mo', unitsSold: -200, month: 8 },
+      { age: 32, state: 'ks', unitsSold: 500,  month: 9 },
+      { age: 12, state: 'ks', unitsSold: 600,  month: 10 },
+      { age: 62, state: 'ks', unitsSold: 400,  month: 11 },
+      { age: 82, state: 'ks', unitsSold: 0,    month: 12 },
+      { age: 92, state: 'ks', unitsSold: 400,  month: 1 },
+      { age: 12, state: 'ks', unitsSold: 400,  month: 2 },
+      { age: 2 , state: 'ks', unitsSold: 400,  month: 2 }
+    ];
+  var parsedData = d4.parsers.nestedGroup()
+    .x('age')
+    .y('month')
+    .nestKey('state')
+    .value('unitsSold')(data);
+
+  var chart = d4.scatterPlot()
+  .width($('#example').width())
+  .xKey('unitsSold')
+  .yKey('month')
+  .zKey('age');
+
+  d3.select('#example')
+  .datum(parsedData.data)
+  .call(chart);
+});
+</code></pre>
+
+      </div>
+      <div class="footer">
+          <p>&copy; Mark Daggett 2014</p>
+      </div>
+    </div>
+
+    <script src="../../assets/js/vendor.js"></script>
+
+  </body>
+</html>
