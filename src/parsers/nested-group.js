@@ -99,7 +99,7 @@ Keep reading for more information on these various accessor functions.
     };
 
     parser.nestKey = function(funct) {
-      opts.nestKey = funct.bind(opts);
+      opts.nestKey = d4.functor(funct).bind(opts);
       return parser;
     };
 

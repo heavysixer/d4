@@ -1,6 +1,6 @@
 /*! d4 - v0.1.0
  *  License: MIT Expat
- *  Date: 2014-02-24
+ *  Date: 2014-02-26
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -2346,7 +2346,7 @@ Keep reading for more information on these various accessor functions.
     };
 
     parser.nestKey = function(funct) {
-      opts.nestKey = funct.bind(opts);
+      opts.nestKey = d4.functor(funct).bind(opts);
       return parser;
     };
 
@@ -2759,7 +2759,7 @@ The `parser` variable will now be an object containing the following structure:
     };
 
     parser.nestKey = function(funct) {
-      opts.nestKey = funct.bind(opts);
+      opts.nestKey = d4.functor(funct).bind(opts);
       return parser;
     };
 

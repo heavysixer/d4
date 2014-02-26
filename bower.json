@@ -3,5 +3,10 @@
   "description": "A friendly charting DSL for D3",
   "main": "dist/d4.js",
   "version": "0.3.2",
-  "dependencies": {}
+  "dependencies": {
+    "d3": "~3.4.2"
+  },
+  "devDependencies": {
+    "d3": "~3.4.2"
+  }
 }
