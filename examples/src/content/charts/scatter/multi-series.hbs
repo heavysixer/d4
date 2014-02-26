@@ -50,12 +50,28 @@ $(document).ready(function(){
 </div>
 <h6>CSS Code</h6>
 <pre><code class="language-css">
+  #multi_scatter .d4 .grid.border rect {
+      fill: none;
+      stroke: #aaa;
+      stroke-width: 1px;
+      shape-rendering: crispEdges;
+  }
+
+  #multi_scatter .d4 .grid line {
+      fill:none;
+      stroke: #aaa;
+      stroke-width: 1px;
+      stroke-dasharray :5, 5;
+      shape-rendering: crispEdges;
+  }
+
   #multi_scatter .d4 .series0 {
       fill: bisque;
       fill-opacity: 0.6;
       stroke: bisque;
       stroke-width: 1px;
   }
+
   #multi_scatter .d4 .series1 {
       fill: darkslategrey;
       fill-opacity: 0.6;
