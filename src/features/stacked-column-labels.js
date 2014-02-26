@@ -17,7 +17,7 @@
         },
 
         y: function(d) {
-          if(d.y0){
+          if(typeof d.y0 !== 'undefined'){
             var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
             var yVal = d.y0 + d.y;
             return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
@@ -28,10 +28,12 @@
         },
 
         text: function(d) {
-          if(d.y0 && Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
-            return d3.format('').call(this, d[this.valueKey]);
+          if(typeof d.y0 !== 'undefined'){
+            if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
+              return d3.format('').call(this, d[this.valueKey]);
+            }
           } else {
-            return d3.format('').call(this, d[this.yKey]);
+            return d3.format('').call(this, d[this.valueKey]);
           }
         }
       },
