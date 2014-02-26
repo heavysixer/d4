@@ -35,6 +35,7 @@ $(document).ready(function(){
 
   var chart = d4.scatterPlot()
   .width($('#example').width())
+  .mixin({'grid' : d4.features.grid},0)
   .xKey('unitsSold')
   .yKey('month')
   .zKey('age');
