@@ -4,7 +4,7 @@ categories:
   - Scatter Plot
 ---
 <h5>{{title}}</h5>
-<p>This is a basic example of the scatter plot.</p>
+<p>This examples how you can map multiple data series in a scatter plot</p>
 <hr/>
 <script type="text/javascript" charset="utf-8">
 'use strict';
@@ -40,7 +40,7 @@ $(document).ready(function(){
   .zKey('unitsSold');
 
   d3.select('#example')
-  .datum(data)
+  .datum(parsedData)
   .call(chart);
 });
 </script>

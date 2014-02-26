@@ -45,6 +45,7 @@
       var maxSize = (chart.height - chart.margin.top - chart.margin.bottom);
       chart.z.range([maxSize / data.length, maxSize / (data.length * 5)]);
     };
+
     var configureScales = function(chart, data) {
       configureX.bind(this)(chart, data);
       configureY.bind(this)(chart, data);

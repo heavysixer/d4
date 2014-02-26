@@ -62,21 +62,13 @@
     }
   };
 
-  var isFunction = function(obj) {
-    return !!(obj && obj.constructor && obj.call && obj.apply);
-  };
-
-  var isNotFunction = function(obj) {
-    return !isFunction(obj);
-  };
-
   var assert = function(message) {
     throw new Error('[d4] ' + message);
   };
 
   var validateBuilder = function(builder) {
     each(['configure'], function(funct) {
-      if (!builder[funct] || isNotFunction(builder[funct])) {
+      if (!builder[funct] || d4.isNotFunction(builder[funct])) {
         assert('The supplied builder does not have a ' + funct + ' function');
       }
     });
@@ -157,9 +149,47 @@
     this.svg.append('defs');
   };
 
+  /*!
+    Normally d4 series elements inside the data array to be in a specific
+  format, which is designed to support charts which require multiple data
+  series. However, some charts can easily be used to display only a single data
+  series in which case the default structure is overly verbose. In these cases
+  d4 accepts the simplified objects in the array payload and silently
+  parses them using the d4.nestedGroup parser. It will configure the parser's
+  dimensions based on the configuration applied to the chart object itself.
+  */
+  var applyDefaultParser = function(opts, data) {
+    if(opts.yKey !== opts.valueKey){
+      opts.valueKey = opts.yKey;
+    }
+    var parsed = d4.parsers.nestedGroup()
+    .x(opts.xKey)
+    .y(opts.yKey)
+    .nestKey(opts.xKey)
+    .value(opts.valueKey)(data);
+    return parsed.data;
+  };
+
+  var prepareData = function(opts, data) {
+    var needsParsing = false, keys, item;
+    if(data.length > 0){
+      item = data[0];
+      if(d4.isArray(item)) {
+        needsParsing = true;
+      } else {
+        keys = d3.keys(item);
+        if(keys.indexOf('key') + keys.indexOf('values') <= 0) {
+          needsParsing = true;
+        }
+      }
+    }
+    return needsParsing ? applyDefaultParser(opts, data) : data;
+  };
+
   var applyScaffold = function(opts) {
     return function(selection) {
       selection.each(function(data) {
+        data = prepareData(opts, data);
         scaffoldChart.bind(opts, this)(data);
         build(opts, data);
       });
@@ -237,7 +267,7 @@
 
   var using = function(name, funct) {
     var feature = this.features[name];
-    if (isNotFunction(funct)) {
+    if (d4.isNotFunction(funct)) {
       assert('You must supply a continuation function in order to use a chart feature.');
     }
     if (!feature) {
@@ -393,9 +423,21 @@
    * @param {Varies} funct - An function or other variable to be wrapped in a function
    */
   d4.functor = function(funct) {
-    return isFunction(funct) ? funct : function() {
+    return d4.isFunction(funct) ? funct : function() {
       return funct;
     };
+  };
+
+  d4.isArray = Array.isArray || function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+
+  d4.isFunction = function(obj) {
+    return !!(obj && obj.constructor && obj.call && obj.apply);
+  };
+
+  d4.isNotFunction = function(obj) {
+    return !d4.isFunction(obj);
   };
 
   d4.merge = function(options, overrides) {

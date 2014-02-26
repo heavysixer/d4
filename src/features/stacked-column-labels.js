@@ -17,14 +17,21 @@
         },
 
         y: function(d) {
-          var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
-          var yVal = d.y0 + d.y;
-          return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+          if(d.y0){
+            var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
+            var yVal = d.y0 + d.y;
+            return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+          } else {
+            var height = Math.abs(this.y(d[this.yKey]) - this.y(0));
+            return (d[this.yKey] < 0 ? this.y(d[this.yKey]) - height : this.y(d[this.yKey])) - 5;
+          }
         },
 
         text: function(d) {
-          if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
+          if(d.y0 && Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
             return d3.format('').call(this, d[this.valueKey]);
+          } else {
+            return d3.format('').call(this, d[this.yKey]);
           }
         }
       },

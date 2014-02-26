@@ -147,10 +147,9 @@ The inspiration of D4's modular and declarative structure came from
 [Mike Bostock's](http://bost.ocks.org/mike/chart/) article on writing reusable
 charts in d3.
 
-####Roadmap
-* Allow mouse events
+#### Roadmap
 * Allow for multiple charts within the same SVG element
 * Allow charts to specify min, max values which do not appear in the data series.
 
-####Integrate with your Rails app with ease!
+#### Other Projects using d4
 [d4-rails](https://github.com/gouravtiwari/d4-rails)

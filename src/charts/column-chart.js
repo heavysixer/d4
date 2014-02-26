@@ -5,23 +5,33 @@
    */
   'use strict';
   var columnChartBuilder = function() {
+    var extractValues = function(data, key) {
+      var values = data.map(function(obj){
+        return obj.values.map(function(i){
+          return i[key];
+        }.bind(this));
+      }.bind(this));
+      return d3.merge(values);
+    };
+
     var configureX = function(chart, data) {
       if (!chart.x) {
+        var xData = extractValues(data, chart.xKey);
         chart.xRoundBands = chart.xRoundBands || 0.3;
         chart.x = d3.scale.ordinal()
-          .domain(data.map(function(d) {
-            return d[this.xKey];
-          }.bind(chart)))
+          .domain(xData)
           .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
       }
     };
 
     var configureY = function(chart, data) {
       if (!chart.y) {
-        chart.y = d3.scale.linear()
-          .domain(d3.extent(data, function(d) {
-            return d[this.yKey];
-          }.bind(chart)));
+        var ext = d3.extent(d3.merge(data.map(function(obj){
+          return d3.extent(obj.values, function(d){
+            return d[chart.yKey] + (d.y0 || 0);
+          });
+        })));
+        chart.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
       }
       chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
         .clamp(true)
@@ -87,9 +97,9 @@ The default format may not be desired and so we'll override it:
   d4.columnChart = function columnChart() {
     var chart = d4.baseChart({}, columnChartBuilder);
     [{
-      'bars': d4.features.columnSeries
+      'bars': d4.features.stackedColumnSeries
     }, {
-      'barLabels': d4.features.columnLabels
+      'barLabels': d4.features.stackedColumnLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {

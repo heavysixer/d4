@@ -66,21 +66,13 @@
     }
   };
 
-  var isFunction = function(obj) {
-    return !!(obj && obj.constructor && obj.call && obj.apply);
-  };
-
-  var isNotFunction = function(obj) {
-    return !isFunction(obj);
-  };
-
   var assert = function(message) {
     throw new Error('[d4] ' + message);
   };
 
   var validateBuilder = function(builder) {
     each(['configure'], function(funct) {
-      if (!builder[funct] || isNotFunction(builder[funct])) {
+      if (!builder[funct] || d4.isNotFunction(builder[funct])) {
         assert('The supplied builder does not have a ' + funct + ' function');
       }
     });
@@ -161,9 +153,47 @@
     this.svg.append('defs');
   };
 
+  /*!
+    Normally d4 series elements inside the data array to be in a specific
+  format, which is designed to support charts which require multiple data
+  series. However, some charts can easily be used to display only a single data
+  series in which case the default structure is overly verbose. In these cases
+  d4 accepts the simplified objects in the array payload and silently
+  parses them using the d4.nestedGroup parser. It will configure the parser's
+  dimensions based on the configuration applied to the chart object itself.
+  */
+  var applyDefaultParser = function(opts, data) {
+    if(opts.yKey !== opts.valueKey){
+      opts.valueKey = opts.yKey;
+    }
+    var parsed = d4.parsers.nestedGroup()
+    .x(opts.xKey)
+    .y(opts.yKey)
+    .nestKey(opts.xKey)
+    .value(opts.valueKey)(data);
+    return parsed.data;
+  };
+
+  var prepareData = function(opts, data) {
+    var needsParsing = false, keys, item;
+    if(data.length > 0){
+      item = data[0];
+      if(d4.isArray(item)) {
+        needsParsing = true;
+      } else {
+        keys = d3.keys(item);
+        if(keys.indexOf('key') + keys.indexOf('values') <= 0) {
+          needsParsing = true;
+        }
+      }
+    }
+    return needsParsing ? applyDefaultParser(opts, data) : data;
+  };
+
   var applyScaffold = function(opts) {
     return function(selection) {
       selection.each(function(data) {
+        data = prepareData(opts, data);
         scaffoldChart.bind(opts, this)(data);
         build(opts, data);
       });
@@ -241,7 +271,7 @@
 
   var using = function(name, funct) {
     var feature = this.features[name];
-    if (isNotFunction(funct)) {
+    if (d4.isNotFunction(funct)) {
       assert('You must supply a continuation function in order to use a chart feature.');
     }
     if (!feature) {
@@ -397,9 +427,21 @@
    * @param {Varies} funct - An function or other variable to be wrapped in a function
    */
   d4.functor = function(funct) {
-    return isFunction(funct) ? funct : function() {
+    return d4.isFunction(funct) ? funct : function() {
       return funct;
     };
+  };
+
+  d4.isArray = Array.isArray || function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+
+  d4.isFunction = function(obj) {
+    return !!(obj && obj.constructor && obj.call && obj.apply);
+  };
+
+  d4.isNotFunction = function(obj) {
+    return !d4.isFunction(obj);
   };
 
   d4.merge = function(options, overrides) {
@@ -432,23 +474,33 @@
    */
   'use strict';
   var columnChartBuilder = function() {
+    var extractValues = function(data, key) {
+      var values = data.map(function(obj){
+        return obj.values.map(function(i){
+          return i[key];
+        }.bind(this));
+      }.bind(this));
+      return d3.merge(values);
+    };
+
     var configureX = function(chart, data) {
       if (!chart.x) {
+        var xData = extractValues(data, chart.xKey);
         chart.xRoundBands = chart.xRoundBands || 0.3;
         chart.x = d3.scale.ordinal()
-          .domain(data.map(function(d) {
-            return d[this.xKey];
-          }.bind(chart)))
+          .domain(xData)
           .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
       }
     };
 
     var configureY = function(chart, data) {
       if (!chart.y) {
-        chart.y = d3.scale.linear()
-          .domain(d3.extent(data, function(d) {
-            return d[this.yKey];
-          }.bind(chart)));
+        var ext = d3.extent(d3.merge(data.map(function(obj){
+          return d3.extent(obj.values, function(d){
+            return d[chart.yKey] + (d.y0 || 0);
+          });
+        })));
+        chart.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
       }
       chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
         .clamp(true)
@@ -514,9 +566,9 @@ The default format may not be desired and so we'll override it:
   d4.columnChart = function columnChart() {
     var chart = d4.baseChart({}, columnChartBuilder);
     [{
-      'bars': d4.features.columnSeries
+      'bars': d4.features.stackedColumnSeries
     }, {
-      'barLabels': d4.features.columnLabels
+      'barLabels': d4.features.stackedColumnLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
@@ -907,6 +959,7 @@ relative distribution.
       var maxSize = (chart.height - chart.margin.top - chart.margin.bottom);
       chart.z.range([maxSize / data.length, maxSize / (data.length * 5)]);
     };
+
     var configureScales = function(chart, data) {
       configureX.bind(this)(chart, data);
       configureY.bind(this)(chart, data);
@@ -1879,14 +1932,21 @@ relative distribution.
         },
 
         y: function(d) {
-          var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
-          var yVal = d.y0 + d.y;
-          return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+          if(d.y0){
+            var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
+            var yVal = d.y0 + d.y;
+            return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+          } else {
+            var height = Math.abs(this.y(d[this.yKey]) - this.y(0));
+            return (d[this.yKey] < 0 ? this.y(d[this.yKey]) - height : this.y(d[this.yKey])) - 5;
+          }
         },
 
         text: function(d) {
-          if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
+          if(d.y0 && Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
             return d3.format('').call(this, d[this.valueKey]);
+          } else {
+            return d3.format('').call(this, d[this.yKey]);
           }
         }
       },
@@ -1934,8 +1994,12 @@ relative distribution.
         },
 
         y: function(d) {
-          var yVal = d.y0 + d.y;
-          return  yVal < 0 ? this.y(d.y0) : this.y(yVal);
+          if(d.y0){
+            var yVal = d.y0 + d.y;
+            return  yVal < 0 ? this.y(d.y0) : this.y(yVal);
+          } else {
+            return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);
+          }
         },
 
         width: function() {
@@ -1943,7 +2007,11 @@ relative distribution.
         },
 
         height: function(d) {
-          return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
+          if(d.y0){
+            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
+          }else {
+            return Math.abs(this.y(d[this.yKey]) - this.y(0));
+          }
         },
 
         classes: function(d,i) {

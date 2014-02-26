@@ -17,8 +17,12 @@
         },
 
         y: function(d) {
-          var yVal = d.y0 + d.y;
-          return  yVal < 0 ? this.y(d.y0) : this.y(yVal);
+          if(d.y0){
+            var yVal = d.y0 + d.y;
+            return  yVal < 0 ? this.y(d.y0) : this.y(yVal);
+          } else {
+            return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);
+          }
         },
 
         width: function() {
@@ -26,7 +30,11 @@
         },
 
         height: function(d) {
-          return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
+          if(d.y0){
+            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
+          }else {
+            return Math.abs(this.y(d[this.yKey]) - this.y(0));
+          }
         },
 
         classes: function(d,i) {
