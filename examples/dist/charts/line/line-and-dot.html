@@ -71,24 +71,36 @@ $(document).ready(function(){
     { year: '2014', unitsSold:400, salesman : 'Average' }
   ];
   var parsedData = d4.parsers.nestedGroup()
-    .x(function(){
-      return 'year';
-    })
-    .nestKey(function(){
-      return 'salesman';
-    })
-    .y(function(){
-      return 'unitsSold';
-    })
-    .value(function(){
-      return 'unitsSold';
-    })(data);
+  .x(function() {
+    return 'year';
+  })
+  .nestKey(function() {
+    return 'salesman';
+  })
+  .y(function() {
+    return 'unitsSold';
+  })
+  .value(function() {
+    return 'unitsSold';
+  })(data);
 
   var chart = d4.lineChart()
-  .width($('#example').width())
-  .xKey('year')
-  .yKey('unitsSold');
-  chart.mixin({'dotSeries' : d4.features.dotSeries});
+    .width($('#example').width())
+    .xKey('year')
+    .yKey('unitsSold')
+    .using('lineSeries', function(line) {
+      line.interpolate(function() {
+        return 'linear';
+      });
+    })
+    .mixin({
+      'dotSeries': d4.features.dotSeries
+    })
+    .using('dotSeries', function(dot) {
+      dot.r(function() {
+        return 5;
+      });
+    });
 
   d3.select('#example')
   .datum(parsedData.data)
@@ -96,7 +108,41 @@ $(document).ready(function(){
 });
 
 </script>
-<div id="example"></div>
+<div id="line_and_dot">
+  <div id="example"></div>
+</div>
+<h6>CSS Code</h6>
+<pre><code class="language-css">
+  #line_and_dot .d4 .series0 .dot {
+      fill: darkred;
+      fill-opacity: 0.6;
+      stroke: darkred;
+      stroke-width: 1px;
+  }
+  #line_and_dot .d4 .series0 path {
+      stroke: darkred;
+  }
+
+  #line_and_dot .d4 .series1 .dot {
+      fill: darkslategrey;
+      fill-opacity: 0.6;
+      stroke: darkslategrey;
+      stroke-width: 2px;
+  }
+  #line_and_dot .d4 .series1 path {
+      stroke: darkslategrey;
+  }
+
+  #line_and_dot .d4 .series2 .dot {
+      fill: steelblue;
+      fill-opacity: 0.6;
+      stroke: steelblue;
+      stroke-width: 2px;
+  }
+  #line_and_dot .d4 .series2 path {
+      stroke: steelblue;
+  }
+</code></pre>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript">
   var data = [
@@ -117,23 +163,36 @@ $(document).ready(function(){
     { year: '2014', unitsSold:400, salesman : 'Average' }
   ];
   var parsedData = d4.parsers.nestedGroup()
-    .x(function(){
-      return 'year';
-    })
-    .nestKey(function(){
-      return 'salesman'
-    })
-    .y(function(){
-      return 'unitsSold';
-    })
-    .value(function(){
-      return 'unitsSold';
-    })(data);
+  .x(function() {
+    return 'year';
+  })
+  .nestKey(function() {
+    return 'salesman';
+  })
+  .y(function() {
+    return 'unitsSold';
+  })
+  .value(function() {
+    return 'unitsSold';
+  })(data);
 
   var chart = d4.lineChart()
-  .width($('#example').width())
-  .xKey('year')
-  .yKey('unitsSold');
+    .width($('#example').width())
+    .xKey('year')
+    .yKey('unitsSold')
+    .using('lineSeries', function(line) {
+      line.interpolate(function() {
+        return 'linear';
+      });
+    })
+    .mixin({
+      'dotSeries': d4.features.dotSeries
+    })
+    .using('dotSeries', function(dot) {
+      dot.r(function() {
+        return 5;
+      });
+    });
 
   d3.select('#example')
   .datum(parsedData.data)
