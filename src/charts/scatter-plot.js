@@ -6,44 +6,38 @@
   'use strict';
 
   var scatterPlotBuilder = function() {
+    var createLinearScale = function(key, data) {
+      var ext = d3.extent(d3.merge(data.map(function(obj){
+        return d3.extent(obj.values, function(d){
+          return d[key];
+        });
+      })));
+      return d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
+    };
+
     var configureX = function(chart, data) {
       if (!chart.x) {
-        var ext = d3.extent(data, function(d) {
-          return d[chart.xKey];
-        }.bind(this));
-        chart.x = d3.scale.linear()
-          .domain(ext)
-          .nice()
-          .clamp(true);
+        chart.x = createLinearScale(chart.xKey, data);
       }
-      chart.x.range([0, chart.width - chart.margin.left - chart.margin.right]);
+      chart.x.range([0, chart.width - chart.margin.left - chart.margin.right])
+        .clamp(true)
+        .nice();
     };
 
     var configureY = function(chart, data) {
       if (!chart.y) {
-        var ext = d3.extent(data, function(d) {
-          return d[chart.yKey];
-        }.bind(this));
-        chart.y = d3.scale.linear()
-          .domain(ext)
-          .nice()
-          .clamp(true);
+        chart.y = createLinearScale(chart.yKey, data);
       }
       chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0]);
     };
 
     var configureZ = function(chart, data) {
       if (!chart.z) {
-        var ext = d3.extent(data, function(d) {
-          return d[chart.zKey];
-        }.bind(this));
-        chart.z = d3.scale.linear()
-          .domain(ext)
-          .nice()
-          .clamp(true);
+        chart.z = createLinearScale(chart.zKey, data);
       }
-      var maxSize = (chart.height - chart.margin.top - chart.margin.bottom);
-      chart.z.range([maxSize / data.length, maxSize / (data.length * 5)]);
+      var min = 5
+      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
+      chart.z.range([min, max]);
     };
 
     var configureScales = function(chart, data) {

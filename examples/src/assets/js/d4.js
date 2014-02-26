@@ -807,44 +807,38 @@ relative distribution.
   'use strict';
 
   var scatterPlotBuilder = function() {
+    var createLinearScale = function(key, data) {
+      var ext = d3.extent(d3.merge(data.map(function(obj){
+        return d3.extent(obj.values, function(d){
+          return d[key];
+        });
+      })));
+      return d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
+    };
+
     var configureX = function(chart, data) {
       if (!chart.x) {
-        var ext = d3.extent(data, function(d) {
-          return d[chart.xKey];
-        }.bind(this));
-        chart.x = d3.scale.linear()
-          .domain(ext)
-          .nice()
-          .clamp(true);
+        chart.x = createLinearScale(chart.xKey, data);
       }
-      chart.x.range([0, chart.width - chart.margin.left - chart.margin.right]);
+      chart.x.range([0, chart.width - chart.margin.left - chart.margin.right])
+        .clamp(true)
+        .nice();
     };
 
     var configureY = function(chart, data) {
       if (!chart.y) {
-        var ext = d3.extent(data, function(d) {
-          return d[chart.yKey];
-        }.bind(this));
-        chart.y = d3.scale.linear()
-          .domain(ext)
-          .nice()
-          .clamp(true);
+        chart.y = createLinearScale(chart.yKey, data);
       }
       chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0]);
     };
 
     var configureZ = function(chart, data) {
       if (!chart.z) {
-        var ext = d3.extent(data, function(d) {
-          return d[chart.zKey];
-        }.bind(this));
-        chart.z = d3.scale.linear()
-          .domain(ext)
-          .nice()
-          .clamp(true);
+        chart.z = createLinearScale(chart.zKey, data);
       }
-      var maxSize = (chart.height - chart.margin.top - chart.margin.bottom);
-      chart.z.range([maxSize / data.length, maxSize / (data.length * 5)]);
+      var min = 5
+      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
+      chart.z.range([min, max]);
     };
 
     var configureScales = function(chart, data) {
@@ -1268,14 +1262,25 @@ The default format may not be desired and so we'll override it:
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var dots = this.svg.select('.'+name).selectAll('.'+name).data(data);
-        dots.enter().append('circle');
-        dots.attr('class', scope.accessors.classes.bind(this))
-        .attr('r', scope.accessors.r.bind(this))
-        .attr('cx', scope.accessors.cx.bind(this))
-        .attr('cy', scope.accessors.cy.bind(this));
+        var group = this.svg.select('.' + name).selectAll('.group')
+          .data(data)
+          .enter().append('g')
+          .attr('class', function(d,i) {
+            return 'series'+ i + ' ' +  this.yKey;
+          }.bind(this));
 
-        // returning a selection allows d4 to bind d3 events to it.
+        var dots = group.selectAll('circle')
+          .data(function(d) {
+            return d.values;
+          }.bind(this));
+
+        dots.enter().append('circle');
+        dots.exit().remove();
+        dots
+          .attr('class', scope.accessors.classes.bind(this))
+          .attr('r', scope.accessors.r.bind(this))
+          .attr('cx', scope.accessors.cx.bind(this))
+          .attr('cy', scope.accessors.cy.bind(this));
         return dots;
       }
     };
