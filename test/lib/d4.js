@@ -1,6 +1,6 @@
 /*! d4 - v0.1.0
  *  License: MIT Expat
- *  Date: 2014-02-26
+ *  Date: 2014-02-27
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -714,27 +714,37 @@ relative distribution.
   'use strict';
 
   var rowChartBuilder = function() {
-    var configureX = function(chart, data) {
-      if (!chart.x) {
-        chart.x = d3.scale.linear()
-          .domain(d3.extent(data, function(d) {
-            return d[chart.xKey];
-          }.bind(this)));
-      }
-      chart.x.range([0, chart.width - chart.margin.right - chart.margin.left])
-      .clamp(true)
-      .nice();
+    var extractValues = function(data, key) {
+      var values = data.map(function(obj){
+        return obj.values.map(function(i){
+          return i[key];
+        }.bind(this));
+      }.bind(this));
+      return d3.merge(values);
     };
 
     var configureY = function(chart, data) {
       if (!chart.y) {
+        var yData = extractValues(data, chart.yKey);
         chart.yRoundBands = chart.yRoundBands || 0.3;
         chart.y = d3.scale.ordinal()
-          .domain(data.map(function(d) {
-            return d[chart.yKey];
-          }.bind(this)))
+          .domain(yData)
           .rangeRoundBands([chart.height - chart.margin.top - chart.margin.bottom, 0], chart.yRoundBands);
       }
+    };
+
+    var configureX = function(chart, data) {
+      if (!chart.x) {
+        var ext = d3.extent(d3.merge(data.map(function(obj){
+          return d3.extent(obj.values, function(d){
+            return d[chart.xKey] + (d.y0 || 0);
+          });
+        })));
+        chart.x = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
+      }
+      chart.x.range([0, chart.width - chart.margin.left - chart.margin.right])
+        .clamp(true)
+        .nice();
     };
 
     var configureScales = function(chart, data) {
@@ -1591,7 +1601,8 @@ The default format may not be desired and so we'll override it:
     return {
       accessors: {
         x: function(d) {
-          return this.x(Math.min(0, d[this.xKey])) + Math.abs(this.x(d[this.xKey]) - this.x(0)) + 20;
+          var width = (Math.abs(this.x(d[this.xKey])) + this.x(d[this.xKey]))/2;
+          return Math.max(this.x(0), width) + 10;
         },
 
         y: function(d) {
@@ -1604,14 +1615,24 @@ The default format may not be desired and so we'll override it:
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var label = this.svg.select('.'+name).selectAll('.'+name).data(data);
-        label.enter().append('text');
-        label.exit().remove();
-        label.attr('class', 'column-label')
+        var group = this.svg.select('.' + name).selectAll('.group')
+          .data(data)
+          .enter().append('g')
+          .attr('class', function(d, i) {
+            return 'series' + i + ' ' + this.xKey;
+          }.bind(this));
+
+        var text = group.selectAll('text')
+          .data(function(d) {
+            return d.values;
+          }.bind(this));
+        text.exit().remove();
+        text.enter().append('text')
           .text(scope.accessors.text.bind(this))
-          .attr('x', scope.accessors.x.bind(this))
-          .attr('y', scope.accessors.y.bind(this));
-        return label;
+          .attr('class', 'column-label')
+          .attr('y', scope.accessors.y.bind(this))
+          .attr('x', scope.accessors.x.bind(this));
+        return text;
       }
     };
   };
@@ -1625,40 +1646,54 @@ The default format may not be desired and so we'll override it:
 
   'use strict';
   d4.features.rowSeries = function(name) {
+    var sign = function(val){
+      return (val > 0) ? 'positive' : 'negative';
+    };
+
     return {
       accessors: {
         x: function(d) {
-          return this.x(Math.min(0, d[this.xKey]));
+          var xVal = d[this.xKey] - Math.max(0, d[this.xKey]);
+          return this.x(xVal);
         },
 
         y: function(d) {
           return this.y(d[this.yKey]);
         },
 
-        height: function() {
-          return this.y.rangeBand();
-        },
-
         width: function(d) {
           return Math.abs(this.x(d[this.xKey]) - this.x(0));
         },
 
-        classes: function(d, i) {
-          return d[this.xKey] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
+        height: function() {
+          return this.y.rangeBand();
+        },
+
+        classes: function(d,i) {
+          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.xKey];
         }
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var bar = this.svg.select('.'+name).selectAll('.'+name).data(data);
-        bar.enter().append('rect');
-        bar.exit().remove();
-        bar.attr('class', scope.accessors.classes.bind(this))
+        var group = this.svg.select('.' + name).selectAll('.group')
+          .data(data)
+          .enter().append('g')
+          .attr('class', function(d,i) {
+            return 'series'+ i + ' ' +  this.yKey;
+          }.bind(this));
+
+        var rect = group.selectAll('rect')
+          .data(function(d) {
+            return d.values;
+          }.bind(this));
+
+        rect.enter().append('rect')
+          .attr('class', scope.accessors.classes.bind(this))
           .attr('x', scope.accessors.x.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('width', scope.accessors.width.bind(this))
           .attr('height', scope.accessors.height.bind(this));
-
-        return bar;
+        return rect;
       }
     };
   };

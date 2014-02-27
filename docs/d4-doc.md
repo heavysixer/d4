@@ -25,21 +25,21 @@
 
 * [`columnChart`][14]
 
-###### [waterfall-connectors.js][15]
+###### [nested-group.js][15]
 
-* [`waterfallConnectors`][16]
+* [`nestedGroup`][16]
 
-###### [nested-group.js][17]
+###### [nested-stack.js][17]
 
-* [`nestedGroup`][18]
+* [`nestedStack`][18]
 
-###### [nested-stack.js][19]
+###### [waterfall.js][19]
 
-* [`nestedStack`][20]
+* [`waterfall`][20]
 
-###### [waterfall.js][21]
+###### [waterfall-connectors.js][21]
 
-* [`waterfall`][22]
+* [`waterfallConnectors`][22]
 
 ## base.js
 
@@ -390,35 +390,12 @@ The default format may not be desired and so we'll override it:
 
 ---
 
-## waterfall-connectors.js
-
-### waterfallConnectors
-
-[\#][16]
-[Ⓣ][15]
-
-Waterfall connectors are orthogonal series connectors which visually join  
-column series together by spanning the top or bottom of adjacent columns.
-
-When using this feature in charts other than waterfall, be aware that the  
-mixin expects an accessor property for `orientation`, which it uses to render  
-the direction of the lines.
-
-##### Accessors
-
-`x` - Used in placement of the connector lines.  
-`y` - Used in placement of the connector lines.  
-`span` - calculates the length of the connector line  
-`classes` - applies the class to the connector lines.
-
----
-
 ## nested-group.js
 
 ### nestedGroup
 
-[\#][18]
-[Ⓣ][17]
+[\#][16]
+[Ⓣ][15]
 
 The nested group parser is useful for grouped column charts where multiple  
 data items need to appear relative to the axis value, for example grouped  
@@ -471,8 +448,8 @@ Keep reading for more information on these various accessor functions.
 
 ### nestedStack
 
-[\#][20]
-[Ⓣ][19]
+[\#][18]
+[Ⓣ][17]
 
 The nested stack parser is useful for charts which take a data series  
 and wants to sort them across a dimension and then display the results.  
@@ -580,8 +557,8 @@ The `parser` variable will now be an object containing the following structure:
 
 ### waterfall
 
-[\#][22]
-[Ⓣ][21]
+[\#][20]
+[Ⓣ][19]
 
 The waterfall parser is useful for waterfall charts where data items need to account  
 for the position of earlier values:
@@ -684,6 +661,29 @@ y - an object with a key representing the y accessor and an array of values
 
 ---
 
+## waterfall-connectors.js
+
+### waterfallConnectors
+
+[\#][22]
+[Ⓣ][21]
+
+Waterfall connectors are orthogonal series connectors which visually join  
+column series together by spanning the top or bottom of adjacent columns.
+
+When using this feature in charts other than waterfall, be aware that the  
+mixin expects an accessor property for `orientation`, which it uses to render  
+the direction of the lines.
+
+##### Accessors
+
+`x` - Used in placement of the connector lines.  
+`y` - Used in placement of the connector lines.  
+`span` - calculates the length of the connector line  
+`classes` - applies the class to the connector lines.
+
+---
+
 
 
 [0]: #base-js
@@ -701,13 +701,13 @@ y - an object with a key representing the y accessor and an array of values
 [12]: #rowchart
 [13]: #stacked-column-chart-js
 [14]: #columnchart
-[15]: #waterfall-connectors-js
-[16]: #waterfallconnectors
-[17]: #nested-group-js
-[18]: #nestedgroup
-[19]: #nested-stack-js
-[20]: #nestedstack
-[21]: #waterfall-js
-[22]: #waterfall
+[15]: #nested-group-js
+[16]: #nestedgroup
+[17]: #nested-stack-js
+[18]: #nestedstack
+[19]: #waterfall-js
+[20]: #waterfall
+[21]: #waterfall-connectors-js
+[22]: #waterfallconnectors
 [23]: https://github.com/mbostock/d3/wiki/Arrays#-nest
 [24]: https://github.com/mbostock/d3/wiki/Stack-Layout

@@ -9,7 +9,8 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(Math.min(0, d[this.xKey])) + Math.abs(this.x(d[this.xKey]) - this.x(0)) + 20;
+          var width = (Math.abs(this.x(d[this.xKey])) + this.x(d[this.xKey]))/2;
+          return Math.max(this.x(0), width) + 10;
         },
 
         y: function(d) {
@@ -22,14 +23,24 @@
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var label = this.svg.select('.'+name).selectAll('.'+name).data(data);
-        label.enter().append('text');
-        label.exit().remove();
-        label.attr('class', 'column-label')
+        var group = this.svg.select('.' + name).selectAll('.group')
+          .data(data)
+          .enter().append('g')
+          .attr('class', function(d, i) {
+            return 'series' + i + ' ' + this.xKey;
+          }.bind(this));
+
+        var text = group.selectAll('text')
+          .data(function(d) {
+            return d.values;
+          }.bind(this));
+        text.exit().remove();
+        text.enter().append('text')
           .text(scope.accessors.text.bind(this))
-          .attr('x', scope.accessors.x.bind(this))
-          .attr('y', scope.accessors.y.bind(this));
-        return label;
+          .attr('class', 'column-label')
+          .attr('y', scope.accessors.y.bind(this))
+          .attr('x', scope.accessors.x.bind(this));
+        return text;
       }
     };
   };

@@ -6,40 +6,54 @@
 
   'use strict';
   d4.features.rowSeries = function(name) {
+    var sign = function(val){
+      return (val > 0) ? 'positive' : 'negative';
+    };
+
     return {
       accessors: {
         x: function(d) {
-          return this.x(Math.min(0, d[this.xKey]));
+          var xVal = d[this.xKey] - Math.max(0, d[this.xKey]);
+          return this.x(xVal);
         },
 
         y: function(d) {
           return this.y(d[this.yKey]);
         },
 
-        height: function() {
-          return this.y.rangeBand();
-        },
-
         width: function(d) {
           return Math.abs(this.x(d[this.xKey]) - this.x(0));
         },
 
-        classes: function(d, i) {
-          return d[this.xKey] < 0 ? 'bar negative fill series' + i : 'bar positive fill series' + i;
+        height: function() {
+          return this.y.rangeBand();
+        },
+
+        classes: function(d,i) {
+          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.xKey];
         }
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var bar = this.svg.select('.'+name).selectAll('.'+name).data(data);
-        bar.enter().append('rect');
-        bar.exit().remove();
-        bar.attr('class', scope.accessors.classes.bind(this))
+        var group = this.svg.select('.' + name).selectAll('.group')
+          .data(data)
+          .enter().append('g')
+          .attr('class', function(d,i) {
+            return 'series'+ i + ' ' +  this.yKey;
+          }.bind(this));
+
+        var rect = group.selectAll('rect')
+          .data(function(d) {
+            return d.values;
+          }.bind(this));
+
+        rect.enter().append('rect')
+          .attr('class', scope.accessors.classes.bind(this))
           .attr('x', scope.accessors.x.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('width', scope.accessors.width.bind(this))
           .attr('height', scope.accessors.height.bind(this));
-
-        return bar;
+        return rect;
       }
     };
   };
