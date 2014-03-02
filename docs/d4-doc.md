@@ -9,25 +9,25 @@
 * [`features`][5]
 * [`functor`][6]
 
-###### [columns.js][7]
+###### [grouped-column-chart.js][7]
 
-* [``][8]
+* [`groupedColumnChart`][8]
 
-###### [grouped-column-chart.js][9]
+###### [line-chart.js][9]
 
-* [`groupedColumnChart`][10]
+* [`lineChart`][10]
 
-###### [line-chart.js][11]
+###### [row-chart.js][11]
 
-* [`lineChart`][12]
+* [`rowChart`][12]
 
-###### [row-chart.js][13]
+###### [stacked-column-chart.js][13]
 
-* [`rowChart`][14]
+* [`columnChart`][14]
 
-###### [stacked-column-chart.js][15]
+###### [columns.js][15]
 
-* [`columnChart`][16]
+* [``][16]
 
 ###### [nested-group.js][17]
 
@@ -192,21 +192,12 @@ Based on D3's own functor function.
 
 ---
 
-## columns.js
-
-### 
-
-[\#][8]
-[Ⓣ][7]
-
----
-
 ## grouped-column-chart.js
 
 ### groupedColumnChart
 
-[\#][10]
-[Ⓣ][9]
+[\#][8]
+[Ⓣ][7]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -262,8 +253,8 @@ relative distribution.
 
 ### lineChart
 
-[\#][12]
-[Ⓣ][11]
+[\#][10]
+[Ⓣ][9]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -322,8 +313,8 @@ along the xAxis.
 
 ### rowChart
 
-[\#][14]
-[Ⓣ][13]
+[\#][12]
+[Ⓣ][11]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -355,8 +346,8 @@ has four default features:
 
 ### columnChart
 
-[\#][16]
-[Ⓣ][15]
+[\#][14]
+[Ⓣ][13]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -400,6 +391,15 @@ The default format may not be desired and so we'll override it:
     .datum(data)
     .call(chart);
     
+
+---
+
+## columns.js
+
+### 
+
+[\#][16]
+[Ⓣ][15]
 
 ---
 
@@ -706,16 +706,16 @@ the direction of the lines.
 [4]: #builder
 [5]: #features
 [6]: #functor
-[7]: #columns-js
-[8]: #
-[9]: #grouped-column-chart-js
-[10]: #groupedcolumnchart
-[11]: #line-chart-js
-[12]: #linechart
-[13]: #row-chart-js
-[14]: #rowchart
-[15]: #stacked-column-chart-js
-[16]: #columnchart
+[7]: #grouped-column-chart-js
+[8]: #groupedcolumnchart
+[9]: #line-chart-js
+[10]: #linechart
+[11]: #row-chart-js
+[12]: #rowchart
+[13]: #stacked-column-chart-js
+[14]: #columnchart
+[15]: #columns-js
+[16]: #
 [17]: #nested-group-js
 [18]: #nestedgroup
 [19]: #nested-stack-js

@@ -259,16 +259,6 @@
         {
             "tags": [],
             "description": {
-                "full": "",
-                "summary": "",
-                "body": ""
-            },
-            "isPrivate": false,
-            "fileName": "../src/builders/columns.js"
-        },
-        {
-            "tags": [],
-            "description": {
                 "full": "<p>global d3: false<br />global d4: false</p>",
                 "summary": "<p>global d3: false<br />global d4: false</p>",
                 "body": ""
@@ -400,6 +390,16 @@
             "ignore": true,
             "code": "'use strict';\n\n  // This accessor can be overridden\n  var orientation = function() {\n    return 'vertical';\n  };\n\n  // FIXME: It would be nice not to continually have to check the orientation.\n  var columnSeriesOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.orientation() === 'vertical') {\n            var yVal = (d.y0 + d.y) - Math.min(0, d.y);\n            return this.y(yVal);\n          } else {\n            return this.y(d[this.yKey]);\n          }\n        },\n\n        x: function(d) {\n          if (this.orientation() === 'vertical') {\n            return this.x(d[this.xKey]);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.x(xVal);\n          }\n        },\n\n        width: function(d) {\n          if (this.orientation() === 'vertical') {\n            return this.x.rangeBand();\n          } else {\n            return Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n          }\n        },\n\n        height: function(d) {\n          if (this.orientation() === 'vertical') {\n            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n          } else {\n            return this.y.rangeBand();\n          }\n        },\n\n        classes: function(d, i, n) {\n          var klass = (d.y > 0) ? 'positive' : 'negative';\n          if (n > 0 && d.y0 === 0) {\n            klass = 'subtotal';\n          }\n          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.yKey];\n        }\n      }\n    };\n  };\n\n  var columnLabelOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.orientation() === 'vertical') {\n            var height = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n            var yVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.y(yVal) - 10 - height;\n          } else {\n            return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);\n          }\n        },\n\n        x: function(d) {\n          if (this.orientation() === 'vertical') {\n            return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            var width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n            return this.x(xVal) + 10 + width;\n          }\n        },\n\n        text: function(d) {\n          return d3.format('').call(this, d[this.valueKey]);\n        }\n      }\n    };\n  };\n\n  var waterfallChartBuilder = function() {\n    var rangeBoundsFor = function(chart, dimension) {\n      var rangeBounds;\n      if (dimension === 'x') {\n        return [0, chart.width - chart.margin.left - chart.margin.right];\n      } else {\n        rangeBounds = [0, chart.height - chart.margin.top - chart.margin.bottom];\n        return (chart.orientation().toLowerCase() === 'vertical') ? rangeBounds.reverse() : rangeBounds;\n      }\n    };\n\n    var setOrdinal = function(chart, dimension, data) {\n      if (!chart[dimension]) {\n        var keys = data.map(function(d) {\n          return d.key;\n        }.bind(this));\n\n        chart[dimension] = d3.scale.ordinal()\n          .domain(keys)\n          .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);\n      }\n    };\n\n    var setLinear = function(chart, dimension, data) {\n      if (!chart[dimension]) {\n        var ext = d3.extent(d3.merge(data.map(function(datum) {\n          return d3.extent(datum.values, function(d) {\n\n            // This is anti-intuative but the stack only returns y and y0 even\n            // when it applies to the x dimension;\n            return d.y + d.y0;\n          });\n        })));\n        ext[0] = Math.min(0, ext[0]);\n        chart[dimension] = d3.scale.linear()\n          .domain(ext);\n      }\n      chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))\n        .clamp(true)\n        .nice();\n    };\n\n    var configureScales = function(chart, data) {\n      if (chart.orientation().toLowerCase() === 'vertical') {\n        setOrdinal.bind(this)(chart, 'x', data);\n        setLinear.bind(this)(chart, 'y', data);\n      } else {\n        setOrdinal.bind(this)(chart, 'y', data);\n        setLinear.bind(this)(chart, 'x', data);\n      }\n    };\n\n    var builder = {\n      configure: function(chart, data) {\n        configureScales.bind(this)(chart, data);\n      }\n    };\n    return builder;\n  };\n\n  d4.waterfallChart = function waterfallChart() {\n    var chart = d4.baseChart({\n      accessors: ['orientation'],\n      orientation: orientation\n    }, waterfallChartBuilder);\n    [{\n      'bars': d4.features.stackedColumnSeries,\n      'overrides': columnSeriesOverrides\n    }, {\n      'connectors': d4.features.waterfallConnectors\n    }, {\n      'columnLabels': d4.features.stackedColumnLabels,\n      'overrides': columnLabelOverrides\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n\n    return chart;\n  };\n}).call(this);",
             "fileName": "../src/charts/waterfall-chart.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "",
+                "summary": "",
+                "body": ""
+            },
+            "isPrivate": false,
+            "fileName": "../src/builders/columns.js"
         },
         {
             "tags": [],
@@ -856,17 +856,6 @@
                 "body": ""
             }
         },
-        {
-            "params": [],
-            "name": "",
-            "type": "",
-            "fileName": "../src/builders/columns.js",
-            "description": {
-                "full": "",
-                "summary": "",
-                "body": ""
-            }
-        },
         {},
         {
             "params": [],
@@ -917,6 +906,17 @@
             }
         },
         {},
+        {
+            "params": [],
+            "name": "",
+            "type": "",
+            "fileName": "../src/builders/columns.js",
+            "description": {
+                "full": "",
+                "summary": "",
+                "body": ""
+            }
+        },
         {},
         {},
         {
@@ -1114,22 +1114,6 @@
             ]
         },
         {
-            "tag": "../src/builders/columns.js",
-            "moxComments": [
-                {
-                    "params": [],
-                    "name": "",
-                    "type": "",
-                    "fileName": "../src/builders/columns.js",
-                    "description": {
-                        "full": "",
-                        "summary": "",
-                        "body": ""
-                    }
-                }
-            ]
-        },
-        {
             "tag": "../src/charts/grouped-column-chart.js",
             "moxComments": [
                 {
@@ -1189,6 +1173,22 @@
                         "full": "<p>The column chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear values for the <code>y</code> and ordinal values on the <code>x</code>. The basic column chart<br />   has four default features:</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n    { x: '2010', y:-10 },\n    { x: '2011', y:20 },\n    { x: '2012', y:30 },\n    { x: '2013', y:40 },\n    { x: '2014', y:50 },\n  ];\nvar chart = d4.columnChart();\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>\n\n<p>By default d4 expects a series object, which uses the following format: <code>{ x : '2010', y : 10 }</code>.<br />The default format may not be desired and so we'll override it:</p>\n\n<pre><code>var data = [\n  ['2010', -10],\n  ['2011', 20],\n  ['2012', 30],\n  ['2013', 40],\n  ['2014', 50]\n];\nvar chart = d4.columnChart()\n.xKey(0)\n.yKey(1);\n\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>",
                         "summary": "<p>The column chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear values for the <code>y</code> and ordinal values on the <code>x</code>. The basic column chart<br />   has four default features:</p>",
                         "body": "<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n    { x: '2010', y:-10 },\n    { x: '2011', y:20 },\n    { x: '2012', y:30 },\n    { x: '2013', y:40 },\n    { x: '2014', y:50 },\n  ];\nvar chart = d4.columnChart();\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>\n\n<p>By default d4 expects a series object, which uses the following format: <code>{ x : '2010', y : 10 }</code>.<br />The default format may not be desired and so we'll override it:</p>\n\n<pre><code>var data = [\n  ['2010', -10],\n  ['2011', 20],\n  ['2012', 30],\n  ['2013', 40],\n  ['2014', 50]\n];\nvar chart = d4.columnChart()\n.xKey(0)\n.yKey(1);\n\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>"
+                    }
+                }
+            ]
+        },
+        {
+            "tag": "../src/builders/columns.js",
+            "moxComments": [
+                {
+                    "params": [],
+                    "name": "",
+                    "type": "",
+                    "fileName": "../src/builders/columns.js",
+                    "description": {
+                        "full": "",
+                        "summary": "",
+                        "body": ""
                     }
                 }
             ]
