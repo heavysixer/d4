@@ -19,7 +19,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n\n  var root = this;\n  var breaker = {};\n\n  // Create a safe reference to the d4 object.\n  var d4 = function(obj) {\n    if (obj instanceof d4) {\n      return obj;\n    }\n    if (!(this instanceof d4)) {\n      return new d4(obj);\n    }\n    this.d4Wrapped = obj;\n  };\n\n  if (typeof exports !== 'undefined') {\n    if (typeof module !== 'undefined' && module.exports) {\n      exports = module.exports = d4;\n    }\n    exports.d4 = d4;\n  } else {\n    root.d4 = d4;\n  }\n\n  // FIXME These namespaces should not be publicly explosed, instead\n  // they should be assigned though a registration function.\n  d4.charts = {};\n  d4.features = {};\n  d4.parsers = {};\n  d4.builders = {};\n\n  var each = d4.each = d4.forEach = function(obj, iterator, context) {\n    var nativeForEach = Array.prototype.forEach,\n      i, len;\n    if (obj === null) {\n      return;\n    }\n    if (nativeForEach && obj.forEach === nativeForEach) {\n      obj.forEach(iterator, context);\n    } else if (obj.length === +obj.length) {\n      for (i = 0, len = obj.length; i < len; i++) {\n        if (iterator.call(context, obj[i], i, obj) === breaker) {\n          return;\n        }\n      }\n    } else {\n      var keys = d3.keys(obj);\n      for (i = 0, len = keys.length; i < len; i++) {\n        if (iterator.call(context, obj[keys[i]], keys[i], obj) === breaker) {\n          return;\n        }\n      }\n    }\n  };\n\n  var err = function() {\n    var parts = Array.prototype.slice.call(arguments);\n    var message = parts.shift();\n    var regexp;\n    each(parts, function(str, i){\n      regexp = new RegExp('\\\\{' + i + '\\\\}', 'gi');\n      message = message.replace(regexp, str);\n    });\n    throw new Error('[d4] ' + message);\n  };\n\n  var validateBuilder = function(builder) {\n    each(['configure'], function(funct) {\n      if (!builder[funct] || d4.isNotFunction(builder[funct])) {\n        err('The supplied builder does not have a {0} function', funct);\n      }\n    });\n    return builder;\n  };\n\n  var assignDefaultBuilder = function(defaultBuilder) {\n    if (!this.builder) {\n      this.builder = validateBuilder(defaultBuilder.bind(this)());\n    }\n    return this;\n  };\n\n  var assignDefaults = function(config, defaultBuilder) {\n    if (!defaultBuilder) {\n      err('No builder defined');\n    }\n    var opts = d4.merge({\n      width: 400,\n      height: 400,\n      features: {},\n      mixins: [],\n      xKey: 'x',\n      yKey: 'y',\n      valueKey: 'y',\n      margin: {\n        top: 20,\n        right: 20,\n        bottom: 20,\n        left: 40\n      }\n    }, config);\n    assignDefaultBuilder.bind(opts)(defaultBuilder);\n    opts.accessors = ['margin', 'width', 'height', 'x', 'y', 'xKey', 'yKey', 'valueKey'].concat(config.accessors || []);\n    return opts;\n  };",
+            "code": "'use strict';\n\n  var root = this;\n  var breaker = {};\n\n  // Create a safe reference to the d4 object.\n  var d4 = function(obj) {\n    if (obj instanceof d4) {\n      return obj;\n    }\n    if (!(this instanceof d4)) {\n      return new d4(obj);\n    }\n    this.d4Wrapped = obj;\n  };\n\n  if (typeof exports !== 'undefined') {\n    if (typeof module !== 'undefined' && module.exports) {\n      exports = module.exports = d4;\n    }\n    exports.d4 = d4;\n  } else {\n    root.d4 = d4;\n  }\n\n  d4.charts = {};\n  d4.features = {};\n  d4.parsers = {};\n  d4.builders = {};\n\n  var each = d4.each = d4.forEach = function(obj, iterator, context) {\n    var nativeForEach = Array.prototype.forEach,\n      i, len;\n    if (obj === null) {\n      return;\n    }\n    if (nativeForEach && obj.forEach === nativeForEach) {\n      obj.forEach(iterator, context);\n    } else if (obj.length === +obj.length) {\n      for (i = 0, len = obj.length; i < len; i++) {\n        if (iterator.call(context, obj[i], i, obj) === breaker) {\n          return;\n        }\n      }\n    } else {\n      var keys = d3.keys(obj);\n      for (i = 0, len = keys.length; i < len; i++) {\n        if (iterator.call(context, obj[keys[i]], keys[i], obj) === breaker) {\n          return;\n        }\n      }\n    }\n  };\n\n  var err = function() {\n    var parts = Array.prototype.slice.call(arguments);\n    var message = parts.shift();\n    var regexp;\n    each(parts, function(str, i){\n      regexp = new RegExp('\\\\{' + i + '\\\\}', 'gi');\n      message = message.replace(regexp, str);\n    });\n    throw new Error('[d4] ' + message);\n  };\n\n  var validateBuilder = function(builder) {\n    each(['configure'], function(funct) {\n      if (!builder[funct] || d4.isNotFunction(builder[funct])) {\n        err('The supplied builder does not have a {0} function', funct);\n      }\n    });\n    return builder;\n  };\n\n  var assignDefaultBuilder = function(defaultBuilder) {\n    if (!this.builder) {\n      this.builder = validateBuilder(defaultBuilder.bind(this)());\n    }\n    return this;\n  };\n\n  var assignDefaults = function(config, defaultBuilder) {\n    if (!defaultBuilder) {\n      err('No builder defined');\n    }\n    var opts = d4.merge({\n      width: 400,\n      height: 400,\n      features: {},\n      mixins: [],\n      xKey: 'x',\n      yKey: 'y',\n      valueKey: 'y',\n      margin: {\n        top: 20,\n        right: 20,\n        bottom: 20,\n        left: 40\n      }\n    }, config);\n    assignDefaultBuilder.bind(opts)(defaultBuilder);\n    opts.accessors = ['margin', 'width', 'height', 'x', 'y', 'xKey', 'yKey', 'valueKey'].concat(config.accessors || []);\n    return opts;\n  };",
             "fileName": "../src/base.js"
         },
         {
@@ -139,12 +139,90 @@
             },
             "isPrivate": false,
             "ignore": false,
-            "code": "d4.feature = function(name, funct) {\n    d4.features[name] = funct;\n    return d4.features[name];\n  };\n\n  d4.baseChart = function(config, defaultBuilder) {\n    var opts = assignDefaults(config, defaultBuilder);\n    var chart = applyScaffold(opts);",
+            "code": "d4.feature = function(name, funct) {\n    d4.features[name] = funct;\n    return d4.features[name];\n  };",
             "ctx": {
                 "type": "method",
                 "receiver": "d4",
                 "name": "feature",
                 "string": "d4.feature()"
+            },
+            "fileName": "../src/base.js"
+        },
+        {
+            "tags": [
+                {
+                    "type": "param",
+                    "types": [
+                        "String"
+                    ],
+                    "name": "name",
+                    "description": "- accessor name for chart builder."
+                },
+                {
+                    "type": "param",
+                    "types": [
+                        "Function"
+                    ],
+                    "name": "funct",
+                    "description": "- function which will instantiate the chart builder."
+                },
+                {
+                    "type": "returns",
+                    "string": "a reference to the chart builder"
+                }
+            ],
+            "description": {
+                "full": "<p>This function allows you to register a reusable chart builder with d4.</p>",
+                "summary": "<p>This function allows you to register a reusable chart builder with d4.</p>",
+                "body": ""
+            },
+            "isPrivate": false,
+            "ignore": false,
+            "code": "d4.builder = function(name, funct) {\n    d4.builders[name] = funct;\n    return d4.builders[name];\n  };",
+            "ctx": {
+                "type": "method",
+                "receiver": "d4",
+                "name": "builder",
+                "string": "d4.builder()"
+            },
+            "fileName": "../src/base.js"
+        },
+        {
+            "tags": [
+                {
+                    "type": "param",
+                    "types": [
+                        "String"
+                    ],
+                    "name": "name",
+                    "description": "- accessor name for data parser."
+                },
+                {
+                    "type": "param",
+                    "types": [
+                        "Function"
+                    ],
+                    "name": "funct",
+                    "description": "- function which will instantiate the data parser."
+                },
+                {
+                    "type": "returns",
+                    "string": "a reference to the data parser"
+                }
+            ],
+            "description": {
+                "full": "<p>This function allows you to register a reusable data parser with d4.</p>",
+                "summary": "<p>This function allows you to register a reusable data parser with d4.</p>",
+                "body": ""
+            },
+            "isPrivate": false,
+            "ignore": false,
+            "code": "d4.parser = function(name, funct) {\n    d4.parsers[name] = funct;\n    return d4.parsers[name];\n  };\n\n  d4.baseChart = function(config, defaultBuilder) {\n    var opts = assignDefaults(config, defaultBuilder);\n    var chart = applyScaffold(opts);",
+            "ctx": {
+                "type": "method",
+                "receiver": "d4",
+                "name": "parser",
+                "string": "d4.parser()"
             },
             "fileName": "../src/base.js"
         },
@@ -383,13 +461,7 @@
             },
             "isPrivate": false,
             "ignore": false,
-            "code": "d4.builders.linearScaleForNestedData = function(chart, data, dimension) {\n    var key = chart[dimension + 'Key'];\n    var ext = d3.extent(d3.merge(data.map(function(obj) {\n      return d3.extent(obj.values, function(d) {\n        return d[key] + (d.y0 || 0);\n      });\n    })));\n    chart[dimension] = d3.scale.linear();\n    return chart[dimension].domain([Math.min(0, ext[0]), ext[1]])\n    .range(rangeFor(chart, dimension))\n    .clamp(true)\n    .nice();\n  };",
-            "ctx": {
-                "type": "method",
-                "receiver": "d4.builders",
-                "name": "linearScaleForNestedData",
-                "string": "d4.builders.linearScaleForNestedData()"
-            },
+            "code": "d4.builder('linearScaleForNestedData', function(chart, data, dimension) {\n    var key = chart[dimension + 'Key'];\n    var ext = d3.extent(d3.merge(data.map(function(obj) {\n      return d3.extent(obj.values, function(d) {\n        return d[key] + (d.y0 || 0);\n      });\n    })));\n    chart[dimension] = d3.scale.linear();\n    return chart[dimension].domain([Math.min(0, ext[0]), ext[1]])\n    .range(rangeFor(chart, dimension))\n    .clamp(true)\n    .nice();\n  });",
             "fileName": "../src/builders/scales.js"
         },
         {
@@ -430,13 +502,7 @@
             },
             "isPrivate": false,
             "ignore": false,
-            "code": "d4.builders.ordinalScaleForNestedData = function(chart, data, dimension) {\n    var parsedData = extractValues(data, chart[dimension + 'Key']);\n    var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;\n    chart[dimension] = d3.scale.ordinal();\n    return chart[dimension]\n      .domain(parsedData)\n      .rangeRoundBands(rangeFor(chart, dimension), bands);\n  };\n}).call(this);",
-            "ctx": {
-                "type": "method",
-                "receiver": "d4.builders",
-                "name": "ordinalScaleForNestedData",
-                "string": "d4.builders.ordinalScaleForNestedData()"
-            },
+            "code": "d4.builder('ordinalScaleForNestedData', function(chart, data, dimension) {\n    var parsedData = extractValues(data, chart[dimension + 'Key']);\n    var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;\n    chart[dimension] = d3.scale.ordinal();\n    return chart[dimension]\n      .domain(parsedData)\n      .rangeRoundBands(rangeFor(chart, dimension), bands);\n  });\n}).call(this);",
             "fileName": "../src/builders/scales.js"
         },
         {
@@ -470,7 +536,7 @@
             },
             "ignore": true,
             "code": "'use strict';\n\n  var groupedColumnChartBuilder = function() {\n    var builder = {\n      configure: function(chart, data) {\n        if(!chart.x){\n          d4.builders.ordinalScaleForNestedData(chart, data, 'x');\n        }\n        if(!chart.y){\n          d4.builders.linearScaleForNestedData(chart, data, 'y');\n        }\n      }\n    };\n    return builder;\n  };",
-            "fileName": "../src/charts/grouped-column-chart.js"
+            "fileName": "../src/charts/grouped-column.js"
         },
         {
             "tags": [],
@@ -481,7 +547,7 @@
             },
             "ignore": false,
             "code": "d4.chart('groupedColumn', function groupedColumnChart() {\n    var chart = d4.baseChart({\n      accessors: ['groupsOf'],\n      groupsOf: 1\n    }, groupedColumnChartBuilder);\n    [{\n      'bars': d4.features.groupedColumnSeries\n    }, {\n      'columnLabels': d4.features.groupedColumnLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/grouped-column-chart.js"
+            "fileName": "../src/charts/grouped-column.js"
         },
         {
             "tags": [],
@@ -492,7 +558,7 @@
             },
             "ignore": true,
             "code": "'use strict';\n\n  var lineChartBuilder = function() {\n    var builder = {\n      configure: function(chart, data) {\n        if(!chart.x){\n          d4.builders.ordinalScaleForNestedData(chart, data, 'x');\n        }\n        if(!chart.y){\n          d4.builders.linearScaleForNestedData(chart, data, 'y');\n        }\n      }\n    };\n    return builder;\n  };",
-            "fileName": "../src/charts/line-chart.js"
+            "fileName": "../src/charts/line.js"
         },
         {
             "tags": [],
@@ -503,7 +569,7 @@
             },
             "ignore": false,
             "code": "d4.chart('line', function lineChart() {\n    var chart = d4.baseChart({}, lineChartBuilder);\n    [{\n      'lineSeries': d4.features.lineSeries\n    },{\n      'lineSeriesLabels': d4.features.lineSeriesLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/line-chart.js"
+            "fileName": "../src/charts/line.js"
         },
         {
             "tags": [],
@@ -514,7 +580,7 @@
             },
             "ignore": true,
             "code": "'use strict';\n\n  var rowChartBuilder = function() {\n    var builder = {\n      configure: function(chart, data) {\n        if(!chart.x){\n          d4.builders.linearScaleForNestedData(chart, data, 'x');\n        }\n\n        if(!chart.y){\n          d4.builders.ordinalScaleForNestedData(chart, data, 'y');\n        }\n      }\n    };\n    return builder;\n  };",
-            "fileName": "../src/charts/row-chart.js"
+            "fileName": "../src/charts/row.js"
         },
         {
             "tags": [],
@@ -525,7 +591,7 @@
             },
             "ignore": false,
             "code": "d4.chart('row', function rowChart() {\n    var chart = d4.baseChart({\n      margin: {\n        top: 20,\n        right: 40,\n        bottom: 20,\n        left: 40\n      }\n    }, rowChartBuilder);\n    [{\n      'bars': d4.features.rowSeries\n    }, {\n      'rowLabels': d4.features.rowLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/row-chart.js"
+            "fileName": "../src/charts/row.js"
         },
         {
             "tags": [],
@@ -536,7 +602,7 @@
             },
             "ignore": true,
             "code": "'use strict';\n\n  var scatterPlotBuilder = function() {\n    var configureScales = function(chart, data) {\n      if(!chart.x){\n        d4.builders.linearScaleForNestedData(chart, data, 'x');\n      }\n\n      if(!chart.y){\n        d4.builders.linearScaleForNestedData(chart, data, 'y');\n      }\n\n      if(!chart.z){\n        d4.builders.linearScaleForNestedData(chart, data, 'z');\n        var min = 5;\n        var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);\n        chart.z.range([min, max]);\n      }\n    };\n\n    var builder = {\n      configure: function(chart, data) {\n        configureScales.bind(this)(chart, data);\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('scatterPlot', function() {\n    var chart = d4.baseChart({\n      accessors: ['z', 'zKey'],\n      zKey: 'z'\n    }, scatterPlotBuilder);\n    [{\n      'circles': d4.features.dotSeries\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/scatter-plot.js"
+            "fileName": "../src/charts/scatter.js"
         },
         {
             "tags": [],
@@ -547,7 +613,7 @@
             },
             "ignore": true,
             "code": "'use strict';\n\n  var stackedColumnChartBuilder = function() {\n    var builder = {\n      configure: function(chart, data) {\n        if(!chart.x){\n          d4.builders.ordinalScaleForNestedData(chart, data, 'x');\n        }\n        if(!chart.y){\n          d4.builders.linearScaleForNestedData(chart, data, 'y');\n        }\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('stackedColumn', function stackedColumnChart() {\n    var chart = d4.baseChart({}, stackedColumnChartBuilder);\n    [{\n      'bars': d4.features.stackedColumnSeries\n    }, {\n      'barLabels': d4.features.stackedColumnLabels\n    }, {\n      'connectors': d4.features.stackedColumnConnectors\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/stacked-column-chart.js"
+            "fileName": "../src/charts/stacked-column.js"
         },
         {
             "tags": [],
@@ -558,121 +624,7 @@
             },
             "ignore": true,
             "code": "'use strict';\n\n  // This accessor can be overridden\n  var orientation = function() {\n    return 'vertical';\n  };\n\n  // FIXME: It would be nice not to continually have to check the orientation.\n  var columnSeriesOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.orientation() === 'vertical') {\n            var yVal = (d.y0 + d.y) - Math.min(0, d.y);\n            return this.y(yVal);\n          } else {\n            return this.y(d[this.yKey]);\n          }\n        },\n\n        x: function(d) {\n          if (this.orientation() === 'vertical') {\n            return this.x(d[this.xKey]);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.x(xVal);\n          }\n        },\n\n        width: function(d) {\n          if (this.orientation() === 'vertical') {\n            return this.x.rangeBand();\n          } else {\n            return Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n          }\n        },\n\n        height: function(d) {\n          if (this.orientation() === 'vertical') {\n            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n          } else {\n            return this.y.rangeBand();\n          }\n        },\n\n        classes: function(d, i, n) {\n          var klass = (d.y > 0) ? 'positive' : 'negative';\n          if (n > 0 && d.y0 === 0) {\n            klass = 'subtotal';\n          }\n          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.yKey];\n        }\n      }\n    };\n  };\n\n  var columnLabelOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.orientation() === 'vertical') {\n            var height = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n            var yVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.y(yVal) - 10 - height;\n          } else {\n            return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);\n          }\n        },\n\n        x: function(d) {\n          if (this.orientation() === 'vertical') {\n            return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            var width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n            return this.x(xVal) + 10 + width;\n          }\n        },\n\n        text: function(d) {\n          return d3.format('').call(this, d[this.valueKey]);\n        }\n      }\n    };\n  };\n\n  var waterfallChartBuilder = function() {\n    var rangeBoundsFor = function(chart, dimension) {\n      var rangeBounds;\n      if (dimension === 'x') {\n        return [0, chart.width - chart.margin.left - chart.margin.right];\n      } else {\n        rangeBounds = [0, chart.height - chart.margin.top - chart.margin.bottom];\n        return (chart.orientation().toLowerCase() === 'vertical') ? rangeBounds.reverse() : rangeBounds;\n      }\n    };\n\n    var setOrdinal = function(chart, dimension, data) {\n      if (!chart[dimension]) {\n        var keys = data.map(function(d) {\n          return d.key;\n        }.bind(this));\n\n        chart[dimension] = d3.scale.ordinal()\n          .domain(keys)\n          .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);\n      }\n    };\n\n    var setLinear = function(chart, dimension, data) {\n      if (!chart[dimension]) {\n        var ext = d3.extent(d3.merge(data.map(function(datum) {\n          return d3.extent(datum.values, function(d) {\n\n            // This is anti-intuative but the stack only returns y and y0 even\n            // when it applies to the x dimension;\n            return d.y + d.y0;\n          });\n        })));\n        ext[0] = Math.min(0, ext[0]);\n        chart[dimension] = d3.scale.linear()\n          .domain(ext);\n      }\n      chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))\n        .clamp(true)\n        .nice();\n    };\n\n    var configureScales = function(chart, data) {\n      if (chart.orientation().toLowerCase() === 'vertical') {\n        setOrdinal.bind(this)(chart, 'x', data);\n        setLinear.bind(this)(chart, 'y', data);\n      } else {\n        setOrdinal.bind(this)(chart, 'y', data);\n        setLinear.bind(this)(chart, 'x', data);\n      }\n    };\n\n    var builder = {\n      configure: function(chart, data) {\n        configureScales.bind(this)(chart, data);\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('waterfall', function waterfallChart() {\n    var chart = d4.baseChart({\n      accessors: ['orientation'],\n      orientation: orientation\n    }, waterfallChartBuilder);\n    [{\n      'bars': d4.features.stackedColumnSeries,\n      'overrides': columnSeriesOverrides\n    }, {\n      'connectors': d4.features.waterfallConnectors\n    }, {\n      'columnLabels': d4.features.stackedColumnLabels,\n      'overrides': columnLabelOverrides\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/waterfall-chart.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d3: false</p>",
-                "summary": "<p>global d3: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "fileName": "../src/parsers/nested-group.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d4: false</p>",
-                "summary": "<p>global d4: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "code": "'use strict';",
-            "fileName": "../src/parsers/nested-group.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>The nested group parser is useful for grouped column charts where multiple<br />data items need to appear relative to the axis value, for example grouped<br />column charts or multi-series line charts.</p>\n\n<pre><code>_____________________\n|           _        |\n|   _ _    | |_      |\n|  | | |   | | |     |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the waterfall data. Here is a simple<br />example. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }</p>\n\n<pre><code>var parser = d4.parsers.nestedGroup()\n    .x('category')\n    .y('value')\n    .value('value');\n\nvar groupedColumnData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h4>Accessor Methods</h4>\n\n<p><code>x</code> - A function which returns a key to access the x values in the data array<br /><code>y</code> - A function which returns a key to access the y values in the data array<br /><code>value</code> - A function which returns a key to access the values in the data array.<br /><code>data</code> - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [\n{\"year\" : \"2010\", \"category\" : \"Category One\", \"value\" : 23 },\n{\"year\" : \"2010\", \"category\" : \"Category Two\", \"value\" : 55 },\n{\"year\" : \"2010\", \"category\" : \"Category Three\", \"value\" : -10 },\n{\"year\" : \"2010\", \"category\" : \"Category Four\", \"value\" : 5 }]\n</code></pre>",
-                "summary": "<p>The nested group parser is useful for grouped column charts where multiple<br />data items need to appear relative to the axis value, for example grouped<br />column charts or multi-series line charts.</p>",
-                "body": "<pre><code>_____________________\n|           _        |\n|   _ _    | |_      |\n|  | | |   | | |     |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the waterfall data. Here is a simple<br />example. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }</p>\n\n<pre><code>var parser = d4.parsers.nestedGroup()\n    .x('category')\n    .y('value')\n    .value('value');\n\nvar groupedColumnData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h4>Accessor Methods</h4>\n\n<p><code>x</code> - A function which returns a key to access the x values in the data array<br /><code>y</code> - A function which returns a key to access the y values in the data array<br /><code>value</code> - A function which returns a key to access the values in the data array.<br /><code>data</code> - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [\n{\"year\" : \"2010\", \"category\" : \"Category One\", \"value\" : 23 },\n{\"year\" : \"2010\", \"category\" : \"Category Two\", \"value\" : 55 },\n{\"year\" : \"2010\", \"category\" : \"Category Three\", \"value\" : -10 },\n{\"year\" : \"2010\", \"category\" : \"Category Four\", \"value\" : 5 }]\n</code></pre>"
-            },
-            "ignore": false,
-            "code": "d4.parsers.nestedGroup = function nestedGroup() {\n\n    var opts = {\n      x: {\n        key: 'x',\n        values: []\n      },\n      y: {\n        key: 'y',\n        values: []\n      },\n      value: {\n        key: 'value',\n        values: []\n      },\n      data: []\n    };\n    opts.nestKey = function(){\n      return opts.x.key;\n    };\n\n    var findValues = function(dimensions, items) {\n      ['x', 'y', 'value'].forEach(function(k) {\n        var layers = items.map(function(d) {\n          return d[dimensions[k].key];\n        });\n        opts[k].values = d3.set(layers).values();\n      });\n    };\n\n    var nestByDimension = function(key, valueKey, items) {\n      var nest = d3.nest()\n        .key(function(d) {\n          return d[key];\n        });\n      return nest.entries(items);\n    };\n\n    var setDimension = function(dim, funct) {\n      opts[dim].key = d4.functor(funct)();\n    };\n\n    var parser = function(data) {\n      if (data) {\n        d4.extend(opts.data, data);\n      }\n\n      findValues(opts, opts.data);\n      opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);\n\n      return opts;\n    };\n\n    parser.nestKey = function(funct) {\n      opts.nestKey = d4.functor(funct).bind(opts);\n      return parser;\n    };\n\n    parser.x = function(funct) {\n      setDimension.bind(opts)('x', funct);\n      return parser;\n    };\n\n    parser.y = function(funct) {\n      setDimension.bind(opts)('y', funct);\n      return parser;\n    };\n\n    parser.value = function(funct) {\n      setDimension.bind(opts)('value', funct);\n      return parser;\n    };\n\n    return parser;\n  };\n}).call(this);",
-            "ctx": {
-                "type": "method",
-                "receiver": "d4.parsers",
-                "name": "nestedGroup",
-                "string": "d4.parsers.nestedGroup()"
-            },
-            "fileName": "../src/parsers/nested-group.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d3: false</p>",
-                "summary": "<p>global d3: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "fileName": "../src/parsers/nested-stack.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d4: false</p>",
-                "summary": "<p>global d4: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "code": "'use strict';",
-            "fileName": "../src/parsers/nested-stack.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>The nested stack parser is useful for charts which take a data series<br />  and wants to sort them across a dimension and then display the results.<br />  The most common usecase would be a stacked column chart like this:</p>\n\n<pre><code>_____________________\n|    _               |\n|   | |   _          |\n|   |-|  | |   _     |\n|   |-|  |-|  |-|    |\n|   | |  |-|  |-|    |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure, and \"stack\" layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a><br /><a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the stacked data. Here is a simple<br />example:</p>\n\n<pre><code>    var parser = d4.parsers.nestedStack()\n        .x(function() {\n          return 'title';\n        })\n        .y(function(){\n          return 'group';\n        })\n        .value(function() {\n          return 'values';\n        });\n\n    var stackedData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h5>Benefits</h5>\n\n<ul>\n<li>Supports negative and positive stacked data series.</li>\n</ul>\n\n<h5>Limitations</h5>\n\n<ul>\n<li>The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.</li>\n</ul>\n\n<h5>Accessor Methods</h5>\n\n<p><code>x</code> : - function which returns a key to access the x values in the data array<br /><code>y</code> : - function which returns a key to access the y values in the data array<br /><code>value</code> : - function which returns a key to access the values in the data array.<br /><code>data</code> : array - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [{ \"title\": \"3 Years\", \"group\" : \"one\", \"value\": 30 },\n            { \"title\": \"3 Years\", \"group\" : \"two\", \"value\": 20 },\n            { \"title\": \"3 Years\", \"group\" : \"three\", \"value\": 10 },\n            { \"title\": \"5 Years\", \"group\" : \"one\",  \"value\": 3 },\n            { \"title\": \"5 Years\", \"group\" : \"two\", \"value\": 2 },\n            { \"title\": \"5 Years\", \"group\" : \"three\", \"value\": 1 }]\n</code></pre>\n\n<h5>Example Usage</h5>\n\n<p>Given the example data and dimension variables above you can use this module<br />in the following way:</p>\n\n<pre><code>var parser = d4.parsers.nestedStack()\n.x(function() {\n  return 'title';\n})\n.y(function(){\n  return 'group';\n})\n.value(function() {\n  return 'value';\n})\n.call(data);\n</code></pre>\n\n<p>The <code>parser</code> variable will now be an object containing the following structure:</p>\n\n<pre><code>{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n</code></pre>",
-                "summary": "<p>The nested stack parser is useful for charts which take a data series<br />  and wants to sort them across a dimension and then display the results.<br />  The most common usecase would be a stacked column chart like this:</p>",
-                "body": "<pre><code>_____________________\n|    _               |\n|   | |   _          |\n|   |-|  | |   _     |\n|   |-|  |-|  |-|    |\n|   | |  |-|  |-|    |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure, and \"stack\" layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a><br /><a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the stacked data. Here is a simple<br />example:</p>\n\n<pre><code>    var parser = d4.parsers.nestedStack()\n        .x(function() {\n          return 'title';\n        })\n        .y(function(){\n          return 'group';\n        })\n        .value(function() {\n          return 'values';\n        });\n\n    var stackedData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h5>Benefits</h5>\n\n<ul>\n<li>Supports negative and positive stacked data series.</li>\n</ul>\n\n<h5>Limitations</h5>\n\n<ul>\n<li>The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.</li>\n</ul>\n\n<h5>Accessor Methods</h5>\n\n<p><code>x</code> : - function which returns a key to access the x values in the data array<br /><code>y</code> : - function which returns a key to access the y values in the data array<br /><code>value</code> : - function which returns a key to access the values in the data array.<br /><code>data</code> : array - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [{ \"title\": \"3 Years\", \"group\" : \"one\", \"value\": 30 },\n            { \"title\": \"3 Years\", \"group\" : \"two\", \"value\": 20 },\n            { \"title\": \"3 Years\", \"group\" : \"three\", \"value\": 10 },\n            { \"title\": \"5 Years\", \"group\" : \"one\",  \"value\": 3 },\n            { \"title\": \"5 Years\", \"group\" : \"two\", \"value\": 2 },\n            { \"title\": \"5 Years\", \"group\" : \"three\", \"value\": 1 }]\n</code></pre>\n\n<h5>Example Usage</h5>\n\n<p>Given the example data and dimension variables above you can use this module<br />in the following way:</p>\n\n<pre><code>var parser = d4.parsers.nestedStack()\n.x(function() {\n  return 'title';\n})\n.y(function(){\n  return 'group';\n})\n.value(function() {\n  return 'value';\n})\n.call(data);\n</code></pre>\n\n<p>The <code>parser</code> variable will now be an object containing the following structure:</p>\n\n<pre><code>{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n</code></pre>"
-            },
-            "ignore": false,
-            "code": "d4.parsers.nestedStack = function nestedStack() {\n\n    var opts = {\n      x: {\n        key: 'x',\n        values: []\n      },\n      y: {\n        key: 'y',\n        values: []\n      },\n      value: {\n        key: 'value',\n        values: []\n      },\n      data: []\n    };\n\n    var findValues = function(dimensions, items) {\n      ['x', 'y', 'value'].forEach(function(k) {\n        var layers = items.map(function(d) {\n          return d[dimensions[k].key];\n        });\n        opts[k].values = d3.set(layers).values();\n      });\n    };\n\n    var nestByDimension = function(stackKey, valueKey, items) {\n      var nest = d3.nest()\n        .key(function(d) {\n          return d[stackKey];\n        });\n      return nest.entries(items);\n    };\n\n    // By default D3 doesn't handle stacks with negative values very well, we\n    // need to calulate or our y and y0 values for each group.\n    var stackByDimension = function(key, items) {\n      var offsets = {};\n\n      var stack = d3.layout.stack()\n        .values(function(d) {\n          return d.values;\n        })\n        .x(function(d) {\n          return d[key];\n        })\n        .y(function(d) {\n          return +d[opts.value.key];\n        })\n        .out(function(d, y0, y) {\n          d.y = y;\n          if (d.y >= 0) {\n            d.y0 = offsets[d[key] + 'Pos'] = offsets[d[key] + 'Pos'] || 0;\n            offsets[d[key] + 'Pos'] += y;\n          } else {\n            d.y0 = offsets[d[key] + 'Neg'] = offsets[d[key] + 'Neg'] || 0;\n            offsets[d[key] + 'Neg'] -= Math.abs(y);\n          }\n        });\n      stack(items.reverse());\n    };\n\n    var setDimension = function(dim, funct) {\n      opts[dim].key = d4.functor(funct)();\n    };\n\n    var parser = function(data) {\n      if (data) {\n        d4.extend(opts.data, data);\n      }\n\n      findValues(opts, opts.data);\n      opts.data = nestByDimension(opts.y.key, opts.value.key, opts.data);\n\n      stackByDimension(opts.x.key, opts.data);\n      return opts;\n    };\n\n    parser.x = function(funct) {\n      setDimension.bind(opts)('x', funct);\n      return parser;\n    };\n\n    parser.y = function(funct) {\n      setDimension.bind(opts)('y', funct);\n      return parser;\n    };\n\n    parser.value = function(funct) {\n      setDimension.bind(opts)('value', funct);\n      return parser;\n    };\n\n    return parser;\n  };\n}).call(this);",
-            "ctx": {
-                "type": "method",
-                "receiver": "d4.parsers",
-                "name": "nestedStack",
-                "string": "d4.parsers.nestedStack()"
-            },
-            "fileName": "../src/parsers/nested-stack.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d3: false</p>",
-                "summary": "<p>global d3: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "fileName": "../src/parsers/waterfall.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d4: false</p>",
-                "summary": "<p>global d4: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "code": "'use strict';",
-            "fileName": "../src/parsers/waterfall.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>The waterfall parser is useful for waterfall charts where data items need to account<br />    for the position of earlier values:</p>\n\n<pre><code>_____________________\n|   _        _______ |\n|  |_|___   | |  | | |\n|      |_|__|_|  | | |\n|                |_| |\n----------------------\n\nThis module makes use of the d3's \"nest\" data structure, and \"stack\" layout\n<a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a>\n<a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a>\n\n\nApproach:\nJust like D3, this parser uses a chaining declaritiave style to build up\nthe necessary prerequistes to create the waterfall data. Here is a simple\nexample. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }\n\nvar parser = d4.parsers.waterfall()\n    .x(function() {\n      return 'category';\n    })\n    .y(function(){\n      return 'value';\n    })\n    .value(function() {\n      return 'value';\n    });\n\nvar waterfallData = parser(data);\n\nKeep reading for more information on these various accessor functions.\n\nBenefits:\n</code></pre>\n\n<p>Supports horizontal or vertical waterfalls<br />Supports totaling series using a special \"e\" value in a data item.</p>\n\n<pre><code>Limitations:\n</code></pre>\n\n<p>Does not support stacked waterfalls.</p>\n\n<pre><code>Accessor Methods:\n</code></pre>\n\n<p>x : - function which returns a key to access the x values in the data array<br />y : - function which returns a key to access the y values in the data array<br />value : - function which returns a key to access the values in the data array.<br />data : array - An array of objects with their dimensions specified<br />      like this:</p>\n\n<pre><code>  var data = [\n  {\"category\" : \"Category One\", \"value\" : 23 },\n  {\"category\" : \"Category Two\", \"value\" : 55 },\n  {\"category\" : \"Category Three\", \"value\" : -10 },\n  {\"category\" : \"Category Four\", \"value\" : 5 },\n  {\"category\" : \"Category Five\", \"value\" : \"e\" }]\n\nSPECIAL NOTE:\nWaterfalls charts typically have the ability to display subtotals at any point.\nIn order to use this feature simply set the value of your subtotal column to \"e.\"\n\nExample Usage:\nGiven the example data and dimension variables above you can use this module\nin the following way:\n\nvar parser = d4.parsers.nestedStack()\n.dimensions(dimensions)\n.call(data);\n\nThe `parser` variable will now be an object containing the following structure:\n{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n\nTaking these attributes one-by-one:\n</code></pre>\n\n<p>data - is an array of items stacked by D3<br />value - an object with a key representing the value accessor and an array of values<br />x - an object with a key representing the x accessor and an array of values<br />y - an object with a key representing the y accessor and an array of values</p>",
-                "summary": "<p>The waterfall parser is useful for waterfall charts where data items need to account<br />    for the position of earlier values:</p>",
-                "body": "<pre><code>_____________________\n|   _        _______ |\n|  |_|___   | |  | | |\n|      |_|__|_|  | | |\n|                |_| |\n----------------------\n\nThis module makes use of the d3's \"nest\" data structure, and \"stack\" layout\n<a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a>\n<a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a>\n\n\nApproach:\nJust like D3, this parser uses a chaining declaritiave style to build up\nthe necessary prerequistes to create the waterfall data. Here is a simple\nexample. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }\n\nvar parser = d4.parsers.waterfall()\n    .x(function() {\n      return 'category';\n    })\n    .y(function(){\n      return 'value';\n    })\n    .value(function() {\n      return 'value';\n    });\n\nvar waterfallData = parser(data);\n\nKeep reading for more information on these various accessor functions.\n\nBenefits:\n</code></pre>\n\n<p>Supports horizontal or vertical waterfalls<br />Supports totaling series using a special \"e\" value in a data item.</p>\n\n<pre><code>Limitations:\n</code></pre>\n\n<p>Does not support stacked waterfalls.</p>\n\n<pre><code>Accessor Methods:\n</code></pre>\n\n<p>x : - function which returns a key to access the x values in the data array<br />y : - function which returns a key to access the y values in the data array<br />value : - function which returns a key to access the values in the data array.<br />data : array - An array of objects with their dimensions specified<br />      like this:</p>\n\n<pre><code>  var data = [\n  {\"category\" : \"Category One\", \"value\" : 23 },\n  {\"category\" : \"Category Two\", \"value\" : 55 },\n  {\"category\" : \"Category Three\", \"value\" : -10 },\n  {\"category\" : \"Category Four\", \"value\" : 5 },\n  {\"category\" : \"Category Five\", \"value\" : \"e\" }]\n\nSPECIAL NOTE:\nWaterfalls charts typically have the ability to display subtotals at any point.\nIn order to use this feature simply set the value of your subtotal column to \"e.\"\n\nExample Usage:\nGiven the example data and dimension variables above you can use this module\nin the following way:\n\nvar parser = d4.parsers.nestedStack()\n.dimensions(dimensions)\n.call(data);\n\nThe `parser` variable will now be an object containing the following structure:\n{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n\nTaking these attributes one-by-one:\n</code></pre>\n\n<p>data - is an array of items stacked by D3<br />value - an object with a key representing the value accessor and an array of values<br />x - an object with a key representing the x accessor and an array of values<br />y - an object with a key representing the y accessor and an array of values</p>"
-            },
-            "ignore": false,
-            "code": "d4.parsers.waterfall = function waterfall() {\n\n    var opts = {\n      x: {\n        key: 'x',\n        values: []\n      },\n      y: {\n        key: 'y',\n        values: []\n      },\n      value: {\n        key: 'value',\n        values: []\n      },\n      data: []\n    };\n    opts.nestKey = function(){\n      return opts.x.key;\n    };\n\n\n    var findValues = function(dimensions, items) {\n      ['x', 'y', 'value'].forEach(function(k) {\n        var layers = items.map(function(d) {\n          return d[dimensions[k].key];\n        });\n        opts[k].values = d3.set(layers).values();\n      });\n    };\n\n    var nestByDimension = function(key, valueKey, items) {\n      var nest = d3.nest()\n        .key(function(d) {\n          return d[key];\n        });\n      return nest.entries(items);\n    };\n\n    var stackByDimension = function(key, items) {\n      var lastOffset = 0;\n      var noNaN = function(num){\n        return isNaN(num) ? 0 : num;\n      };\n      var stack = d3.layout.stack()\n        .values(function(d) {\n          return d.values;\n        })\n        .x(function(d) {\n          return d[key];\n        })\n        .y(function(d) {\n          return +d[opts.value.key];\n        })\n        .out(function(d, y0, y) {\n          if(isNaN(y)){\n            if(isNaN(y0)){\n              y0 = lastOffset;\n            }\n            d.y0 = 0;\n            d.y = y0;\n            d[opts.value.key] = y0;\n            lastOffset = y0;\n          } else {\n            if(isNaN(y0)){\n              d.y0 = lastOffset;\n              lastOffset += y;\n            } else {\n              d.y0 = y0;\n            }\n            d.y = y;\n            d[opts.value.key] = noNaN(d[opts.value.key]);\n          }\n        });\n      stack(items);\n    };\n\n    var setDimension = function(dim, funct) {\n      opts[dim].key = d4.functor(funct)();\n    };\n\n    var parser = function(data) {\n      if (data) {\n        d4.extend(opts.data, data);\n      }\n\n      findValues(opts, opts.data);\n      opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);\n\n      stackByDimension(opts.x.key, opts.data);\n      return opts;\n    };\n\n    parser.nestKey = function(funct) {\n      opts.nestKey = d4.functor(funct).bind(opts);\n      return parser;\n    };\n\n    parser.x = function(funct) {\n      setDimension.bind(opts)('x', funct);\n      return parser;\n    };\n\n    parser.y = function(funct) {\n      setDimension.bind(opts)('y', funct);\n      return parser;\n    };\n\n    parser.value = function(funct) {\n      setDimension.bind(opts)('value', funct);\n      return parser;\n    };\n\n    return parser;\n  };\n}).call(this);",
-            "ctx": {
-                "type": "method",
-                "receiver": "d4.parsers",
-                "name": "waterfall",
-                "string": "d4.parsers.waterfall()"
-            },
-            "fileName": "../src/parsers/waterfall.js"
+            "fileName": "../src/charts/waterfall.js"
         },
         {
             "tags": [],
@@ -748,7 +700,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n  d4.features.lineSeries = function(name) {\n    return {\n      accessors: {\n        x: function(d) {\n          return this.x(d[this.xKey]);\n        },\n        y: function(d) {\n          return this.y(d[this.yKey]);\n        },\n        interpolate: function() {\n          return 'basis';\n        },\n        classes: function(d, n) {\n          return 'line stroke series' + n;\n        }\n      },\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var line = d3.svg.line()\n          .interpolate(scope.accessors.interpolate.bind(this)())\n          .x(scope.accessors.x.bind(this))\n          .y(scope.accessors.y.bind(this));\n\n        var group = this.svg.select('.' + name).selectAll('.group')\n          .data(data);\n        group.exit().remove();\n        group.enter().append('g')\n          .attr('data-key', function(d) {\n            return d.key;\n          })\n          .attr('class', function(d, i) {\n            return 'series' + i;\n          }.bind(this))\n          .append('path')\n          .attr('d', function(d) {\n            return line(d.values);\n          });\n      }\n    };\n  };\n}).call(this);",
+            "code": "'use strict';\n  d4.feature('lineSeries', function(name) {\n    return {\n      accessors: {\n        x: function(d) {\n          return this.x(d[this.xKey]);\n        },\n        y: function(d) {\n          return this.y(d[this.yKey]);\n        },\n        interpolate: function() {\n          return 'basis';\n        },\n        classes: function(d, n) {\n          return 'line stroke series' + n;\n        }\n      },\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var line = d3.svg.line()\n          .interpolate(scope.accessors.interpolate.bind(this)())\n          .x(scope.accessors.x.bind(this))\n          .y(scope.accessors.y.bind(this));\n\n        var group = this.svg.select('.' + name).selectAll('.group')\n          .data(data);\n        group.exit().remove();\n        group.enter().append('g')\n          .attr('data-key', function(d) {\n            return d.key;\n          })\n          .attr('class', function(d, i) {\n            return 'series' + i;\n          }.bind(this))\n          .append('path')\n          .attr('d', function(d) {\n            return line(d.values);\n          });\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/line-series.js"
         },
         {
@@ -759,7 +711,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n  d4.features.referenceLine = function(name) {\n    return {\n      accessors: {\n        x1: function() {\n          return this.x(0);\n        },\n\n        x2: function() {\n          return this.x(this.width - this.margin.left - this.margin.right);\n        },\n\n        y1: function() {\n          return this.y(0);\n        },\n\n        y2: function() {\n          return this.y(this.height);\n        }\n      },\n      render: function(scope) {\n        this.featuresGroup.append('g').attr('class', name);\n        var referenceLine = this.svg.select('.' + name)\n          .append('line')\n          .attr('class', 'line')\n          .attr('x1', scope.accessors.x1.bind(this))\n          .attr('x2', scope.accessors.x2.bind(this))\n          .attr('y1', scope.accessors.y1.bind(this))\n          .attr('y2', scope.accessors.y2.bind(this));\n        return referenceLine;\n      }\n    };\n  };\n}).call(this);",
+            "code": "'use strict';\n  d4.feature('referenceLine', function(name) {\n    return {\n      accessors: {\n        x1: function() {\n          return this.x(0);\n        },\n\n        x2: function() {\n          return this.x(this.width - this.margin.left - this.margin.right);\n        },\n\n        y1: function() {\n          return this.y(0);\n        },\n\n        y2: function() {\n          return this.y(this.height);\n        }\n      },\n      render: function(scope) {\n        this.featuresGroup.append('g').attr('class', name);\n        var referenceLine = this.svg.select('.' + name)\n          .append('line')\n          .attr('class', 'line')\n          .attr('x1', scope.accessors.x1.bind(this))\n          .attr('x2', scope.accessors.x2.bind(this))\n          .attr('y1', scope.accessors.y1.bind(this))\n          .attr('y2', scope.accessors.y2.bind(this));\n        return referenceLine;\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/reference-line.js"
         },
         {
@@ -770,7 +722,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n  d4.features.rowLabels = function(name) {\n    return {\n      accessors: {\n        x: function(d) {\n          var width = (Math.abs(this.x(d[this.xKey])) + this.x(d[this.xKey]))/2;\n          return Math.max(this.x(0), width) + 10;\n        },\n\n        y: function(d) {\n          return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);\n        },\n\n        text: function(d) {\n          return d3.format('').call(this, d[this.xKey]);\n        }\n      },\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var group = this.svg.select('.' + name).selectAll('.group')\n          .data(data)\n          .enter().append('g')\n          .attr('class', function(d, i) {\n            return 'series' + i + ' ' + this.xKey;\n          }.bind(this));\n\n        var text = group.selectAll('text')\n          .data(function(d) {\n            return d.values;\n          }.bind(this));\n        text.exit().remove();\n        text.enter().append('text')\n          .text(scope.accessors.text.bind(this))\n          .attr('class', 'column-label')\n          .attr('y', scope.accessors.y.bind(this))\n          .attr('x', scope.accessors.x.bind(this));\n        return text;\n      }\n    };\n  };\n}).call(this);",
+            "code": "'use strict';\n  d4.feature('rowLabels', function(name) {\n    return {\n      accessors: {\n        x: function(d) {\n          var width = (Math.abs(this.x(d[this.xKey])) + this.x(d[this.xKey]))/2;\n          return Math.max(this.x(0), width) + 10;\n        },\n\n        y: function(d) {\n          return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);\n        },\n\n        text: function(d) {\n          return d3.format('').call(this, d[this.xKey]);\n        }\n      },\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var group = this.svg.select('.' + name).selectAll('.group')\n          .data(data)\n          .enter().append('g')\n          .attr('class', function(d, i) {\n            return 'series' + i + ' ' + this.xKey;\n          }.bind(this));\n\n        var text = group.selectAll('text')\n          .data(function(d) {\n            return d.values;\n          }.bind(this));\n        text.exit().remove();\n        text.enter().append('text')\n          .text(scope.accessors.text.bind(this))\n          .attr('class', 'column-label')\n          .attr('y', scope.accessors.y.bind(this))\n          .attr('x', scope.accessors.x.bind(this));\n        return text;\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/row-labels.js"
         },
         {
@@ -781,7 +733,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n  d4.features.rowSeries = function(name) {\n    var sign = function(val){\n      return (val > 0) ? 'positive' : 'negative';\n    };\n\n    return {\n      accessors: {\n        x: function(d) {\n          var xVal = d[this.xKey] - Math.max(0, d[this.xKey]);\n          return this.x(xVal);\n        },\n\n        y: function(d) {\n          return this.y(d[this.yKey]);\n        },\n\n        width: function(d) {\n          return Math.abs(this.x(d[this.xKey]) - this.x(0));\n        },\n\n        height: function() {\n          return this.y.rangeBand();\n        },\n\n        classes: function(d,i) {\n          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.xKey];\n        }\n      },\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var group = this.svg.select('.' + name).selectAll('.group')\n          .data(data)\n          .enter().append('g')\n          .attr('class', function(d,i) {\n            return 'series'+ i + ' ' +  this.yKey;\n          }.bind(this));\n\n        var rect = group.selectAll('rect')\n          .data(function(d) {\n            return d.values;\n          }.bind(this));\n\n        rect.enter().append('rect')\n          .attr('class', scope.accessors.classes.bind(this))\n          .attr('x', scope.accessors.x.bind(this))\n          .attr('y', scope.accessors.y.bind(this))\n          .attr('width', scope.accessors.width.bind(this))\n          .attr('height', scope.accessors.height.bind(this));\n        return rect;\n      }\n    };\n  };\n}).call(this);",
+            "code": "'use strict';\n  d4.feature('rowSeries', function(name) {\n    var sign = function(val){\n      return (val > 0) ? 'positive' : 'negative';\n    };\n\n    return {\n      accessors: {\n        x: function(d) {\n          var xVal = d[this.xKey] - Math.max(0, d[this.xKey]);\n          return this.x(xVal);\n        },\n\n        y: function(d) {\n          return this.y(d[this.yKey]);\n        },\n\n        width: function(d) {\n          return Math.abs(this.x(d[this.xKey]) - this.x(0));\n        },\n\n        height: function() {\n          return this.y.rangeBand();\n        },\n\n        classes: function(d,i) {\n          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.xKey];\n        }\n      },\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var group = this.svg.select('.' + name).selectAll('.group')\n          .data(data)\n          .enter().append('g')\n          .attr('class', function(d,i) {\n            return 'series'+ i + ' ' +  this.yKey;\n          }.bind(this));\n\n        var rect = group.selectAll('rect')\n          .data(function(d) {\n            return d.values;\n          }.bind(this));\n\n        rect.enter().append('rect')\n          .attr('class', scope.accessors.classes.bind(this))\n          .attr('x', scope.accessors.x.bind(this))\n          .attr('y', scope.accessors.y.bind(this))\n          .attr('width', scope.accessors.width.bind(this))\n          .attr('height', scope.accessors.height.bind(this));\n        return rect;\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/row-series.js"
         },
         {
@@ -802,7 +754,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n  d4.features.stackedColumnConnectors = function(name) {\n\n    return {\n      accessors: {\n        x1: function(d) {\n          var width = 0;\n          var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n          if(d.y > 0){\n            width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n          }\n          return this.x(xVal) + width;\n\n        },\n\n        y1: function(d) {\n          return this.y(d[this.yKey]);\n        },\n\n        span: function(){\n          return this.y.rangeBand();\n        },\n\n        classes : function(d, i){\n          return 'series' +i;\n        }\n      },\n\n      render: function(scope) {\n        this.featuresGroup.append('g').attr('class', name);\n        var lines = this.svg.select('.' + name).selectAll('.' + name).data(function(d) {\n          return d.map(function(o) {\n            return o.values[0];\n          });\n        }.bind(this));\n        lines.enter().append('line');\n        lines.exit().remove();\n        lines\n        .attr('class', scope.accessors.classes.bind(this))\n        .attr('x1', function() {\n          // if(i === 0){\n          //   return 0;\n          // }\n          // return scope.accessors.x1.bind(this)(data[i - 1].values[0]);\n        }.bind(this))\n\n        .attr('y1', function() {\n          // if(i === 0){\n          //   return 0;\n          // }\n          // return scope.accessors.y1.bind(this)(data[i - 1].values[0]);\n        }.bind(this))\n\n        .attr('x2', function() {\n          // if(i === 0){\n          //   return 0;\n          // }\n          // return scope.accessors.x1.bind(this)(data[i - 1].values[0]);\n        }.bind(this))\n\n        .attr('y2', function() {\n          // if(i === 0){\n          //   return 0;\n          // }\n          // return scope.accessors.y1.bind(this)(d) + scope.accessors.span.bind(this)(d);\n        }.bind(this));\n\n        return lines;\n      }\n    };\n  };\n}).call(this);",
+            "code": "'use strict';\n  d4.feature('stackedColumnConnectors', function(name) {\n\n    return {\n      accessors: {\n        x1: function(d) {\n          var width = 0;\n          var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n          if(d.y > 0){\n            width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n          }\n          return this.x(xVal) + width;\n\n        },\n\n        y1: function(d) {\n          return this.y(d[this.yKey]);\n        },\n\n        span: function(){\n          return this.y.rangeBand();\n        },\n\n        classes : function(d, i){\n          return 'series' +i;\n        }\n      },\n\n      render: function(scope) {\n        this.featuresGroup.append('g').attr('class', name);\n        var lines = this.svg.select('.' + name).selectAll('.' + name).data(function(d) {\n          return d.map(function(o) {\n            return o.values[0];\n          });\n        }.bind(this));\n        lines.enter().append('line');\n        lines.exit().remove();\n        lines\n        .attr('class', scope.accessors.classes.bind(this))\n        .attr('x1', function() {\n          // if(i === 0){\n          //   return 0;\n          // }\n          // return scope.accessors.x1.bind(this)(data[i - 1].values[0]);\n        }.bind(this))\n\n        .attr('y1', function() {\n          // if(i === 0){\n          //   return 0;\n          // }\n          // return scope.accessors.y1.bind(this)(data[i - 1].values[0]);\n        }.bind(this))\n\n        .attr('x2', function() {\n          // if(i === 0){\n          //   return 0;\n          // }\n          // return scope.accessors.x1.bind(this)(data[i - 1].values[0]);\n        }.bind(this))\n\n        .attr('y2', function() {\n          // if(i === 0){\n          //   return 0;\n          // }\n          // return scope.accessors.y1.bind(this)(d) + scope.accessors.span.bind(this)(d);\n        }.bind(this));\n\n        return lines;\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/stacked-column-connectors.js"
         },
         {
@@ -813,7 +765,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n  d4.features.stackedColumnLabels = function(name) {\n    var sign = function(val) {\n      return val > 0 ? 'positive' : 'negative';\n    };\n\n    return {\n      accessors: {\n        x: function(d) {\n          return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);\n        },\n\n        y: function(d) {\n          if(typeof d.y0 !== 'undefined'){\n            var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;\n            var yVal = d.y0 + d.y;\n            return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;\n          } else {\n            var height = Math.abs(this.y(d[this.yKey]) - this.y(0));\n            return (d[this.yKey] < 0 ? this.y(d[this.yKey]) - height : this.y(d[this.yKey])) - 5;\n          }\n        },\n\n        text: function(d) {\n          if(typeof d.y0 !== 'undefined'){\n            if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {\n              return d3.format('').call(this, d[this.valueKey]);\n            }\n          } else {\n            return d3.format('').call(this, d[this.valueKey]);\n          }\n        }\n      },\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var group = this.svg.select('.' + name).selectAll('.group')\n          .data(data)\n          .enter().append('g')\n          .attr('class', function(d, i) {\n            return 'series' + i + ' '+ sign(d.y) + ' ' + this.xKey;\n          }.bind(this));\n\n        var text = group.selectAll('text')\n          .data(function(d) {\n            return d.values;\n          }.bind(this));\n        text.exit().remove();\n        text.enter().append('text')\n          .text(scope.accessors.text.bind(this))\n          .attr('class', 'column-label')\n          .attr('y', scope.accessors.y.bind(this))\n          .attr('x', scope.accessors.x.bind(this));\n        return text;\n      }\n    };\n  };\n}).call(this);",
+            "code": "'use strict';\n  d4.feature('stackedColumnLabels', function(name) {\n    var sign = function(val) {\n      return val > 0 ? 'positive' : 'negative';\n    };\n\n    return {\n      accessors: {\n        x: function(d) {\n          return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);\n        },\n\n        y: function(d) {\n          if(typeof d.y0 !== 'undefined'){\n            var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;\n            var yVal = d.y0 + d.y;\n            return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;\n          } else {\n            var height = Math.abs(this.y(d[this.yKey]) - this.y(0));\n            return (d[this.yKey] < 0 ? this.y(d[this.yKey]) - height : this.y(d[this.yKey])) - 5;\n          }\n        },\n\n        text: function(d) {\n          if(typeof d.y0 !== 'undefined'){\n            if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {\n              return d3.format('').call(this, d[this.valueKey]);\n            }\n          } else {\n            return d3.format('').call(this, d[this.valueKey]);\n          }\n        }\n      },\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var group = this.svg.select('.' + name).selectAll('.group')\n          .data(data)\n          .enter().append('g')\n          .attr('class', function(d, i) {\n            return 'series' + i + ' '+ sign(d.y) + ' ' + this.xKey;\n          }.bind(this));\n\n        var text = group.selectAll('text')\n          .data(function(d) {\n            return d.values;\n          }.bind(this));\n        text.exit().remove();\n        text.enter().append('text')\n          .text(scope.accessors.text.bind(this))\n          .attr('class', 'column-label')\n          .attr('y', scope.accessors.y.bind(this))\n          .attr('x', scope.accessors.x.bind(this));\n        return text;\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/stacked-column-labels.js"
         },
         {
@@ -824,7 +776,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n  d4.features.stackedColumnSeries = function(name) {\n    var sign = function(val){\n      return (val > 0) ? 'positive' : 'negative';\n    };\n\n    return {\n      accessors: {\n        x: function(d) {\n          return this.x(d[this.xKey]);\n        },\n\n        y: function(d) {\n          if(d.y0){\n            var yVal = d.y0 + d.y;\n            return  yVal < 0 ? this.y(d.y0) : this.y(yVal);\n          } else {\n            return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);\n          }\n        },\n\n        width: function() {\n          return this.x.rangeBand();\n        },\n\n        height: function(d) {\n          if(d.y0){\n            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n          }else {\n            return Math.abs(this.y(d[this.yKey]) - this.y(0));\n          }\n        },\n\n        classes: function(d,i) {\n          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.yKey];\n        }\n      },\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var group = this.svg.select('.' + name).selectAll('.group')\n          .data(data)\n          .enter().append('g')\n          .attr('class', function(d,i) {\n            return 'series'+ i + ' ' +  this.yKey;\n          }.bind(this));\n\n        var rect = group.selectAll('rect')\n          .data(function(d) {\n            return d.values;\n          }.bind(this));\n\n        rect.enter().append('rect')\n          .attr('class', scope.accessors.classes.bind(this))\n          .attr('x', scope.accessors.x.bind(this))\n          .attr('y', scope.accessors.y.bind(this))\n          .attr('width', scope.accessors.width.bind(this))\n          .attr('height', scope.accessors.height.bind(this));\n        return rect;\n      }\n    };\n  };\n}).call(this);",
+            "code": "'use strict';\n  d4.feature('stackedColumnSeries', function(name) {\n    var sign = function(val){\n      return (val > 0) ? 'positive' : 'negative';\n    };\n\n    return {\n      accessors: {\n        x: function(d) {\n          return this.x(d[this.xKey]);\n        },\n\n        y: function(d) {\n          if(d.y0){\n            var yVal = d.y0 + d.y;\n            return  yVal < 0 ? this.y(d.y0) : this.y(yVal);\n          } else {\n            return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);\n          }\n        },\n\n        width: function() {\n          return this.x.rangeBand();\n        },\n\n        height: function(d) {\n          if(d.y0){\n            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n          }else {\n            return Math.abs(this.y(d[this.yKey]) - this.y(0));\n          }\n        },\n\n        classes: function(d,i) {\n          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.yKey];\n        }\n      },\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var group = this.svg.select('.' + name).selectAll('.group')\n          .data(data)\n          .enter().append('g')\n          .attr('class', function(d,i) {\n            return 'series'+ i + ' ' +  this.yKey;\n          }.bind(this));\n\n        var rect = group.selectAll('rect')\n          .data(function(d) {\n            return d.values;\n          }.bind(this));\n\n        rect.enter().append('rect')\n          .attr('class', scope.accessors.classes.bind(this))\n          .attr('x', scope.accessors.x.bind(this))\n          .attr('y', scope.accessors.y.bind(this))\n          .attr('width', scope.accessors.width.bind(this))\n          .attr('height', scope.accessors.height.bind(this));\n        return rect;\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/stacked-column-series.js"
         },
         {
@@ -835,7 +787,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n  d4.features.trendLine = function(name) {\n    return {\n      accessors: {\n        x1: function() {\n          return this.x(0);\n        },\n\n        x2: function() {\n          return this.x(this.width);\n        },\n\n        y1: function() {\n          return this.y(0);\n        },\n\n        y2: function() {\n          return this.y(this.height);\n        },\n\n        text: function(d) {\n          return d3.format('').call(this, d[1]);\n        },\n\n        textX: function() {\n          return this.x(this.width);\n        },\n\n        textY: function(){\n          return this.x(this.height);\n        }\n      },\n      render: function(scope) {\n        var defs = this.svg.select('defs');\n\n        defs.append('marker')\n          .attr('id', name + '-start')\n          .attr('viewBox', '0 0 10 10')\n          .attr('refX', 10)\n          .attr('refY', 5)\n          .attr('markerWidth', -6)\n          .attr('markerHeight', 6)\n          .attr('orient', 'auto')\n          .append('path')\n          .attr('d', 'M 0 0 L 10 5 L 0 10 z');\n\n        this.featuresGroup.append('g').attr('class', name);\n        var trendLine = this.svg.select('.' + name)\n          .append('line')\n          .attr('class', 'line')\n          .attr('x1', scope.accessors.x1.bind(this))\n          .attr('x2', scope.accessors.x2.bind(this))\n          .attr('y1', scope.accessors.y1.bind(this))\n          .attr('y2', scope.accessors.y2.bind(this))\n          .attr('marker-end', 'url(#' + name + '-start)');\n\n        this.svg.select('.' + name)\n          .append('text')\n          .attr('class', 'trendLine-label')\n          .text(scope.accessors.text.bind(this))\n          .attr('x', scope.accessors.textX.bind(this))\n          .attr('y', scope.accessors.textY.bind(this));\n        return trendLine;\n      }\n    };\n  };\n}).call(this);",
+            "code": "'use strict';\n  d4.feature('trendLine', function(name) {\n    return {\n      accessors: {\n        x1: function() {\n          return this.x(0);\n        },\n\n        x2: function() {\n          return this.x(this.width);\n        },\n\n        y1: function() {\n          return this.y(0);\n        },\n\n        y2: function() {\n          return this.y(this.height);\n        },\n\n        text: function(d) {\n          return d3.format('').call(this, d[1]);\n        },\n\n        textX: function() {\n          return this.x(this.width);\n        },\n\n        textY: function(){\n          return this.x(this.height);\n        }\n      },\n      render: function(scope) {\n        var defs = this.svg.select('defs');\n\n        defs.append('marker')\n          .attr('id', name + '-start')\n          .attr('viewBox', '0 0 10 10')\n          .attr('refX', 10)\n          .attr('refY', 5)\n          .attr('markerWidth', -6)\n          .attr('markerHeight', 6)\n          .attr('orient', 'auto')\n          .append('path')\n          .attr('d', 'M 0 0 L 10 5 L 0 10 z');\n\n        this.featuresGroup.append('g').attr('class', name);\n        var trendLine = this.svg.select('.' + name)\n          .append('line')\n          .attr('class', 'line')\n          .attr('x1', scope.accessors.x1.bind(this))\n          .attr('x2', scope.accessors.x2.bind(this))\n          .attr('y1', scope.accessors.y1.bind(this))\n          .attr('y2', scope.accessors.y2.bind(this))\n          .attr('marker-end', 'url(#' + name + '-start)');\n\n        this.svg.select('.' + name)\n          .append('text')\n          .attr('class', 'trendLine-label')\n          .text(scope.accessors.text.bind(this))\n          .attr('x', scope.accessors.textX.bind(this))\n          .attr('y', scope.accessors.textY.bind(this));\n        return trendLine;\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/trend-line.js"
         },
         {
@@ -856,13 +808,7 @@
                 "body": "<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>"
             },
             "ignore": false,
-            "code": "d4.features.waterfallConnectors = function(name) {\n    return {\n      accessors: {\n        x: function(d) {\n          if(this.orientation() === 'horizontal'){\n            var width = 0;\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            if(d.y > 0){\n              width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n            }\n            return this.x(xVal) + width;\n          } else {\n            return this.x(d[this.xKey]);\n          }\n        },\n\n        y: function(d) {\n          if(this.orientation() === 'horizontal'){\n            return this.y(d[this.yKey]);\n          } else {\n            return this.y(d.y0 + d.y);\n          }\n        },\n\n        span: function(){\n          if(this.orientation() === 'horizontal'){\n            return this.y.rangeBand();\n          } else {\n            return this.x.rangeBand();\n          }\n        },\n\n        classes : function(d, i){\n          return 'series' +i;\n        }\n      },\n\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var lines = this.svg.select('.' + name).selectAll('.' + name).data(function(d) {\n          return d.map(function(o) {\n            return o.values[0];\n          });\n        }.bind(this));\n        lines.enter().append('line');\n        lines.exit().remove();\n        lines\n        .attr('class', scope.accessors.classes.bind(this))\n        .attr('x1', function(d, i) {\n          if(i === 0){\n            return 0;\n          }\n          return scope.accessors.x.bind(this)(data[i - 1].values[0]);\n        }.bind(this))\n\n        .attr('y1', function(d, i) {\n          if(i === 0){\n            return 0;\n          }\n          return scope.accessors.y.bind(this)(data[i - 1].values[0]);\n        }.bind(this))\n\n        .attr('x2', function(d, i) {\n          if(i === 0){\n            return 0;\n          }\n          if(this.orientation() === 'vertical') {\n            return scope.accessors.x.bind(this)(d) + scope.accessors.span.bind(this)();\n          } else {\n            return scope.accessors.x.bind(this)(data[i - 1].values[0]);\n          }\n        }.bind(this))\n\n        .attr('y2', function(d, i) {\n          if(i === 0){\n            return 0;\n          }\n          if(this.orientation() === 'vertical') {\n            return scope.accessors.y.bind(this)(data[i - 1].values[0]);\n          }else {\n            return scope.accessors.y.bind(this)(d) + scope.accessors.span.bind(this)(d);\n          }\n        }.bind(this));\n\n        return lines;\n      }\n    };\n  };\n}).call(this);",
-            "ctx": {
-                "type": "method",
-                "receiver": "d4.features",
-                "name": "waterfallConnectors",
-                "string": "d4.features.waterfallConnectors()"
-            },
+            "code": "d4.feature('waterfallConnectors', function(name) {\n    return {\n      accessors: {\n        x: function(d) {\n          if(this.orientation() === 'horizontal'){\n            var width = 0;\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            if(d.y > 0){\n              width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n            }\n            return this.x(xVal) + width;\n          } else {\n            return this.x(d[this.xKey]);\n          }\n        },\n\n        y: function(d) {\n          if(this.orientation() === 'horizontal'){\n            return this.y(d[this.yKey]);\n          } else {\n            return this.y(d.y0 + d.y);\n          }\n        },\n\n        span: function(){\n          if(this.orientation() === 'horizontal'){\n            return this.y.rangeBand();\n          } else {\n            return this.x.rangeBand();\n          }\n        },\n\n        classes : function(d, i){\n          return 'series' +i;\n        }\n      },\n\n      render: function(scope, data) {\n        this.featuresGroup.append('g').attr('class', name);\n        var lines = this.svg.select('.' + name).selectAll('.' + name).data(function(d) {\n          return d.map(function(o) {\n            return o.values[0];\n          });\n        }.bind(this));\n        lines.enter().append('line');\n        lines.exit().remove();\n        lines\n        .attr('class', scope.accessors.classes.bind(this))\n        .attr('x1', function(d, i) {\n          if(i === 0){\n            return 0;\n          }\n          return scope.accessors.x.bind(this)(data[i - 1].values[0]);\n        }.bind(this))\n\n        .attr('y1', function(d, i) {\n          if(i === 0){\n            return 0;\n          }\n          return scope.accessors.y.bind(this)(data[i - 1].values[0]);\n        }.bind(this))\n\n        .attr('x2', function(d, i) {\n          if(i === 0){\n            return 0;\n          }\n          if(this.orientation() === 'vertical') {\n            return scope.accessors.x.bind(this)(d) + scope.accessors.span.bind(this)();\n          } else {\n            return scope.accessors.x.bind(this)(data[i - 1].values[0]);\n          }\n        }.bind(this))\n\n        .attr('y2', function(d, i) {\n          if(i === 0){\n            return 0;\n          }\n          if(this.orientation() === 'vertical') {\n            return scope.accessors.y.bind(this)(data[i - 1].values[0]);\n          }else {\n            return scope.accessors.y.bind(this)(d) + scope.accessors.span.bind(this)(d);\n          }\n        }.bind(this));\n\n        return lines;\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/waterfall-connectors.js"
         },
         {
@@ -873,7 +819,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n  d4.features.xAxis = function(name) {\n    return {\n      accessors: {\n        format: function(xAxis) {\n          return xAxis.orient('bottom').tickSize(0);\n        }\n      },\n      render: function(scope) {\n        var xAxis = d3.svg.axis().scale(this.x);\n        var formattedAxis = scope.accessors.format.bind(this)(xAxis);\n        this.featuresGroup.append('g').attr('class', 'x axis '+ name)\n          .attr('transform', 'translate(0,' + (this.height - this.margin.top - this.margin.bottom) + ')')\n          .call(formattedAxis);\n\n      }\n    };\n  };\n}).call(this);",
+            "code": "'use strict';\n  d4.feature('xAxis', function(name) {\n    return {\n      accessors: {\n        format: function(xAxis) {\n          return xAxis.orient('bottom').tickSize(0);\n        }\n      },\n      render: function(scope) {\n        var xAxis = d3.svg.axis().scale(this.x);\n        var formattedAxis = scope.accessors.format.bind(this)(xAxis);\n        this.featuresGroup.append('g').attr('class', 'x axis '+ name)\n          .attr('transform', 'translate(0,' + (this.height - this.margin.top - this.margin.bottom) + ')')\n          .call(formattedAxis);\n\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/x-axis.js"
         },
         {
@@ -884,8 +830,104 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n  d4.features.yAxis = function(name) {\n\n    // FIXME: This should be a util function\n    // Extracted from: http://bl.ocks.org/mbostock/7555321\n    var wrap = function(text, width) {\n      text.each(function() {\n        var text = d3.select(this),\n            words = text.text().split(/\\s+/).reverse(),\n            word,\n            line = [],\n            lineNumber = 0,\n            lineHeight = 1.1, // ems\n            x = text.attr('x'),\n            y = text.attr('y'),\n            dy = parseFloat(text.attr('dy')),\n            tspan = text.text(null).append('tspan').attr('x', x).attr('y', y).attr('dy', dy + 'em');\n        word = words.pop();\n        while (word) {\n          line.push(word);\n          tspan.text(line.join(' '));\n          if (tspan.node().getComputedTextLength() > width - Math.abs(x)) {\n            line.pop();\n            tspan.text(line.join(' '));\n            line = [word];\n            tspan = text.append('tspan').attr('x', x).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);\n          }\n          word = words.pop();\n        }\n      });\n    };\n\n    return {\n      accessors: {\n        format: function(yAxis) {\n          return yAxis.orient('left').tickSize(0);\n        }\n      },\n      render: function(scope) {\n        var yAxis = d3.svg.axis().scale(this.y);\n        var formattedAxis = scope.accessors.format.bind(this)(yAxis);\n        this.featuresGroup.append('g').attr('class', 'y axis ' + name)\n          .attr('transform', 'translate(0,0)')\n          .call(formattedAxis)\n          .selectAll('.tick text')\n          .call(wrap, this.margin.left);\n      }\n    };\n  };\n}).call(this);",
+            "code": "'use strict';\n  d4.feature('yAxis', function(name) {\n\n    // FIXME: This should be a util function\n    // Extracted from: http://bl.ocks.org/mbostock/7555321\n    var wrap = function(text, width) {\n      text.each(function() {\n        var text = d3.select(this),\n            words = text.text().split(/\\s+/).reverse(),\n            word,\n            line = [],\n            lineNumber = 0,\n            lineHeight = 1.1, // ems\n            x = text.attr('x'),\n            y = text.attr('y'),\n            dy = parseFloat(text.attr('dy')),\n            tspan = text.text(null).append('tspan').attr('x', x).attr('y', y).attr('dy', dy + 'em');\n        word = words.pop();\n        while (word) {\n          line.push(word);\n          tspan.text(line.join(' '));\n          if (tspan.node().getComputedTextLength() > width - Math.abs(x)) {\n            line.pop();\n            tspan.text(line.join(' '));\n            line = [word];\n            tspan = text.append('tspan').attr('x', x).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);\n          }\n          word = words.pop();\n        }\n      });\n    };\n\n    return {\n      accessors: {\n        format: function(yAxis) {\n          return yAxis.orient('left').tickSize(0);\n        }\n      },\n      render: function(scope) {\n        var yAxis = d3.svg.axis().scale(this.y);\n        var formattedAxis = scope.accessors.format.bind(this)(yAxis);\n        this.featuresGroup.append('g').attr('class', 'y axis ' + name)\n          .attr('transform', 'translate(0,0)')\n          .call(formattedAxis)\n          .selectAll('.tick text')\n          .call(wrap, this.margin.left);\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/y-axis.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d3: false</p>",
+                "summary": "<p>global d3: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "fileName": "../src/parsers/nested-group.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d4: false</p>",
+                "summary": "<p>global d4: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "code": "'use strict';",
+            "fileName": "../src/parsers/nested-group.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>The nested group parser is useful for grouped column charts where multiple<br />data items need to appear relative to the axis value, for example grouped<br />column charts or multi-series line charts.</p>\n\n<pre><code>_____________________\n|           _        |\n|   _ _    | |_      |\n|  | | |   | | |     |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the waterfall data. Here is a simple<br />example. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }</p>\n\n<pre><code>var parser = d4.parsers.nestedGroup()\n    .x('category')\n    .y('value')\n    .value('value');\n\nvar groupedColumnData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h4>Accessor Methods</h4>\n\n<p><code>x</code> - A function which returns a key to access the x values in the data array<br /><code>y</code> - A function which returns a key to access the y values in the data array<br /><code>value</code> - A function which returns a key to access the values in the data array.<br /><code>data</code> - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [\n{\"year\" : \"2010\", \"category\" : \"Category One\", \"value\" : 23 },\n{\"year\" : \"2010\", \"category\" : \"Category Two\", \"value\" : 55 },\n{\"year\" : \"2010\", \"category\" : \"Category Three\", \"value\" : -10 },\n{\"year\" : \"2010\", \"category\" : \"Category Four\", \"value\" : 5 }]\n</code></pre>",
+                "summary": "<p>The nested group parser is useful for grouped column charts where multiple<br />data items need to appear relative to the axis value, for example grouped<br />column charts or multi-series line charts.</p>",
+                "body": "<pre><code>_____________________\n|           _        |\n|   _ _    | |_      |\n|  | | |   | | |     |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the waterfall data. Here is a simple<br />example. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }</p>\n\n<pre><code>var parser = d4.parsers.nestedGroup()\n    .x('category')\n    .y('value')\n    .value('value');\n\nvar groupedColumnData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h4>Accessor Methods</h4>\n\n<p><code>x</code> - A function which returns a key to access the x values in the data array<br /><code>y</code> - A function which returns a key to access the y values in the data array<br /><code>value</code> - A function which returns a key to access the values in the data array.<br /><code>data</code> - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [\n{\"year\" : \"2010\", \"category\" : \"Category One\", \"value\" : 23 },\n{\"year\" : \"2010\", \"category\" : \"Category Two\", \"value\" : 55 },\n{\"year\" : \"2010\", \"category\" : \"Category Three\", \"value\" : -10 },\n{\"year\" : \"2010\", \"category\" : \"Category Four\", \"value\" : 5 }]\n</code></pre>"
+            },
+            "ignore": false,
+            "code": "d4.parser('nestedGroup', function nestedGroup() {\n\n    var opts = {\n      x: {\n        key: 'x',\n        values: []\n      },\n      y: {\n        key: 'y',\n        values: []\n      },\n      value: {\n        key: 'value',\n        values: []\n      },\n      data: []\n    };\n    opts.nestKey = function(){\n      return opts.x.key;\n    };\n\n    var findValues = function(dimensions, items) {\n      ['x', 'y', 'value'].forEach(function(k) {\n        var layers = items.map(function(d) {\n          return d[dimensions[k].key];\n        });\n        opts[k].values = d3.set(layers).values();\n      });\n    };\n\n    var nestByDimension = function(key, valueKey, items) {\n      var nest = d3.nest()\n        .key(function(d) {\n          return d[key];\n        });\n      return nest.entries(items);\n    };\n\n    var setDimension = function(dim, funct) {\n      opts[dim].key = d4.functor(funct)();\n    };\n\n    var parser = function(data) {\n      if (data) {\n        d4.extend(opts.data, data);\n      }\n\n      findValues(opts, opts.data);\n      opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);\n\n      return opts;\n    };\n\n    parser.nestKey = function(funct) {\n      opts.nestKey = d4.functor(funct).bind(opts);\n      return parser;\n    };\n\n    parser.x = function(funct) {\n      setDimension.bind(opts)('x', funct);\n      return parser;\n    };\n\n    parser.y = function(funct) {\n      setDimension.bind(opts)('y', funct);\n      return parser;\n    };\n\n    parser.value = function(funct) {\n      setDimension.bind(opts)('value', funct);\n      return parser;\n    };\n\n    return parser;\n  });\n}).call(this);",
+            "fileName": "../src/parsers/nested-group.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d3: false</p>",
+                "summary": "<p>global d3: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "fileName": "../src/parsers/nested-stack.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d4: false</p>",
+                "summary": "<p>global d4: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "code": "'use strict';",
+            "fileName": "../src/parsers/nested-stack.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>The nested stack parser is useful for charts which take a data series<br />  and wants to sort them across a dimension and then display the results.<br />  The most common usecase would be a stacked column chart like this:</p>\n\n<pre><code>_____________________\n|    _               |\n|   | |   _          |\n|   |-|  | |   _     |\n|   |-|  |-|  |-|    |\n|   | |  |-|  |-|    |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure, and \"stack\" layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a><br /><a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the stacked data. Here is a simple<br />example:</p>\n\n<pre><code>    var parser = d4.parsers.nestedStack()\n        .x(function() {\n          return 'title';\n        })\n        .y(function(){\n          return 'group';\n        })\n        .value(function() {\n          return 'values';\n        });\n\n    var stackedData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h5>Benefits</h5>\n\n<ul>\n<li>Supports negative and positive stacked data series.</li>\n</ul>\n\n<h5>Limitations</h5>\n\n<ul>\n<li>The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.</li>\n</ul>\n\n<h5>Accessor Methods</h5>\n\n<p><code>x</code> : - function which returns a key to access the x values in the data array<br /><code>y</code> : - function which returns a key to access the y values in the data array<br /><code>value</code> : - function which returns a key to access the values in the data array.<br /><code>data</code> : array - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [{ \"title\": \"3 Years\", \"group\" : \"one\", \"value\": 30 },\n            { \"title\": \"3 Years\", \"group\" : \"two\", \"value\": 20 },\n            { \"title\": \"3 Years\", \"group\" : \"three\", \"value\": 10 },\n            { \"title\": \"5 Years\", \"group\" : \"one\",  \"value\": 3 },\n            { \"title\": \"5 Years\", \"group\" : \"two\", \"value\": 2 },\n            { \"title\": \"5 Years\", \"group\" : \"three\", \"value\": 1 }]\n</code></pre>\n\n<h5>Example Usage</h5>\n\n<p>Given the example data and dimension variables above you can use this module<br />in the following way:</p>\n\n<pre><code>var parser = d4.parsers.nestedStack()\n.x(function() {\n  return 'title';\n})\n.y(function(){\n  return 'group';\n})\n.value(function() {\n  return 'value';\n})\n.call(data);\n</code></pre>\n\n<p>The <code>parser</code> variable will now be an object containing the following structure:</p>\n\n<pre><code>{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n</code></pre>",
+                "summary": "<p>The nested stack parser is useful for charts which take a data series<br />  and wants to sort them across a dimension and then display the results.<br />  The most common usecase would be a stacked column chart like this:</p>",
+                "body": "<pre><code>_____________________\n|    _               |\n|   | |   _          |\n|   |-|  | |   _     |\n|   |-|  |-|  |-|    |\n|   | |  |-|  |-|    |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure, and \"stack\" layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a><br /><a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the stacked data. Here is a simple<br />example:</p>\n\n<pre><code>    var parser = d4.parsers.nestedStack()\n        .x(function() {\n          return 'title';\n        })\n        .y(function(){\n          return 'group';\n        })\n        .value(function() {\n          return 'values';\n        });\n\n    var stackedData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h5>Benefits</h5>\n\n<ul>\n<li>Supports negative and positive stacked data series.</li>\n</ul>\n\n<h5>Limitations</h5>\n\n<ul>\n<li>The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.</li>\n</ul>\n\n<h5>Accessor Methods</h5>\n\n<p><code>x</code> : - function which returns a key to access the x values in the data array<br /><code>y</code> : - function which returns a key to access the y values in the data array<br /><code>value</code> : - function which returns a key to access the values in the data array.<br /><code>data</code> : array - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [{ \"title\": \"3 Years\", \"group\" : \"one\", \"value\": 30 },\n            { \"title\": \"3 Years\", \"group\" : \"two\", \"value\": 20 },\n            { \"title\": \"3 Years\", \"group\" : \"three\", \"value\": 10 },\n            { \"title\": \"5 Years\", \"group\" : \"one\",  \"value\": 3 },\n            { \"title\": \"5 Years\", \"group\" : \"two\", \"value\": 2 },\n            { \"title\": \"5 Years\", \"group\" : \"three\", \"value\": 1 }]\n</code></pre>\n\n<h5>Example Usage</h5>\n\n<p>Given the example data and dimension variables above you can use this module<br />in the following way:</p>\n\n<pre><code>var parser = d4.parsers.nestedStack()\n.x(function() {\n  return 'title';\n})\n.y(function(){\n  return 'group';\n})\n.value(function() {\n  return 'value';\n})\n.call(data);\n</code></pre>\n\n<p>The <code>parser</code> variable will now be an object containing the following structure:</p>\n\n<pre><code>{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n</code></pre>"
+            },
+            "ignore": false,
+            "code": "d4.parser('nestedStack', function nestedStack() {\n\n    var opts = {\n      x: {\n        key: 'x',\n        values: []\n      },\n      y: {\n        key: 'y',\n        values: []\n      },\n      value: {\n        key: 'value',\n        values: []\n      },\n      data: []\n    };\n\n    var findValues = function(dimensions, items) {\n      ['x', 'y', 'value'].forEach(function(k) {\n        var layers = items.map(function(d) {\n          return d[dimensions[k].key];\n        });\n        opts[k].values = d3.set(layers).values();\n      });\n    };\n\n    var nestByDimension = function(stackKey, valueKey, items) {\n      var nest = d3.nest()\n        .key(function(d) {\n          return d[stackKey];\n        });\n      return nest.entries(items);\n    };\n\n    // By default D3 doesn't handle stacks with negative values very well, we\n    // need to calulate or our y and y0 values for each group.\n    var stackByDimension = function(key, items) {\n      var offsets = {};\n\n      var stack = d3.layout.stack()\n        .values(function(d) {\n          return d.values;\n        })\n        .x(function(d) {\n          return d[key];\n        })\n        .y(function(d) {\n          return +d[opts.value.key];\n        })\n        .out(function(d, y0, y) {\n          d.y = y;\n          if (d.y >= 0) {\n            d.y0 = offsets[d[key] + 'Pos'] = offsets[d[key] + 'Pos'] || 0;\n            offsets[d[key] + 'Pos'] += y;\n          } else {\n            d.y0 = offsets[d[key] + 'Neg'] = offsets[d[key] + 'Neg'] || 0;\n            offsets[d[key] + 'Neg'] -= Math.abs(y);\n          }\n        });\n      stack(items.reverse());\n    };\n\n    var setDimension = function(dim, funct) {\n      opts[dim].key = d4.functor(funct)();\n    };\n\n    var parser = function(data) {\n      if (data) {\n        d4.extend(opts.data, data);\n      }\n\n      findValues(opts, opts.data);\n      opts.data = nestByDimension(opts.y.key, opts.value.key, opts.data);\n\n      stackByDimension(opts.x.key, opts.data);\n      return opts;\n    };\n\n    parser.x = function(funct) {\n      setDimension.bind(opts)('x', funct);\n      return parser;\n    };\n\n    parser.y = function(funct) {\n      setDimension.bind(opts)('y', funct);\n      return parser;\n    };\n\n    parser.value = function(funct) {\n      setDimension.bind(opts)('value', funct);\n      return parser;\n    };\n\n    return parser;\n  });\n}).call(this);",
+            "fileName": "../src/parsers/nested-stack.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d3: false</p>",
+                "summary": "<p>global d3: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "fileName": "../src/parsers/waterfall.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d4: false</p>",
+                "summary": "<p>global d4: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "code": "'use strict';",
+            "fileName": "../src/parsers/waterfall.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>The waterfall parser is useful for waterfall charts where data items need to account<br />    for the position of earlier values:</p>\n\n<pre><code>_____________________\n|   _        _______ |\n|  |_|___   | |  | | |\n|      |_|__|_|  | | |\n|                |_| |\n----------------------\n\nThis module makes use of the d3's \"nest\" data structure, and \"stack\" layout\n<a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a>\n<a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a>\n\n\nApproach:\nJust like D3, this parser uses a chaining declaritiave style to build up\nthe necessary prerequistes to create the waterfall data. Here is a simple\nexample. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }\n\nvar parser = d4.parsers.waterfall()\n    .x(function() {\n      return 'category';\n    })\n    .y(function(){\n      return 'value';\n    })\n    .value(function() {\n      return 'value';\n    });\n\nvar waterfallData = parser(data);\n\nKeep reading for more information on these various accessor functions.\n\nBenefits:\n</code></pre>\n\n<p>Supports horizontal or vertical waterfalls<br />Supports totaling series using a special \"e\" value in a data item.</p>\n\n<pre><code>Limitations:\n</code></pre>\n\n<p>Does not support stacked waterfalls.</p>\n\n<pre><code>Accessor Methods:\n</code></pre>\n\n<p>x : - function which returns a key to access the x values in the data array<br />y : - function which returns a key to access the y values in the data array<br />value : - function which returns a key to access the values in the data array.<br />data : array - An array of objects with their dimensions specified<br />      like this:</p>\n\n<pre><code>  var data = [\n  {\"category\" : \"Category One\", \"value\" : 23 },\n  {\"category\" : \"Category Two\", \"value\" : 55 },\n  {\"category\" : \"Category Three\", \"value\" : -10 },\n  {\"category\" : \"Category Four\", \"value\" : 5 },\n  {\"category\" : \"Category Five\", \"value\" : \"e\" }]\n\nSPECIAL NOTE:\nWaterfalls charts typically have the ability to display subtotals at any point.\nIn order to use this feature simply set the value of your subtotal column to \"e.\"\n\nExample Usage:\nGiven the example data and dimension variables above you can use this module\nin the following way:\n\nvar parser = d4.parsers.nestedStack()\n.dimensions(dimensions)\n.call(data);\n\nThe `parser` variable will now be an object containing the following structure:\n{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n\nTaking these attributes one-by-one:\n</code></pre>\n\n<p>data - is an array of items stacked by D3<br />value - an object with a key representing the value accessor and an array of values<br />x - an object with a key representing the x accessor and an array of values<br />y - an object with a key representing the y accessor and an array of values</p>",
+                "summary": "<p>The waterfall parser is useful for waterfall charts where data items need to account<br />    for the position of earlier values:</p>",
+                "body": "<pre><code>_____________________\n|   _        _______ |\n|  |_|___   | |  | | |\n|      |_|__|_|  | | |\n|                |_| |\n----------------------\n\nThis module makes use of the d3's \"nest\" data structure, and \"stack\" layout\n<a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a>\n<a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a>\n\n\nApproach:\nJust like D3, this parser uses a chaining declaritiave style to build up\nthe necessary prerequistes to create the waterfall data. Here is a simple\nexample. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }\n\nvar parser = d4.parsers.waterfall()\n    .x(function() {\n      return 'category';\n    })\n    .y(function(){\n      return 'value';\n    })\n    .value(function() {\n      return 'value';\n    });\n\nvar waterfallData = parser(data);\n\nKeep reading for more information on these various accessor functions.\n\nBenefits:\n</code></pre>\n\n<p>Supports horizontal or vertical waterfalls<br />Supports totaling series using a special \"e\" value in a data item.</p>\n\n<pre><code>Limitations:\n</code></pre>\n\n<p>Does not support stacked waterfalls.</p>\n\n<pre><code>Accessor Methods:\n</code></pre>\n\n<p>x : - function which returns a key to access the x values in the data array<br />y : - function which returns a key to access the y values in the data array<br />value : - function which returns a key to access the values in the data array.<br />data : array - An array of objects with their dimensions specified<br />      like this:</p>\n\n<pre><code>  var data = [\n  {\"category\" : \"Category One\", \"value\" : 23 },\n  {\"category\" : \"Category Two\", \"value\" : 55 },\n  {\"category\" : \"Category Three\", \"value\" : -10 },\n  {\"category\" : \"Category Four\", \"value\" : 5 },\n  {\"category\" : \"Category Five\", \"value\" : \"e\" }]\n\nSPECIAL NOTE:\nWaterfalls charts typically have the ability to display subtotals at any point.\nIn order to use this feature simply set the value of your subtotal column to \"e.\"\n\nExample Usage:\nGiven the example data and dimension variables above you can use this module\nin the following way:\n\nvar parser = d4.parsers.nestedStack()\n.dimensions(dimensions)\n.call(data);\n\nThe `parser` variable will now be an object containing the following structure:\n{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n\nTaking these attributes one-by-one:\n</code></pre>\n\n<p>data - is an array of items stacked by D3<br />value - an object with a key representing the value accessor and an array of values<br />x - an object with a key representing the x accessor and an array of values<br />y - an object with a key representing the y accessor and an array of values</p>"
+            },
+            "ignore": false,
+            "code": "d4.parser('waterfall', function waterfall() {\n\n    var opts = {\n      x: {\n        key: 'x',\n        values: []\n      },\n      y: {\n        key: 'y',\n        values: []\n      },\n      value: {\n        key: 'value',\n        values: []\n      },\n      data: []\n    };\n    opts.nestKey = function(){\n      return opts.x.key;\n    };\n\n\n    var findValues = function(dimensions, items) {\n      ['x', 'y', 'value'].forEach(function(k) {\n        var layers = items.map(function(d) {\n          return d[dimensions[k].key];\n        });\n        opts[k].values = d3.set(layers).values();\n      });\n    };\n\n    var nestByDimension = function(key, valueKey, items) {\n      var nest = d3.nest()\n        .key(function(d) {\n          return d[key];\n        });\n      return nest.entries(items);\n    };\n\n    var stackByDimension = function(key, items) {\n      var lastOffset = 0;\n      var noNaN = function(num){\n        return isNaN(num) ? 0 : num;\n      };\n      var stack = d3.layout.stack()\n        .values(function(d) {\n          return d.values;\n        })\n        .x(function(d) {\n          return d[key];\n        })\n        .y(function(d) {\n          return +d[opts.value.key];\n        })\n        .out(function(d, y0, y) {\n          if(isNaN(y)){\n            if(isNaN(y0)){\n              y0 = lastOffset;\n            }\n            d.y0 = 0;\n            d.y = y0;\n            d[opts.value.key] = y0;\n            lastOffset = y0;\n          } else {\n            if(isNaN(y0)){\n              d.y0 = lastOffset;\n              lastOffset += y;\n            } else {\n              d.y0 = y0;\n            }\n            d.y = y;\n            d[opts.value.key] = noNaN(d[opts.value.key]);\n          }\n        });\n      stack(items);\n    };\n\n    var setDimension = function(dim, funct) {\n      opts[dim].key = d4.functor(funct)();\n    };\n\n    var parser = function(data) {\n      if (data) {\n        d4.extend(opts.data, data);\n      }\n\n      findValues(opts, opts.data);\n      opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);\n\n      stackByDimension(opts.x.key, opts.data);\n      return opts;\n    };\n\n    parser.nestKey = function(funct) {\n      opts.nestKey = d4.functor(funct).bind(opts);\n      return parser;\n    };\n\n    parser.x = function(funct) {\n      setDimension.bind(opts)('x', funct);\n      return parser;\n    };\n\n    parser.y = function(funct) {\n      setDimension.bind(opts)('y', funct);\n      return parser;\n    };\n\n    parser.value = function(funct) {\n      setDimension.bind(opts)('value', funct);\n      return parser;\n    };\n\n    return parser;\n  });\n}).call(this);",
+            "fileName": "../src/parsers/waterfall.js"
         }
     ],
     "mox": [
@@ -947,6 +989,60 @@
                 "body": ""
             },
             "returns": "a reference to the chart feature"
+        },
+        {
+            "params": [
+                {
+                    "types": [
+                        "String"
+                    ],
+                    "name": "name",
+                    "description": "- accessor name for chart builder."
+                },
+                {
+                    "types": [
+                        "Function"
+                    ],
+                    "name": "funct",
+                    "description": "- function which will instantiate the chart builder."
+                }
+            ],
+            "name": "builder",
+            "type": "method",
+            "fileName": "../src/base.js",
+            "description": {
+                "full": "<p>This function allows you to register a reusable chart builder with d4.</p>",
+                "summary": "<p>This function allows you to register a reusable chart builder with d4.</p>",
+                "body": ""
+            },
+            "returns": "a reference to the chart builder"
+        },
+        {
+            "params": [
+                {
+                    "types": [
+                        "String"
+                    ],
+                    "name": "name",
+                    "description": "- accessor name for data parser."
+                },
+                {
+                    "types": [
+                        "Function"
+                    ],
+                    "name": "funct",
+                    "description": "- function which will instantiate the data parser."
+                }
+            ],
+            "name": "parser",
+            "type": "method",
+            "fileName": "../src/base.js",
+            "description": {
+                "full": "<p>This function allows you to register a reusable data parser with d4.</p>",
+                "summary": "<p>This function allows you to register a reusable data parser with d4.</p>",
+                "body": ""
+            },
+            "returns": "a reference to the data parser"
         },
         {},
         {
@@ -1094,8 +1190,8 @@
                     "description": "represnting a dimension e.g. `x`,`y`."
                 }
             ],
-            "name": "linearScaleForNestedData",
-            "type": "method",
+            "name": "",
+            "type": "",
             "fileName": "../src/builders/scales.js",
             "description": {
                 "full": "<p>Creates a linear scale for a dimension of a given chart.</p>",
@@ -1128,8 +1224,8 @@
                     "description": "represnting a dimension e.g. `x`,`y`."
                 }
             ],
-            "name": "ordinalScaleForNestedData",
-            "type": "method",
+            "name": "",
+            "type": "",
             "fileName": "../src/builders/scales.js",
             "description": {
                 "full": "<p>Creates an ordinal scale for a dimension of a given chart.</p>",
@@ -1155,7 +1251,7 @@
             "params": [],
             "name": "",
             "type": "",
-            "fileName": "../src/charts/grouped-column-chart.js",
+            "fileName": "../src/charts/grouped-column.js",
             "description": {
                 "full": "<p>The grouped column chart is used to compare a series of data elements grouped<br />along the xAxis. This chart is often useful in conjunction with a stacked column<br />chart because they can use the same data series, and where the stacked column highlights<br />the sum of the data series across an axis the grouped column can be used to show the<br />relative distribution.</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>groupsOf</strong> - an integer representing the number of columns in each group<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\n\nvar parsedData = d4.parsers.nestedGroup()\n  .x('year')\n  .y('unitsSold')\n  .value('unitsSold')(data);\n\nvar chart = d4.charts.groupedColumn()\n.width($('#example').width())\n.xKey('year')\n.yKey('unitsSold')\n.groupsOf(parsedData.data[0].values.length);\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>",
                 "summary": "<p>The grouped column chart is used to compare a series of data elements grouped<br />along the xAxis. This chart is often useful in conjunction with a stacked column<br />chart because they can use the same data series, and where the stacked column highlights<br />the sum of the data series across an axis the grouped column can be used to show the<br />relative distribution.</p>",
@@ -1167,7 +1263,7 @@
             "params": [],
             "name": "",
             "type": "",
-            "fileName": "../src/charts/line-chart.js",
+            "fileName": "../src/charts/line.js",
             "description": {
                 "full": "<p>The line series chart is used to compare a series of data elements grouped<br />  along the xAxis.</p>\n\n<p><strong>lineSeries</strong> - series lines<br /><strong>lineSeriesLabels</strong> - data labels beside the lines<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\nvar parsedData = d4.parsers.nestedGroup()\n  .x(function(){\n    return 'year';\n  })\n  .nestKey(function(){\n    return 'salesman';\n  })\n  .y(function(){\n    return 'unitsSold';\n  })\n  .value(function(){\n    return 'unitsSold';\n  })(data);\n\nvar chart = d4.charts.line()\n.width($('#example').width())\n.xKey('year')\n.yKey('unitsSold');\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>",
                 "summary": "<p>The line series chart is used to compare a series of data elements grouped<br />  along the xAxis.</p>",
@@ -1179,7 +1275,7 @@
             "params": [],
             "name": "",
             "type": "",
-            "fileName": "../src/charts/row-chart.js",
+            "fileName": "../src/charts/row.js",
             "description": {
                 "full": "<p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br />   has four default features:</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>rowLabels</strong> - data labels to the right of the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n      { y: '2010', x:-10 },\n      { y: '2011', x:20 },\n      { y: '2012', x:30 },\n      { y: '2013', x:40 },\n      { y: '2014', x:50 },\n    ];\n  var chart = d4.charts.row();\n  d3.select('#example')\n  .datum(data)\n  .call(chart);\n</code></pre>",
                 "summary": "<p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br />   has four default features:</p>",
@@ -1191,10 +1287,39 @@
         {},
         {},
         {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
         {
             "params": [],
-            "name": "nestedGroup",
-            "type": "method",
+            "name": "",
+            "type": "",
+            "fileName": "../src/features/waterfall-connectors.js",
+            "description": {
+                "full": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>\n\n<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>",
+                "summary": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>",
+                "body": "<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>"
+            }
+        },
+        {},
+        {},
+        {},
+        {},
+        {
+            "params": [],
+            "name": "",
+            "type": "",
             "fileName": "../src/parsers/nested-group.js",
             "description": {
                 "full": "<p>The nested group parser is useful for grouped column charts where multiple<br />data items need to appear relative to the axis value, for example grouped<br />column charts or multi-series line charts.</p>\n\n<pre><code>_____________________\n|           _        |\n|   _ _    | |_      |\n|  | | |   | | |     |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the waterfall data. Here is a simple<br />example. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }</p>\n\n<pre><code>var parser = d4.parsers.nestedGroup()\n    .x('category')\n    .y('value')\n    .value('value');\n\nvar groupedColumnData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h4>Accessor Methods</h4>\n\n<p><code>x</code> - A function which returns a key to access the x values in the data array<br /><code>y</code> - A function which returns a key to access the y values in the data array<br /><code>value</code> - A function which returns a key to access the values in the data array.<br /><code>data</code> - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [\n{\"year\" : \"2010\", \"category\" : \"Category One\", \"value\" : 23 },\n{\"year\" : \"2010\", \"category\" : \"Category Two\", \"value\" : 55 },\n{\"year\" : \"2010\", \"category\" : \"Category Three\", \"value\" : -10 },\n{\"year\" : \"2010\", \"category\" : \"Category Four\", \"value\" : 5 }]\n</code></pre>",
@@ -1206,8 +1331,8 @@
         {},
         {
             "params": [],
-            "name": "nestedStack",
-            "type": "method",
+            "name": "",
+            "type": "",
             "fileName": "../src/parsers/nested-stack.js",
             "description": {
                 "full": "<p>The nested stack parser is useful for charts which take a data series<br />  and wants to sort them across a dimension and then display the results.<br />  The most common usecase would be a stacked column chart like this:</p>\n\n<pre><code>_____________________\n|    _               |\n|   | |   _          |\n|   |-|  | |   _     |\n|   |-|  |-|  |-|    |\n|   | |  |-|  |-|    |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure, and \"stack\" layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a><br /><a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the stacked data. Here is a simple<br />example:</p>\n\n<pre><code>    var parser = d4.parsers.nestedStack()\n        .x(function() {\n          return 'title';\n        })\n        .y(function(){\n          return 'group';\n        })\n        .value(function() {\n          return 'values';\n        });\n\n    var stackedData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h5>Benefits</h5>\n\n<ul>\n<li>Supports negative and positive stacked data series.</li>\n</ul>\n\n<h5>Limitations</h5>\n\n<ul>\n<li>The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.</li>\n</ul>\n\n<h5>Accessor Methods</h5>\n\n<p><code>x</code> : - function which returns a key to access the x values in the data array<br /><code>y</code> : - function which returns a key to access the y values in the data array<br /><code>value</code> : - function which returns a key to access the values in the data array.<br /><code>data</code> : array - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [{ \"title\": \"3 Years\", \"group\" : \"one\", \"value\": 30 },\n            { \"title\": \"3 Years\", \"group\" : \"two\", \"value\": 20 },\n            { \"title\": \"3 Years\", \"group\" : \"three\", \"value\": 10 },\n            { \"title\": \"5 Years\", \"group\" : \"one\",  \"value\": 3 },\n            { \"title\": \"5 Years\", \"group\" : \"two\", \"value\": 2 },\n            { \"title\": \"5 Years\", \"group\" : \"three\", \"value\": 1 }]\n</code></pre>\n\n<h5>Example Usage</h5>\n\n<p>Given the example data and dimension variables above you can use this module<br />in the following way:</p>\n\n<pre><code>var parser = d4.parsers.nestedStack()\n.x(function() {\n  return 'title';\n})\n.y(function(){\n  return 'group';\n})\n.value(function() {\n  return 'value';\n})\n.call(data);\n</code></pre>\n\n<p>The <code>parser</code> variable will now be an object containing the following structure:</p>\n\n<pre><code>{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n</code></pre>",
@@ -1219,44 +1344,15 @@
         {},
         {
             "params": [],
-            "name": "waterfall",
-            "type": "method",
+            "name": "",
+            "type": "",
             "fileName": "../src/parsers/waterfall.js",
             "description": {
                 "full": "<p>The waterfall parser is useful for waterfall charts where data items need to account<br />    for the position of earlier values:</p>\n\n<pre><code>_____________________\n|   _        _______ |\n|  |_|___   | |  | | |\n|      |_|__|_|  | | |\n|                |_| |\n----------------------\n\nThis module makes use of the d3's \"nest\" data structure, and \"stack\" layout\n<a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a>\n<a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a>\n\n\nApproach:\nJust like D3, this parser uses a chaining declaritiave style to build up\nthe necessary prerequistes to create the waterfall data. Here is a simple\nexample. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }\n\nvar parser = d4.parsers.waterfall()\n    .x(function() {\n      return 'category';\n    })\n    .y(function(){\n      return 'value';\n    })\n    .value(function() {\n      return 'value';\n    });\n\nvar waterfallData = parser(data);\n\nKeep reading for more information on these various accessor functions.\n\nBenefits:\n</code></pre>\n\n<p>Supports horizontal or vertical waterfalls<br />Supports totaling series using a special \"e\" value in a data item.</p>\n\n<pre><code>Limitations:\n</code></pre>\n\n<p>Does not support stacked waterfalls.</p>\n\n<pre><code>Accessor Methods:\n</code></pre>\n\n<p>x : - function which returns a key to access the x values in the data array<br />y : - function which returns a key to access the y values in the data array<br />value : - function which returns a key to access the values in the data array.<br />data : array - An array of objects with their dimensions specified<br />      like this:</p>\n\n<pre><code>  var data = [\n  {\"category\" : \"Category One\", \"value\" : 23 },\n  {\"category\" : \"Category Two\", \"value\" : 55 },\n  {\"category\" : \"Category Three\", \"value\" : -10 },\n  {\"category\" : \"Category Four\", \"value\" : 5 },\n  {\"category\" : \"Category Five\", \"value\" : \"e\" }]\n\nSPECIAL NOTE:\nWaterfalls charts typically have the ability to display subtotals at any point.\nIn order to use this feature simply set the value of your subtotal column to \"e.\"\n\nExample Usage:\nGiven the example data and dimension variables above you can use this module\nin the following way:\n\nvar parser = d4.parsers.nestedStack()\n.dimensions(dimensions)\n.call(data);\n\nThe `parser` variable will now be an object containing the following structure:\n{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n\nTaking these attributes one-by-one:\n</code></pre>\n\n<p>data - is an array of items stacked by D3<br />value - an object with a key representing the value accessor and an array of values<br />x - an object with a key representing the x accessor and an array of values<br />y - an object with a key representing the y accessor and an array of values</p>",
                 "summary": "<p>The waterfall parser is useful for waterfall charts where data items need to account<br />    for the position of earlier values:</p>",
                 "body": "<pre><code>_____________________\n|   _        _______ |\n|  |_|___   | |  | | |\n|      |_|__|_|  | | |\n|                |_| |\n----------------------\n\nThis module makes use of the d3's \"nest\" data structure, and \"stack\" layout\n<a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a>\n<a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a>\n\n\nApproach:\nJust like D3, this parser uses a chaining declaritiave style to build up\nthe necessary prerequistes to create the waterfall data. Here is a simple\nexample. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }\n\nvar parser = d4.parsers.waterfall()\n    .x(function() {\n      return 'category';\n    })\n    .y(function(){\n      return 'value';\n    })\n    .value(function() {\n      return 'value';\n    });\n\nvar waterfallData = parser(data);\n\nKeep reading for more information on these various accessor functions.\n\nBenefits:\n</code></pre>\n\n<p>Supports horizontal or vertical waterfalls<br />Supports totaling series using a special \"e\" value in a data item.</p>\n\n<pre><code>Limitations:\n</code></pre>\n\n<p>Does not support stacked waterfalls.</p>\n\n<pre><code>Accessor Methods:\n</code></pre>\n\n<p>x : - function which returns a key to access the x values in the data array<br />y : - function which returns a key to access the y values in the data array<br />value : - function which returns a key to access the values in the data array.<br />data : array - An array of objects with their dimensions specified<br />      like this:</p>\n\n<pre><code>  var data = [\n  {\"category\" : \"Category One\", \"value\" : 23 },\n  {\"category\" : \"Category Two\", \"value\" : 55 },\n  {\"category\" : \"Category Three\", \"value\" : -10 },\n  {\"category\" : \"Category Four\", \"value\" : 5 },\n  {\"category\" : \"Category Five\", \"value\" : \"e\" }]\n\nSPECIAL NOTE:\nWaterfalls charts typically have the ability to display subtotals at any point.\nIn order to use this feature simply set the value of your subtotal column to \"e.\"\n\nExample Usage:\nGiven the example data and dimension variables above you can use this module\nin the following way:\n\nvar parser = d4.parsers.nestedStack()\n.dimensions(dimensions)\n.call(data);\n\nThe `parser` variable will now be an object containing the following structure:\n{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n\nTaking these attributes one-by-one:\n</code></pre>\n\n<p>data - is an array of items stacked by D3<br />value - an object with a key representing the value accessor and an array of values<br />x - an object with a key representing the x accessor and an array of values<br />y - an object with a key representing the y accessor and an array of values</p>"
             }
-        },
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {
-            "params": [],
-            "name": "waterfallConnectors",
-            "type": "method",
-            "fileName": "../src/features/waterfall-connectors.js",
-            "description": {
-                "full": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>\n\n<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>",
-                "summary": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>",
-                "body": "<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>"
-            }
-        },
-        {},
-        {}
+        }
     ],
     "categories": [],
     "files": [
@@ -1316,6 +1412,60 @@
                         "body": ""
                     },
                     "returns": "a reference to the chart feature"
+                },
+                {
+                    "params": [
+                        {
+                            "types": [
+                                "String"
+                            ],
+                            "name": "name",
+                            "description": "- accessor name for chart builder."
+                        },
+                        {
+                            "types": [
+                                "Function"
+                            ],
+                            "name": "funct",
+                            "description": "- function which will instantiate the chart builder."
+                        }
+                    ],
+                    "name": "builder",
+                    "type": "method",
+                    "fileName": "../src/base.js",
+                    "description": {
+                        "full": "<p>This function allows you to register a reusable chart builder with d4.</p>",
+                        "summary": "<p>This function allows you to register a reusable chart builder with d4.</p>",
+                        "body": ""
+                    },
+                    "returns": "a reference to the chart builder"
+                },
+                {
+                    "params": [
+                        {
+                            "types": [
+                                "String"
+                            ],
+                            "name": "name",
+                            "description": "- accessor name for data parser."
+                        },
+                        {
+                            "types": [
+                                "Function"
+                            ],
+                            "name": "funct",
+                            "description": "- function which will instantiate the data parser."
+                        }
+                    ],
+                    "name": "parser",
+                    "type": "method",
+                    "fileName": "../src/base.js",
+                    "description": {
+                        "full": "<p>This function allows you to register a reusable data parser with d4.</p>",
+                        "summary": "<p>This function allows you to register a reusable data parser with d4.</p>",
+                        "body": ""
+                    },
+                    "returns": "a reference to the data parser"
                 },
                 {
                     "params": [
@@ -1466,8 +1616,8 @@
                             "description": "represnting a dimension e.g. `x`,`y`."
                         }
                     ],
-                    "name": "linearScaleForNestedData",
-                    "type": "method",
+                    "name": "",
+                    "type": "",
                     "fileName": "../src/builders/scales.js",
                     "description": {
                         "full": "<p>Creates a linear scale for a dimension of a given chart.</p>",
@@ -1500,8 +1650,8 @@
                             "description": "represnting a dimension e.g. `x`,`y`."
                         }
                     ],
-                    "name": "ordinalScaleForNestedData",
-                    "type": "method",
+                    "name": "",
+                    "type": "",
                     "fileName": "../src/builders/scales.js",
                     "description": {
                         "full": "<p>Creates an ordinal scale for a dimension of a given chart.</p>",
@@ -1529,13 +1679,13 @@
             ]
         },
         {
-            "tag": "../src/charts/grouped-column-chart.js",
+            "tag": "../src/charts/grouped-column.js",
             "moxComments": [
                 {
                     "params": [],
                     "name": "",
                     "type": "",
-                    "fileName": "../src/charts/grouped-column-chart.js",
+                    "fileName": "../src/charts/grouped-column.js",
                     "description": {
                         "full": "<p>The grouped column chart is used to compare a series of data elements grouped<br />along the xAxis. This chart is often useful in conjunction with a stacked column<br />chart because they can use the same data series, and where the stacked column highlights<br />the sum of the data series across an axis the grouped column can be used to show the<br />relative distribution.</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>groupsOf</strong> - an integer representing the number of columns in each group<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\n\nvar parsedData = d4.parsers.nestedGroup()\n  .x('year')\n  .y('unitsSold')\n  .value('unitsSold')(data);\n\nvar chart = d4.charts.groupedColumn()\n.width($('#example').width())\n.xKey('year')\n.yKey('unitsSold')\n.groupsOf(parsedData.data[0].values.length);\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>",
                         "summary": "<p>The grouped column chart is used to compare a series of data elements grouped<br />along the xAxis. This chart is often useful in conjunction with a stacked column<br />chart because they can use the same data series, and where the stacked column highlights<br />the sum of the data series across an axis the grouped column can be used to show the<br />relative distribution.</p>",
@@ -1545,13 +1695,13 @@
             ]
         },
         {
-            "tag": "../src/charts/line-chart.js",
+            "tag": "../src/charts/line.js",
             "moxComments": [
                 {
                     "params": [],
                     "name": "",
                     "type": "",
-                    "fileName": "../src/charts/line-chart.js",
+                    "fileName": "../src/charts/line.js",
                     "description": {
                         "full": "<p>The line series chart is used to compare a series of data elements grouped<br />  along the xAxis.</p>\n\n<p><strong>lineSeries</strong> - series lines<br /><strong>lineSeriesLabels</strong> - data labels beside the lines<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\nvar parsedData = d4.parsers.nestedGroup()\n  .x(function(){\n    return 'year';\n  })\n  .nestKey(function(){\n    return 'salesman';\n  })\n  .y(function(){\n    return 'unitsSold';\n  })\n  .value(function(){\n    return 'unitsSold';\n  })(data);\n\nvar chart = d4.charts.line()\n.width($('#example').width())\n.xKey('year')\n.yKey('unitsSold');\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>",
                         "summary": "<p>The line series chart is used to compare a series of data elements grouped<br />  along the xAxis.</p>",
@@ -1561,13 +1711,13 @@
             ]
         },
         {
-            "tag": "../src/charts/row-chart.js",
+            "tag": "../src/charts/row.js",
             "moxComments": [
                 {
                     "params": [],
                     "name": "",
                     "type": "",
-                    "fileName": "../src/charts/row-chart.js",
+                    "fileName": "../src/charts/row.js",
                     "description": {
                         "full": "<p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br />   has four default features:</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>rowLabels</strong> - data labels to the right of the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n      { y: '2010', x:-10 },\n      { y: '2011', x:20 },\n      { y: '2012', x:30 },\n      { y: '2013', x:40 },\n      { y: '2014', x:50 },\n    ];\n  var chart = d4.charts.row();\n  d3.select('#example')\n  .datum(data)\n  .call(chart);\n</code></pre>",
                         "summary": "<p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br />   has four default features:</p>",
@@ -1577,12 +1727,28 @@
             ]
         },
         {
+            "tag": "../src/features/waterfall-connectors.js",
+            "moxComments": [
+                {
+                    "params": [],
+                    "name": "",
+                    "type": "",
+                    "fileName": "../src/features/waterfall-connectors.js",
+                    "description": {
+                        "full": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>\n\n<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>",
+                        "summary": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>",
+                        "body": "<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>"
+                    }
+                }
+            ]
+        },
+        {
             "tag": "../src/parsers/nested-group.js",
             "moxComments": [
                 {
                     "params": [],
-                    "name": "nestedGroup",
-                    "type": "method",
+                    "name": "",
+                    "type": "",
                     "fileName": "../src/parsers/nested-group.js",
                     "description": {
                         "full": "<p>The nested group parser is useful for grouped column charts where multiple<br />data items need to appear relative to the axis value, for example grouped<br />column charts or multi-series line charts.</p>\n\n<pre><code>_____________________\n|           _        |\n|   _ _    | |_      |\n|  | | |   | | |     |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the waterfall data. Here is a simple<br />example. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }</p>\n\n<pre><code>var parser = d4.parsers.nestedGroup()\n    .x('category')\n    .y('value')\n    .value('value');\n\nvar groupedColumnData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h4>Accessor Methods</h4>\n\n<p><code>x</code> - A function which returns a key to access the x values in the data array<br /><code>y</code> - A function which returns a key to access the y values in the data array<br /><code>value</code> - A function which returns a key to access the values in the data array.<br /><code>data</code> - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [\n{\"year\" : \"2010\", \"category\" : \"Category One\", \"value\" : 23 },\n{\"year\" : \"2010\", \"category\" : \"Category Two\", \"value\" : 55 },\n{\"year\" : \"2010\", \"category\" : \"Category Three\", \"value\" : -10 },\n{\"year\" : \"2010\", \"category\" : \"Category Four\", \"value\" : 5 }]\n</code></pre>",
@@ -1597,8 +1763,8 @@
             "moxComments": [
                 {
                     "params": [],
-                    "name": "nestedStack",
-                    "type": "method",
+                    "name": "",
+                    "type": "",
                     "fileName": "../src/parsers/nested-stack.js",
                     "description": {
                         "full": "<p>The nested stack parser is useful for charts which take a data series<br />  and wants to sort them across a dimension and then display the results.<br />  The most common usecase would be a stacked column chart like this:</p>\n\n<pre><code>_____________________\n|    _               |\n|   | |   _          |\n|   |-|  | |   _     |\n|   |-|  |-|  |-|    |\n|   | |  |-|  |-|    |\n----------------------\n</code></pre>\n\n<p>This module makes use of the d3's \"nest\" data structure, and \"stack\" layout</p>\n\n<p><a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a><br /><a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a></p>\n\n<h4>Approach</h4>\n\n<p>Just like D3, this parser uses a chaining declaritiave style to build up<br />the necessary prerequistes to create the stacked data. Here is a simple<br />example:</p>\n\n<pre><code>    var parser = d4.parsers.nestedStack()\n        .x(function() {\n          return 'title';\n        })\n        .y(function(){\n          return 'group';\n        })\n        .value(function() {\n          return 'values';\n        });\n\n    var stackedData = parser(data);\n</code></pre>\n\n<p>Keep reading for more information on these various accessor functions.</p>\n\n<h5>Benefits</h5>\n\n<ul>\n<li>Supports negative and positive stacked data series.</li>\n</ul>\n\n<h5>Limitations</h5>\n\n<ul>\n<li>The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.</li>\n</ul>\n\n<h5>Accessor Methods</h5>\n\n<p><code>x</code> : - function which returns a key to access the x values in the data array<br /><code>y</code> : - function which returns a key to access the y values in the data array<br /><code>value</code> : - function which returns a key to access the values in the data array.<br /><code>data</code> : array - An array of objects with their dimensions specified like this:</p>\n\n<pre><code>var data = [{ \"title\": \"3 Years\", \"group\" : \"one\", \"value\": 30 },\n            { \"title\": \"3 Years\", \"group\" : \"two\", \"value\": 20 },\n            { \"title\": \"3 Years\", \"group\" : \"three\", \"value\": 10 },\n            { \"title\": \"5 Years\", \"group\" : \"one\",  \"value\": 3 },\n            { \"title\": \"5 Years\", \"group\" : \"two\", \"value\": 2 },\n            { \"title\": \"5 Years\", \"group\" : \"three\", \"value\": 1 }]\n</code></pre>\n\n<h5>Example Usage</h5>\n\n<p>Given the example data and dimension variables above you can use this module<br />in the following way:</p>\n\n<pre><code>var parser = d4.parsers.nestedStack()\n.x(function() {\n  return 'title';\n})\n.y(function(){\n  return 'group';\n})\n.value(function() {\n  return 'value';\n})\n.call(data);\n</code></pre>\n\n<p>The <code>parser</code> variable will now be an object containing the following structure:</p>\n\n<pre><code>{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n</code></pre>",
@@ -1613,8 +1779,8 @@
             "moxComments": [
                 {
                     "params": [],
-                    "name": "waterfall",
-                    "type": "method",
+                    "name": "",
+                    "type": "",
                     "fileName": "../src/parsers/waterfall.js",
                     "description": {
                         "full": "<p>The waterfall parser is useful for waterfall charts where data items need to account<br />    for the position of earlier values:</p>\n\n<pre><code>_____________________\n|   _        _______ |\n|  |_|___   | |  | | |\n|      |_|__|_|  | | |\n|                |_| |\n----------------------\n\nThis module makes use of the d3's \"nest\" data structure, and \"stack\" layout\n<a href='https://github.com/mbostock/d3/wiki/Arrays#-nest'>https://github.com/mbostock/d3/wiki/Arrays#-nest</a>\n<a href='https://github.com/mbostock/d3/wiki/Stack-Layout'>https://github.com/mbostock/d3/wiki/Stack-Layout</a>\n\n\nApproach:\nJust like D3, this parser uses a chaining declaritiave style to build up\nthe necessary prerequistes to create the waterfall data. Here is a simple\nexample. Given a data item structure like this: {\"category\" : \"Category One\", \"value\" : 23 }\n\nvar parser = d4.parsers.waterfall()\n    .x(function() {\n      return 'category';\n    })\n    .y(function(){\n      return 'value';\n    })\n    .value(function() {\n      return 'value';\n    });\n\nvar waterfallData = parser(data);\n\nKeep reading for more information on these various accessor functions.\n\nBenefits:\n</code></pre>\n\n<p>Supports horizontal or vertical waterfalls<br />Supports totaling series using a special \"e\" value in a data item.</p>\n\n<pre><code>Limitations:\n</code></pre>\n\n<p>Does not support stacked waterfalls.</p>\n\n<pre><code>Accessor Methods:\n</code></pre>\n\n<p>x : - function which returns a key to access the x values in the data array<br />y : - function which returns a key to access the y values in the data array<br />value : - function which returns a key to access the values in the data array.<br />data : array - An array of objects with their dimensions specified<br />      like this:</p>\n\n<pre><code>  var data = [\n  {\"category\" : \"Category One\", \"value\" : 23 },\n  {\"category\" : \"Category Two\", \"value\" : 55 },\n  {\"category\" : \"Category Three\", \"value\" : -10 },\n  {\"category\" : \"Category Four\", \"value\" : 5 },\n  {\"category\" : \"Category Five\", \"value\" : \"e\" }]\n\nSPECIAL NOTE:\nWaterfalls charts typically have the ability to display subtotals at any point.\nIn order to use this feature simply set the value of your subtotal column to \"e.\"\n\nExample Usage:\nGiven the example data and dimension variables above you can use this module\nin the following way:\n\nvar parser = d4.parsers.nestedStack()\n.dimensions(dimensions)\n.call(data);\n\nThe `parser` variable will now be an object containing the following structure:\n{\n  data: Array\n  value: {\n    key: string,\n    values: Array\n  },\n  x: {\n    key: string,\n    values: Array\n  },\n  y: {\n    key: string,\n    values: Array\n  }\n}\n\nTaking these attributes one-by-one:\n</code></pre>\n\n<p>data - is an array of items stacked by D3<br />value - an object with a key representing the value accessor and an array of values<br />x - an object with a key representing the x accessor and an array of values<br />y - an object with a key representing the y accessor and an array of values</p>",
@@ -1623,24 +1789,8 @@
                     }
                 }
             ]
-        },
-        {
-            "tag": "../src/features/waterfall-connectors.js",
-            "moxComments": [
-                {
-                    "params": [],
-                    "name": "waterfallConnectors",
-                    "type": "method",
-                    "fileName": "../src/features/waterfall-connectors.js",
-                    "description": {
-                        "full": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>\n\n<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>",
-                        "summary": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>",
-                        "body": "<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>"
-                    }
-                }
-            ]
         }
     ],
     "name": "d4",
-    "version": "0.3.5"
+    "version": "0.4.0"
 }

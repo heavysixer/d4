@@ -119,13 +119,6 @@ background-color: #ebcccc
     border-bottom: 1px solid #e5e5e5;
 }
 
-/* Make the masthead heading the same height as the navigation */
-.header h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    line-height: 40px;
-    padding-bottom: 19px;
-}
 
 /* Custom page footer */
 .footer {
@@ -170,11 +163,6 @@ background-color: #ebcccc
     .footer {
         padding-left: 0;
         padding-right: 0;
-    }
-
-    /* Space out the masthead */
-    .header {
-        margin-bottom: 30px;
     }
 
     /* Remove the bottom border on the jumbotron for visual effect */

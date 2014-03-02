@@ -33,7 +33,7 @@
         <li><a href="/examples.html">Examples</a></li>
     </ul>
     <div class="col-xs-3">
-      <img src="assets/images/d4-logo.png" width="50" height="50" class='nav-logo' alt="D4 Logo">
+      <a href="/index.html"><img src="assets/images/d4-logo.png" width="50" height="50" class='nav-logo' alt="D4 Logo"></a>
     </div>
 </div>
 
@@ -43,9 +43,13 @@
 <div class='content'>
     <div class="col-md-12">
       <div class="alert alert-info">Documentation is in flux, many sections of d4 remain to be covered.</div>
-      <h1 id="d4-0-3-5">d4 -0.3.5</h1>
+      <h1 id="d4-0-4-0">d4 -0.4.0</h1>
 <h6 id="-base-js-0-"><a href="#base-js">base.js</a></h6>
 <ul>
+<li><a href="#chart"><code>chart</code></a></li>
+<li><a href="#feature"><code>feature</code></a></li>
+<li><a href="#builder"><code>builder</code></a></li>
+<li><a href="#parser"><code>parser</code></a></li>
 <li><a href="#using"><code>using</code></a></li>
 <li><a href="#mixin"><code>mixin</code></a></li>
 <li><a href="#mixout"><code>mixout</code></a></li>
@@ -53,43 +57,84 @@
 <li><a href="#features"><code>features</code></a></li>
 <li><a href="#functor"><code>functor</code></a></li>
 </ul>
-<h6 id="-grouped-column-chart-js-7-"><a href="#grouped-column-chart-js">grouped-column-chart.js</a></h6>
+<h6 id="-scales-js-10-"><a href="#scales-js">scales.js</a></h6>
 <ul>
-<li><a href="#groupedcolumnchart"><code>groupedColumnChart</code></a></li>
+<li><a href="#">``</a></li>
+<li><a href="#">``</a></li>
 </ul>
-<h6 id="-line-chart-js-9-"><a href="#line-chart-js">line-chart.js</a></h6>
+<h6 id="-column-js-12-"><a href="#column-js">column.js</a></h6>
 <ul>
-<li><a href="#linechart"><code>lineChart</code></a></li>
+<li><a href="#">``</a></li>
 </ul>
-<h6 id="-row-chart-js-11-"><a href="#row-chart-js">row-chart.js</a></h6>
+<h6 id="-grouped-column-js-13-"><a href="#grouped-column-js">grouped-column.js</a></h6>
 <ul>
-<li><a href="#rowchart"><code>rowChart</code></a></li>
+<li><a href="#">``</a></li>
 </ul>
-<h6 id="-stacked-column-chart-js-13-"><a href="#stacked-column-chart-js">stacked-column-chart.js</a></h6>
+<h6 id="-line-js-14-"><a href="#line-js">line.js</a></h6>
 <ul>
-<li><a href="#columnchart"><code>columnChart</code></a></li>
+<li><a href="#">``</a></li>
 </ul>
-<h6 id="-columns-js-15-"><a href="#columns-js">columns.js</a></h6>
+<h6 id="-row-js-15-"><a href="#row-js">row.js</a></h6>
+<ul>
+<li><a href="#">``</a></li>
+</ul>
+<h6 id="-waterfall-connectors-js-16-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
 <h6 id="-nested-group-js-17-"><a href="#nested-group-js">nested-group.js</a></h6>
 <ul>
-<li><a href="#nestedgroup"><code>nestedGroup</code></a></li>
+<li><a href="#">``</a></li>
 </ul>
-<h6 id="-nested-stack-js-19-"><a href="#nested-stack-js">nested-stack.js</a></h6>
+<h6 id="-nested-stack-js-18-"><a href="#nested-stack-js">nested-stack.js</a></h6>
 <ul>
-<li><a href="#nestedstack"><code>nestedStack</code></a></li>
+<li><a href="#">``</a></li>
 </ul>
-<h6 id="-waterfall-js-21-"><a href="#waterfall-js">waterfall.js</a></h6>
+<h6 id="-waterfall-js-19-"><a href="#waterfall-js">waterfall.js</a></h6>
 <ul>
-<li><a href="#waterfall"><code>waterfall</code></a></li>
-</ul>
-<h6 id="-waterfall-connectors-js-23-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
-<ul>
-<li><a href="#waterfallconnectors"><code>waterfallConnectors</code></a></li>
+<li><a href="#">``</a></li>
 </ul>
 <h2 id="base-js">base.js</h2>
+<h3 id="chart">chart</h3>
+<p><a href="#chart">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>This function allows you to register a reusable chart with d4.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code><em>(String) -- accessor name for chart.</em></li>
+<li><code>funct</code><em>(Function) -- function which will instantiate the chart.</em></li>
+</ol>
+<hr>
+<h3 id="feature">feature</h3>
+<p><a href="#feature">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>This function allows you to register a reusable chart feature with d4.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code><em>(String) -- accessor name for chart feature.</em></li>
+<li><code>funct</code><em>(Function) -- function which will instantiate the chart feature.</em></li>
+</ol>
+<hr>
+<h3 id="builder">builder</h3>
+<p><a href="#builder">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>This function allows you to register a reusable chart builder with d4.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code><em>(String) -- accessor name for chart builder.</em></li>
+<li><code>funct</code><em>(Function) -- function which will instantiate the chart builder.</em></li>
+</ol>
+<hr>
+<h3 id="parser">parser</h3>
+<p><a href="#parser">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>This function allows you to register a reusable data parser with d4.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code><em>(String) -- accessor name for data parser.</em></li>
+<li><code>funct</code><em>(Function) -- function which will instantiate the data parser.</em></li>
+</ol>
+<hr>
 <h3 id="using">using</h3>
 <p><a href="#using">#</a>
 <a href="#base-js">Ⓣ</a></p>
@@ -182,10 +227,67 @@
 <li><code>funct</code><em>(Varies) -- An function or other variable to be wrapped in a function</em></li>
 </ol>
 <hr>
-<h2 id="grouped-column-chart-js">grouped-column-chart.js</h2>
-<h3 id="groupedcolumnchart">groupedColumnChart</h3>
-<p><a href="#groupedcolumnchart">#</a>
-<a href="#grouped-column-chart-js">Ⓣ</a></p>
+<h2 id="scales-js">scales.js</h2>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
+<a href="#scales-js">Ⓣ</a></p>
+<p>Creates a linear scale for a dimension of a given chart.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>d4</code><em>(Object) -chart object</em></li>
+<li><code>data</code><em>(Array) -array</em></li>
+<li><code>string</code><em>(string) -represnting a dimension e.g. `x`,`y`.</em></li>
+</ol>
+<hr>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
+<a href="#scales-js">Ⓣ</a></p>
+<p>Creates an ordinal scale for a dimension of a given chart.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>d4</code><em>(Object) -chart object</em></li>
+<li><code>data</code><em>(Array) -array</em></li>
+<li><code>string</code><em>(string) -represnting a dimension e.g. `x`,`y`.</em></li>
+</ol>
+<hr>
+<h2 id="column-js">column.js</h2>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
+<a href="#column-js">Ⓣ</a></p>
+<p>The column chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br>linear values for the <code>y</code> and ordinal values on the <code>x</code>. The basic column chart<br>has four default features:</p>
+<p><strong>bars</strong> - series bars<br><strong>barLabels</strong> - data labels above the bars<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
+<h5 id="example-usage">Example Usage</h5>
+<pre><code>var data = [
+    { x: &#39;2010&#39;, y:-10 },
+    { x: &#39;2011&#39;, y:20 },
+    { x: &#39;2012&#39;, y:30 },
+    { x: &#39;2013&#39;, y:40 },
+    { x: &#39;2014&#39;, y:50 },
+  ];
+var chart = d4.charts.column();
+d3.select(&#39;#example&#39;)
+.datum(data)
+.call(chart);</code></pre>
+<p>By default d4 expects a series object, which uses the following format: <code>{ x : &#39;2010&#39;, y : 10 }</code>.<br>The default format may not be desired and so we&#39;ll override it:</p>
+<pre><code>var data = [
+  [&#39;2010&#39;, -10],
+  [&#39;2011&#39;, 20],
+  [&#39;2012&#39;, 30],
+  [&#39;2013&#39;, 40],
+  [&#39;2014&#39;, 50]
+];
+var chart = d4.charts.column()
+.xKey(0)
+.yKey(1);
+
+d3.select(&#39;#example&#39;)
+.datum(data)
+.call(chart);</code></pre>
+<hr>
+<h2 id="grouped-column-js">grouped-column.js</h2>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
+<a href="#grouped-column-js">Ⓣ</a></p>
 <p>The grouped column chart is used to compare a series of data elements grouped<br>along the xAxis. This chart is often useful in conjunction with a stacked column<br>chart because they can use the same data series, and where the stacked column highlights<br>the sum of the data series across an axis the grouped column can be used to show the<br>relative distribution.</p>
 <p><strong>bars</strong> - series bars<br><strong>barLabels</strong> - data labels above the bars<br><strong>groupsOf</strong> - an integer representing the number of columns in each group<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
 <h5 id="example-usage">Example Usage</h5>
@@ -222,10 +324,10 @@ d3.select(&#39;#example&#39;)
 .datum(parsedData.data)
 .call(chart);</code></pre>
 <hr>
-<h2 id="line-chart-js">line-chart.js</h2>
-<h3 id="linechart">lineChart</h3>
-<p><a href="#linechart">#</a>
-<a href="#line-chart-js">Ⓣ</a></p>
+<h2 id="line-js">line.js</h2>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
+<a href="#line-js">Ⓣ</a></p>
 <p>The line series chart is used to compare a series of data elements grouped<br>along the xAxis.</p>
 <p><strong>lineSeries</strong> - series lines<br><strong>lineSeriesLabels</strong> - data labels beside the lines<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
 <h5 id="example-usage">Example Usage</h5>
@@ -269,10 +371,10 @@ d3.select(&#39;#example&#39;)
 .datum(parsedData.data)
 .call(chart);</code></pre>
 <hr>
-<h2 id="row-chart-js">row-chart.js</h2>
-<h3 id="rowchart">rowChart</h3>
-<p><a href="#rowchart">#</a>
-<a href="#row-chart-js">Ⓣ</a></p>
+<h2 id="row-js">row.js</h2>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
+<a href="#row-js">Ⓣ</a></p>
 <p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br>linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br>has four default features:</p>
 <p><strong>bars</strong> - series bars<br><strong>rowLabels</strong> - data labels to the right of the bars<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
 <h5 id="example-usage">Example Usage</h5>
@@ -288,48 +390,18 @@ d3.select(&#39;#example&#39;)
   .datum(data)
   .call(chart);</code></pre>
 <hr>
-<h2 id="stacked-column-chart-js">stacked-column-chart.js</h2>
-<h3 id="columnchart">columnChart</h3>
-<p><a href="#columnchart">#</a>
-<a href="#stacked-column-chart-js">Ⓣ</a></p>
-<p>The column chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br>linear values for the <code>y</code> and ordinal values on the <code>x</code>. The basic column chart<br>has four default features:</p>
-<p><strong>bars</strong> - series bars<br><strong>barLabels</strong> - data labels above the bars<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
-<h5 id="example-usage">Example Usage</h5>
-<pre><code>var data = [
-    { x: &#39;2010&#39;, y:-10 },
-    { x: &#39;2011&#39;, y:20 },
-    { x: &#39;2012&#39;, y:30 },
-    { x: &#39;2013&#39;, y:40 },
-    { x: &#39;2014&#39;, y:50 },
-  ];
-var chart = d4.charts.column();
-d3.select(&#39;#example&#39;)
-.datum(data)
-.call(chart);</code></pre>
-<p>By default d4 expects a series object, which uses the following format: <code>{ x : &#39;2010&#39;, y : 10 }</code>.<br>The default format may not be desired and so we&#39;ll override it:</p>
-<pre><code>var data = [
-  [&#39;2010&#39;, -10],
-  [&#39;2011&#39;, 20],
-  [&#39;2012&#39;, 30],
-  [&#39;2013&#39;, 40],
-  [&#39;2014&#39;, 50]
-];
-var chart = d4.charts.column()
-.xKey(0)
-.yKey(1);
-
-d3.select(&#39;#example&#39;)
-.datum(data)
-.call(chart);</code></pre>
-<hr>
-<h2 id="columns-js">columns.js</h2>
+<h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
 <h3 id="-"> </h3>
 <p><a href="#">#</a>
-<a href="#columns-js">Ⓣ</a></p>
+<a href="#waterfall-connectors-js">Ⓣ</a></p>
+<p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
+<p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>x</code> - Used in placement of the connector lines.<br><code>y</code> - Used in placement of the connector lines.<br><code>span</code> - calculates the length of the connector line<br><code>classes</code> - applies the class to the connector lines.</p>
 <hr>
 <h2 id="nested-group-js">nested-group.js</h2>
-<h3 id="nestedgroup">nestedGroup</h3>
-<p><a href="#nestedgroup">#</a>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
 <a href="#nested-group-js">Ⓣ</a></p>
 <p>The nested group parser is useful for grouped column charts where multiple<br>data items need to appear relative to the axis value, for example grouped<br>column charts or multi-series line charts.</p>
 <pre><code>_____________________
@@ -357,8 +429,8 @@ var groupedColumnData = parser(data);</code></pre>
 {&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category Four&quot;, &quot;value&quot; : 5 }]</code></pre>
 <hr>
 <h2 id="nested-stack-js">nested-stack.js</h2>
-<h3 id="nestedstack">nestedStack</h3>
-<p><a href="#nestedstack">#</a>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
 <a href="#nested-stack-js">Ⓣ</a></p>
 <p>The nested stack parser is useful for charts which take a data series<br>and wants to sort them across a dimension and then display the results.<br>The most common usecase would be a stacked column chart like this:</p>
 <pre><code>_____________________
@@ -432,8 +504,8 @@ var groupedColumnData = parser(data);</code></pre>
 }</code></pre>
 <hr>
 <h2 id="waterfall-js">waterfall.js</h2>
-<h3 id="waterfall">waterfall</h3>
-<p><a href="#waterfall">#</a>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
 <a href="#waterfall-js">Ⓣ</a></p>
 <p>The waterfall parser is useful for waterfall charts where data items need to account<br>for the position of earlier values:</p>
 <pre><code>_____________________
@@ -444,8 +516,8 @@ var groupedColumnData = parser(data);</code></pre>
 ----------------------
 
 This module makes use of the d3&#39;s &quot;nest&quot; data structure, and &quot;stack&quot; layout
-[https://github.com/mbostock/d3/wiki/Arrays#-nest][25]
-[https://github.com/mbostock/d3/wiki/Stack-Layout][26]
+[https://github.com/mbostock/d3/wiki/Arrays#-nest][20]
+[https://github.com/mbostock/d3/wiki/Stack-Layout][21]
 
 
 Approach:
@@ -512,15 +584,6 @@ The `parser` variable will now be an object containing the following structure:
 
 Taking these attributes one-by-one:</code></pre>
 <p>data - is an array of items stacked by D3<br>value - an object with a key representing the value accessor and an array of values<br>x - an object with a key representing the x accessor and an array of values<br>y - an object with a key representing the y accessor and an array of values</p>
-<hr>
-<h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
-<h3 id="waterfallconnectors">waterfallConnectors</h3>
-<p><a href="#waterfallconnectors">#</a>
-<a href="#waterfall-connectors-js">Ⓣ</a></p>
-<p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
-<p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
-<h5 id="accessors">Accessors</h5>
-<p><code>x</code> - Used in placement of the connector lines.<br><code>y</code> - Used in placement of the connector lines.<br><code>span</code> - calculates the length of the connector line<br><code>classes</code> - applies the class to the connector lines.</p>
 <hr>
 
     </div>
