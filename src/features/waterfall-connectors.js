@@ -21,7 +21,7 @@ the direction of the lines.
 `classes` - applies the class to the connector lines.
 
 */
-  d4.features.waterfallConnectors = function(name) {
+  d4.feature('waterfallConnectors', function(name) {
     return {
       accessors: {
         x: function(d) {
@@ -108,5 +108,5 @@ the direction of the lines.
         return lines;
       }
     };
-  };
+  });
 }).call(this);

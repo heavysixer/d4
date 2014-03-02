@@ -36,7 +36,7 @@ var data = [
   { x : '2011', y : 15 },
   { x : '2012', y : 20 }
 ];
-var columnChart = d4.columnChart();
+var columnChart = d4.charts.column();
 
 d3.select('someDomElement')
   .datum(data)
@@ -54,7 +54,7 @@ var data = [
 ];
 
 // Create a column chart without a yAxis, but with a grid in the background.
-var columnChart = d4.columnChart()
+var columnChart = d4.charts.column()
 .mixout('yAxis')
 .mixin('grid', d4.features.grid, 0)
 

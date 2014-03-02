@@ -79,7 +79,7 @@ $(document).ready(function() {
     return d3.scale.linear().domain([0, sum]).range([0, element.width() - margin.left - margin.right]).clamp(true);
   };
 
-  var chart = d4.columnChart()
+  var chart = d4.charts.column()
     .width(element.width())
     .margin(margin)
     .x(xScale())
@@ -137,7 +137,7 @@ $(document).ready(function() {
     return d3.scale.linear().domain([0, sum]).range([0, element.width() - margin.left - margin.right]).clamp(true);
   };
 
-  var chart = d4.columnChart()
+  var chart = d4.charts.column()
     .width(element.width())
     .margin(margin)
     .x(xScale())

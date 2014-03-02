@@ -5,7 +5,7 @@
    */
 
   'use strict';
-  d4.features.rowSeries = function(name) {
+  d4.feature('rowSeries', function(name) {
     var sign = function(val){
       return (val > 0) ? 'positive' : 'negative';
     };
@@ -56,5 +56,5 @@
         return rect;
       }
     };
-  };
+  });
 }).call(this);

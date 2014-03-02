@@ -39,8 +39,7 @@
     root.d4 = d4;
   }
 
-  // FIXME These namespaces should not be publicly explosed, instead
-  // they should be assigned though a registration function.
+  d4.charts = {};
   d4.features = {};
   d4.parsers = {};
   d4.builders = {};
@@ -291,6 +290,50 @@
     }
   };
 
+  /**
+   * This function allows you to register a reusable chart with d4.
+   * @param {String} name - accessor name for chart.
+   * @param {Function} funct - function which will instantiate the chart.
+   * @returns a reference to the chart function
+  */
+  d4.chart = function(name, funct) {
+    d4.charts[name] = funct;
+    return d4.charts[name];
+  };
+
+  /**
+   * This function allows you to register a reusable chart feature with d4.
+   * @param {String} name - accessor name for chart feature.
+   * @param {Function} funct - function which will instantiate the chart feature.
+   * @returns a reference to the chart feature
+  */
+  d4.feature = function(name, funct) {
+    d4.features[name] = funct;
+    return d4.features[name];
+  };
+
+  /**
+   * This function allows you to register a reusable chart builder with d4.
+   * @param {String} name - accessor name for chart builder.
+   * @param {Function} funct - function which will instantiate the chart builder.
+   * @returns a reference to the chart builder
+  */
+  d4.builder = function(name, funct) {
+    d4.builders[name] = funct;
+    return d4.builders[name];
+  };
+
+  /**
+   * This function allows you to register a reusable data parser with d4.
+   * @param {String} name - accessor name for data parser.
+   * @param {Function} funct - function which will instantiate the data parser.
+   * @returns a reference to the data parser
+  */
+  d4.parser = function(name, funct) {
+    d4.parsers[name] = funct;
+    return d4.parsers[name];
+  };
+
   d4.baseChart = function(config, defaultBuilder) {
     var opts = assignDefaults(config, defaultBuilder);
     var chart = applyScaffold(opts);
@@ -364,7 +407,7 @@
      *##### Examples
      *
      *      // Mixout the yAxis which is provided as a default
-     *      var chart = d4.columnChart()
+     *      var chart = d4.charts.column()
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
@@ -409,7 +452,7 @@
      *##### Examples
      *
      *      // Mixout the yAxis which is provided as a default
-     *      var chart = d4.columnChart()
+     *      var chart = d4.charts.column()
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
@@ -517,7 +560,7 @@
         { x: '2013', y:40 },
         { x: '2014', y:50 },
       ];
-    var chart = d4.columnChart();
+    var chart = d4.charts.column();
     d3.select('#example')
     .datum(data)
     .call(chart);
@@ -532,7 +575,7 @@ The default format may not be desired and so we'll override it:
       ['2013', 40],
       ['2014', 50]
     ];
-    var chart = d4.columnChart()
+    var chart = d4.charts.column()
     .xKey(0)
     .yKey(1);
 
@@ -541,7 +584,7 @@ The default format may not be desired and so we'll override it:
     .call(chart);
 
   */
-  d4.columnChart = function columnChart() {
+  d4.chart('column', function columnChart() {
     var chart = d4.baseChart({}, columnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
@@ -555,7 +598,7 @@ The default format may not be desired and so we'll override it:
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);
 
 (function() {
@@ -617,7 +660,7 @@ relative distribution.
       .y('unitsSold')
       .value('unitsSold')(data);
 
-    var chart = d4.groupedColumnChart()
+    var chart = d4.charts.groupedColumn()
     .width($('#example').width())
     .xKey('year')
     .yKey('unitsSold')
@@ -628,7 +671,7 @@ relative distribution.
     .call(chart);
 
   */
-  d4.groupedColumnChart = function groupedColumnChart() {
+  d4.chart('groupedColumn', function groupedColumnChart() {
     var chart = d4.baseChart({
       accessors: ['groupsOf'],
       groupsOf: 1
@@ -645,7 +688,7 @@ relative distribution.
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);
 
 (function() {
@@ -711,7 +754,7 @@ relative distribution.
         return 'unitsSold';
       })(data);
 
-    var chart = d4.lineChart()
+    var chart = d4.charts.line()
     .width($('#example').width())
     .xKey('year')
     .yKey('unitsSold');
@@ -721,7 +764,7 @@ relative distribution.
     .call(chart);
 
   */
-  d4.lineChart = function lineChart() {
+  d4.chart('line', function lineChart() {
     var chart = d4.baseChart({}, lineChartBuilder);
     [{
       'lineSeries': d4.features.lineSeries
@@ -735,7 +778,7 @@ relative distribution.
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);
 (function() {
   /*!
@@ -778,14 +821,14 @@ relative distribution.
           { y: '2013', x:40 },
           { y: '2014', x:50 },
         ];
-      var chart = d4.rowChart();
+      var chart = d4.charts.row();
       d3.select('#example')
       .datum(data)
       .call(chart);
 
 
   */
-  d4.rowChart = function rowChart() {
+  d4.chart('row', function rowChart() {
     var chart = d4.baseChart({
       margin: {
         top: 20,
@@ -806,7 +849,7 @@ relative distribution.
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);
 (function() {
   /*!
@@ -827,7 +870,7 @@ relative distribution.
 
       if(!chart.z){
         d4.builders.linearScaleForNestedData(chart, data, 'z');
-        var min = 5
+        var min = 5;
         var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
         chart.z.range([min, max]);
       }
@@ -841,7 +884,7 @@ relative distribution.
     return builder;
   };
 
-  d4.scatterPlot = function() {
+  d4.chart('scatterPlot', function() {
     var chart = d4.baseChart({
       accessors: ['z', 'zKey'],
       zKey: 'z'
@@ -856,7 +899,7 @@ relative distribution.
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);
 
 (function() {
@@ -880,7 +923,7 @@ relative distribution.
     return builder;
   };
 
-  d4.stackedColumnChart = function stackedColumnChart() {
+  d4.chart('stackedColumn', function stackedColumnChart() {
     var chart = d4.baseChart({}, stackedColumnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
@@ -896,7 +939,7 @@ relative distribution.
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1050,7 +1093,7 @@ relative distribution.
     return builder;
   };
 
-  d4.waterfallChart = function waterfallChart() {
+  d4.chart('waterfall', function waterfallChart() {
     var chart = d4.baseChart({
       accessors: ['orientation'],
       orientation: orientation
@@ -1072,7 +1115,7 @@ relative distribution.
     });
 
     return chart;
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1081,7 +1124,7 @@ relative distribution.
    * global d4: false
    */
   'use strict';
-  d4.features.arrow = function(name) {
+  d4.feature('arrow', function(name) {
     return {
       accessors: {
         tipSize: function(){
@@ -1141,7 +1184,7 @@ relative distribution.
         return arrow;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1151,7 +1194,7 @@ relative distribution.
    */
 
   'use strict';
-  d4.features.dotSeries = function(name) {
+  d4.feature('dotSeries', function(name) {
     return {
       accessors: {
         cx: function(d) {
@@ -1194,7 +1237,7 @@ relative distribution.
         return dots;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1203,7 +1246,7 @@ relative distribution.
    * global d4: false
    */
   'use strict';
-  d4.features.grid = function(name) {
+  d4.feature('grid', function(name) {
 
     return {
       accessors: {
@@ -1242,7 +1285,7 @@ relative distribution.
           .tickFormat(''));
       }
     };
-  };
+  });
 }).call(this);
 (function() {
   /*!
@@ -1250,7 +1293,7 @@ relative distribution.
    * global d4: false
    */
   'use strict';
-  d4.features.groupedColumnLabels = function(name) {
+  d4.feature('groupedColumnLabels', function(name) {
     return {
       accessors: {
         x: function(d, i) {
@@ -1290,7 +1333,7 @@ relative distribution.
         return text;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1299,7 +1342,7 @@ relative distribution.
    * global d4: false
    */
   'use strict';
-  d4.features.groupedColumnSeries = function(name) {
+  d4.feature('groupedColumnSeries', function(name) {
     var sign = function(val) {
       return (val > 0) ? 'positive' : 'negative';
     };
@@ -1353,7 +1396,7 @@ relative distribution.
         return rect;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1363,7 +1406,7 @@ relative distribution.
    */
 
   'use strict';
-  d4.features.lineSeriesLabels = function(name) {
+  d4.feature('lineSeriesLabels', function(name) {
     return {
       accessors: {
         x: function(d) {
@@ -1398,7 +1441,7 @@ relative distribution.
         return label;
       }
     };
-  };
+  });
 }).call(this);
 (function() {
   /*!
@@ -1407,7 +1450,7 @@ relative distribution.
    */
 
   'use strict';
-  d4.features.lineSeries = function(name) {
+  d4.feature('lineSeries', function(name) {
     return {
       accessors: {
         x: function(d) {
@@ -1446,7 +1489,7 @@ relative distribution.
           });
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1456,7 +1499,7 @@ relative distribution.
    */
 
   'use strict';
-  d4.features.referenceLine = function(name) {
+  d4.feature('referenceLine', function(name) {
     return {
       accessors: {
         x1: function() {
@@ -1487,7 +1530,7 @@ relative distribution.
         return referenceLine;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1497,7 +1540,7 @@ relative distribution.
    */
 
   'use strict';
-  d4.features.rowLabels = function(name) {
+  d4.feature('rowLabels', function(name) {
     return {
       accessors: {
         x: function(d) {
@@ -1535,7 +1578,7 @@ relative distribution.
         return text;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1545,7 +1588,7 @@ relative distribution.
    */
 
   'use strict';
-  d4.features.rowSeries = function(name) {
+  d4.feature('rowSeries', function(name) {
     var sign = function(val){
       return (val > 0) ? 'positive' : 'negative';
     };
@@ -1596,7 +1639,7 @@ relative distribution.
         return rect;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1612,7 +1655,7 @@ relative distribution.
     location. This creates a messy collection of crisscrossing lines.
   */
   'use strict';
-  d4.features.stackedColumnConnectors = function(name) {
+  d4.feature('stackedColumnConnectors', function(name) {
 
     return {
       accessors: {
@@ -1681,7 +1724,7 @@ relative distribution.
         return lines;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1691,7 +1734,7 @@ relative distribution.
    */
 
   'use strict';
-  d4.features.stackedColumnLabels = function(name) {
+  d4.feature('stackedColumnLabels', function(name) {
     var sign = function(val) {
       return val > 0 ? 'positive' : 'negative';
     };
@@ -1745,7 +1788,7 @@ relative distribution.
         return text;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1755,7 +1798,7 @@ relative distribution.
    */
 
   'use strict';
-  d4.features.stackedColumnSeries = function(name) {
+  d4.feature('stackedColumnSeries', function(name) {
     var sign = function(val){
       return (val > 0) ? 'positive' : 'negative';
     };
@@ -1814,7 +1857,7 @@ relative distribution.
         return rect;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1824,7 +1867,7 @@ relative distribution.
    */
 
   'use strict';
-  d4.features.trendLine = function(name) {
+  d4.feature('trendLine', function(name) {
     return {
       accessors: {
         x1: function() {
@@ -1888,7 +1931,7 @@ relative distribution.
         return trendLine;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -1914,7 +1957,7 @@ the direction of the lines.
 `classes` - applies the class to the connector lines.
 
 */
-  d4.features.waterfallConnectors = function(name) {
+  d4.feature('waterfallConnectors', function(name) {
     return {
       accessors: {
         x: function(d) {
@@ -2001,7 +2044,7 @@ the direction of the lines.
         return lines;
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -2011,7 +2054,7 @@ the direction of the lines.
    */
 
   'use strict';
-  d4.features.xAxis = function(name) {
+  d4.feature('xAxis', function(name) {
     return {
       accessors: {
         format: function(xAxis) {
@@ -2027,7 +2070,7 @@ the direction of the lines.
 
       }
     };
-  };
+  });
 }).call(this);
 
 (function() {
@@ -2037,7 +2080,7 @@ the direction of the lines.
    */
 
   'use strict';
-  d4.features.yAxis = function(name) {
+  d4.feature('yAxis', function(name) {
 
     // FIXME: This should be a util function
     // Extracted from: http://bl.ocks.org/mbostock/7555321
@@ -2084,7 +2127,7 @@ the direction of the lines.
           .call(wrap, this.margin.left);
       }
     };
-  };
+  });
 }).call(this);
 (function() {
   /*! global d3: false */
@@ -2133,7 +2176,7 @@ Keep reading for more information on these various accessor functions.
     {"year" : "2010", "category" : "Category Four", "value" : 5 }]
 
   **/
-  d4.parsers.nestedGroup = function nestedGroup() {
+  d4.parser('nestedGroup', function nestedGroup() {
 
     var opts = {
       x: {
@@ -2207,7 +2250,7 @@ Keep reading for more information on these various accessor functions.
     };
 
     return parser;
-  };
+  });
 }).call(this);
 
 (function() {
@@ -2310,7 +2353,7 @@ The `parser` variable will now be an object containing the following structure:
     }
 
 **/
-  d4.parsers.nestedStack = function nestedStack() {
+  d4.parser('nestedStack', function nestedStack() {
 
     var opts = {
       x: {
@@ -2405,7 +2448,7 @@ The `parser` variable will now be an object containing the following structure:
     };
 
     return parser;
-  };
+  });
 }).call(this);
 
 (function() {
@@ -2506,7 +2549,7 @@ The `parser` variable will now be an object containing the following structure:
     * y - an object with a key representing the y accessor and an array of values
 
   **/
-  d4.parsers.waterfall = function waterfall() {
+  d4.parser('waterfall', function waterfall() {
 
     var opts = {
       x: {
@@ -2620,7 +2663,7 @@ The `parser` variable will now be an object containing the following structure:
     };
 
     return parser;
-  };
+  });
 }).call(this);
 
 (function() {
@@ -2659,7 +2702,7 @@ The `parser` variable will now be an object containing the following structure:
    * @param {string} string represnting a dimension e.g. `x`,`y`.
    * @returns {Object} Chart scale object
    */
-  d4.builders.linearScaleForNestedData = function(chart, data, dimension) {
+  d4.builder('linearScaleForNestedData', function(chart, data, dimension) {
     var key = chart[dimension + 'Key'];
     var ext = d3.extent(d3.merge(data.map(function(obj) {
       return d3.extent(obj.values, function(d) {
@@ -2671,7 +2714,7 @@ The `parser` variable will now be an object containing the following structure:
     .range(rangeFor(chart, dimension))
     .clamp(true)
     .nice();
-  };
+  });
 
   /**
    * Creates an ordinal scale for a dimension of a given chart.
@@ -2680,12 +2723,12 @@ The `parser` variable will now be an object containing the following structure:
    * @param {string} string represnting a dimension e.g. `x`,`y`.
    * @returns {Object} Chart scale object
    */
-  d4.builders.ordinalScaleForNestedData = function(chart, data, dimension) {
+  d4.builder('ordinalScaleForNestedData', function(chart, data, dimension) {
     var parsedData = extractValues(data, chart[dimension + 'Key']);
     var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;
     chart[dimension] = d3.scale.ordinal();
     return chart[dimension]
       .domain(parsedData)
       .rangeRoundBands(rangeFor(chart, dimension), bands);
-  };
+  });
 }).call(this);

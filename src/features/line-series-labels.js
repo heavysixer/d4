@@ -5,7 +5,7 @@
    */
 
   'use strict';
-  d4.features.lineSeriesLabels = function(name) {
+  d4.feature('lineSeriesLabels', function(name) {
     return {
       accessors: {
         x: function(d) {
@@ -40,5 +40,5 @@
         return label;
       }
     };
-  };
+  });
 }).call(this);

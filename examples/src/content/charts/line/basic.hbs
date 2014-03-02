@@ -51,7 +51,7 @@ $(document).ready(function(){
       return 'unitsSold';
     })(data);
 
-  var chart = d4.lineChart()
+  var chart = d4.charts.line()
   .width($('#example').width())
   .xKey('year')
   .yKey('unitsSold');
@@ -96,7 +96,7 @@ $(document).ready(function(){
       return 'unitsSold';
     })(data);
 
-  var chart = d4.lineChart()
+  var chart = d4.charts.line()
   .width($('#example').width())
   .xKey('year')
   .yKey('unitsSold');

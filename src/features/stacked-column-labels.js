@@ -5,7 +5,7 @@
    */
 
   'use strict';
-  d4.features.stackedColumnLabels = function(name) {
+  d4.feature('stackedColumnLabels', function(name) {
     var sign = function(val) {
       return val > 0 ? 'positive' : 'negative';
     };
@@ -59,5 +59,5 @@
         return text;
       }
     };
-  };
+  });
 }).call(this);

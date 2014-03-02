@@ -5,7 +5,7 @@
    */
 
   'use strict';
-  d4.features.stackedColumnSeries = function(name) {
+  d4.feature('stackedColumnSeries', function(name) {
     var sign = function(val){
       return (val > 0) ? 'positive' : 'negative';
     };
@@ -64,5 +64,5 @@
         return rect;
       }
     };
-  };
+  });
 }).call(this);

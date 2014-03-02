@@ -83,7 +83,7 @@ $(document).ready(function(){
     .y('unitsSold')
     .value('unitsSold')(data);
 
-  var chart = d4.groupedColumnChart()
+  var chart = d4.charts.groupedColumn()
   .width($('#example').width())
   .xKey('year')
   .yKey('unitsSold')
@@ -127,7 +127,7 @@ $(document).ready(function(){
       return 'unitsSold';
     })(data);
 
-  var chart = d4.groupedColumnChart()
+  var chart = d4.charts.groupedColumn()
   .width($('#example').width())
   .xKey('year')
   .yKey('unitsSold')

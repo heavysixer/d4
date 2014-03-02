@@ -57,7 +57,7 @@ relative distribution.
       .y('unitsSold')
       .value('unitsSold')(data);
 
-    var chart = d4.groupedColumnChart()
+    var chart = d4.charts.groupedColumn()
     .width($('#example').width())
     .xKey('year')
     .yKey('unitsSold')
@@ -68,7 +68,7 @@ relative distribution.
     .call(chart);
 
   */
-  d4.groupedColumnChart = function groupedColumnChart() {
+  d4.chart('groupedColumn', function groupedColumnChart() {
     var chart = d4.baseChart({
       accessors: ['groupsOf'],
       groupsOf: 1
@@ -85,5 +85,5 @@ relative distribution.
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);

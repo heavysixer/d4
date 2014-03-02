@@ -31,7 +31,7 @@
     return builder;
   };
 
-  d4.scatterPlot = function() {
+  d4.chart('scatterPlot', function() {
     var chart = d4.baseChart({
       accessors: ['z', 'zKey'],
       zKey: 'z'
@@ -46,5 +46,5 @@
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);

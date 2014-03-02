@@ -4,7 +4,7 @@
    * global d4: false
    */
   'use strict';
-  d4.features.grid = function(name) {
+  d4.feature('grid', function(name) {
 
     return {
       accessors: {
@@ -43,5 +43,5 @@
           .tickFormat(''));
       }
     };
-  };
+  });
 }).call(this);

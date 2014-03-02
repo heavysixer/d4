@@ -5,7 +5,7 @@
    */
 
   'use strict';
-  d4.features.trendLine = function(name) {
+  d4.feature('trendLine', function(name) {
     return {
       accessors: {
         x1: function() {
@@ -69,5 +69,5 @@
         return trendLine;
       }
     };
-  };
+  });
 }).call(this);

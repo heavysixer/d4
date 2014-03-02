@@ -4,7 +4,7 @@
    * global d4: false
    */
   'use strict';
-  d4.features.groupedColumnLabels = function(name) {
+  d4.feature('groupedColumnLabels', function(name) {
     return {
       accessors: {
         x: function(d, i) {
@@ -44,5 +44,5 @@
         return text;
       }
     };
-  };
+  });
 }).call(this);

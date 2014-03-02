@@ -35,8 +35,7 @@
     root.d4 = d4;
   }
 
-  // FIXME These namespaces should not be publicly explosed, instead
-  // they should be assigned though a registration function.
+  d4.charts = {};
   d4.features = {};
   d4.parsers = {};
   d4.builders = {};
@@ -287,6 +286,50 @@
     }
   };
 
+  /**
+   * This function allows you to register a reusable chart with d4.
+   * @param {String} name - accessor name for chart.
+   * @param {Function} funct - function which will instantiate the chart.
+   * @returns a reference to the chart function
+  */
+  d4.chart = function(name, funct) {
+    d4.charts[name] = funct;
+    return d4.charts[name];
+  };
+
+  /**
+   * This function allows you to register a reusable chart feature with d4.
+   * @param {String} name - accessor name for chart feature.
+   * @param {Function} funct - function which will instantiate the chart feature.
+   * @returns a reference to the chart feature
+  */
+  d4.feature = function(name, funct) {
+    d4.features[name] = funct;
+    return d4.features[name];
+  };
+
+  /**
+   * This function allows you to register a reusable chart builder with d4.
+   * @param {String} name - accessor name for chart builder.
+   * @param {Function} funct - function which will instantiate the chart builder.
+   * @returns a reference to the chart builder
+  */
+  d4.builder = function(name, funct) {
+    d4.builders[name] = funct;
+    return d4.builders[name];
+  };
+
+  /**
+   * This function allows you to register a reusable data parser with d4.
+   * @param {String} name - accessor name for data parser.
+   * @param {Function} funct - function which will instantiate the data parser.
+   * @returns a reference to the data parser
+  */
+  d4.parser = function(name, funct) {
+    d4.parsers[name] = funct;
+    return d4.parsers[name];
+  };
+
   d4.baseChart = function(config, defaultBuilder) {
     var opts = assignDefaults(config, defaultBuilder);
     var chart = applyScaffold(opts);
@@ -360,7 +403,7 @@
      *##### Examples
      *
      *      // Mixout the yAxis which is provided as a default
-     *      var chart = d4.columnChart()
+     *      var chart = d4.charts.column()
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
@@ -405,7 +448,7 @@
      *##### Examples
      *
      *      // Mixout the yAxis which is provided as a default
-     *      var chart = d4.columnChart()
+     *      var chart = d4.charts.column()
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.

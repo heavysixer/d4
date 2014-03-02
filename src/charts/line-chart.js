@@ -61,7 +61,7 @@
         return 'unitsSold';
       })(data);
 
-    var chart = d4.lineChart()
+    var chart = d4.charts.line()
     .width($('#example').width())
     .xKey('year')
     .yKey('unitsSold');
@@ -71,7 +71,7 @@
     .call(chart);
 
   */
-  d4.lineChart = function lineChart() {
+  d4.chart('line', function lineChart() {
     var chart = d4.baseChart({}, lineChartBuilder);
     [{
       'lineSeries': d4.features.lineSeries
@@ -85,5 +85,5 @@
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);

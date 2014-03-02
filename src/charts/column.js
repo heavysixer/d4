@@ -38,7 +38,7 @@
         { x: '2013', y:40 },
         { x: '2014', y:50 },
       ];
-    var chart = d4.columnChart();
+    var chart = d4.charts.column();
     d3.select('#example')
     .datum(data)
     .call(chart);
@@ -53,7 +53,7 @@ The default format may not be desired and so we'll override it:
       ['2013', 40],
       ['2014', 50]
     ];
-    var chart = d4.columnChart()
+    var chart = d4.charts.column()
     .xKey(0)
     .yKey(1);
 
@@ -62,7 +62,7 @@ The default format may not be desired and so we'll override it:
     .call(chart);
 
   */
-  d4.columnChart = function columnChart() {
+  d4.chart('column', function columnChart() {
     var chart = d4.baseChart({}, columnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
@@ -76,5 +76,5 @@ The default format may not be desired and so we'll override it:
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);

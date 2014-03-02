@@ -53,7 +53,7 @@
   chart using <code class="language-javascript">features</code> function. Knowing
   this we can find our xAxis accessor name like so:
   <pre><code class="language-javascript">
-    d4.columnChart().features();
+    d4.charts.column().features();
     => ["bars", "barLabels", "xAxis", "yAxis"]
   </code></pre>
   Not surprisingly the accessor we are looking for is named <strong>yAxis</strong>.
@@ -71,7 +71,7 @@ $(document).ready(function(){
       { x: '2013', y:20 },
       { x: '2014', y:10 },
     ];
-  var chart = d4.columnChart()
+  var chart = d4.charts.column()
   .mixout('yAxis');
 
   d3.select('#example')
@@ -90,7 +90,7 @@ $(document).ready(function(){
       { x: '2013', y:20 },
       { x: '2014', y:10 },
     ];
-  var chart = d4.columnChart()
+  var chart = d4.charts.column()
   .mixout('yAxis');
 
   d3.select('#example')

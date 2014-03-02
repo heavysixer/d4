@@ -56,7 +56,7 @@ $(document).ready(function(){
       return 'category';
     })(data);
 
-  var chart = d4.waterfallChart()
+  var chart = d4.charts.waterfall()
     .width($('#example').width())
     .xKey('category')
     .yKey('value');
@@ -117,7 +117,7 @@ $(document).ready(function(){
       return 'category';
     })(data);
 
-  var chart = d4.waterfallChart()
+  var chart = d4.charts.waterfall()
     .width($('#example').width())
     .xKey('category')
     .yKey('value');

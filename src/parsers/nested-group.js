@@ -45,7 +45,7 @@ Keep reading for more information on these various accessor functions.
     {"year" : "2010", "category" : "Category Four", "value" : 5 }]
 
   **/
-  d4.parsers.nestedGroup = function nestedGroup() {
+  d4.parser('nestedGroup', function nestedGroup() {
 
     var opts = {
       x: {
@@ -119,5 +119,5 @@ Keep reading for more information on these various accessor functions.
     };
 
     return parser;
-  };
+  });
 }).call(this);

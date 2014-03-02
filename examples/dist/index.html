@@ -77,7 +77,7 @@ to quickly build data-driven charts with little knowledge of the internals of D3
   { x : <span class="string">'2011'</span>, y : <span class="number">15</span> },
   { x : <span class="string">'2012'</span>, y : <span class="number">20</span> }
 ];
-<span class="keyword">var</span> columnChart = d4.columnChart();
+<span class="keyword">var</span> columnChart = d4.charts.column();
 
 d3.select(<span class="string">'someDomElement'</span>)
   .datum(data)
@@ -92,7 +92,7 @@ or mixout features from your chart.</p>
 ];
 
 <span class="comment">// Create a column chart without a yAxis, but with a grid in the background.</span>
-<span class="keyword">var</span> columnChart = d4.columnChart()
+<span class="keyword">var</span> columnChart = d4.charts.column()
 .mixout(<span class="string">'yAxis'</span>)
 .mixin(<span class="string">'grid'</span>, d4.features.grid, <span class="number">0</span>)
 

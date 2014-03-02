@@ -4,7 +4,7 @@
    * global d4: false
    */
   'use strict';
-  d4.features.groupedColumnSeries = function(name) {
+  d4.feature('groupedColumnSeries', function(name) {
     var sign = function(val) {
       return (val > 0) ? 'positive' : 'negative';
     };
@@ -58,5 +58,5 @@
         return rect;
       }
     };
-  };
+  });
 }).call(this);

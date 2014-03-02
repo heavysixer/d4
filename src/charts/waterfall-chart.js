@@ -149,7 +149,7 @@
     return builder;
   };
 
-  d4.waterfallChart = function waterfallChart() {
+  d4.chart('waterfall', function waterfallChart() {
     var chart = d4.baseChart({
       accessors: ['orientation'],
       orientation: orientation
@@ -171,5 +171,5 @@
     });
 
     return chart;
-  };
+  });
 }).call(this);

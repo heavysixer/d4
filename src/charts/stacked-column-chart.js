@@ -19,7 +19,7 @@
     return builder;
   };
 
-  d4.stackedColumnChart = function stackedColumnChart() {
+  d4.chart('stackedColumn', function stackedColumnChart() {
     var chart = d4.baseChart({}, stackedColumnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
@@ -35,5 +35,5 @@
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);

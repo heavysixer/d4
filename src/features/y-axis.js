@@ -5,7 +5,7 @@
    */
 
   'use strict';
-  d4.features.yAxis = function(name) {
+  d4.feature('yAxis', function(name) {
 
     // FIXME: This should be a util function
     // Extracted from: http://bl.ocks.org/mbostock/7555321
@@ -52,5 +52,5 @@
           .call(wrap, this.margin.left);
       }
     };
-  };
+  });
 }).call(this);

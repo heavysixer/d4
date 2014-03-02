@@ -34,7 +34,7 @@
    * @param {string} string represnting a dimension e.g. `x`,`y`.
    * @returns {Object} Chart scale object
    */
-  d4.builders.linearScaleForNestedData = function(chart, data, dimension) {
+  d4.builder('linearScaleForNestedData', function(chart, data, dimension) {
     var key = chart[dimension + 'Key'];
     var ext = d3.extent(d3.merge(data.map(function(obj) {
       return d3.extent(obj.values, function(d) {
@@ -46,7 +46,7 @@
     .range(rangeFor(chart, dimension))
     .clamp(true)
     .nice();
-  };
+  });
 
   /**
    * Creates an ordinal scale for a dimension of a given chart.
@@ -55,12 +55,12 @@
    * @param {string} string represnting a dimension e.g. `x`,`y`.
    * @returns {Object} Chart scale object
    */
-  d4.builders.ordinalScaleForNestedData = function(chart, data, dimension) {
+  d4.builder('ordinalScaleForNestedData', function(chart, data, dimension) {
     var parsedData = extractValues(data, chart[dimension + 'Key']);
     var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;
     chart[dimension] = d3.scale.ordinal();
     return chart[dimension]
       .domain(parsedData)
       .rangeRoundBands(rangeFor(chart, dimension), bands);
-  };
+  });
 }).call(this);

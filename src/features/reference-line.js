@@ -5,7 +5,7 @@
    */
 
   'use strict';
-  d4.features.referenceLine = function(name) {
+  d4.feature('referenceLine', function(name) {
     return {
       accessors: {
         x1: function() {
@@ -36,5 +36,5 @@
         return referenceLine;
       }
     };
-  };
+  });
 }).call(this);

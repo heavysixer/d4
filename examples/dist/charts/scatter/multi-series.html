@@ -70,7 +70,7 @@ $(document).ready(function(){
     .nestKey('state')
     .value('unitsSold')(data);
 
-  var chart = d4.scatterPlot()
+  var chart = d4.charts.scatterPlot()
   .width($('#example').width())
   .mixin({'grid' : d4.features.grid},0)
   .xKey('unitsSold')
@@ -141,7 +141,7 @@ $(document).ready(function(){
     .nestKey('state')
     .value('unitsSold')(data);
 
-  var chart = d4.scatterPlot()
+  var chart = d4.charts.scatterPlot()
   .width($('#example').width())
   .xKey('unitsSold')
   .yKey('month')

@@ -94,7 +94,7 @@ $(document).ready(function(){
       return 'unitsSold';
     })(data);
 
-  var chart = d4.stackedColumnChart()
+  var chart = d4.charts.stackedColumn()
   .width($('#example').width())
   .xKey('year')
   .yKey('unitsSold')
@@ -173,7 +173,7 @@ $(document).ready(function(){
       return 'unitsSold';
     })(data);
 
-  var chart = d4.stackedColumnChart()
+  var chart = d4.charts.stackedColumn()
   .width($('#example').width())
   .xKey('year')
   .yKey('unitsSold')

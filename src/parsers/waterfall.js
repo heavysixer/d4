@@ -96,7 +96,7 @@
     * y - an object with a key representing the y accessor and an array of values
 
   **/
-  d4.parsers.waterfall = function waterfall() {
+  d4.parser('waterfall', function waterfall() {
 
     var opts = {
       x: {
@@ -210,5 +210,5 @@
     };
 
     return parser;
-  };
+  });
 }).call(this);

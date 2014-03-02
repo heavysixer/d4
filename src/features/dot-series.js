@@ -5,7 +5,7 @@
    */
 
   'use strict';
-  d4.features.dotSeries = function(name) {
+  d4.feature('dotSeries', function(name) {
     return {
       accessors: {
         cx: function(d) {
@@ -48,5 +48,5 @@
         return dots;
       }
     };
-  };
+  });
 }).call(this);

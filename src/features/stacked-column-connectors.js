@@ -11,7 +11,7 @@
     location. This creates a messy collection of crisscrossing lines.
   */
   'use strict';
-  d4.features.stackedColumnConnectors = function(name) {
+  d4.feature('stackedColumnConnectors', function(name) {
 
     return {
       accessors: {
@@ -80,5 +80,5 @@
         return lines;
       }
     };
-  };
+  });
 }).call(this);

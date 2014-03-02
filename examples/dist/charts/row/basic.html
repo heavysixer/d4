@@ -58,7 +58,7 @@ $(document).ready(function(){
       { y: '2013', x:40 },
       { y: '2014', x:50 },
     ];
-  var chart = d4.rowChart();
+  var chart = d4.charts.row();
   d3.select('#example')
   .datum(data)
   .call(chart);
@@ -75,7 +75,7 @@ $(document).ready(function(){
       { y: '2013', x:40 },
       { y: '2014', x:50 },
     ];
-  var chart = d4.rowChart();
+  var chart = d4.charts.row();
   d3.select('#example')
   .datum(data)
   .call(chart);

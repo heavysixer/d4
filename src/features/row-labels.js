@@ -5,7 +5,7 @@
    */
 
   'use strict';
-  d4.features.rowLabels = function(name) {
+  d4.feature('rowLabels', function(name) {
     return {
       accessors: {
         x: function(d) {
@@ -43,5 +43,5 @@
         return text;
       }
     };
-  };
+  });
 }).call(this);

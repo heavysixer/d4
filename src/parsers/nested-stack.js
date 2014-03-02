@@ -98,7 +98,7 @@ The `parser` variable will now be an object containing the following structure:
     }
 
 **/
-  d4.parsers.nestedStack = function nestedStack() {
+  d4.parser('nestedStack', function nestedStack() {
 
     var opts = {
       x: {
@@ -193,5 +193,5 @@ The `parser` variable will now be an object containing the following structure:
     };
 
     return parser;
-  };
+  });
 }).call(this);

@@ -4,7 +4,7 @@
    * global d4: false
    */
   'use strict';
-  d4.features.arrow = function(name) {
+  d4.feature('arrow', function(name) {
     return {
       accessors: {
         tipSize: function(){
@@ -64,5 +64,5 @@
         return arrow;
       }
     };
-  };
+  });
 }).call(this);

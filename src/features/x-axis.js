@@ -5,7 +5,7 @@
    */
 
   'use strict';
-  d4.features.xAxis = function(name) {
+  d4.feature('xAxis', function(name) {
     return {
       accessors: {
         format: function(xAxis) {
@@ -21,5 +21,5 @@
 
       }
     };
-  };
+  });
 }).call(this);

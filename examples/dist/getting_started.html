@@ -76,7 +76,7 @@ var data = [
   { x : '2011', y : 15 },
   { x : '2012', y : 20 }
 ];
-var columnChart = d4.columnChart();
+var columnChart = d4.charts.column();
 
 d3.select('test')
   .datum(data)
@@ -94,7 +94,7 @@ var data = [
   { x : '2011', y : 15 },
   { x : '2012', y : 20 }
 ];
-var columnChart = d4.columnChart()
+var columnChart = d4.charts.column()
 .margin({
   top: 15,
   right: 10,
@@ -117,7 +117,7 @@ var data = [
 ];
 
 // Create a column chart without a yAxis, but with a grid in the background.
-var columnChart = d4.columnChart()
+var columnChart = d4.charts.column()
 .mixout('yAxis')
 .mixin('grid', d4.features.grid, 0)
 
@@ -136,7 +136,7 @@ var data = [
 ];
 
 // Add styles based on the sign of a value.
-var columnChart = d4.columnChart()
+var columnChart = d4.charts.column()
 .using('bars', functions(bars){
   bars
   .classes(function(d, i){

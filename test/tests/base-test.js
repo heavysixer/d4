@@ -131,14 +131,14 @@ describe('d4.base', function() {
 
   describe('#mixin()', function() {
     it('should require a valid object to mixin', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       expect(function() {
         chart.mixin();
       }).to.throw (Error, '[d4] You need to supply an object to mixin');
     });
 
     it('should add the newly mixed in feature into the list of features', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       ['bars', 'barLabels', 'xAxis', 'yAxis'].forEach(function(feature) {
         expect(chart.features()).to.include(feature);
       });
@@ -150,7 +150,7 @@ describe('d4.base', function() {
     });
 
     it('should add a feature in a specific index', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       expect(chart.features()).to.not.include('grid');
       chart.mixin({
         'grid': d4.features.grid
@@ -159,7 +159,7 @@ describe('d4.base', function() {
     });
 
     it('should convert a negative index to zero', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       expect(chart.features()).to.not.include('grid2');
       chart.mixin({
         'grid2': d4.features.grid
@@ -168,7 +168,7 @@ describe('d4.base', function() {
     });
 
     it('should add a feature to the end if the index is larger than the features array length', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       expect(chart.features()).to.not.include('grid3');
       chart.mixin({
         'grid3': d4.features.grid
@@ -204,7 +204,7 @@ describe('d4.base', function() {
           }
         };
       };
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       chart.mixin({
         'grid': d4.features.grid,
         'overrides': overrides
@@ -224,14 +224,14 @@ describe('d4.base', function() {
 
   describe('#mixout()', function() {
     it('should allow you to mix out an existing feature from a chart', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       expect(chart.features()).to.include('bars');
       chart.mixout('bars');
       expect(chart.features()).to.not.include('bars');
     });
 
     it('should require a feature name to mixout of the chart', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       expect(function() {
         chart.mixout();
       }).to.throw (Error, '[d4] A name is required in order to mixout a chart feature.');
@@ -240,21 +240,21 @@ describe('d4.base', function() {
 
   describe('#using()', function() {
     it('should throw an error if you try to use a non-existent feature', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       expect(function() {
         chart.using('foo', function() {});
       }).to.throw (Error, '[d4] Could not find feature: "foo", maybe you forgot to mix it in?');
     });
 
     it('should allow you to use a feature of a chart', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       chart.using('bars', function(bars) {
         expect(bars.accessors).to.not.be.an('undefined');
       });
     });
 
     it('should throw an error is you try and use a feature without supplying a function', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       expect(function() {
         chart.using('bars');
       }).to.throw (Error, '[d4] You must supply a continuation function in order to use a chart feature.');
@@ -263,7 +263,7 @@ describe('d4.base', function() {
 
   describe('#builder()', function() {
     it('should require a valid builder function to use as a builder', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       var badBuilder = function() {
         return {
           configure: 'foo'
@@ -275,7 +275,7 @@ describe('d4.base', function() {
     });
 
     it('should allow you to replace the default builder with your custom one', function() {
-      var chart = d4.columnChart();
+      var chart = d4.charts.column();
       var chartData = [1, 2, 3];
       chart.builder(function() {
         return {

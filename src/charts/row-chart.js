@@ -39,14 +39,14 @@
           { y: '2013', x:40 },
           { y: '2014', x:50 },
         ];
-      var chart = d4.rowChart();
+      var chart = d4.charts.row();
       d3.select('#example')
       .datum(data)
       .call(chart);
 
 
   */
-  d4.rowChart = function rowChart() {
+  d4.chart('row', function rowChart() {
     var chart = d4.baseChart({
       margin: {
         top: 20,
@@ -67,5 +67,5 @@
       chart.mixin(feature);
     });
     return chart;
-  };
+  });
 }).call(this);
