@@ -1,6 +1,6 @@
 /*! d4 - v0.3.5
  *  License: MIT Expat
- *  Date: 2014-02-27
+ *  Date: 2014-03-02
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -39,8 +39,11 @@
     root.d4 = d4;
   }
 
+  // FIXME These namespaces should not be publicly explosed, instead
+  // they should be assigned though a registration function.
   d4.features = {};
   d4.parsers = {};
+  d4.builders = {};
 
   var each = d4.each = d4.forEach = function(obj, iterator, context) {
     var nativeForEach = Array.prototype.forEach,
@@ -66,14 +69,21 @@
     }
   };
 
-  var assert = function(message) {
+  var err = function() {
+    var parts = Array.prototype.slice.call(arguments);
+    var message = parts.shift();
+    var regexp;
+    each(parts, function(str, i){
+      regexp = new RegExp('\\{' + i + '\\}', 'gi');
+      message = message.replace(regexp, str);
+    });
     throw new Error('[d4] ' + message);
   };
 
   var validateBuilder = function(builder) {
     each(['configure'], function(funct) {
       if (!builder[funct] || d4.isNotFunction(builder[funct])) {
-        assert('The supplied builder does not have a ' + funct + ' function');
+        err('The supplied builder does not have a {0} function', funct);
       }
     });
     return builder;
@@ -88,7 +98,7 @@
 
   var assignDefaults = function(config, defaultBuilder) {
     if (!defaultBuilder) {
-      assert('No builder defined');
+      err('No builder defined');
     }
     var opts = d4.merge({
       width: 400,
@@ -140,7 +150,7 @@
       opts.builder.configure(opts, data);
       linkFeatures(opts, data);
     } else {
-      assert('No builder defined');
+      err('No builder defined');
     }
   };
 
@@ -248,7 +258,7 @@
 
   var mixin = function(feature, index) {
     if (!feature) {
-      assert('You need to supply an object to mixin.');
+      err('You need to supply an object to mixin.');
     }
     var name = d3.keys(feature)[0];
     var overrides = extractOverrides.bind(this)(feature, name);
@@ -260,7 +270,7 @@
 
   var mixout = function(name) {
     if (!name) {
-      assert('A name is required in order to mixout a chart feature.');
+      err('A name is required in order to mixout a chart feature.');
     }
 
     delete this.features[name];
@@ -272,10 +282,10 @@
   var using = function(name, funct) {
     var feature = this.features[name];
     if (d4.isNotFunction(funct)) {
-      assert('You must supply a continuation function in order to use a chart feature.');
+      err('You must supply a continuation function in order to use a chart feature.');
     }
     if (!feature) {
-      assert('Could not find feature: "' + name + '", maybe you forgot to mix it in?');
+      err('Could not find feature: "{0}", maybe you forgot to mix it in?', name);
     } else {
       funct.bind(this)(feature);
     }
@@ -474,45 +484,96 @@
    */
   'use strict';
 
-  var groupedColumnChartBuilder = function() {
-    var extractValues = function(data, key) {
-      var values = data.map(function(obj){
-        return obj.values.map(function(i){
-          return i[key];
-        }.bind(this));
-      }.bind(this));
-      return d3.merge(values);
-    };
-
-    var configureX = function(chart, data) {
-      if (!chart.x) {
-        var xData = extractValues(data, chart.xKey);
-        chart.xRoundBands = chart.xRoundBands || 0.3;
-        chart.x = d3.scale.ordinal()
-          .domain(xData)
-          .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
-      }
-    };
-
-    var configureY = function(chart, data) {
-      if (!chart.y) {
-        var yData = extractValues(data, chart.yKey);
-        var ext = d3.extent(yData);
-        chart.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
-      }
-      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
-        .clamp(true)
-        .nice();
-    };
-
-    var configureScales = function(chart, data) {
-      configureX.bind(this)(chart, data);
-      configureY.bind(this)(chart, data);
-    };
-
+  var columnChartBuilder = function() {
     var builder = {
       configure: function(chart, data) {
-        configureScales.bind(this)(chart, data);
+        if(!chart.x){
+          d4.builders.ordinalScaleForNestedData(chart, data, 'x');
+        }
+        if(!chart.y){
+          d4.builders.linearScaleForNestedData(chart, data, 'y');
+        }
+      }
+    };
+    return builder;
+  };
+
+  /*
+   The column chart has two axes (`x` and `y`). By default the column chart expects
+   linear values for the `y` and ordinal values on the `x`. The basic column chart
+   has four default features:
+
+   * **bars** - series bars
+   * **barLabels** - data labels above the bars
+   * **xAxis** - the axis for the x dimension
+   * **yAxis** - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+        { x: '2010', y:-10 },
+        { x: '2011', y:20 },
+        { x: '2012', y:30 },
+        { x: '2013', y:40 },
+        { x: '2014', y:50 },
+      ];
+    var chart = d4.columnChart();
+    d3.select('#example')
+    .datum(data)
+    .call(chart);
+
+By default d4 expects a series object, which uses the following format: `{ x : '2010', y : 10 }`.
+The default format may not be desired and so we'll override it:
+
+    var data = [
+      ['2010', -10],
+      ['2011', 20],
+      ['2012', 30],
+      ['2013', 40],
+      ['2014', 50]
+    ];
+    var chart = d4.columnChart()
+    .xKey(0)
+    .yKey(1);
+
+    d3.select('#example')
+    .datum(data)
+    .call(chart);
+
+  */
+  d4.columnChart = function columnChart() {
+    var chart = d4.baseChart({}, columnChartBuilder);
+    [{
+      'bars': d4.features.stackedColumnSeries
+    }, {
+      'barLabels': d4.features.stackedColumnLabels
+    }, {
+      'xAxis': d4.features.xAxis
+    }, {
+      'yAxis': d4.features.yAxis
+    }].forEach(function(feature) {
+      chart.mixin(feature);
+    });
+    return chart;
+  };
+}).call(this);
+
+(function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+  'use strict';
+
+  var groupedColumnChartBuilder = function() {
+    var builder = {
+      configure: function(chart, data) {
+        if(!chart.x){
+          d4.builders.ordinalScaleForNestedData(chart, data, 'x');
+        }
+        if(!chart.y){
+          d4.builders.linearScaleForNestedData(chart, data, 'y');
+        }
       }
     };
     return builder;
@@ -595,44 +656,14 @@ relative distribution.
   'use strict';
 
   var lineChartBuilder = function() {
-    var extractValues = function(data, key) {
-      var values = data.map(function(obj){
-        return obj.values.map(function(i){
-          return i[key];
-        }.bind(this));
-      }.bind(this));
-      return d3.merge(values);
-    };
-
-    var configureX = function(chart, data) {
-      if (!chart.x) {
-        var xData = extractValues(data, chart.xKey);
-        chart.xRoundBands = chart.xRoundBands || 0.3;
-        chart.x = d3.scale.ordinal()
-          .domain(xData)
-          .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
-      }
-    };
-
-    var configureY = function(chart, data) {
-      if (!chart.y) {
-        var yData = extractValues(data, chart.yKey);
-        var ext = d3.extent(yData);
-        chart.y = d3.scale.linear().domain(ext);
-      }
-      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
-        .clamp(true)
-        .nice();
-    };
-
-    var configureScales = function(chart, data) {
-      configureX.bind(this)(chart, data);
-      configureY.bind(this)(chart, data);
-    };
-
     var builder = {
       configure: function(chart, data) {
-        configureScales.bind(this)(chart, data);
+        if(!chart.x){
+          d4.builders.ordinalScaleForNestedData(chart, data, 'x');
+        }
+        if(!chart.y){
+          d4.builders.linearScaleForNestedData(chart, data, 'y');
+        }
       }
     };
     return builder;
@@ -714,47 +745,15 @@ relative distribution.
   'use strict';
 
   var rowChartBuilder = function() {
-    var extractValues = function(data, key) {
-      var values = data.map(function(obj){
-        return obj.values.map(function(i){
-          return i[key];
-        }.bind(this));
-      }.bind(this));
-      return d3.merge(values);
-    };
-
-    var configureY = function(chart, data) {
-      if (!chart.y) {
-        var yData = extractValues(data, chart.yKey);
-        chart.yRoundBands = chart.yRoundBands || 0.3;
-        chart.y = d3.scale.ordinal()
-          .domain(yData)
-          .rangeRoundBands([chart.height - chart.margin.top - chart.margin.bottom, 0], chart.yRoundBands);
-      }
-    };
-
-    var configureX = function(chart, data) {
-      if (!chart.x) {
-        var ext = d3.extent(d3.merge(data.map(function(obj){
-          return d3.extent(obj.values, function(d){
-            return d[chart.xKey] + (d.y0 || 0);
-          });
-        })));
-        chart.x = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
-      }
-      chart.x.range([0, chart.width - chart.margin.left - chart.margin.right])
-        .clamp(true)
-        .nice();
-    };
-
-    var configureScales = function(chart, data) {
-      configureX.bind(this)(chart, data);
-      configureY.bind(this)(chart, data);
-    };
-
     var builder = {
       configure: function(chart, data) {
-        configureScales.bind(this)(chart, data);
+        if(!chart.x){
+          d4.builders.linearScaleForNestedData(chart, data, 'x');
+        }
+
+        if(!chart.y){
+          d4.builders.ordinalScaleForNestedData(chart, data, 'y');
+        }
       }
     };
     return builder;
@@ -817,44 +816,21 @@ relative distribution.
   'use strict';
 
   var scatterPlotBuilder = function() {
-    var createLinearScale = function(key, data) {
-      var ext = d3.extent(d3.merge(data.map(function(obj){
-        return d3.extent(obj.values, function(d){
-          return d[key];
-        });
-      })));
-      return d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
-    };
-
-    var configureX = function(chart, data) {
-      if (!chart.x) {
-        chart.x = createLinearScale(chart.xKey, data);
-      }
-      chart.x.range([0, chart.width - chart.margin.left - chart.margin.right])
-        .clamp(true)
-        .nice();
-    };
-
-    var configureY = function(chart, data) {
-      if (!chart.y) {
-        chart.y = createLinearScale(chart.yKey, data);
-      }
-      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0]);
-    };
-
-    var configureZ = function(chart, data) {
-      if (!chart.z) {
-        chart.z = createLinearScale(chart.zKey, data);
-      }
-      var min = 5
-      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
-      chart.z.range([min, max]);
-    };
-
     var configureScales = function(chart, data) {
-      configureX.bind(this)(chart, data);
-      configureY.bind(this)(chart, data);
-      configureZ.bind(this)(chart, data);
+      if(!chart.x){
+        d4.builders.linearScaleForNestedData(chart, data, 'x');
+      }
+
+      if(!chart.y){
+        d4.builders.linearScaleForNestedData(chart, data, 'y');
+      }
+
+      if(!chart.z){
+        d4.builders.linearScaleForNestedData(chart, data, 'z');
+        var min = 5
+        var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
+        chart.z.range([min, max]);
+      }
     };
 
     var builder = {
@@ -891,96 +867,20 @@ relative distribution.
   'use strict';
 
   var stackedColumnChartBuilder = function() {
-    var extractValues = function(data, key) {
-      var values = data.map(function(obj){
-        return obj.values.map(function(i){
-          return i[key];
-        }.bind(this));
-      }.bind(this));
-      return d3.merge(values);
-    };
-
-    var configureX = function(chart, data) {
-      if (!chart.x) {
-        var xData = extractValues(data, chart.xKey);
-        chart.xRoundBands = chart.xRoundBands || 0.3;
-        chart.x = d3.scale.ordinal()
-          .domain(xData)
-          .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
-      }
-    };
-
-    var configureY = function(chart, data) {
-      if (!chart.y) {
-        var ext = d3.extent(d3.merge(data.map(function(obj){
-          return d3.extent(obj.values, function(d){
-            return d[chart.yKey] + (d.y0 || 0);
-          });
-        })));
-        chart.y = d3.scale.linear().domain([Math.min(0, ext[0]),ext[1]]);
-      }
-      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
-        .clamp(true)
-        .nice();
-    };
-
-    var configureScales = function(chart, data) {
-      configureX.bind(this)(chart, data);
-      configureY.bind(this)(chart, data);
-    };
-
     var builder = {
       configure: function(chart, data) {
-        configureScales.bind(this)(chart, data);
+        if(!chart.x){
+          d4.builders.ordinalScaleForNestedData(chart, data, 'x');
+        }
+        if(!chart.y){
+          d4.builders.linearScaleForNestedData(chart, data, 'y');
+        }
       }
     };
     return builder;
   };
 
-  /*
-   The column chart has two axes (`x` and `y`). By default the column chart expects
-   linear values for the `y` and ordinal values on the `x`. The basic column chart
-   has four default features:
-
-   * **bars** - series bars
-   * **barLabels** - data labels above the bars
-   * **xAxis** - the axis for the x dimension
-   * **yAxis** - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-        { x: '2010', y:-10 },
-        { x: '2011', y:20 },
-        { x: '2012', y:30 },
-        { x: '2013', y:40 },
-        { x: '2014', y:50 },
-      ];
-    var chart = d4.columnChart();
-    d3.select('#example')
-    .datum(data)
-    .call(chart);
-
-By default d4 expects a series object, which uses the following format: `{ x : '2010', y : 10 }`.
-The default format may not be desired and so we'll override it:
-
-    var data = [
-      ['2010', -10],
-      ['2011', 20],
-      ['2012', 30],
-      ['2013', 40],
-      ['2014', 50]
-    ];
-    var chart = d4.columnChart()
-    .xKey(0)
-    .yKey(1);
-
-    d3.select('#example')
-    .datum(data)
-    .call(chart);
-
-  */
-  d4.columnChart = d4.stackedColumnChart = function stackedColumnChart() {
+  d4.stackedColumnChart = function stackedColumnChart() {
     var chart = d4.baseChart({}, stackedColumnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
@@ -2720,5 +2620,72 @@ The `parser` variable will now be an object containing the following structure:
     };
 
     return parser;
+  };
+}).call(this);
+
+(function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+  'use strict';
+
+  var extractValues = function(data, key) {
+    var values = data.map(function(obj) {
+      return obj.values.map(function(i) {
+        return i[key];
+      }.bind(this));
+    }.bind(this));
+    return d3.merge(values);
+  };
+
+  var rangeFor = function(chart, dimension) {
+
+    // This may not be a very robust approach.
+    switch (dimension) {
+      case 'x':
+        return [0, chart.width - chart.margin.left - chart.margin.right];
+      case 'y':
+        return [chart.height - chart.margin.top - chart.margin.bottom, 0];
+      default:
+        return [];
+    }
+  };
+
+  /**
+   * Creates a linear scale for a dimension of a given chart.
+   * @param {Object} d4 chart object
+   * @param {Array} data array
+   * @param {string} string represnting a dimension e.g. `x`,`y`.
+   * @returns {Object} Chart scale object
+   */
+  d4.builders.linearScaleForNestedData = function(chart, data, dimension) {
+    var key = chart[dimension + 'Key'];
+    var ext = d3.extent(d3.merge(data.map(function(obj) {
+      return d3.extent(obj.values, function(d) {
+        return d[key] + (d.y0 || 0);
+      });
+    })));
+    chart[dimension] = d3.scale.linear();
+    return chart[dimension].domain([Math.min(0, ext[0]), ext[1]])
+    .range(rangeFor(chart, dimension))
+    .clamp(true)
+    .nice();
+  };
+
+  /**
+   * Creates an ordinal scale for a dimension of a given chart.
+   * @param {Object} d4 chart object
+   * @param {Array} data array
+   * @param {string} string represnting a dimension e.g. `x`,`y`.
+   * @returns {Object} Chart scale object
+   */
+  d4.builders.ordinalScaleForNestedData = function(chart, data, dimension) {
+    var parsedData = extractValues(data, chart[dimension + 'Key']);
+    var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;
+    chart[dimension] = d3.scale.ordinal();
+    return chart[dimension]
+      .domain(parsedData)
+      .rangeRoundBands(rangeFor(chart, dimension), bands);
   };
 }).call(this);

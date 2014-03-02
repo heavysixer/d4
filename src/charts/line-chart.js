@@ -6,44 +6,14 @@
   'use strict';
 
   var lineChartBuilder = function() {
-    var extractValues = function(data, key) {
-      var values = data.map(function(obj){
-        return obj.values.map(function(i){
-          return i[key];
-        }.bind(this));
-      }.bind(this));
-      return d3.merge(values);
-    };
-
-    var configureX = function(chart, data) {
-      if (!chart.x) {
-        var xData = extractValues(data, chart.xKey);
-        chart.xRoundBands = chart.xRoundBands || 0.3;
-        chart.x = d3.scale.ordinal()
-          .domain(xData)
-          .rangeRoundBands([0, chart.width - chart.margin.left - chart.margin.right], chart.xRoundBands);
-      }
-    };
-
-    var configureY = function(chart, data) {
-      if (!chart.y) {
-        var yData = extractValues(data, chart.yKey);
-        var ext = d3.extent(yData);
-        chart.y = d3.scale.linear().domain(ext);
-      }
-      chart.y.range([chart.height - chart.margin.top - chart.margin.bottom, 0])
-        .clamp(true)
-        .nice();
-    };
-
-    var configureScales = function(chart, data) {
-      configureX.bind(this)(chart, data);
-      configureY.bind(this)(chart, data);
-    };
-
     var builder = {
       configure: function(chart, data) {
-        configureScales.bind(this)(chart, data);
+        if(!chart.x){
+          d4.builders.ordinalScaleForNestedData(chart, data, 'x');
+        }
+        if(!chart.y){
+          d4.builders.linearScaleForNestedData(chart, data, 'y');
+        }
       }
     };
     return builder;

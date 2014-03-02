@@ -9,7 +9,8 @@ module.exports = function(grunt) {
         'src/base.js',
         'src/charts/**/*.js',
         'src/features/**/*.js',
-        'src/parsers/**/*.js'
+        'src/parsers/**/*.js',
+        'src/builders/**/*.js'
       ]
     },
     watch: {

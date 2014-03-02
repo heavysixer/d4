@@ -65,7 +65,7 @@
     }
   };
 
-  var assert = function() {
+  var err = function() {
     var parts = Array.prototype.slice.call(arguments);
     var message = parts.shift();
     var regexp;
@@ -79,7 +79,7 @@
   var validateBuilder = function(builder) {
     each(['configure'], function(funct) {
       if (!builder[funct] || d4.isNotFunction(builder[funct])) {
-        assert('The supplied builder does not have a {0} function', funct);
+        err('The supplied builder does not have a {0} function', funct);
       }
     });
     return builder;
@@ -94,7 +94,7 @@
 
   var assignDefaults = function(config, defaultBuilder) {
     if (!defaultBuilder) {
-      assert('No builder defined');
+      err('No builder defined');
     }
     var opts = d4.merge({
       width: 400,
@@ -146,7 +146,7 @@
       opts.builder.configure(opts, data);
       linkFeatures(opts, data);
     } else {
-      assert('No builder defined');
+      err('No builder defined');
     }
   };
 
@@ -254,7 +254,7 @@
 
   var mixin = function(feature, index) {
     if (!feature) {
-      assert('You need to supply an object to mixin.');
+      err('You need to supply an object to mixin.');
     }
     var name = d3.keys(feature)[0];
     var overrides = extractOverrides.bind(this)(feature, name);
@@ -266,7 +266,7 @@
 
   var mixout = function(name) {
     if (!name) {
-      assert('A name is required in order to mixout a chart feature.');
+      err('A name is required in order to mixout a chart feature.');
     }
 
     delete this.features[name];
@@ -278,10 +278,10 @@
   var using = function(name, funct) {
     var feature = this.features[name];
     if (d4.isNotFunction(funct)) {
-      assert('You must supply a continuation function in order to use a chart feature.');
+      err('You must supply a continuation function in order to use a chart feature.');
     }
     if (!feature) {
-      assert('Could not find feature: "{0}", maybe you forgot to mix it in?', name);
+      err('Could not find feature: "{0}", maybe you forgot to mix it in?', name);
     } else {
       funct.bind(this)(feature);
     }
