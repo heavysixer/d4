@@ -25,14 +25,16 @@
     <div class="container">
 
       
-<div class="header">
-    <ul class="nav nav-pills pull-right">
+<div class="header clearfix">
+    <ul class="nav nav-pills pull-right col-xs-9">
         <li><a href="/index.html">Introduction</a></li>
         <li><a href="/getting_started.html">Getting Started</a></li>
         <li><a href="/docs.html">Documentation</a></li>
         <li><a href="/examples.html">Examples</a></li>
     </ul>
-    <h3 class="text-muted">d4: Reusable d3 Charts</h3>
+    <div class="col-xs-3">
+      <img src="assets/images/d4-logo.png" width="50" height="50" class='nav-logo' alt="D4 Logo">
+    </div>
 </div>
 
       <div class="container" role="main">
@@ -51,25 +53,25 @@
 <li><a href="#features"><code>features</code></a></li>
 <li><a href="#functor"><code>functor</code></a></li>
 </ul>
-<h6 id="-grouped-column-chart-js-7-"><a href="#grouped-column-chart-js">grouped-column-chart.js</a></h6>
+<h6 id="-columns-js-7-"><a href="#columns-js">columns.js</a></h6>
+<ul>
+<li><a href="#">``</a></li>
+</ul>
+<h6 id="-grouped-column-chart-js-9-"><a href="#grouped-column-chart-js">grouped-column-chart.js</a></h6>
 <ul>
 <li><a href="#groupedcolumnchart"><code>groupedColumnChart</code></a></li>
 </ul>
-<h6 id="-line-chart-js-9-"><a href="#line-chart-js">line-chart.js</a></h6>
+<h6 id="-line-chart-js-11-"><a href="#line-chart-js">line-chart.js</a></h6>
 <ul>
 <li><a href="#linechart"><code>lineChart</code></a></li>
 </ul>
-<h6 id="-row-chart-js-11-"><a href="#row-chart-js">row-chart.js</a></h6>
+<h6 id="-row-chart-js-13-"><a href="#row-chart-js">row-chart.js</a></h6>
 <ul>
 <li><a href="#rowchart"><code>rowChart</code></a></li>
 </ul>
-<h6 id="-stacked-column-chart-js-13-"><a href="#stacked-column-chart-js">stacked-column-chart.js</a></h6>
+<h6 id="-stacked-column-chart-js-15-"><a href="#stacked-column-chart-js">stacked-column-chart.js</a></h6>
 <ul>
 <li><a href="#columnchart"><code>columnChart</code></a></li>
-</ul>
-<h6 id="-waterfall-connectors-js-15-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
-<ul>
-<li><a href="#waterfallconnectors"><code>waterfallConnectors</code></a></li>
 </ul>
 <h6 id="-nested-group-js-17-"><a href="#nested-group-js">nested-group.js</a></h6>
 <ul>
@@ -82,6 +84,10 @@
 <h6 id="-waterfall-js-21-"><a href="#waterfall-js">waterfall.js</a></h6>
 <ul>
 <li><a href="#waterfall"><code>waterfall</code></a></li>
+</ul>
+<h6 id="-waterfall-connectors-js-23-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
+<ul>
+<li><a href="#waterfallconnectors"><code>waterfallConnectors</code></a></li>
 </ul>
 <h2 id="base-js">base.js</h2>
 <h3 id="using">using</h3>
@@ -175,6 +181,11 @@
 <ol>
 <li><code>funct</code><em>(Varies) -- An function or other variable to be wrapped in a function</em></li>
 </ol>
+<hr>
+<h2 id="columns-js">columns.js</h2>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
+<a href="#columns-js">Ⓣ</a></p>
 <hr>
 <h2 id="grouped-column-chart-js">grouped-column-chart.js</h2>
 <h3 id="groupedcolumnchart">groupedColumnChart</h3>
@@ -316,15 +327,6 @@ d3.select(&#39;#example&#39;)
 .datum(data)
 .call(chart);</code></pre>
 <hr>
-<h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
-<h3 id="waterfallconnectors">waterfallConnectors</h3>
-<p><a href="#waterfallconnectors">#</a>
-<a href="#waterfall-connectors-js">Ⓣ</a></p>
-<p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
-<p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
-<h5 id="accessors">Accessors</h5>
-<p><code>x</code> - Used in placement of the connector lines.<br><code>y</code> - Used in placement of the connector lines.<br><code>span</code> - calculates the length of the connector line<br><code>classes</code> - applies the class to the connector lines.</p>
-<hr>
 <h2 id="nested-group-js">nested-group.js</h2>
 <h3 id="nestedgroup">nestedGroup</h3>
 <p><a href="#nestedgroup">#</a>
@@ -442,8 +444,8 @@ var groupedColumnData = parser(data);</code></pre>
 ----------------------
 
 This module makes use of the d3&#39;s &quot;nest&quot; data structure, and &quot;stack&quot; layout
-[https://github.com/mbostock/d3/wiki/Arrays#-nest][23]
-[https://github.com/mbostock/d3/wiki/Stack-Layout][24]
+[https://github.com/mbostock/d3/wiki/Arrays#-nest][25]
+[https://github.com/mbostock/d3/wiki/Stack-Layout][26]
 
 
 Approach:
@@ -510,6 +512,15 @@ The `parser` variable will now be an object containing the following structure:
 
 Taking these attributes one-by-one:</code></pre>
 <p>data - is an array of items stacked by D3<br>value - an object with a key representing the value accessor and an array of values<br>x - an object with a key representing the x accessor and an array of values<br>y - an object with a key representing the y accessor and an array of values</p>
+<hr>
+<h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
+<h3 id="waterfallconnectors">waterfallConnectors</h3>
+<p><a href="#waterfallconnectors">#</a>
+<a href="#waterfall-connectors-js">Ⓣ</a></p>
+<p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
+<p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>x</code> - Used in placement of the connector lines.<br><code>y</code> - Used in placement of the connector lines.<br><code>span</code> - calculates the length of the connector line<br><code>classes</code> - applies the class to the connector lines.</p>
 <hr>
 
     </div>

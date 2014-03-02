@@ -13,6 +13,9 @@ body {
 .prependTop {
     margin-top: 20px;
 }
+.nav-logo {
+    margin-bottom:10px;
+}
 
 
 table {

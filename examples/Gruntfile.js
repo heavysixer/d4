@@ -59,7 +59,7 @@ module.exports = function(grunt) {
           '{.tmp,<%= app.src %>}/assets/css/{,*/}*.css',
           '<%= app.src %>/{,*/}*.html',
           '{.tmp,<%= app.src %>}/assets/js/**/*.js',
-          '<%= app.src %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '{.tmp,<%= app.src %>}/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
     },
@@ -135,7 +135,7 @@ module.exports = function(grunt) {
           src: [
             '*.{ico,txt}',
             '.htaccess',
-            'images/{,*/}*.{webp,gif}',
+            'assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
             'assets/fonts/{,*/}*.*'
           ]
         }, {
