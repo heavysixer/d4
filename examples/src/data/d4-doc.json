@@ -259,6 +259,16 @@
         {
             "tags": [],
             "description": {
+                "full": "",
+                "summary": "",
+                "body": ""
+            },
+            "isPrivate": false,
+            "fileName": "../src/builders/columns.js"
+        },
+        {
+            "tags": [],
+            "description": {
                 "full": "<p>global d3: false<br />global d4: false</p>",
                 "summary": "<p>global d3: false<br />global d4: false</p>",
                 "body": ""
@@ -846,6 +856,17 @@
                 "body": ""
             }
         },
+        {
+            "params": [],
+            "name": "",
+            "type": "",
+            "fileName": "../src/builders/columns.js",
+            "description": {
+                "full": "",
+                "summary": "",
+                "body": ""
+            }
+        },
         {},
         {
             "params": [],
@@ -1087,6 +1108,22 @@
                     "description": {
                         "full": "<p>Based on D3's own functor function.</p>\n\n<blockquote>\n  <p>If the specified value is a function, returns the specified value. Otherwise,<br />returns a function that returns the specified value. This method is used<br />internally as a lazy way of upcasting constant values to functions, in<br />cases where a property may be specified either as a function or a constant.<br />For example, many D3 layouts allow properties to be specified this way,<br />and it simplifies the implementation if we automatically convert constant<br />values to functions.</p>\n</blockquote>",
                         "summary": "<p>Based on D3's own functor function.</p>\n\n<blockquote>\n  <p>If the specified value is a function, returns the specified value. Otherwise,<br />returns a function that returns the specified value. This method is used<br />internally as a lazy way of upcasting constant values to functions, in<br />cases where a property may be specified either as a function or a constant.<br />For example, many D3 layouts allow properties to be specified this way,<br />and it simplifies the implementation if we automatically convert constant<br />values to functions.</p>\n</blockquote>",
+                        "body": ""
+                    }
+                }
+            ]
+        },
+        {
+            "tag": "../src/builders/columns.js",
+            "moxComments": [
+                {
+                    "params": [],
+                    "name": "",
+                    "type": "",
+                    "fileName": "../src/builders/columns.js",
+                    "description": {
+                        "full": "",
+                        "summary": "",
                         "body": ""
                     }
                 }

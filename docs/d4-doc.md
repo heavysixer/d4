@@ -9,37 +9,41 @@
 * [`features`][5]
 * [`functor`][6]
 
-###### [grouped-column-chart.js][7]
+###### [columns.js][7]
 
-* [`groupedColumnChart`][8]
+* [``][8]
 
-###### [line-chart.js][9]
+###### [grouped-column-chart.js][9]
 
-* [`lineChart`][10]
+* [`groupedColumnChart`][10]
 
-###### [row-chart.js][11]
+###### [line-chart.js][11]
 
-* [`rowChart`][12]
+* [`lineChart`][12]
 
-###### [stacked-column-chart.js][13]
+###### [row-chart.js][13]
 
-* [`columnChart`][14]
+* [`rowChart`][14]
 
-###### [waterfall-connectors.js][15]
+###### [stacked-column-chart.js][15]
 
-* [`waterfallConnectors`][16]
+* [`columnChart`][16]
 
-###### [nested-group.js][17]
+###### [waterfall-connectors.js][17]
 
-* [`nestedGroup`][18]
+* [`waterfallConnectors`][18]
 
-###### [nested-stack.js][19]
+###### [nested-group.js][19]
 
-* [`nestedStack`][20]
+* [`nestedGroup`][20]
 
-###### [waterfall.js][21]
+###### [nested-stack.js][21]
 
-* [`waterfall`][22]
+* [`nestedStack`][22]
+
+###### [waterfall.js][23]
+
+* [`waterfall`][24]
 
 ## base.js
 
@@ -188,12 +192,21 @@ Based on D3's own functor function.
 
 ---
 
+## columns.js
+
+### 
+
+[\#][8]
+[Ⓣ][7]
+
+---
+
 ## grouped-column-chart.js
 
 ### groupedColumnChart
 
-[\#][8]
-[Ⓣ][7]
+[\#][10]
+[Ⓣ][9]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -249,8 +262,8 @@ relative distribution.
 
 ### lineChart
 
-[\#][10]
-[Ⓣ][9]
+[\#][12]
+[Ⓣ][11]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -309,8 +322,8 @@ along the xAxis.
 
 ### rowChart
 
-[\#][12]
-[Ⓣ][11]
+[\#][14]
+[Ⓣ][13]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -342,8 +355,8 @@ has four default features:
 
 ### columnChart
 
-[\#][14]
-[Ⓣ][13]
+[\#][16]
+[Ⓣ][15]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -394,8 +407,8 @@ The default format may not be desired and so we'll override it:
 
 ### waterfallConnectors
 
-[\#][16]
-[Ⓣ][15]
+[\#][18]
+[Ⓣ][17]
 
 Waterfall connectors are orthogonal series connectors which visually join  
 column series together by spanning the top or bottom of adjacent columns.
@@ -417,8 +430,8 @@ the direction of the lines.
 
 ### nestedGroup
 
-[\#][18]
-[Ⓣ][17]
+[\#][20]
+[Ⓣ][19]
 
 The nested group parser is useful for grouped column charts where multiple  
 data items need to appear relative to the axis value, for example grouped  
@@ -433,7 +446,7 @@ column charts or multi-series line charts.
 
 This module makes use of the d3's "nest" data structure layout
 
-[https://github.com/mbostock/d3/wiki/Arrays\#-nest][23]
+[https://github.com/mbostock/d3/wiki/Arrays\#-nest][25]
 
 #### Approach
 
@@ -471,8 +484,8 @@ Keep reading for more information on these various accessor functions.
 
 ### nestedStack
 
-[\#][20]
-[Ⓣ][19]
+[\#][22]
+[Ⓣ][21]
 
 The nested stack parser is useful for charts which take a data series  
 and wants to sort them across a dimension and then display the results.  
@@ -489,8 +502,8 @@ The most common usecase would be a stacked column chart like this:
 
 This module makes use of the d3's "nest" data structure, and "stack" layout
 
-[https://github.com/mbostock/d3/wiki/Arrays\#-nest][23]  
-[https://github.com/mbostock/d3/wiki/Stack-Layout][24]
+[https://github.com/mbostock/d3/wiki/Arrays\#-nest][25]  
+[https://github.com/mbostock/d3/wiki/Stack-Layout][26]
 
 #### Approach
 
@@ -580,8 +593,8 @@ The `parser` variable will now be an object containing the following structure:
 
 ### waterfall
 
-[\#][22]
-[Ⓣ][21]
+[\#][24]
+[Ⓣ][23]
 
 The waterfall parser is useful for waterfall charts where data items need to account  
 for the position of earlier values:
@@ -594,8 +607,8 @@ for the position of earlier values:
     ----------------------
     
     This module makes use of the d3's "nest" data structure, and "stack" layout
-    [https://github.com/mbostock/d3/wiki/Arrays#-nest][23]
-    [https://github.com/mbostock/d3/wiki/Stack-Layout][24]
+    [https://github.com/mbostock/d3/wiki/Arrays#-nest][25]
+    [https://github.com/mbostock/d3/wiki/Stack-Layout][26]
     
     
     Approach:
@@ -693,21 +706,23 @@ y - an object with a key representing the y accessor and an array of values
 [4]: #builder
 [5]: #features
 [6]: #functor
-[7]: #grouped-column-chart-js
-[8]: #groupedcolumnchart
-[9]: #line-chart-js
-[10]: #linechart
-[11]: #row-chart-js
-[12]: #rowchart
-[13]: #stacked-column-chart-js
-[14]: #columnchart
-[15]: #waterfall-connectors-js
-[16]: #waterfallconnectors
-[17]: #nested-group-js
-[18]: #nestedgroup
-[19]: #nested-stack-js
-[20]: #nestedstack
-[21]: #waterfall-js
-[22]: #waterfall
-[23]: https://github.com/mbostock/d3/wiki/Arrays#-nest
-[24]: https://github.com/mbostock/d3/wiki/Stack-Layout
+[7]: #columns-js
+[8]: #
+[9]: #grouped-column-chart-js
+[10]: #groupedcolumnchart
+[11]: #line-chart-js
+[12]: #linechart
+[13]: #row-chart-js
+[14]: #rowchart
+[15]: #stacked-column-chart-js
+[16]: #columnchart
+[17]: #waterfall-connectors-js
+[18]: #waterfallconnectors
+[19]: #nested-group-js
+[20]: #nestedgroup
+[21]: #nested-stack-js
+[22]: #nestedstack
+[23]: #waterfall-js
+[24]: #waterfall
+[25]: https://github.com/mbostock/d3/wiki/Arrays#-nest
+[26]: https://github.com/mbostock/d3/wiki/Stack-Layout
