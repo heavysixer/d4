@@ -35,8 +35,11 @@
     root.d4 = d4;
   }
 
+  // FIXME These namespaces should not be publicly explosed, instead
+  // they should be assigned though a registration function.
   d4.features = {};
   d4.parsers = {};
+  d4.builders = {};
 
   var each = d4.each = d4.forEach = function(obj, iterator, context) {
     var nativeForEach = Array.prototype.forEach,
@@ -62,14 +65,21 @@
     }
   };
 
-  var assert = function(message) {
+  var assert = function() {
+    var parts = Array.prototype.slice.call(arguments);
+    var message = parts.shift();
+    var regexp;
+    each(parts, function(str, i){
+      regexp = new RegExp('\\{' + i + '\\}', 'gi');
+      message = message.replace(regexp, str);
+    });
     throw new Error('[d4] ' + message);
   };
 
   var validateBuilder = function(builder) {
     each(['configure'], function(funct) {
       if (!builder[funct] || d4.isNotFunction(builder[funct])) {
-        assert('The supplied builder does not have a ' + funct + ' function');
+        assert('The supplied builder does not have a {0} function', funct);
       }
     });
     return builder;
@@ -271,7 +281,7 @@
       assert('You must supply a continuation function in order to use a chart feature.');
     }
     if (!feature) {
-      assert('Could not find feature: "' + name + '", maybe you forgot to mix it in?');
+      assert('Could not find feature: "{0}", maybe you forgot to mix it in?', name);
     } else {
       funct.bind(this)(feature);
     }
