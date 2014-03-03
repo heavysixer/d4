@@ -1,9 +1,15 @@
 /*global describe:true*/
 /*global it:true*/
 /*global before:true*/
+/*global document:true*/
 'use strict';
 
 describe('d4.base', function() {
+  before(function() {
+    var container = document.getElementById('test');
+    container.innerHTML = '<div id="chart"></div>';
+  });
+
   it('should expose the d4 namespace globally', function() {
     expect(d4).to.not.be.an('undefined');
   });
@@ -20,8 +26,7 @@ describe('d4.base', function() {
     before(function() {
       this.builder = function() {
         return {
-          configure: function() {},
-          render: function() {}
+          configure: function() {}
         };
       };
     });
@@ -36,6 +41,63 @@ describe('d4.base', function() {
       it('should allow you to pass in a custom builder', function() {
         var chart = d4.baseChart({}, this.builder);
         expect(chart.builder).to.not.be.an('undefined');
+      });
+
+      it('should create a ordinal scale for the x dimension if no scales are provided', function(){
+        var chart = d4.baseChart({}, this.builder);
+        d3.select('#chart')
+          .datum([{x:1,y:2}])
+          .call(chart);
+
+        chart.scales(function(scales){
+          expect(scales.x.kind()).to.equal('ordinal');
+        });
+      });
+
+      it('should create a linear scale for the y dimension if no scales are provided', function(){
+        var chart = d4.baseChart({}, this.builder);
+        d3.select('#chart')
+          .datum([{x:1,y:2}])
+          .call(chart);
+
+        chart.scales(function(scales){
+          expect(scales.y.kind()).to.equal('linear');
+        });
+      });
+
+      it('should allow you to override the default scales', function(){
+        var obj = {
+          scales : [{
+            key: 'y',
+            kind: 'ordinal'
+          }]
+        };
+        var chart = d4.baseChart(obj, this.builder);
+        d3.select('#chart')
+          .datum([{x:1,y:2}])
+          .call(chart);
+
+        chart.scales(function(scales){
+
+          // default for x is unchanged
+          expect(scales.x.kind()).to.equal('ordinal');
+
+          // the y scale is now ordinal instead of linear
+          expect(scales.y.kind()).to.equal('ordinal');
+        });
+      });
+
+      it('should throw an error if an unsupported scale is used.', function(){
+        var obj = {
+          scales : [{
+            key: 'y',
+            kind: 'foo'
+          }]
+        };
+        var builder = this.builder;
+        expect(function() {
+          d4.baseChart(obj, builder);
+        }).to.throw(Error, '[d4] The scale type: "foo" is unrecognized. D4 only supports these scale types: identity, linear, log, ordinal, pow, quantile, quantize, sqrt, threshold');
       });
 
       it('should require the builder to have a configure function', function() {
@@ -213,7 +275,7 @@ describe('d4.base', function() {
           expect(grid.newAccessor).to.not.be.an('undefined');
         });
 
-      d3.select('#test')
+      d3.select('#chart')
         .datum(data)
         .call(chart);
 
@@ -239,6 +301,13 @@ describe('d4.base', function() {
   });
 
   describe('#using()', function() {
+    //it('should look for a scale, then a feature by name', function(){
+    //  var chart = d4.charts.column();
+    //  chart.using('x', function(x){
+    //    expect(x.accessors).to.not.be.an('undefined');
+    //  });
+    //});
+
     it('should throw an error if you try to use a non-existent feature', function() {
       var chart = d4.charts.column();
       expect(function() {
@@ -288,7 +357,7 @@ describe('d4.base', function() {
         };
       });
 
-      d3.select('#test')
+      d3.select('#chart')
         .datum(chartData)
         .call(chart);
     });

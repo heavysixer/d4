@@ -90,6 +90,63 @@
     }
     return this;
   };
+  var validateScale = function(scale){
+    var supportedScales = ['identity', 'linear', 'log', 'ordinal', 'pow', 'quantile', 'quantize', 'sqrt', 'threshold'];
+    if(supportedScales.indexOf(scale.kind) < 0){
+      err('The scale type: "{0}" is unrecognized. D4 only supports these scale types: {1}', scale.kind, supportedScales.join(', '));
+    }
+  };
+
+  /*!
+   * In order to have a uniform API, objects with accessors, need to have wrapper
+   * functions created for them so that users may access them in the declarative
+   * nature we promote. This function will take an object, which contains an
+   * accessors key and create the wrapper function for each accessor item.
+   * This function is used internally by the feature mixin and scales objects.
+   */
+  var createAccessors = function(obj){
+    var accessors = obj.accessors;
+    if (accessors) {
+      each(d3.keys(accessors), function(functName) {
+        obj[functName] = function(attr) {
+          if (!arguments.length) {
+            return obj.accessors[functName];
+          }
+          obj.accessors[functName] = attr;
+          return obj;
+        }.bind(this);
+      });
+    }
+  };
+
+  var addScale = function(opts, scale){
+    validateScale(scale);
+    opts.scales[scale.key] = {
+      accessors : d4.extend({
+        key : undefined,
+        kind : undefined,
+        min : undefined,
+        max : undefined,
+        link: undefined
+      },scale)
+    };
+    createAccessors(opts.scales[scale.key]);
+    console.log(opts);
+  };
+
+  var linkScales = function(opts) {
+    each(d3.keys(opts.scales), function(dimension){
+      addScale(opts, opts.scales[dimension]);
+    });
+
+    if(typeof(opts.scales.x) === 'undefined') {
+      addScale(opts, { key : 'x', kind : 'ordinal' });
+    }
+
+    if(typeof(opts.scales.y) === 'undefined') {
+      addScale(opts, { key : 'y', kind : 'linear' });
+    }
+  };
 
   var assignDefaults = function(config, defaultBuilder) {
     if (!defaultBuilder) {
@@ -100,6 +157,7 @@
       height: 400,
       features: {},
       mixins: [],
+      scales: {},
       xKey: 'x',
       yKey: 'y',
       valueKey: 'y',
@@ -110,6 +168,7 @@
         left: 40
       }
     }, config);
+    linkScales(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
     opts.accessors = ['margin', 'width', 'height', 'x', 'y', 'xKey', 'yKey', 'valueKey'].concat(config.accessors || []);
     return opts;
@@ -237,18 +296,7 @@
   */
   var assignMixinAccessors = function(feature){
     assignD3SelectionProxy(feature);
-    var accessors = feature.accessors;
-    if (accessors) {
-      each(d3.keys(accessors), function(functName) {
-        feature[functName] = function(attr) {
-          if (!arguments.length) {
-            return feature.accessors[functName];
-          }
-          feature.accessors[functName] = attr;
-          return feature;
-        }.bind(this);
-      });
-    }
+    createAccessors(feature);
   };
 
   var mixin = function(feature, index) {
@@ -274,6 +322,11 @@
     });
   };
 
+  /*!
+   * The using function is a bit of a catch all, it will attempt to find the
+   * object provided by the name in the order of importance. First it will look
+   * for an object in the scales object, then in the features object.
+   */
   var using = function(name, funct) {
     var feature = this.features[name];
     if (d4.isNotFunction(funct)) {
@@ -341,8 +394,7 @@
     However, this behavior creates ambiguity in API because it is unclear to the
     developer which accessors require functions and which can simply supply
     values. Ideally the API should support something like this:
-    chart.xKey('foo') or chart.xKey(function(){ return 'foo'; })
-    Presently only the latter is allowed, which is confusing.
+    chart.width(300) or chart.width(function(){ return 300; })
     */
     chart.accessors = opts.accessors;
     chart.accessors.forEach(function(accessor) {
@@ -356,25 +408,46 @@
     });
 
     /**
-     * The heart of the d4 API is the `using` function, which allows you to
-     * contextually modify attributes of the chart or one of its features.
+     * Specifies an object, which d4 uses to initialize the chart with. By default
+     * d4 expects charts to return a builder object, which will be used to
+     * configure defaults for the chart. Typically this means determining the
+     * the default value for the various axes. This accessor allows you to
+     * override the existing builder provided by a chart and use your own.
      *
      *##### Examples
      *
-     *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
-     *      .using('zeroLine', function(zero) {
-     *        zero
-     *          .x1(function() {
-     *            return this.x(0);
-     *          })
-     *      });
+     *     myChart.builder = function(chart, data){
+     *         return {
+     *            configure: function(chart, data) {
+     *                configureScales.bind(this)(chart, data);
+     *            }
+     *         };
+     *     };
      *
-     * @param {String} name - accessor name for chart feature.
-     * @param {Function} funct - function which will perform the modifcation.
+     * @param {Function} funct - function which returns a builder object.
      */
-    chart.using = function(name, funct) {
-      using.bind(opts)(name, funct);
+    chart.builder = function(funct) {
+      validateBuilder(funct.bind(chart)(opts));
       return chart;
+    };
+
+    /**
+     * To see what features are currently mixed into your chart you can use
+     * this method. This function cannot be chained.
+     *
+     *##### Examples
+     *
+     *      // Mixout the yAxis which is provided as a default
+     *      var chart = d4.charts.column()
+     *      .mixout('yAxis');
+     *
+     *      // Now test that the feature has been removed.
+     *      console.log(chart.features());
+     *      => ["bars", "barLabels", "xAxis"]
+     *
+     */
+    chart.features = function() {
+      return opts.mixins;
     };
 
     /**
@@ -418,46 +491,35 @@
     };
 
     /**
-     * Specifies an object, which d4 uses to initialize the chart with. By default
-     * d4 expects charts to return a builder object, which will be used to
-     * configure defaults for the chart. Typically this means determining the
-     * the default value for the various axes. This accessor allows you to
-     * override the existing builder provided by a chart and use your own.
-     *
-     *##### Examples
-     *
-     *     myChart.builder = function(chart, data){
-     *         return {
-     *            configure: function(chart, data) {
-     *                configureScales.bind(this)(chart, data);
-     *            }
-     *         };
-     *     };
-     *
-     * @param {Function} funct - function which returns a builder object.
+     * This function returns the internal scales object as a parameter to the
+     * supplied function.
+     * @param {Function} funct - function which will perform the modifcation.
      */
-    chart.builder = function(funct) {
-      validateBuilder(funct.bind(chart)(opts));
+    chart.scales = function(funct) {
+      funct(opts.scales);
       return chart;
     };
 
     /**
-     * To see what features are currently mixed into your chart you can use
-     * this method.
+     * The heart of the d4 API is the `using` function, which allows you to
+     * contextually modify attributes of the chart or one of its features.
      *
      *##### Examples
      *
-     *      // Mixout the yAxis which is provided as a default
-     *      var chart = d4.charts.column()
-     *      .mixout('yAxis');
+     *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
+     *      .using('zeroLine', function(zero) {
+     *        zero
+     *          .x1(function() {
+     *            return this.x(0);
+     *          })
+     *      });
      *
-     *      // Now test that the feature has been removed.
-     *      console.log(chart.features());
-     *      => ["bars", "barLabels", "xAxis"]
-     *
+     * @param {String} name - accessor name for chart feature.
+     * @param {Function} funct - function which will perform the modifcation.
      */
-    chart.features = function() {
-      return opts.mixins;
+    chart.using = function(name, funct) {
+      using.bind(opts)(name, funct);
+      return chart;
     };
 
     return chart;

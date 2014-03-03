@@ -1,5 +1,7 @@
 /*global describe:true*/
 /*global it:true*/
+/*global before:true*/
+/*global document:true*/
 'use strict';
 
 /*
@@ -9,6 +11,11 @@
   not to work.
 */
 describe('smoke tests', function() {
+  before(function() {
+    var container = document.getElementById('test');
+    container.innerHTML = '<div id="chart"></div>';
+  });
+
   it('should render a basic column chart', function() {
     var data = [
         { x: '2010', y:-10 },
@@ -18,7 +25,7 @@ describe('smoke tests', function() {
         { x: '2014', y:50 },
       ];
     var chart = d4.charts.column();
-    d3.select('#test')
+    d3.select('#chart')
     .datum(data)
     .call(chart);
     expect(d3.select('.series0')[0][0]).to.not.be.an('null');
@@ -53,7 +60,7 @@ describe('smoke tests', function() {
     .yKey('unitsSold')
     .groupsOf(parsedData.data[0].values.length);
 
-    d3.select('#test')
+    d3.select('#chart')
     .datum(parsedData.data)
     .call(chart);
 
@@ -96,7 +103,7 @@ describe('smoke tests', function() {
     .xKey('year')
     .yKey('unitsSold');
 
-    d3.select('#test')
+    d3.select('#chart')
     .datum(parsedData.data)
     .call(chart);
     expect(d3.select('.series0')[0][0]).to.not.be.an('null');
@@ -111,7 +118,7 @@ describe('smoke tests', function() {
         { x: '2014', y:50 },
       ];
     var chart = d4.charts.row();
-    d3.select('#test')
+    d3.select('#chart')
     .datum(data)
     .call(chart);
     expect(d3.select('.series0')[0][0]).to.not.be.an('null');
@@ -151,7 +158,7 @@ describe('smoke tests', function() {
     .xKey('year')
     .yKey('unitsSold');
 
-    d3.select('#test')
+    d3.select('#chart')
     .datum(parsedData.data)
     .call(chart);
 
@@ -182,7 +189,7 @@ describe('smoke tests', function() {
     .yKey('month')
     .zKey('unitsSold');
 
-    d3.select('#test')
+    d3.select('#chart')
     .datum(data)
     .call(chart);
 
@@ -226,7 +233,7 @@ describe('smoke tests', function() {
       .xKey('category')
       .yKey('value');
 
-    d3.select('#test')
+    d3.select('#chart')
       .datum(parsedData.data)
       .call(chart);
 

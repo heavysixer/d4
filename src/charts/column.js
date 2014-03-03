@@ -8,10 +8,10 @@
   var columnChartBuilder = function() {
     var builder = {
       configure: function(chart, data) {
-        if(!chart.x){
+        if (!chart.x) {
           d4.builders.ordinalScaleForNestedData(chart, data, 'x');
         }
-        if(!chart.y){
+        if (!chart.y) {
           d4.builders.linearScaleForNestedData(chart, data, 'y');
         }
       }
@@ -63,7 +63,15 @@ The default format may not be desired and so we'll override it:
 
   */
   d4.chart('column', function columnChart() {
-    var chart = d4.baseChart({}, columnChartBuilder);
+    var chart = d4.baseChart({
+      scales: [{
+        key: 'x',
+        kind: 'ordinal'
+      }, {
+        key: 'y',
+        kind: 'linear'
+      }]
+    }, columnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
     }, {
