@@ -102,24 +102,37 @@
   };
 
   /*!
+    FIXME: d4 wraps the inner property object `opts` in a series of class
+  functions. For example: `chart.width(300)` will set the internal
+  `opts.width` property to 300. Additionally chart.width() will return 300.
+  However, this behavior creates ambiguity in API because it is unclear to the
+  developer which accessors require functions and which can simply supply
+  values. Ideally the API should support something like this:
+  chart.width(300) or chart.width(function(){ return 300; })
+  */
+  var createAccessorsFromArray = function(obj, accessors){
+    each(accessors, function(functName) {
+      obj[functName] = function(attr) {
+        if (!arguments.length) {
+          return obj.accessors[functName];
+        }
+        obj.accessors[functName] = attr;
+        return obj;
+      }.bind(this);
+    });
+  };
+
+  /*!
    * In order to have a uniform API, objects with accessors, need to have wrapper
    * functions created for them so that users may access them in the declarative
    * nature we promote. This function will take an object, which contains an
    * accessors key and create the wrapper function for each accessor item.
    * This function is used internally by the feature mixin and scales objects.
    */
-  var createAccessors = function(obj){
+  var createAccessorsFromObject = function(obj){
     var accessors = obj.accessors;
     if (accessors) {
-      each(d3.keys(accessors), function(functName) {
-        obj[functName] = function(attr) {
-          if (!arguments.length) {
-            return obj.accessors[functName];
-          }
-          obj.accessors[functName] = attr;
-          return obj;
-        }.bind(this);
-      });
+      createAccessorsFromArray(obj, d3.keys(accessors));
     }
   };
 
@@ -134,8 +147,7 @@
         link: undefined
       },scale)
     };
-    createAccessors(opts.scales[scale.key]);
-    console.log(opts)
+    createAccessorsFromObject(opts.scales[scale.key]);
   };
 
   var linkScales = function(opts) {
@@ -300,7 +312,7 @@
   */
   var assignMixinAccessors = function(feature){
     assignD3SelectionProxy(feature);
-    createAccessors(feature);
+    createAccessorsFromObject(feature);
   };
 
   var mixin = function(feature, index) {
@@ -387,29 +399,35 @@
     return d4.parsers[name];
   };
 
+  /**
+   * This function creates a d4 chart object. It is only used when creating a
+   * new chart factory.
+   *
+   *##### Examples
+   *
+   *     d4.chart('column', function columnChart() {
+   *         var chart = d4.baseChart({
+   *           scales: [{
+   *             key: 'x',
+   *             kind: 'ordinal'
+   *           }, {
+   *             key: 'y',
+   *             kind: 'linear'
+   *           }]
+   *         }, columnChartBuilder);
+   *         return chart;
+   *     });
+   *
+   * @param {Object} config - an object representing chart configuration settings
+   * @param {Function} defaultBuilder - function which will return a valid builder object when invoked.
+   * @returns a reference to the chart object
+   */
   d4.baseChart = function(config, defaultBuilder) {
     var opts = assignDefaults(config, defaultBuilder);
     var chart = applyScaffold(opts);
 
-    /*!
-      FIXME: d4 wraps the inner property object `opts` in a series of class
-    functions. For example: `chart.width(300)` will set the internal
-    `opts.width` property to 300. Additionally chart.width() will return 300.
-    However, this behavior creates ambiguity in API because it is unclear to the
-    developer which accessors require functions and which can simply supply
-    values. Ideally the API should support something like this:
-    chart.width(300) or chart.width(function(){ return 300; })
-    */
     chart.accessors = opts.accessors;
-    chart.accessors.forEach(function(accessor) {
-      chart[accessor] = function(attr) {
-        if (!arguments.length) {
-          return opts[accessor];
-        }
-        opts[accessor] = attr;
-        return chart;
-      };
-    });
+    createAccessorsFromArray(chart, chart.accessors);
 
     /**
      * Specifies an object, which d4 uses to initialize the chart with. By default

@@ -25,8 +25,12 @@ $(document).ready(function(){
     ['2014', 50]
   ];
   var chart = d4.charts.column()
-  .xKey(0)
-  .yKey(1);
+  .using('x', function(x){
+    x.key(0);
+  })
+  .using('y', function(y){
+    y.key(1);
+  })
 
   d3.select('#example')
   .datum(data)

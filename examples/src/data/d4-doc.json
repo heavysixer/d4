@@ -19,7 +19,39 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n\n  var root = this;\n  var breaker = {};\n\n  // Create a safe reference to the d4 object.\n  var d4 = function(obj) {\n    if (obj instanceof d4) {\n      return obj;\n    }\n    if (!(this instanceof d4)) {\n      return new d4(obj);\n    }\n    this.d4Wrapped = obj;\n  };\n\n  if (typeof exports !== 'undefined') {\n    if (typeof module !== 'undefined' && module.exports) {\n      exports = module.exports = d4;\n    }\n    exports.d4 = d4;\n  } else {\n    root.d4 = d4;\n  }\n\n  d4.charts = {};\n  d4.features = {};\n  d4.parsers = {};\n  d4.builders = {};\n\n  var each = d4.each = d4.forEach = function(obj, iterator, context) {\n    var nativeForEach = Array.prototype.forEach,\n      i, len;\n    if (obj === null) {\n      return;\n    }\n    if (nativeForEach && obj.forEach === nativeForEach) {\n      obj.forEach(iterator, context);\n    } else if (obj.length === +obj.length) {\n      for (i = 0, len = obj.length; i < len; i++) {\n        if (iterator.call(context, obj[i], i, obj) === breaker) {\n          return;\n        }\n      }\n    } else {\n      var keys = d3.keys(obj);\n      for (i = 0, len = keys.length; i < len; i++) {\n        if (iterator.call(context, obj[keys[i]], keys[i], obj) === breaker) {\n          return;\n        }\n      }\n    }\n  };\n\n  var err = function() {\n    var parts = Array.prototype.slice.call(arguments);\n    var message = parts.shift();\n    var regexp;\n    each(parts, function(str, i){\n      regexp = new RegExp('\\\\{' + i + '\\\\}', 'gi');\n      message = message.replace(regexp, str);\n    });\n    throw new Error('[d4] ' + message);\n  };\n\n  var validateBuilder = function(builder) {\n    each(['configure'], function(funct) {\n      if (!builder[funct] || d4.isNotFunction(builder[funct])) {\n        err('The supplied builder does not have a {0} function', funct);\n      }\n    });\n    return builder;\n  };\n\n  var assignDefaultBuilder = function(defaultBuilder) {\n    if (!this.builder) {\n      this.builder = validateBuilder(defaultBuilder.bind(this)());\n    }\n    return this;\n  };\n\n  var defaultScale = function(key, kind){\n    return {\n      key : d4.functor(key),\n      kind : d4.functor(kind),\n      min: undefined,\n      max: undefined\n    };\n  };\n\n  var assignDefaults = function(config, defaultBuilder) {\n    if (!defaultBuilder) {\n      err('No builder defined');\n    }\n    var opts = d4.merge({\n      width: 400,\n      height: 400,\n      features: {},\n      mixins: [],\n      scales: {\n        x: defaultScale('x', 'ordinal'),\n        y: defaultScale('y', 'linear')\n      },\n      xKey: 'x',\n      yKey: 'y',\n      valueKey: 'y',\n      margin: {\n        top: 20,\n        right: 20,\n        bottom: 20,\n        left: 40\n      }\n    }, config);\n    assignDefaultBuilder.bind(opts)(defaultBuilder);\n    opts.accessors = ['margin', 'width', 'height', 'x', 'y', 'xKey', 'yKey', 'valueKey'].concat(config.accessors || []);\n    return opts;\n  };",
+            "code": "'use strict';\n\n  var root = this;\n  var breaker = {};\n\n  // Create a safe reference to the d4 object.\n  var d4 = function(obj) {\n    if (obj instanceof d4) {\n      return obj;\n    }\n    if (!(this instanceof d4)) {\n      return new d4(obj);\n    }\n    this.d4Wrapped = obj;\n  };\n\n  if (typeof exports !== 'undefined') {\n    if (typeof module !== 'undefined' && module.exports) {\n      exports = module.exports = d4;\n    }\n    exports.d4 = d4;\n  } else {\n    root.d4 = d4;\n  }\n\n  d4.charts = {};\n  d4.features = {};\n  d4.parsers = {};\n  d4.builders = {};\n\n  var each = d4.each = d4.forEach = function(obj, iterator, context) {\n    var nativeForEach = Array.prototype.forEach,\n      i, len;\n    if (obj === null) {\n      return;\n    }\n    if (nativeForEach && obj.forEach === nativeForEach) {\n      obj.forEach(iterator, context);\n    } else if (obj.length === +obj.length) {\n      for (i = 0, len = obj.length; i < len; i++) {\n        if (iterator.call(context, obj[i], i, obj) === breaker) {\n          return;\n        }\n      }\n    } else {\n      var keys = d3.keys(obj);\n      for (i = 0, len = keys.length; i < len; i++) {\n        if (iterator.call(context, obj[keys[i]], keys[i], obj) === breaker) {\n          return;\n        }\n      }\n    }\n  };\n\n  var err = function() {\n    var parts = Array.prototype.slice.call(arguments);\n    var message = parts.shift();\n    var regexp;\n    each(parts, function(str, i){\n      regexp = new RegExp('\\\\{' + i + '\\\\}', 'gi');\n      message = message.replace(regexp, str);\n    });\n    throw new Error('[d4] ' + message);\n  };\n\n  var validateBuilder = function(builder) {\n    each(['configure'], function(funct) {\n      if (!builder[funct] || d4.isNotFunction(builder[funct])) {\n        err('The supplied builder does not have a {0} function', funct);\n      }\n    });\n    return builder;\n  };\n\n  var assignDefaultBuilder = function(defaultBuilder) {\n    if (!this.builder) {\n      this.builder = validateBuilder(defaultBuilder.bind(this)());\n    }\n    return this;\n  };\n  var validateScale = function(scale){\n    var supportedScales = ['identity', 'linear', 'log', 'ordinal', 'pow', 'quantile', 'quantize', 'sqrt', 'threshold'];\n    if(supportedScales.indexOf(scale.kind) < 0){\n      err('The scale type: \"{0}\" is unrecognized. D4 only supports these scale types: {1}', scale.kind, supportedScales.join(', '));\n    }\n  };",
+            "fileName": "../src/base.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>FIXME: d4 wraps the inner property object <code>opts</code> in a series of class<br />  functions. For example: <code>chart.width(300)</code> will set the internal<br />  <code>opts.width</code> property to 300. Additionally chart.width() will return 300.<br />  However, this behavior creates ambiguity in API because it is unclear to the<br />  developer which accessors require functions and which can simply supply<br />  values. Ideally the API should support something like this:<br />  chart.width(300) or chart.width(function(){ return 300; })</p>",
+                "summary": "<p>FIXME: d4 wraps the inner property object <code>opts</code> in a series of class<br />  functions. For example: <code>chart.width(300)</code> will set the internal<br />  <code>opts.width</code> property to 300. Additionally chart.width() will return 300.<br />  However, this behavior creates ambiguity in API because it is unclear to the<br />  developer which accessors require functions and which can simply supply<br />  values. Ideally the API should support something like this:<br />  chart.width(300) or chart.width(function(){ return 300; })</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "code": "var createAccessorsFromArray = function(obj, accessors){\n    each(accessors, function(functName) {\n      obj[functName] = function(attr) {\n        if (!arguments.length) {\n          return obj.accessors[functName];\n        }\n        obj.accessors[functName] = attr;\n        return obj;\n      }.bind(this);\n    });\n  };",
+            "ctx": {
+                "type": "function",
+                "name": "createAccessorsFromArray",
+                "string": "createAccessorsFromArray()"
+            },
+            "fileName": "../src/base.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>In order to have a uniform API, objects with accessors, need to have wrapper<br />functions created for them so that users may access them in the declarative<br />nature we promote. This function will take an object, which contains an<br />accessors key and create the wrapper function for each accessor item.<br />This function is used internally by the feature mixin and scales objects.</p>",
+                "summary": "<p>In order to have a uniform API, objects with accessors, need to have wrapper<br />functions created for them so that users may access them in the declarative<br />nature we promote. This function will take an object, which contains an<br />accessors key and create the wrapper function for each accessor item.<br />This function is used internally by the feature mixin and scales objects.</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "code": "var createAccessorsFromObject = function(obj){\n    var accessors = obj.accessors;\n    if (accessors) {\n      createAccessorsFromArray(obj, d3.keys(accessors));\n    }\n  };\n\n  var addScale = function(opts, scale){\n    validateScale(scale);\n    opts.scales[scale.key] = {\n      accessors : d4.extend({\n        key : undefined,\n        kind : undefined,\n        min : undefined,\n        max : undefined,\n        link: undefined\n      },scale)\n    };\n    createAccessorsFromObject(opts.scales[scale.key]);\n  };\n\n  var linkScales = function(opts) {\n    each(d3.keys(opts.scales), function(dimension){\n      addScale(opts, opts.scales[dimension]);\n    });\n\n    if(typeof(opts.scales.x) === 'undefined') {\n      addScale(opts, { key : 'x', kind : 'ordinal' });\n    }\n\n    if(typeof(opts.scales.y) === 'undefined') {\n      addScale(opts, { key : 'y', kind : 'linear' });\n    }\n  };\n\n  var assignDefaults = function(config, defaultBuilder) {\n    if (!defaultBuilder) {\n      err('No builder defined');\n    }\n    var opts = d4.merge({\n      width: 400,\n      height: 400,\n      features: {},\n      mixins: [],\n      scales: {},\n      xKey: 'x',\n      yKey: 'y',\n      valueKey: 'y',\n      margin: {\n        top: 20,\n        right: 20,\n        bottom: 20,\n        left: 40\n      }\n    }, config);\n    linkScales(opts);\n    assignDefaultBuilder.bind(opts)(defaultBuilder);\n    opts.accessors = ['margin', 'width', 'height', 'x', 'y', 'xKey', 'yKey', 'valueKey'].concat(config.accessors || []);\n    return opts;\n  };",
+            "ctx": {
+                "type": "function",
+                "name": "createAccessorsFromObject",
+                "string": "createAccessorsFromObject()"
+            },
             "fileName": "../src/base.js"
         },
         {
@@ -62,7 +94,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "var assignMixinAccessors = function(feature){\n    assignD3SelectionProxy(feature);\n    var accessors = feature.accessors;\n    if (accessors) {\n      each(d3.keys(accessors), function(functName) {\n        feature[functName] = function(attr) {\n          if (!arguments.length) {\n            return feature.accessors[functName];\n          }\n          feature.accessors[functName] = attr;\n          return feature;\n        }.bind(this);\n      });\n    }\n  };\n\n  var mixin = function(feature, index) {\n    if (!feature) {\n      err('You need to supply an object to mixin.');\n    }\n    var name = d3.keys(feature)[0];\n    var overrides = extractOverrides.bind(this)(feature, name);\n    feature[name] = d4.merge(feature[name](name), overrides);\n    d4.extend(this.features, feature);\n    addToMixins(this.mixins, name, index);\n    assignMixinAccessors(this.features[name]);\n  };\n\n  var mixout = function(name) {\n    if (!name) {\n      err('A name is required in order to mixout a chart feature.');\n    }\n\n    delete this.features[name];\n    this.mixins = this.mixins.filter(function(val) {\n      return val !== name;\n    });\n  };",
+            "code": "var assignMixinAccessors = function(feature){\n    assignD3SelectionProxy(feature);\n    createAccessorsFromObject(feature);\n  };\n\n  var mixin = function(feature, index) {\n    if (!feature) {\n      err('You need to supply an object to mixin.');\n    }\n    var name = d3.keys(feature)[0];\n    var overrides = extractOverrides.bind(this)(feature, name);\n    feature[name] = d4.merge(feature[name](name), overrides);\n    d4.extend(this.features, feature);\n    addToMixins(this.mixins, name, index);\n    assignMixinAccessors(this.features[name]);\n  };\n\n  var mixout = function(name) {\n    if (!name) {\n      err('A name is required in order to mixout a chart feature.');\n    }\n\n    delete this.features[name];\n    this.mixins = this.mixins.filter(function(val) {\n      return val !== name;\n    });\n  };",
             "ctx": {
                 "type": "function",
                 "name": "assignMixinAccessors",
@@ -233,7 +265,7 @@
             },
             "isPrivate": false,
             "ignore": false,
-            "code": "d4.parser = function(name, funct) {\n    d4.parsers[name] = funct;\n    return d4.parsers[name];\n  };\n\n  d4.baseChart = function(config, defaultBuilder) {\n    var opts = assignDefaults(config, defaultBuilder);\n    var chart = applyScaffold(opts);",
+            "code": "d4.parser = function(name, funct) {\n    d4.parsers[name] = funct;\n    return d4.parsers[name];\n  };",
             "ctx": {
                 "type": "method",
                 "receiver": "d4",
@@ -243,20 +275,41 @@
             "fileName": "../src/base.js"
         },
         {
-            "tags": [],
+            "tags": [
+                {
+                    "type": "param",
+                    "types": [
+                        "Object"
+                    ],
+                    "name": "config",
+                    "description": "- an object representing chart configuration settings"
+                },
+                {
+                    "type": "param",
+                    "types": [
+                        "Function"
+                    ],
+                    "name": "defaultBuilder",
+                    "description": "- function which will return a valid builder object when invoked."
+                },
+                {
+                    "type": "returns",
+                    "string": "a reference to the chart object"
+                }
+            ],
             "description": {
-                "full": "<p>FIXME: d4 wraps the inner property object <code>opts</code> in a series of class<br />    functions. For example: <code>chart.width(300)</code> will set the internal<br />    <code>opts.width</code> property to 300. Additionally chart.width() will return 300.<br />    However, this behavior creates ambiguity in API because it is unclear to the<br />    developer which accessors require functions and which can simply supply<br />    values. Ideally the API should support something like this:<br />    chart.width(300) or chart.width(function(){ return 300; })</p>",
-                "summary": "<p>FIXME: d4 wraps the inner property object <code>opts</code> in a series of class<br />    functions. For example: <code>chart.width(300)</code> will set the internal<br />    <code>opts.width</code> property to 300. Additionally chart.width() will return 300.<br />    However, this behavior creates ambiguity in API because it is unclear to the<br />    developer which accessors require functions and which can simply supply<br />    values. Ideally the API should support something like this:<br />    chart.width(300) or chart.width(function(){ return 300; })</p>",
-                "body": ""
+                "full": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>\n\n<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      scales: [{\n        key: 'x',\n        kind: 'ordinal'\n      }, {\n        key: 'y',\n        kind: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>",
+                "summary": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>",
+                "body": "<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      scales: [{\n        key: 'x',\n        kind: 'ordinal'\n      }, {\n        key: 'y',\n        kind: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>"
             },
-            "ignore": true,
-            "code": "chart.accessors = opts.accessors;\n    chart.accessors.forEach(function(accessor) {\n      chart[accessor] = function(attr) {\n        if (!arguments.length) {\n          return opts[accessor];\n        }\n        opts[accessor] = attr;\n        return chart;\n      };\n    });",
+            "isPrivate": false,
+            "ignore": false,
+            "code": "d4.baseChart = function(config, defaultBuilder) {\n    var opts = assignDefaults(config, defaultBuilder);\n    var chart = applyScaffold(opts);\n\n    chart.accessors = opts.accessors;\n    createAccessorsFromArray(chart, chart.accessors);",
             "ctx": {
-                "type": "property",
-                "receiver": "chart",
-                "name": "accessors",
-                "value": "opts.accessors",
-                "string": "chart.accessors"
+                "type": "method",
+                "receiver": "d4",
+                "name": "baseChart",
+                "string": "d4.baseChart()"
             },
             "fileName": "../src/base.js"
         },
@@ -265,33 +318,42 @@
                 {
                     "type": "param",
                     "types": [
-                        "String"
-                    ],
-                    "name": "name",
-                    "description": "- accessor name for chart feature."
-                },
-                {
-                    "type": "param",
-                    "types": [
                         "Function"
                     ],
                     "name": "funct",
-                    "description": "- function which will perform the modifcation."
+                    "description": "- function which returns a builder object."
                 }
             ],
             "description": {
-                "full": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>\n\n<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>",
-                "summary": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>",
-                "body": "<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>"
+                "full": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>\n\n<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>",
+                "summary": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>",
+                "body": "<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>"
             },
             "isPrivate": false,
             "ignore": false,
-            "code": "chart.using = function(name, funct) {\n      using.bind(opts)(name, funct);\n      return chart;\n    };",
+            "code": "chart.builder = function(funct) {\n      validateBuilder(funct.bind(chart)(opts));\n      return chart;\n    };",
             "ctx": {
                 "type": "method",
                 "receiver": "chart",
-                "name": "using",
-                "string": "chart.using()"
+                "name": "builder",
+                "string": "chart.builder()"
+            },
+            "fileName": "../src/base.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>To see what features are currently mixed into your chart you can use<br />this method. This function cannot be chained.</p>\n\n<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>",
+                "summary": "<p>To see what features are currently mixed into your chart you can use<br />this method. This function cannot be chained.</p>",
+                "body": "<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>"
+            },
+            "ignore": false,
+            "code": "chart.features = function() {\n      return opts.mixins;\n    };",
+            "ctx": {
+                "type": "method",
+                "receiver": "chart",
+                "name": "features",
+                "string": "chart.features()"
             },
             "fileName": "../src/base.js"
         },
@@ -365,39 +427,57 @@
                         "Function"
                     ],
                     "name": "funct",
-                    "description": "- function which returns a builder object."
+                    "description": "- function which will perform the modifcation."
                 }
             ],
             "description": {
-                "full": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>\n\n<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>",
-                "summary": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>",
-                "body": "<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>"
+                "full": "<p>This function returns the internal scales object as a parameter to the<br />supplied function.</p>",
+                "summary": "<p>This function returns the internal scales object as a parameter to the<br />supplied function.</p>",
+                "body": ""
             },
             "isPrivate": false,
             "ignore": false,
-            "code": "chart.builder = function(funct) {\n      validateBuilder(funct.bind(chart)(opts));\n      return chart;\n    };",
+            "code": "chart.scales = function(funct) {\n      funct(opts.scales);\n      return chart;\n    };",
             "ctx": {
                 "type": "method",
                 "receiver": "chart",
-                "name": "builder",
-                "string": "chart.builder()"
+                "name": "scales",
+                "string": "chart.scales()"
             },
             "fileName": "../src/base.js"
         },
         {
-            "tags": [],
+            "tags": [
+                {
+                    "type": "param",
+                    "types": [
+                        "String"
+                    ],
+                    "name": "name",
+                    "description": "- accessor name for chart feature."
+                },
+                {
+                    "type": "param",
+                    "types": [
+                        "Function"
+                    ],
+                    "name": "funct",
+                    "description": "- function which will perform the modifcation."
+                }
+            ],
             "description": {
-                "full": "<p>To see what features are currently mixed into your chart you can use<br />this method.</p>\n\n<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>",
-                "summary": "<p>To see what features are currently mixed into your chart you can use<br />this method.</p>",
-                "body": "<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>"
+                "full": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>\n\n<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>",
+                "summary": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>",
+                "body": "<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>"
             },
+            "isPrivate": false,
             "ignore": false,
-            "code": "chart.features = function() {\n      return opts.mixins;\n    };\n\n    return chart;\n  };",
+            "code": "chart.using = function(name, funct) {\n      using.bind(opts)(name, funct);\n      return chart;\n    };\n\n    return chart;\n  };",
             "ctx": {
                 "type": "method",
                 "receiver": "chart",
-                "name": "features",
-                "string": "chart.features()"
+                "name": "using",
+                "string": "chart.using()"
             },
             "fileName": "../src/base.js"
         },
@@ -529,7 +609,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n\n  var columnChartBuilder = function() {\n    var builder = {\n      configure: function(chart, data) {\n        if(!chart.x){\n          d4.builders.ordinalScaleForNestedData(chart, data, 'x');\n        }\n        if(!chart.y){\n          d4.builders.linearScaleForNestedData(chart, data, 'y');\n        }\n      }\n    };\n    return builder;\n  };",
+            "code": "'use strict';\n\n  var columnChartBuilder = function() {\n    var builder = {\n      configure: function(chart, data) {\n        if (!chart.x) {\n          d4.builders.ordinalScaleForNestedData(chart, data, 'x');\n        }\n        if (!chart.y) {\n          d4.builders.linearScaleForNestedData(chart, data, 'y');\n        }\n      }\n    };\n    return builder;\n  };",
             "fileName": "../src/charts/column.js"
         },
         {
@@ -540,7 +620,7 @@
                 "body": "<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n    { x: '2010', y:-10 },\n    { x: '2011', y:20 },\n    { x: '2012', y:30 },\n    { x: '2013', y:40 },\n    { x: '2014', y:50 },\n  ];\nvar chart = d4.charts.column();\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>\n\n<p>By default d4 expects a series object, which uses the following format: <code>{ x : '2010', y : 10 }</code>.<br />The default format may not be desired and so we'll override it:</p>\n\n<pre><code>var data = [\n  ['2010', -10],\n  ['2011', 20],\n  ['2012', 30],\n  ['2013', 40],\n  ['2014', 50]\n];\nvar chart = d4.charts.column()\n.xKey(0)\n.yKey(1);\n\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>"
             },
             "ignore": false,
-            "code": "d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({}, columnChartBuilder);\n    [{\n      'bars': d4.features.stackedColumnSeries\n    }, {\n      'barLabels': d4.features.stackedColumnLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "code": "d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      scales: [{\n        key: 'x',\n        kind: 'ordinal'\n      }, {\n        key: 'y',\n        kind: 'linear'\n      }]\n    }, columnChartBuilder);\n    [{\n      'bars': d4.features.stackedColumnSeries\n    }, {\n      'barLabels': d4.features.stackedColumnLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
             "fileName": "../src/charts/column.js"
         },
         {
@@ -953,6 +1033,8 @@
         {},
         {},
         {},
+        {},
+        {},
         {
             "params": [
                 {
@@ -1061,31 +1143,61 @@
             },
             "returns": "a reference to the data parser"
         },
-        {},
         {
             "params": [
                 {
                     "types": [
-                        "String"
+                        "Object"
                     ],
-                    "name": "name",
-                    "description": "- accessor name for chart feature."
+                    "name": "config",
+                    "description": "- an object representing chart configuration settings"
                 },
                 {
                     "types": [
                         "Function"
                     ],
-                    "name": "funct",
-                    "description": "- function which will perform the modifcation."
+                    "name": "defaultBuilder",
+                    "description": "- function which will return a valid builder object when invoked."
                 }
             ],
-            "name": "using",
+            "name": "baseChart",
             "type": "method",
             "fileName": "../src/base.js",
             "description": {
-                "full": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>\n\n<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>",
-                "summary": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>",
-                "body": "<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>"
+                "full": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>\n\n<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      scales: [{\n        key: 'x',\n        kind: 'ordinal'\n      }, {\n        key: 'y',\n        kind: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>",
+                "summary": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>",
+                "body": "<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      scales: [{\n        key: 'x',\n        kind: 'ordinal'\n      }, {\n        key: 'y',\n        kind: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>"
+            },
+            "returns": "a reference to the chart object"
+        },
+        {
+            "params": [
+                {
+                    "types": [
+                        "Function"
+                    ],
+                    "name": "funct",
+                    "description": "- function which returns a builder object."
+                }
+            ],
+            "name": "builder",
+            "type": "method",
+            "fileName": "../src/base.js",
+            "description": {
+                "full": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>\n\n<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>",
+                "summary": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>",
+                "body": "<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>"
+            }
+        },
+        {
+            "params": [],
+            "name": "features",
+            "type": "method",
+            "fileName": "../src/base.js",
+            "description": {
+                "full": "<p>To see what features are currently mixed into your chart you can use<br />this method. This function cannot be chained.</p>\n\n<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>",
+                "summary": "<p>To see what features are currently mixed into your chart you can use<br />this method. This function cannot be chained.</p>",
+                "body": "<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>"
             }
         },
         {
@@ -1140,27 +1252,42 @@
                         "Function"
                     ],
                     "name": "funct",
-                    "description": "- function which returns a builder object."
+                    "description": "- function which will perform the modifcation."
                 }
             ],
-            "name": "builder",
+            "name": "scales",
             "type": "method",
             "fileName": "../src/base.js",
             "description": {
-                "full": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>\n\n<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>",
-                "summary": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>",
-                "body": "<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>"
+                "full": "<p>This function returns the internal scales object as a parameter to the<br />supplied function.</p>",
+                "summary": "<p>This function returns the internal scales object as a parameter to the<br />supplied function.</p>",
+                "body": ""
             }
         },
         {
-            "params": [],
-            "name": "features",
+            "params": [
+                {
+                    "types": [
+                        "String"
+                    ],
+                    "name": "name",
+                    "description": "- accessor name for chart feature."
+                },
+                {
+                    "types": [
+                        "Function"
+                    ],
+                    "name": "funct",
+                    "description": "- function which will perform the modifcation."
+                }
+            ],
+            "name": "using",
             "type": "method",
             "fileName": "../src/base.js",
             "description": {
-                "full": "<p>To see what features are currently mixed into your chart you can use<br />this method.</p>\n\n<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>",
-                "summary": "<p>To see what features are currently mixed into your chart you can use<br />this method.</p>",
-                "body": "<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>"
+                "full": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>\n\n<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>",
+                "summary": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>",
+                "body": "<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>"
             }
         },
         {
@@ -1488,26 +1615,57 @@
                     "params": [
                         {
                             "types": [
-                                "String"
+                                "Object"
                             ],
-                            "name": "name",
-                            "description": "- accessor name for chart feature."
+                            "name": "config",
+                            "description": "- an object representing chart configuration settings"
                         },
                         {
                             "types": [
                                 "Function"
                             ],
-                            "name": "funct",
-                            "description": "- function which will perform the modifcation."
+                            "name": "defaultBuilder",
+                            "description": "- function which will return a valid builder object when invoked."
                         }
                     ],
-                    "name": "using",
+                    "name": "baseChart",
                     "type": "method",
                     "fileName": "../src/base.js",
                     "description": {
-                        "full": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>\n\n<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>",
-                        "summary": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>",
-                        "body": "<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>"
+                        "full": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>\n\n<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      scales: [{\n        key: 'x',\n        kind: 'ordinal'\n      }, {\n        key: 'y',\n        kind: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>",
+                        "summary": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>",
+                        "body": "<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      scales: [{\n        key: 'x',\n        kind: 'ordinal'\n      }, {\n        key: 'y',\n        kind: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>"
+                    },
+                    "returns": "a reference to the chart object"
+                },
+                {
+                    "params": [
+                        {
+                            "types": [
+                                "Function"
+                            ],
+                            "name": "funct",
+                            "description": "- function which returns a builder object."
+                        }
+                    ],
+                    "name": "builder",
+                    "type": "method",
+                    "fileName": "../src/base.js",
+                    "description": {
+                        "full": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>\n\n<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>",
+                        "summary": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>",
+                        "body": "<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>"
+                    }
+                },
+                {
+                    "params": [],
+                    "name": "features",
+                    "type": "method",
+                    "fileName": "../src/base.js",
+                    "description": {
+                        "full": "<p>To see what features are currently mixed into your chart you can use<br />this method. This function cannot be chained.</p>\n\n<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>",
+                        "summary": "<p>To see what features are currently mixed into your chart you can use<br />this method. This function cannot be chained.</p>",
+                        "body": "<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>"
                     }
                 },
                 {
@@ -1562,27 +1720,42 @@
                                 "Function"
                             ],
                             "name": "funct",
-                            "description": "- function which returns a builder object."
+                            "description": "- function which will perform the modifcation."
                         }
                     ],
-                    "name": "builder",
+                    "name": "scales",
                     "type": "method",
                     "fileName": "../src/base.js",
                     "description": {
-                        "full": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>\n\n<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>",
-                        "summary": "<p>Specifies an object, which d4 uses to initialize the chart with. By default<br />d4 expects charts to return a builder object, which will be used to<br />configure defaults for the chart. Typically this means determining the<br />the default value for the various axes. This accessor allows you to<br />override the existing builder provided by a chart and use your own.</p>",
-                        "body": "<h5>Examples</h5>\n\n<pre><code>myChart.builder = function(chart, data){\n    return {\n       configure: function(chart, data) {\n           configureScales.bind(this)(chart, data);\n       }\n    };\n};\n</code></pre>"
+                        "full": "<p>This function returns the internal scales object as a parameter to the<br />supplied function.</p>",
+                        "summary": "<p>This function returns the internal scales object as a parameter to the<br />supplied function.</p>",
+                        "body": ""
                     }
                 },
                 {
-                    "params": [],
-                    "name": "features",
+                    "params": [
+                        {
+                            "types": [
+                                "String"
+                            ],
+                            "name": "name",
+                            "description": "- accessor name for chart feature."
+                        },
+                        {
+                            "types": [
+                                "Function"
+                            ],
+                            "name": "funct",
+                            "description": "- function which will perform the modifcation."
+                        }
+                    ],
+                    "name": "using",
                     "type": "method",
                     "fileName": "../src/base.js",
                     "description": {
-                        "full": "<p>To see what features are currently mixed into your chart you can use<br />this method.</p>\n\n<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>",
-                        "summary": "<p>To see what features are currently mixed into your chart you can use<br />this method.</p>",
-                        "body": "<h5>Examples</h5>\n\n<pre><code> // Mixout the yAxis which is provided as a default\n var chart = d4.charts.column()\n .mixout('yAxis');\n\n // Now test that the feature has been removed.\n console.log(chart.features());\n =&gt; [\"bars\", \"barLabels\", \"xAxis\"]\n</code></pre>"
+                        "full": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>\n\n<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>",
+                        "summary": "<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br />contextually modify attributes of the chart or one of its features.</p>",
+                        "body": "<h5>Examples</h5>\n\n<pre><code> chart.mixin({ 'zeroLine': d4.features.referenceLine })\n .using('zeroLine', function(zero) {\n   zero\n     .x1(function() {\n       return this.x(0);\n     })\n });\n</code></pre>"
                     }
                 },
                 {

@@ -6,49 +6,51 @@
 * [`feature`][2]
 * [`builder`][3]
 * [`parser`][4]
-* [`using`][5]
-* [`mixin`][6]
-* [`mixout`][7]
+* [`baseChart`][5]
 * [`builder`][3]
-* [`features`][8]
-* [`functor`][9]
+* [`features`][6]
+* [`mixin`][7]
+* [`mixout`][8]
+* [`scales`][9]
+* [`using`][10]
+* [`functor`][11]
 
-###### [scales.js][10]
+###### [scales.js][12]
 
-* [``][11]
-* [``][11]
+* [``][13]
+* [``][13]
 
-###### [column.js][12]
+###### [column.js][14]
 
-* [``][11]
+* [``][13]
 
-###### [grouped-column.js][13]
+###### [grouped-column.js][15]
 
-* [``][11]
+* [``][13]
 
-###### [line.js][14]
+###### [line.js][16]
 
-* [``][11]
+* [``][13]
 
-###### [row.js][15]
+###### [row.js][17]
 
-* [``][11]
+* [``][13]
 
-###### [waterfall-connectors.js][16]
+###### [waterfall-connectors.js][18]
 
-* [``][11]
+* [``][13]
 
-###### [nested-group.js][17]
+###### [nested-group.js][19]
 
-* [``][11]
+* [``][13]
 
-###### [nested-stack.js][18]
+###### [nested-stack.js][20]
 
-* [``][11]
+* [``][13]
 
-###### [waterfall.js][19]
+###### [waterfall.js][21]
 
-* [``][11]
+* [``][13]
 
 ## base.js
 
@@ -108,77 +110,34 @@ This function allows you to register a reusable data parser with d4\.
 
 ---
 
-### using
+### baseChart
 
 [\#][5]
 [Ⓣ][0]
 
-The heart of the d4 API is the `using` function, which allows you to  
-contextually modify attributes of the chart or one of its features.
+This function creates a d4 chart object. It is only used when creating a  
+new chart factory.
 
 ##### Examples
 
-     chart.mixin({ 'zeroLine': d4.features.referenceLine })
-     .using('zeroLine', function(zero) {
-       zero
-         .x1(function() {
-           return this.x(0);
-         })
-     });
+    d4.chart('column', function columnChart() {
+        var chart = d4.baseChart({
+          scales: [{
+            key: 'x',
+            kind: 'ordinal'
+          }, {
+            key: 'y',
+            kind: 'linear'
+          }]
+        }, columnChartBuilder);
+        return chart;
+    });
     
 
 #### Arguments
 
-1. `name`_(String) -- accessor name for chart feature._
-2. `funct`_(Function) -- function which will perform the modifcation._
-
----
-
-### mixin
-
-[\#][6]
-[Ⓣ][0]
-
-Specifies a feature to be mixed into a given chart.  
-The feature is an object where the key represents the feature name, and a  
-value which is a function that when invoked returns a d4 feature object.
-
-##### Examples
-
-     // Mix in a feature at a specific depth
-     chart.mixin({ 'grid': d4.features.grid }, 0)
-    
-     chart.mixin({ 'zeroLine': d4.features.referenceLine })
-    
-
-#### Arguments
-
-1. `feature`_(Object) -- an object describing the feature to mix in._
-2. `index`_(Integer) -- an optional number to specify the insertion layer._
-
----
-
-### mixout
-
-[\#][7]
-[Ⓣ][0]
-
-Specifies an existing feature of a chart to be removed (mixed out).
-
-##### Examples
-
-     // Mixout the yAxis which is provided as a default
-     var chart = d4.charts.column()
-     .mixout('yAxis');
-    
-     // Now test that the feature has been removed.
-     console.log(chart.features());
-     => ["bars", "barLabels", "xAxis"]
-    
-
-#### Arguments
-
-1. `name`_(String) -- accessor name for chart feature._
+1. `config`_(Object) -- an object representing chart configuration settings_
+2. `defaultBuilder`_(Function) -- function which will return a valid builder object when invoked._
 
 ---
 
@@ -212,11 +171,11 @@ override the existing builder provided by a chart and use your own.
 
 ### features
 
-[\#][8]
+[\#][6]
 [Ⓣ][0]
 
 To see what features are currently mixed into your chart you can use  
-this method.
+this method. This function cannot be chained.
 
 ##### Examples
 
@@ -231,9 +190,97 @@ this method.
 
 ---
 
-### functor
+### mixin
+
+[\#][7]
+[Ⓣ][0]
+
+Specifies a feature to be mixed into a given chart.  
+The feature is an object where the key represents the feature name, and a  
+value which is a function that when invoked returns a d4 feature object.
+
+##### Examples
+
+     // Mix in a feature at a specific depth
+     chart.mixin({ 'grid': d4.features.grid }, 0)
+    
+     chart.mixin({ 'zeroLine': d4.features.referenceLine })
+    
+
+#### Arguments
+
+1. `feature`_(Object) -- an object describing the feature to mix in._
+2. `index`_(Integer) -- an optional number to specify the insertion layer._
+
+---
+
+### mixout
+
+[\#][8]
+[Ⓣ][0]
+
+Specifies an existing feature of a chart to be removed (mixed out).
+
+##### Examples
+
+     // Mixout the yAxis which is provided as a default
+     var chart = d4.charts.column()
+     .mixout('yAxis');
+    
+     // Now test that the feature has been removed.
+     console.log(chart.features());
+     => ["bars", "barLabels", "xAxis"]
+    
+
+#### Arguments
+
+1. `name`_(String) -- accessor name for chart feature._
+
+---
+
+### scales
 
 [\#][9]
+[Ⓣ][0]
+
+This function returns the internal scales object as a parameter to the  
+supplied function.
+
+#### Arguments
+
+1. `funct`_(Function) -- function which will perform the modifcation._
+
+---
+
+### using
+
+[\#][10]
+[Ⓣ][0]
+
+The heart of the d4 API is the `using` function, which allows you to  
+contextually modify attributes of the chart or one of its features.
+
+##### Examples
+
+     chart.mixin({ 'zeroLine': d4.features.referenceLine })
+     .using('zeroLine', function(zero) {
+       zero
+         .x1(function() {
+           return this.x(0);
+         })
+     });
+    
+
+#### Arguments
+
+1. `name`_(String) -- accessor name for chart feature._
+2. `funct`_(Function) -- function which will perform the modifcation._
+
+---
+
+### functor
+
+[\#][11]
 [Ⓣ][0]
 
 Based on D3's own functor function.
@@ -257,8 +304,8 @@ Based on D3's own functor function.
 
 ### 
 
-[\#][11]
-[Ⓣ][10]
+[\#][13]
+[Ⓣ][12]
 
 Creates a linear scale for a dimension of a given chart.
 
@@ -272,8 +319,8 @@ Creates a linear scale for a dimension of a given chart.
 
 ### 
 
-[\#][11]
-[Ⓣ][10]
+[\#][13]
+[Ⓣ][12]
 
 Creates an ordinal scale for a dimension of a given chart.
 
@@ -289,8 +336,8 @@ Creates an ordinal scale for a dimension of a given chart.
 
 ### 
 
-[\#][11]
-[Ⓣ][12]
+[\#][13]
+[Ⓣ][14]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -341,8 +388,8 @@ The default format may not be desired and so we'll override it:
 
 ### 
 
-[\#][11]
-[Ⓣ][13]
+[\#][13]
+[Ⓣ][15]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -398,8 +445,8 @@ relative distribution.
 
 ### 
 
-[\#][11]
-[Ⓣ][14]
+[\#][13]
+[Ⓣ][16]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -458,8 +505,8 @@ along the xAxis.
 
 ### 
 
-[\#][11]
-[Ⓣ][15]
+[\#][13]
+[Ⓣ][17]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -491,8 +538,8 @@ has four default features:
 
 ### 
 
-[\#][11]
-[Ⓣ][16]
+[\#][13]
+[Ⓣ][18]
 
 Waterfall connectors are orthogonal series connectors which visually join  
 column series together by spanning the top or bottom of adjacent columns.
@@ -514,8 +561,8 @@ the direction of the lines.
 
 ### 
 
-[\#][11]
-[Ⓣ][17]
+[\#][13]
+[Ⓣ][19]
 
 The nested group parser is useful for grouped column charts where multiple  
 data items need to appear relative to the axis value, for example grouped  
@@ -530,7 +577,7 @@ column charts or multi-series line charts.
 
 This module makes use of the d3's "nest" data structure layout
 
-[https://github.com/mbostock/d3/wiki/Arrays\#-nest][20]
+[https://github.com/mbostock/d3/wiki/Arrays\#-nest][22]
 
 #### Approach
 
@@ -568,8 +615,8 @@ Keep reading for more information on these various accessor functions.
 
 ### 
 
-[\#][11]
-[Ⓣ][18]
+[\#][13]
+[Ⓣ][20]
 
 The nested stack parser is useful for charts which take a data series  
 and wants to sort them across a dimension and then display the results.  
@@ -586,8 +633,8 @@ The most common usecase would be a stacked column chart like this:
 
 This module makes use of the d3's "nest" data structure, and "stack" layout
 
-[https://github.com/mbostock/d3/wiki/Arrays\#-nest][20]  
-[https://github.com/mbostock/d3/wiki/Stack-Layout][21]
+[https://github.com/mbostock/d3/wiki/Arrays\#-nest][22]  
+[https://github.com/mbostock/d3/wiki/Stack-Layout][23]
 
 #### Approach
 
@@ -677,8 +724,8 @@ The `parser` variable will now be an object containing the following structure:
 
 ### 
 
-[\#][11]
-[Ⓣ][19]
+[\#][13]
+[Ⓣ][21]
 
 The waterfall parser is useful for waterfall charts where data items need to account  
 for the position of earlier values:
@@ -691,8 +738,8 @@ for the position of earlier values:
     ----------------------
     
     This module makes use of the d3's "nest" data structure, and "stack" layout
-    [https://github.com/mbostock/d3/wiki/Arrays#-nest][20]
-    [https://github.com/mbostock/d3/wiki/Stack-Layout][21]
+    [https://github.com/mbostock/d3/wiki/Arrays#-nest][22]
+    [https://github.com/mbostock/d3/wiki/Stack-Layout][23]
     
     
     Approach:
@@ -788,20 +835,22 @@ y - an object with a key representing the y accessor and an array of values
 [2]: #feature
 [3]: #builder
 [4]: #parser
-[5]: #using
-[6]: #mixin
-[7]: #mixout
-[8]: #features
-[9]: #functor
-[10]: #scales-js
-[11]: #
-[12]: #column-js
-[13]: #grouped-column-js
-[14]: #line-js
-[15]: #row-js
-[16]: #waterfall-connectors-js
-[17]: #nested-group-js
-[18]: #nested-stack-js
-[19]: #waterfall-js
-[20]: https://github.com/mbostock/d3/wiki/Arrays#-nest
-[21]: https://github.com/mbostock/d3/wiki/Stack-Layout
+[5]: #basechart
+[6]: #features
+[7]: #mixin
+[8]: #mixout
+[9]: #scales
+[10]: #using
+[11]: #functor
+[12]: #scales-js
+[13]: #
+[14]: #column-js
+[15]: #grouped-column-js
+[16]: #line-js
+[17]: #row-js
+[18]: #waterfall-connectors-js
+[19]: #nested-group-js
+[20]: #nested-stack-js
+[21]: #waterfall-js
+[22]: https://github.com/mbostock/d3/wiki/Arrays#-nest
+[23]: https://github.com/mbostock/d3/wiki/Stack-Layout

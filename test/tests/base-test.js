@@ -87,6 +87,17 @@ describe('d4.base', function() {
         });
       });
 
+      it('should make scales a custom accessor for the chart object', function(){
+        var obj = {
+          scales : [{
+            key: 'z',
+            kind: 'ordinal'
+          }]
+        };
+        var chart = d4.baseChart(obj, this.builder);
+        expect(chart.z).to.not.be.an('undefined');
+      });
+
       it('should throw an error if an unsupported scale is used.', function(){
         var obj = {
           scales : [{
