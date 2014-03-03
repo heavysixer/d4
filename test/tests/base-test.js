@@ -34,18 +34,17 @@ describe('d4.base', function() {
     it('should require a config and builder object', function() {
       expect(function() {
         d4.baseChart();
-      }).to.
-      throw (Error, '[d4] No builder defined');
+      }).to.throw(Error, '[d4] No builder defined');
     });
 
     describe('when defining a builder', function() {
       it('should allow you to pass in a custom builder', function() {
-        var chart = d4.baseChart({}, this.builder);
+        var chart = d4.baseChart(this.builder);
         expect(chart.builder).to.not.be.an('undefined');
       });
 
       it('should create a ordinal scale for the x dimension if no scales are provided', function() {
-        var chart = d4.baseChart({}, this.builder);
+        var chart = d4.baseChart(this.builder);
         d3.select('#chart')
           .datum([{
             x: 1,
@@ -59,7 +58,7 @@ describe('d4.base', function() {
       });
 
       it('should create a linear scale for the y dimension if no scales are provided', function() {
-        var chart = d4.baseChart({}, this.builder);
+        var chart = d4.baseChart(this.builder);
         d3.select('#chart')
           .datum([{
             x: 1,
@@ -79,7 +78,7 @@ describe('d4.base', function() {
             kind: 'ordinal'
           }]
         };
-        var chart = d4.baseChart(obj, this.builder);
+        var chart = d4.baseChart(this.builder, obj);
         d3.select('#chart')
           .datum([{
             x: 1,
@@ -104,7 +103,7 @@ describe('d4.base', function() {
             kind: 'ordinal'
           }]
         };
-        var chart = d4.baseChart(obj, this.builder);
+        var chart = d4.baseChart(this.builder, obj);
         expect(chart.z).to.not.be.an('undefined');
       });
 
@@ -117,9 +116,8 @@ describe('d4.base', function() {
         };
         var builder = this.builder;
         expect(function() {
-          d4.baseChart(obj, builder);
-        }).to.
-        throw (Error, '[d4] The scale type: "foo" is unrecognized. D4 only supports these scale types: identity, linear, log, ordinal, pow, quantile, quantize, sqrt, threshold');
+          d4.baseChart(builder, obj);
+        }).to.throw(Error, '[d4] The scale type: "foo" is unrecognized. D4 only supports these scale types: identity, linear, log, ordinal, pow, quantile, quantize, sqrt, threshold');
       });
 
       it('should require the builder to have a configure function', function() {
@@ -127,9 +125,8 @@ describe('d4.base', function() {
           return {};
         };
         expect(function() {
-          d4.baseChart({}, badBuilder);
-        }).to.
-        throw (Error, '[d4] The supplied builder does not have a configure function');
+          d4.baseChart(badBuilder);
+        }).to.throw(Error, '[d4] The supplied builder does not have a configure function');
 
         badBuilder = function() {
           return {
@@ -138,35 +135,34 @@ describe('d4.base', function() {
         };
 
         expect(function() {
-          d4.baseChart({}, badBuilder);
-        }).to.
-        throw (Error, '[d4] The supplied builder does not have a configure function');
+          d4.baseChart(badBuilder);
+        }).to.throw(Error, '[d4] The supplied builder does not have a configure function');
       });
 
     });
 
     describe('when defining a config object', function() {
       it('should allow you to specify public accessors functions', function() {
-        var chart = d4.baseChart({
+        var chart = d4.baseChart(this.builder, {
           accessors: ['z']
-        }, this.builder);
+        });
         expect(chart.z).to.not.be.an('undefined');
         expect(chart.accessors).to.include('z');
       });
 
       it('should allow you to get the value or set the value using the accessor methods', function() {
-        var chart = d4.baseChart({
+        var chart = d4.baseChart(this.builder, {
           margin: {
             left: 4000
           }
-        }, this.builder);
+        });
         expect(chart.margin().left).to.equal(4000);
         chart.margin({left:500});
         expect(chart.margin().left).to.equal(500);
       });
 
       it('should define a collection of common accessors useful to all charts which are exposed through an accessors array', function() {
-        var chart = d4.baseChart({}, this.builder);
+        var chart = d4.baseChart(this.builder);
         expect(chart.z).to.be.an('undefined');
         chart.accessors.forEach(function(accessor) {
           expect(chart[accessor]).to.not.be.an('undefined');
@@ -231,8 +227,7 @@ describe('d4.base', function() {
       var chart = d4.charts.column();
       expect(function() {
         chart.mixin();
-      }).to.
-      throw (Error, '[d4] You need to supply an object to mixin');
+      }).to.throw(Error, '[d4] You need to supply an object to mixin');
     });
 
     it('should add the newly mixed in feature into the list of features', function() {
@@ -332,8 +327,7 @@ describe('d4.base', function() {
       var chart = d4.charts.column();
       expect(function() {
         chart.mixout();
-      }).to.
-      throw (Error, '[d4] A name is required in order to mixout a chart feature.');
+      }).to.throw(Error, '[d4] A name is required in order to mixout a chart feature.');
     });
   });
 
@@ -349,8 +343,7 @@ describe('d4.base', function() {
       var chart = d4.charts.column();
       expect(function() {
         chart.using('foo', function() {});
-      }).to.
-      throw (Error, '[d4] Could not find feature: "foo", maybe you forgot to mix it in?');
+      }).to.throw(Error, '[d4] Could not find feature: "foo", maybe you forgot to mix it in?');
     });
 
     it('should allow you to use a feature of a chart', function() {
@@ -364,8 +357,7 @@ describe('d4.base', function() {
       var chart = d4.charts.column();
       expect(function() {
         chart.using('bars');
-      }).to.
-      throw (Error, '[d4] You must supply a continuation function in order to use a chart feature.');
+      }).to.throw(Error, '[d4] You must supply a continuation function in order to use a chart feature.');
     });
   });
 
@@ -379,8 +371,7 @@ describe('d4.base', function() {
       };
       expect(function() {
         chart.builder(badBuilder);
-      }).to.
-      throw (Error, '[d4] The supplied builder does not have a configure function');
+      }).to.throw(Error, '[d4] The supplied builder does not have a configure function');
     });
 
     it('should allow you to replace the default builder with your custom one', function() {

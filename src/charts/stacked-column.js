@@ -20,7 +20,7 @@
   };
 
   d4.chart('stackedColumn', function stackedColumnChart() {
-    var chart = d4.baseChart({}, stackedColumnChartBuilder);
+    var chart = d4.baseChart(stackedColumnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
     }, {

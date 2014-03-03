@@ -150,10 +150,10 @@
   };
 
   d4.chart('waterfall', function waterfallChart() {
-    var chart = d4.baseChart({
+    var chart = d4.baseChart(waterfallChartBuilder, {
       accessors: ['orientation'],
       orientation: orientation
-    }, waterfallChartBuilder);
+    });
     [{
       'bars': d4.features.stackedColumnSeries,
       'overrides': columnSeriesOverrides

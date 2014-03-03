@@ -72,7 +72,7 @@
 
   */
   d4.chart('line', function lineChart() {
-    var chart = d4.baseChart({}, lineChartBuilder);
+    var chart = d4.baseChart(lineChartBuilder);
     [{
       'lineSeries': d4.features.lineSeries
     },{

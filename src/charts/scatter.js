@@ -32,10 +32,10 @@
   };
 
   d4.chart('scatterPlot', function() {
-    var chart = d4.baseChart({
+    var chart = d4.baseChart(scatterPlotBuilder, {
       accessors: ['z', 'zKey'],
       zKey: 'z'
-    }, scatterPlotBuilder);
+    });
     [{
       'circles': d4.features.dotSeries
     }, {

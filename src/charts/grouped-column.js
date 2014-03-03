@@ -69,10 +69,10 @@ relative distribution.
 
   */
   d4.chart('groupedColumn', function groupedColumnChart() {
-    var chart = d4.baseChart({
+    var chart = d4.baseChart(groupedColumnChartBuilder, {
       accessors: ['groupsOf'],
       groupsOf: 1
-    }, groupedColumnChartBuilder);
+    });
     [{
       'bars': d4.features.groupedColumnSeries
     }, {

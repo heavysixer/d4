@@ -429,12 +429,12 @@
    *         return chart;
    *     });
    *
-   * @param {Object} config - an object representing chart configuration settings
    * @param {Function} defaultBuilder - function which will return a valid builder object when invoked.
+   * @param {Object} config - an object representing chart configuration settings
    * @returns a reference to the chart object
    */
-  d4.baseChart = function(config, defaultBuilder) {
-    var opts = assignDefaults(config, defaultBuilder);
+  d4.baseChart = function(defaultBuilder, config) {
+    var opts = assignDefaults(config || {}, defaultBuilder);
     var chart = applyScaffold(opts);
 
     chart.accessors = opts.accessors;
@@ -677,7 +677,7 @@ The default format may not be desired and so we'll override it:
 
   */
   d4.chart('column', function columnChart() {
-    var chart = d4.baseChart({}, columnChartBuilder);
+    var chart = d4.baseChart(columnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
     }, {
@@ -764,10 +764,10 @@ relative distribution.
 
   */
   d4.chart('groupedColumn', function groupedColumnChart() {
-    var chart = d4.baseChart({
+    var chart = d4.baseChart(groupedColumnChartBuilder, {
       accessors: ['groupsOf'],
       groupsOf: 1
-    }, groupedColumnChartBuilder);
+    });
     [{
       'bars': d4.features.groupedColumnSeries
     }, {
@@ -857,7 +857,7 @@ relative distribution.
 
   */
   d4.chart('line', function lineChart() {
-    var chart = d4.baseChart({}, lineChartBuilder);
+    var chart = d4.baseChart(lineChartBuilder);
     [{
       'lineSeries': d4.features.lineSeries
     },{
@@ -921,14 +921,14 @@ relative distribution.
 
   */
   d4.chart('row', function rowChart() {
-    var chart = d4.baseChart({
+    var chart = d4.baseChart(rowChartBuilder, {
       margin: {
         top: 20,
         right: 40,
         bottom: 20,
         left: 40
       }
-    }, rowChartBuilder);
+    });
     [{
       'bars': d4.features.rowSeries
     }, {
@@ -977,10 +977,10 @@ relative distribution.
   };
 
   d4.chart('scatterPlot', function() {
-    var chart = d4.baseChart({
+    var chart = d4.baseChart(scatterPlotBuilder, {
       accessors: ['z', 'zKey'],
       zKey: 'z'
-    }, scatterPlotBuilder);
+    });
     [{
       'circles': d4.features.dotSeries
     }, {
@@ -1016,7 +1016,7 @@ relative distribution.
   };
 
   d4.chart('stackedColumn', function stackedColumnChart() {
-    var chart = d4.baseChart({}, stackedColumnChartBuilder);
+    var chart = d4.baseChart(stackedColumnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
     }, {
@@ -1186,10 +1186,10 @@ relative distribution.
   };
 
   d4.chart('waterfall', function waterfallChart() {
-    var chart = d4.baseChart({
+    var chart = d4.baseChart(waterfallChartBuilder, {
       accessors: ['orientation'],
       orientation: orientation
-    }, waterfallChartBuilder);
+    });
     [{
       'bars': d4.features.stackedColumnSeries,
       'overrides': columnSeriesOverrides

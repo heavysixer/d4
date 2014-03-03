@@ -47,14 +47,14 @@
 
   */
   d4.chart('row', function rowChart() {
-    var chart = d4.baseChart({
+    var chart = d4.baseChart(rowChartBuilder, {
       margin: {
         top: 20,
         right: 40,
         bottom: 20,
         left: 40
       }
-    }, rowChartBuilder);
+    });
     [{
       'bars': d4.features.rowSeries
     }, {

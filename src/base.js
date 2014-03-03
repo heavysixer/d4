@@ -425,12 +425,12 @@
    *         return chart;
    *     });
    *
-   * @param {Object} config - an object representing chart configuration settings
    * @param {Function} defaultBuilder - function which will return a valid builder object when invoked.
+   * @param {Object} config - an object representing chart configuration settings
    * @returns a reference to the chart object
    */
-  d4.baseChart = function(config, defaultBuilder) {
-    var opts = assignDefaults(config, defaultBuilder);
+  d4.baseChart = function(defaultBuilder, config) {
+    var opts = assignDefaults(config || {}, defaultBuilder);
     var chart = applyScaffold(opts);
 
     chart.accessors = opts.accessors;
