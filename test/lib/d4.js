@@ -94,6 +94,7 @@
     }
     return this;
   };
+
   var validateScale = function(scale){
     var supportedScales = ['identity', 'linear', 'log', 'ordinal', 'pow', 'quantile', 'quantize', 'sqrt', 'threshold'];
     if(supportedScales.indexOf(scale.kind) < 0){
@@ -110,15 +111,19 @@
   values. Ideally the API should support something like this:
   chart.width(300) or chart.width(function(){ return 300; })
   */
-  var createAccessorsFromArray = function(obj, accessors){
+  var accessorForObject = function(wrapperObj, innerObj, functName) {
+    wrapperObj[functName] = function(attr) {
+      if (!arguments.length) {
+        return innerObj[functName];
+      }
+      innerObj[functName] = attr;
+      return wrapperObj;
+    };
+  };
+
+  var createAccessorsFromArray = function(wrapperObj, innerObj, accessors){
     each(accessors, function(functName) {
-      obj[functName] = function(attr) {
-        if (!arguments.length) {
-          return obj.accessors[functName];
-        }
-        obj.accessors[functName] = attr;
-        return obj;
-      }.bind(this);
+      accessorForObject(wrapperObj, innerObj, functName);
     });
   };
 
@@ -132,8 +137,14 @@
   var createAccessorsFromObject = function(obj){
     var accessors = obj.accessors;
     if (accessors) {
-      createAccessorsFromArray(obj, d3.keys(accessors));
+      createAccessorsFromArray(obj, obj.accessors, d3.keys(accessors));
     }
+  };
+
+  var createAccessorsFromScales = function(chart, scales) {
+    each(d3.keys(scales), function(key) {
+      accessorForObject(chart, scales.accessors, key);
+    });
   };
 
   var addScale = function(opts, scale){
@@ -186,7 +197,7 @@
     }, config);
     linkScales(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
-    opts.accessors = ['margin', 'width', 'height', 'x', 'y', 'xKey', 'yKey', 'valueKey'].concat(config.accessors || []);
+    opts.accessors = ['margin', 'width', 'height', 'xKey', 'yKey', 'valueKey'].concat(config.accessors || []);
     return opts;
   };
 
@@ -427,7 +438,8 @@
     var chart = applyScaffold(opts);
 
     chart.accessors = opts.accessors;
-    createAccessorsFromArray(chart, chart.accessors);
+    createAccessorsFromArray(chart, opts, chart.accessors);
+    createAccessorsFromScales(chart, opts.scales);
 
     /**
      * Specifies an object, which d4 uses to initialize the chart with. By default
@@ -665,15 +677,7 @@ The default format may not be desired and so we'll override it:
 
   */
   d4.chart('column', function columnChart() {
-    var chart = d4.baseChart({
-      scales: [{
-        key: 'x',
-        kind: 'ordinal'
-      }, {
-        key: 'y',
-        kind: 'linear'
-      }]
-    }, columnChartBuilder);
+    var chart = d4.baseChart({}, columnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
     }, {

@@ -63,15 +63,7 @@ The default format may not be desired and so we'll override it:
 
   */
   d4.chart('column', function columnChart() {
-    var chart = d4.baseChart({
-      scales: [{
-        key: 'x',
-        kind: 'ordinal'
-      }, {
-        key: 'y',
-        kind: 'linear'
-      }]
-    }, columnChartBuilder);
+    var chart = d4.baseChart({}, columnChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries
     }, {
