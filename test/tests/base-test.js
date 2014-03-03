@@ -105,6 +105,9 @@ describe('d4.base', function() {
         };
         var chart = d4.baseChart(this.builder, obj);
         expect(chart.z).to.not.be.an('undefined');
+        chart.z(function(scale){
+          expect(scale.key()).to.equal('ordinal');
+        });
       });
 
       it('should throw an error if an unsupported scale is used.', function() {

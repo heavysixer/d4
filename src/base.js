@@ -313,10 +313,6 @@
     };
   };
 
-  /*!
-    FIXME: see fixme note related to the chart accessor functions, the same
-  inconsistency applies here.
-  */
   var assignMixinAccessors = function(feature){
     assignD3SelectionProxy(feature);
     createAccessorsFromObject(feature);
@@ -526,6 +522,9 @@
      * @param {Function} funct - function which will perform the modifcation.
      */
     chart.scales = function(funct) {
+      if (!arguments.length) {
+        return opts.scales;
+      }
       funct(opts.scales);
       return chart;
     };
