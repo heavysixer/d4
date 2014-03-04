@@ -180,10 +180,12 @@ describe('d4.base', function() {
         expect(chart.$width).to.equal(500);
       });
 
-      it('should allow you to get nested accessors', function(){
+      it('should allow you to get and set nested accessors', function(){
         var chart = d4.baseChart(this.builder);
         expect(chart.x).to.be.an('function');
         expect(chart.x.key()).to.equal('x');
+        chart.x.key('y');
+        expect(chart.x.key()).to.equal('y');
       });
     });
 
