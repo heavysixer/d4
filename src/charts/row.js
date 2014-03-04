@@ -7,7 +7,7 @@
 
   var rowChartBuilder = function() {
     var builder = {
-      configure: function(chart, data) {
+      link: function(chart, data) {
         if(!chart.x){
           d4.builders.linearScaleForNestedData(chart, data, 'x');
         }

@@ -76,7 +76,7 @@
   };
 
   var validateBuilder = function(builder) {
-    each(['configure'], function(funct) {
+    each(['link'], function(funct) {
       if (!builder[funct] || d4.isNotFunction(builder[funct])) {
         err('The supplied builder does not have a {0} function', funct);
       }
@@ -227,7 +227,7 @@
 
   var build = function(opts, data) {
     if (opts.builder) {
-      opts.builder.configure(opts, data);
+      opts.builder.link(opts, data);
       linkFeatures(opts, data);
     } else {
       err('No builder defined');
@@ -454,7 +454,7 @@
      *
      *     myChart.builder = function(chart, data){
      *         return {
-     *            configure: function(chart, data) {
+     *            link: function(chart, data) {
      *                configureScales.bind(this)(chart, data);
      *            }
      *         };

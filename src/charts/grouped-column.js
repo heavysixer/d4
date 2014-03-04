@@ -7,7 +7,7 @@
 
   var groupedColumnChartBuilder = function() {
     var builder = {
-      configure: function(chart, data) {
+      link: function(chart, data) {
         if(!chart.x){
           d4.builders.ordinalScaleForNestedData(chart, data, 'x');
         }

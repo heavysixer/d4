@@ -24,7 +24,7 @@
     };
 
     var builder = {
-      configure: function(chart, data) {
+      link: function(chart, data) {
         configureScales.bind(this)(chart, data);
       }
     };

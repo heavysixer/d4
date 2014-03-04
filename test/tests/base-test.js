@@ -26,7 +26,7 @@ describe('d4.base', function() {
     before(function() {
       this.builder = function() {
         return {
-          configure: function() {}
+          link: function() {}
         };
       };
     });
@@ -139,23 +139,23 @@ describe('d4.base', function() {
         }).to.throw(Error, '[d4] The scale type: "foo" is unrecognized. D4 only supports these scale types: identity, linear, log, ordinal, pow, quantile, quantize, sqrt, threshold');
       });
 
-      it('should require the builder to have a configure function', function() {
+      it('should require the builder to have a link function', function() {
         var badBuilder = function() {
           return {};
         };
         expect(function() {
           d4.baseChart(badBuilder);
-        }).to.throw(Error, '[d4] The supplied builder does not have a configure function');
+        }).to.throw(Error, '[d4] The supplied builder does not have a link function');
 
         badBuilder = function() {
           return {
-            configure: 'foo'
+            link: 'foo'
           };
         };
 
         expect(function() {
           d4.baseChart(badBuilder);
-        }).to.throw(Error, '[d4] The supplied builder does not have a configure function');
+        }).to.throw(Error, '[d4] The supplied builder does not have a link function');
       });
 
     });
@@ -385,12 +385,12 @@ describe('d4.base', function() {
       var chart = d4.charts.column();
       var badBuilder = function() {
         return {
-          configure: 'foo'
+          link: 'foo'
         };
       };
       expect(function() {
         chart.builder(badBuilder);
-      }).to.throw(Error, '[d4] The supplied builder does not have a configure function');
+      }).to.throw(Error, '[d4] The supplied builder does not have a link function');
     });
 
     it('should allow you to replace the default builder with your custom one', function() {
@@ -398,7 +398,7 @@ describe('d4.base', function() {
       var chartData = [1, 2, 3];
       chart.builder(function() {
         return {
-          configure: function(data) {
+          link: function(data) {
             expect(data).to.equal(chartData);
           },
           render: function(data) {

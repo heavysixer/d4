@@ -80,7 +80,7 @@
   };
 
   var validateBuilder = function(builder) {
-    each(['configure'], function(funct) {
+    each(['link'], function(funct) {
       if (!builder[funct] || d4.isNotFunction(builder[funct])) {
         err('The supplied builder does not have a {0} function', funct);
       }
@@ -231,7 +231,7 @@
 
   var build = function(opts, data) {
     if (opts.builder) {
-      opts.builder.configure(opts, data);
+      opts.builder.link(opts, data);
       linkFeatures(opts, data);
     } else {
       err('No builder defined');
@@ -458,7 +458,7 @@
      *
      *     myChart.builder = function(chart, data){
      *         return {
-     *            configure: function(chart, data) {
+     *            link: function(chart, data) {
      *                configureScales.bind(this)(chart, data);
      *            }
      *         };
@@ -630,7 +630,7 @@
 
   var columnChartBuilder = function() {
     var builder = {
-      configure: function(chart, data) {
+      link: function(chart, data) {
         if (!chart.x) {
           d4.builders.ordinalScaleForNestedData(chart, data, 'x');
         }
@@ -711,7 +711,7 @@ The default format may not be desired and so we'll override it:
 
   var groupedColumnChartBuilder = function() {
     var builder = {
-      configure: function(chart, data) {
+      link: function(chart, data) {
         if(!chart.x){
           d4.builders.ordinalScaleForNestedData(chart, data, 'x');
         }
@@ -801,7 +801,7 @@ relative distribution.
 
   var lineChartBuilder = function() {
     var builder = {
-      configure: function(chart, data) {
+      link: function(chart, data) {
         if(!chart.x){
           d4.builders.ordinalScaleForNestedData(chart, data, 'x');
         }
@@ -890,7 +890,7 @@ relative distribution.
 
   var rowChartBuilder = function() {
     var builder = {
-      configure: function(chart, data) {
+      link: function(chart, data) {
         if(!chart.x){
           d4.builders.linearScaleForNestedData(chart, data, 'x');
         }
@@ -978,7 +978,7 @@ relative distribution.
     };
 
     var builder = {
-      configure: function(chart, data) {
+      link: function(chart, data) {
         configureScales.bind(this)(chart, data);
       }
     };
@@ -1012,7 +1012,7 @@ relative distribution.
 
   var stackedColumnChartBuilder = function() {
     var builder = {
-      configure: function(chart, data) {
+      link: function(chart, data) {
         if(!chart.x){
           d4.builders.ordinalScaleForNestedData(chart, data, 'x');
         }
@@ -1187,7 +1187,7 @@ relative distribution.
     };
 
     var builder = {
-      configure: function(chart, data) {
+      link: function(chart, data) {
         configureScales.bind(this)(chart, data);
       }
     };
