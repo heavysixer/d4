@@ -135,10 +135,10 @@
   */
   var accessorForObject = function(wrapperObj, innerObj, functName) {
     wrapperObj[functName] = function(attr) {
-      storeLastValue(wrapperObj, functName, attr);
       if (!arguments.length) {
         return innerObj[functName];
       }
+      storeLastValue(wrapperObj, functName, attr);
       innerObj[functName] = attr;
       return wrapperObj;
     };

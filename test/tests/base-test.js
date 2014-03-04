@@ -165,6 +165,8 @@ describe('d4.base', function() {
         var chart = d4.baseChart(this.builder);
         expect(chart.$width).to.equal(400);
         expect(chart.width()).to.equal(400);
+        expect(chart.$width).to.equal(400);
+        chart.width(undefined);
         expect(chart.$width).to.equal(undefined);
       });
 
