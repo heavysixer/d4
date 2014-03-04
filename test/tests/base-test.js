@@ -73,10 +73,11 @@ describe('d4.base', function() {
 
       it('should allow you to override the default scales', function() {
         var obj = {
-          scales: [{
-            key: 'y',
-            kind: 'ordinal'
-          }]
+          scales: {
+            y: {
+              kind: 'ordinal'
+            }
+          }
         };
         var chart = d4.baseChart(this.builder, obj);
         d3.select('#chart')
@@ -98,24 +99,39 @@ describe('d4.base', function() {
 
       it('should make scales a custom accessor for the chart object', function() {
         var obj = {
-          scales: [{
-            key: 'z',
-            kind: 'ordinal'
-          }]
+          scales: {
+            z: {
+              kind: 'ordinal',
+              customProperty: 'foo'
+            }
+          }
         };
         var chart = d4.baseChart(this.builder, obj);
+        expect(d3.keys(chart.scales()).length).to.equal(3);
         expect(chart.z).to.not.be.an('undefined');
+
+        // should be able to retrieve a scale accessor
         chart.z(function(scale){
-          expect(scale.key()).to.equal('ordinal');
+          expect(scale.kind()).to.equal('ordinal');
+          scale.kind('linear');
+
+          // should create custom accessors
+          expect(scale.customProperty()).to.equal('foo');
+        });
+
+        // should be able to set a scale accessor
+        chart.z(function(scale){
+          expect(scale.kind()).to.equal('linear');
         });
       });
 
       it('should throw an error if an unsupported scale is used.', function() {
         var obj = {
-          scales: [{
-            key: 'y',
-            kind: 'foo'
-          }]
+          scales: {
+            z: {
+              kind: 'foo'
+            }
+          }
         };
         var builder = this.builder;
         expect(function() {

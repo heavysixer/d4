@@ -137,37 +137,40 @@
     }
   };
 
-  var createAccessorsFromScales = function(chart, scales) {
-    each(d3.keys(scales), function(key) {
-      accessorForObject(chart, scales.accessors, key);
+  var createAccessorsFromScales = function(chart, opts) {
+    each(d3.keys(opts.scales), function(key) {
+      chart[key] = function(funct) {
+        usingScale.bind(opts)(key, funct);
+        return chart;
+      };
     });
   };
 
-  var addScale = function(opts, scale){
+  var addScale = function(dimension, opts, scale){
     validateScale(scale);
-    opts.scales[scale.key] = {
+    opts.scales[dimension] = {
       accessors : d4.extend({
-        key : undefined,
+        key : dimension,
         kind : undefined,
         min : undefined,
         max : undefined,
         link: undefined
       },scale)
     };
-    createAccessorsFromObject(opts.scales[scale.key]);
+    createAccessorsFromObject(opts.scales[dimension]);
   };
 
   var linkScales = function(opts) {
     each(d3.keys(opts.scales), function(dimension){
-      addScale(opts, opts.scales[dimension]);
+      addScale(dimension, opts, opts.scales[dimension]);
     });
 
     if(typeof(opts.scales.x) === 'undefined') {
-      addScale(opts, { key : 'x', kind : 'ordinal' });
+      addScale('x', opts, { kind : 'ordinal' });
     }
 
     if(typeof(opts.scales.y) === 'undefined') {
-      addScale(opts, { key : 'y', kind : 'linear' });
+      addScale('y', opts, { kind : 'linear' });
     }
   };
 
@@ -341,12 +344,7 @@
     });
   };
 
-  /*!
-   * The using function is a bit of a catch all, it will attempt to find the
-   * object provided by the name in the order of importance. First it will look
-   * for an object in the scales object, then in the features object.
-   */
-  var using = function(name, funct) {
+  var usingFeature = function(name, funct) {
     var feature = this.features[name];
     if (d4.isNotFunction(funct)) {
       err('You must supply a continuation function in order to use a chart feature.');
@@ -355,6 +353,18 @@
       err('Could not find feature: "{0}", maybe you forgot to mix it in?', name);
     } else {
       funct.bind(this)(feature);
+    }
+  };
+
+  var usingScale = function(key, funct) {
+    var scale = this.scales[key];
+    if (d4.isNotFunction(funct)) {
+      err('You must supply a continuation function in order to use a chart scale.');
+    }
+    if (!scale) {
+      err('Could not find scale: "{0}", maybe you forgot to define it?', key);
+    } else {
+      funct.bind(this)(scale);
     }
   };
 
@@ -431,7 +441,7 @@
 
     chart.accessors = opts.accessors;
     createAccessorsFromArray(chart, opts, chart.accessors);
-    createAccessorsFromScales(chart, opts.scales);
+    createAccessorsFromScales(chart, opts);
 
     /**
      * Specifies an object, which d4 uses to initialize the chart with. By default
@@ -547,7 +557,7 @@
      * @param {Function} funct - function which will perform the modifcation.
      */
     chart.using = function(name, funct) {
-      using.bind(opts)(name, funct);
+      usingFeature.bind(opts)(name, funct);
       return chart;
     };
 
