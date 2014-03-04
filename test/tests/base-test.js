@@ -159,7 +159,21 @@ describe('d4.base', function() {
       });
 
     });
-
+    describe('when using accessors', function() {
+      it('should set a custom property for each accessor, which will give you the last assigned value', function(){
+        var chart = d4.baseChart(this.builder);
+        expect(chart.$width).to.equal(400);
+        expect(chart.width()).to.equal(400);
+        expect(chart.$width).to.equal(undefined);
+      });
+      it('should not allow you to directly set the variables which store the last assigned value', function(){
+        var chart = d4.baseChart(this.builder);
+        expect(chart.$width).to.equal(400);
+        expect(function(){
+          chart.$width = 500;
+        }).to.throw(Error,  '[d4]  You cannot directly assign values to the $width property. Instead use the width() function.');
+      });
+    });
     describe('when defining a config object', function() {
       it('should allow you to specify public accessors functions', function() {
         var chart = d4.baseChart(this.builder, {

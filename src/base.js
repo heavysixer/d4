@@ -99,6 +99,24 @@
   };
 
   /*!
+    As a chart helper
+  */
+  var storeLastValue = function(obj, functName, attr) {
+    if(d4.isNotFunction(attr)){
+      var prop = '$' + functName;
+      Object.defineProperty(obj, prop, {
+        configurable: true,
+        get: function(){
+          return attr;
+        },
+        set: function() {
+          err(' You cannot directly assign values to the {0} property. Instead use the {1}() function.', prop, functName);
+        }
+      });
+    }
+  };
+
+  /*!
     FIXME: d4 wraps the inner property object `opts` in a series of class
   functions. For example: `chart.width(300)` will set the internal
   `opts.width` property to 300. Additionally chart.width() will return 300.
@@ -109,12 +127,14 @@
   */
   var accessorForObject = function(wrapperObj, innerObj, functName) {
     wrapperObj[functName] = function(attr) {
+      storeLastValue(wrapperObj, functName, attr);
       if (!arguments.length) {
         return innerObj[functName];
       }
       innerObj[functName] = attr;
       return wrapperObj;
     };
+    storeLastValue(wrapperObj, functName, innerObj[functName]);
   };
 
   var createAccessorsFromArray = function(wrapperObj, innerObj, accessors){
@@ -154,7 +174,7 @@
         kind : undefined,
         min : undefined,
         max : undefined,
-        link: undefined
+        link : undefined
       },scale)
     };
     createAccessorsFromObject(opts.scales[dimension]);
