@@ -152,7 +152,7 @@
    * functions created for them so that users may access them in the declarative
    * nature we promote. This function will take an object, which contains an
    * accessors key and create the wrapper function for each accessor item.
-   * This function is used internally by the feature mixin and scales objects.
+   * This function is used internally by the feature mixin and axes objects.
    */
   var createAccessorsFromObject = function(obj){
     var accessors = obj.accessors;
@@ -162,20 +162,20 @@
   };
 
   var createAccessorsFromScales = function(chart, opts) {
-    each(d3.keys(opts.scales), function(key) {
+    each(d3.keys(opts.axes), function(key) {
       chart[key] = function(funct) {
         usingScale.bind(opts)(key, funct);
         return chart;
       };
-      each(d3.keys(opts.scales[key].accessors), function(prop){
-        chart[key][prop] = opts.scales[key][prop];
+      each(d3.keys(opts.axes[key].accessors), function(prop){
+        chart[key][prop] = opts.axes[key][prop];
       });
     });
   };
 
   var addScale = function(dimension, opts, scale){
     validateScale(scale);
-    opts.scales[dimension] = {
+    opts.axes[dimension] = {
       accessors : d4.extend({
         key : dimension,
         kind : undefined,
@@ -184,19 +184,19 @@
         scale : undefined
       },scale)
     };
-    createAccessorsFromObject(opts.scales[dimension]);
+    createAccessorsFromObject(opts.axes[dimension]);
   };
 
   var linkScales = function(opts) {
-    each(d3.keys(opts.scales), function(dimension){
-      addScale(dimension, opts, opts.scales[dimension]);
+    each(d3.keys(opts.axes), function(dimension){
+      addScale(dimension, opts, opts.axes[dimension]);
     });
 
-    if(typeof(opts.scales.x) === 'undefined') {
+    if(typeof(opts.axes.x) === 'undefined') {
       addScale('x', opts, { kind : 'ordinal' });
     }
 
-    if(typeof(opts.scales.y) === 'undefined') {
+    if(typeof(opts.axes.y) === 'undefined') {
       addScale('y', opts, { kind : 'linear' });
     }
   };
@@ -210,7 +210,7 @@
       height: 400,
       features: {},
       mixins: [],
-      scales: {},
+      axes: {},
       xKey: 'x',
       yKey: 'y',
       valueKey: 'y',
@@ -384,7 +384,7 @@
   };
 
   var usingScale = function(key, funct) {
-    var scale = this.scales[key];
+    var scale = this.axes[key];
     if (d4.isNotFunction(funct)) {
       err('You must supply a continuation function in order to use a chart scale.');
     }
@@ -447,7 +447,7 @@
    *
    *     d4.chart('column', function columnChart() {
    *         var chart = d4.baseChart({
-   *           scales: [{
+   *           axes: [{
    *             key: 'x',
    *             kind: 'ordinal'
    *           }, {
@@ -554,15 +554,15 @@
     };
 
     /**
-     * This function returns the internal scales object as a parameter to the
+     * This function returns the internal axes object as a parameter to the
      * supplied function.
      * @param {Function} funct - function which will perform the modifcation.
      */
-    chart.scales = function(funct) {
+    chart.axes = function(funct) {
       if (!arguments.length) {
-        return opts.scales;
+        return opts.axes;
       }
-      funct(opts.scales);
+      funct(opts.axes);
       return chart;
     };
 

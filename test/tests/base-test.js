@@ -43,7 +43,7 @@ describe('d4.base', function() {
         expect(chart.builder).to.not.be.an('undefined');
       });
 
-      it('should create a ordinal scale for the x dimension if no scales are provided', function() {
+      it('should create a ordinal scale for the x dimension if no axes are provided', function() {
         var chart = d4.baseChart(this.builder);
         d3.select('#chart')
           .datum([{
@@ -52,12 +52,12 @@ describe('d4.base', function() {
           }])
           .call(chart);
 
-        chart.scales(function(scales) {
-          expect(scales.x.kind()).to.equal('ordinal');
+        chart.axes(function(axes) {
+          expect(axes.x.kind()).to.equal('ordinal');
         });
       });
 
-      it('should create a linear scale for the y dimension if no scales are provided', function() {
+      it('should create a linear scale for the y dimension if no axes are provided', function() {
         var chart = d4.baseChart(this.builder);
         d3.select('#chart')
           .datum([{
@@ -66,14 +66,14 @@ describe('d4.base', function() {
           }])
           .call(chart);
 
-        chart.scales(function(scales) {
-          expect(scales.y.kind()).to.equal('linear');
+        chart.axes(function(axes) {
+          expect(axes.y.kind()).to.equal('linear');
         });
       });
 
-      it('should allow you to override the default scales', function() {
+      it('should allow you to override the default axes', function() {
         var obj = {
-          scales: {
+          axes: {
             y: {
               kind: 'ordinal'
             }
@@ -87,19 +87,19 @@ describe('d4.base', function() {
           }])
           .call(chart);
 
-        chart.scales(function(scales) {
+        chart.axes(function(axes) {
 
           // default for x is unchanged
-          expect(scales.x.kind()).to.equal('ordinal');
+          expect(axes.x.kind()).to.equal('ordinal');
 
           // the y scale is now ordinal instead of linear
-          expect(scales.y.kind()).to.equal('ordinal');
+          expect(axes.y.kind()).to.equal('ordinal');
         });
       });
 
-      it('should make scales a custom accessor for the chart object', function() {
+      it('should make axes a custom accessor for the chart object', function() {
         var obj = {
-          scales: {
+          axes: {
             z: {
               kind: 'ordinal',
               customProperty: 'foo'
@@ -107,7 +107,7 @@ describe('d4.base', function() {
           }
         };
         var chart = d4.baseChart(this.builder, obj);
-        expect(d3.keys(chart.scales()).length).to.equal(3);
+        expect(d3.keys(chart.axes()).length).to.equal(3);
         expect(chart.z).to.not.be.an('undefined');
 
         // should be able to retrieve a scale accessor
@@ -127,7 +127,7 @@ describe('d4.base', function() {
 
       it('should throw an error if an unsupported scale is used.', function() {
         var obj = {
-          scales: {
+          axes: {
             z: {
               kind: 'foo'
             }
