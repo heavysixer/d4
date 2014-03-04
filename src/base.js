@@ -99,7 +99,11 @@
   };
 
   /*!
-    As a chart helper
+    In an effort to make the API more succient we store the last known proplerty
+  of an accessor with the same name but prepended with a $ character. This allows
+  the developer to do something like this:
+      chart.width(500)
+      chart.$width //500
   */
   var storeLastValue = function(obj, functName, attr) {
     if(d4.isNotFunction(attr)){
@@ -163,6 +167,9 @@
         usingScale.bind(opts)(key, funct);
         return chart;
       };
+      each(d3.keys(opts.scales[key].accessors), function(prop){
+        chart[key][prop] = opts.scales[key][prop];
+      });
     });
   };
 
@@ -174,7 +181,7 @@
         kind : undefined,
         min : undefined,
         max : undefined,
-        link : undefined
+        scale : undefined
       },scale)
     };
     createAccessorsFromObject(opts.scales[dimension]);
