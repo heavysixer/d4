@@ -1,6 +1,6 @@
 /*! d4 - v0.4.0
  *  License: MIT Expat
- *  Date: 2014-03-04
+ *  Date: 2014-03-05
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -68,6 +68,18 @@
     }
   };
 
+  var readOnlyProp = function(obj, prop, functName, value){
+    Object.defineProperty(obj, prop, {
+      configurable: true,
+      get: function(){
+        return d4.functor(value)();
+      },
+      set: function() {
+        err(' You cannot directly assign values to the {0} property. Instead use the {1}() function.', prop, functName);
+      }
+    });
+  };
+
   var err = function() {
     var parts = Array.prototype.slice.call(arguments);
     var message = parts.shift();
@@ -95,13 +107,6 @@
     return this;
   };
 
-  var validateScale = function(scale){
-    var supportedScales = ['identity', 'linear', 'log', 'ordinal', 'pow', 'quantile', 'quantize', 'sqrt', 'threshold'];
-    if(supportedScales.indexOf(scale.kind) < 0){
-      err('The scale type: "{0}" is unrecognized. D4 only supports these scale types: {1}', scale.kind, supportedScales.join(', '));
-    }
-  };
-
   /*!
     In an effort to make the API more succient we store the last known proplerty
   of an accessor with the same name but prepended with a $ character. This allows
@@ -112,15 +117,7 @@
   var storeLastValue = function(obj, functName, attr) {
     if(d4.isNotFunction(attr)){
       var prop = '$' + functName;
-      Object.defineProperty(obj, prop, {
-        configurable: true,
-        get: function(){
-          return attr;
-        },
-        set: function() {
-          err(' You cannot directly assign values to the {0} property. Instead use the {1}() function.', prop, functName);
-        }
-      });
+      readOnlyProp(obj, prop, functName, attr);
     }
   };
 
@@ -177,31 +174,44 @@
     });
   };
 
-  var addScale = function(dimension, opts, scale){
-    validateScale(scale);
+  var validateScale = function(scale){
+    var supportedScales = ['identity', 'linear', 'log', 'ordinal', 'pow', 'quantile', 'quantize', 'sqrt', 'threshold'];
+    if(supportedScales.indexOf(scale.kind) < 0){
+      err('The scale type: "{0}" is unrecognized. D4 only supports these scale types: {1}', scale.kind, supportedScales.join(', '));
+    }
+  };
+
+  var addAxis = function(dimension, opts, axis){
+    validateScale(axis);
     opts.axes[dimension] = {
       accessors : d4.extend({
         key : dimension,
         kind : undefined,
         min : undefined,
         max : undefined,
-        scale : undefined
-      },scale)
+        scale: d3.scale[axis.kind]()
+      }, axis)
     };
+    opts[dimension] = opts.axes[dimension].accessors.scale;
     createAccessorsFromObject(opts.axes[dimension]);
+
+    // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.
+    each(d3.keys(opts.axes[dimension].accessors), function(key){
+      readOnlyProp(opts[dimension], '$'+key, opts.axes[dimension][key], opts.axes[dimension].accessors[key]);
+    });
   };
 
   var linkScales = function(opts) {
     each(d3.keys(opts.axes), function(dimension){
-      addScale(dimension, opts, opts.axes[dimension]);
+      addAxis(dimension, opts, opts.axes[dimension]);
     });
 
     if(typeof(opts.axes.x) === 'undefined') {
-      addScale('x', opts, { kind : 'ordinal' });
+      addAxis('x', opts, { kind : 'ordinal' });
     }
 
     if(typeof(opts.axes.y) === 'undefined') {
-      addScale('y', opts, { kind : 'linear' });
+      addAxis('y', opts, { kind : 'linear' });
     }
   };
 
@@ -215,8 +225,6 @@
       features: {},
       mixins: [],
       axes: {},
-      xKey: 'x',
-      yKey: 'y',
       valueKey: 'y',
       margin: {
         top: 20,
@@ -227,7 +235,7 @@
     }, config);
     linkScales(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
-    opts.accessors = ['margin', 'width', 'height', 'xKey', 'yKey', 'valueKey'].concat(config.accessors || []);
+    opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);
     return opts;
   };
 
@@ -284,13 +292,13 @@
   dimensions based on the configuration applied to the chart object itself.
   */
   var applyDefaultParser = function(opts, data) {
-    if(opts.yKey !== opts.valueKey){
-      opts.valueKey = opts.yKey;
+    if(opts.y.$key !== opts.valueKey){
+      opts.valueKey = opts.y.$key;
     }
     var parsed = d4.parsers.nestedGroup()
-    .x(opts.xKey)
-    .y(opts.yKey)
-    .nestKey(opts.xKey)
+    .x(opts.x.$key)
+    .y(opts.y.$key)
+    .nestKey(opts.x.$key)
     .value(opts.valueKey)(data);
     return parsed.data;
   };
@@ -658,12 +666,12 @@
   var columnChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        if (!chart.x) {
-          d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        }
-        if (!chart.y) {
-          d4.builders.linearScaleForNestedData(chart, data, 'y');
-        }
+        // if (!chart.x) {
+        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
+        // }
+        // if (!chart.y) {
+        d4.builders.linearScaleForNestedData(chart, data, 'y');
+        // }
       }
     };
     return builder;
@@ -704,8 +712,8 @@ The default format may not be desired and so we'll override it:
       ['2014', 50]
     ];
     var chart = d4.charts.column()
-    .xKey(0)
-    .yKey(1);
+    .x.$key(0)
+    .y.$key(1);
 
     d3.select('#example')
     .datum(data)
@@ -739,12 +747,8 @@ The default format may not be desired and so we'll override it:
   var groupedColumnChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        if(!chart.x){
-          d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        }
-        if(!chart.y){
-          d4.builders.linearScaleForNestedData(chart, data, 'y');
-        }
+        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
+        d4.builders.linearScaleForNestedData(chart, data, 'y');
       }
     };
     return builder;
@@ -790,8 +794,8 @@ relative distribution.
 
     var chart = d4.charts.groupedColumn()
     .width($('#example').width())
-    .xKey('year')
-    .yKey('unitsSold')
+    .x.$key('year')
+    .y.$key('unitsSold')
     .groupsOf(parsedData.data[0].values.length);
 
     d3.select('#example')
@@ -884,8 +888,8 @@ relative distribution.
 
     var chart = d4.charts.line()
     .width($('#example').width())
-    .xKey('year')
-    .yKey('unitsSold');
+    .x.$key('year')
+    .y.$key('unitsSold');
 
     d3.select('#example')
     .datum(parsedData.data)
@@ -918,13 +922,13 @@ relative distribution.
   var rowChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        if(!chart.x){
-          d4.builders.linearScaleForNestedData(chart, data, 'x');
-        }
-
-        if(!chart.y){
-          d4.builders.ordinalScaleForNestedData(chart, data, 'y');
-        }
+        //if(!chart.x){
+        d4.builders.linearScaleForNestedData(chart, data, 'x');
+        //}
+        //
+        //if(!chart.y){
+        d4.builders.ordinalScaleForNestedData(chart, data, 'y');
+        //}
       }
     };
     return builder;
@@ -963,6 +967,14 @@ relative distribution.
         right: 40,
         bottom: 20,
         left: 40
+      },
+      axes: {
+        x : {
+          kind : 'linear'
+        },
+        y : {
+          kind : 'ordinal'
+        }
       }
     });
     [{
@@ -1014,8 +1026,11 @@ relative distribution.
 
   d4.chart('scatterPlot', function() {
     var chart = d4.baseChart(scatterPlotBuilder, {
-      accessors: ['z', 'zKey'],
-      zKey: 'z'
+      axes : {
+        z : {
+          kind : 'linear'
+        }
+      }
     });
     [{
       'circles': d4.features.dotSeries
@@ -1091,13 +1106,13 @@ relative distribution.
             var yVal = (d.y0 + d.y) - Math.min(0, d.y);
             return this.y(yVal);
           } else {
-            return this.y(d[this.yKey]);
+            return this.y(d[this.y.$key]);
           }
         },
 
         x: function(d) {
           if (this.orientation() === 'vertical') {
-            return this.x(d[this.xKey]);
+            return this.x(d[this.x.$key]);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
             return this.x(xVal);
@@ -1125,7 +1140,7 @@ relative distribution.
           if (n > 0 && d.y0 === 0) {
             klass = 'subtotal';
           }
-          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.yKey];
+          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.y.$key];
         }
       }
     };
@@ -1140,13 +1155,13 @@ relative distribution.
             var yVal = (d.y0 + d.y) - Math.max(0, d.y);
             return this.y(yVal) - 10 - height;
           } else {
-            return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);
+            return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2);
           }
         },
 
         x: function(d) {
           if (this.orientation() === 'vertical') {
-            return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
+            return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
             var width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
@@ -1326,11 +1341,11 @@ relative distribution.
     return {
       accessors: {
         cx: function(d) {
-          return this.x(d[this.xKey]);
+          return this.x(d[this.x.$key]);
         },
 
         cy: function(d) {
-          return this.y(d[this.yKey]);
+          return this.y(d[this.y.$key]);
         },
 
         r: function(d) {
@@ -1347,7 +1362,7 @@ relative distribution.
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.yKey;
+            return 'series'+ i + ' ' +  this.y.$key;
           }.bind(this));
 
         var dots = group.selectAll('circle')
@@ -1426,17 +1441,17 @@ relative distribution.
       accessors: {
         x: function(d, i) {
           var width = this.x.rangeBand() / this.groupsOf;
-          var xPos = this.x(d[this.xKey]) + width * i;
+          var xPos = this.x(d[this.x.$key]) + width * i;
           var gutter = width * 0.1;
           return xPos + width/2 - gutter;
         },
 
         y: function(d) {
-          return (d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey])) -5;
+          return (d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key])) -5;
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.yKey]);
+          return d3.format('').call(this, d[this.y.$key]);
         }
       },
       render: function(scope, data) {
@@ -1445,7 +1460,7 @@ relative distribution.
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i +  ' ' + this.xKey;
+            return 'series'+ i +  ' ' + this.x.$key;
           }.bind(this));
 
         var text = group.selectAll('text')
@@ -1479,12 +1494,12 @@ relative distribution.
       accessors: {
         x: function(d, i) {
           var width = this.x.rangeBand() / this.groupsOf;
-          var xPos = this.x(d[this.xKey]) + width * i;
+          var xPos = this.x(d[this.x.$key]) + width * i;
           return xPos;
         },
 
         y: function(d) {
-          return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);
+          return d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key]);
         },
 
         width: function() {
@@ -1494,11 +1509,11 @@ relative distribution.
         },
 
         height: function(d) {
-          return Math.abs(this.y(d[this.yKey]) - this.y(0));
+          return Math.abs(this.y(d[this.y.$key]) - this.y(0));
         },
 
         classes: function(d, i) {
-          return 'bar fill item' + i + ' ' + sign(d[this.yKey]) + ' ' + d[this.yKey];
+          return 'bar fill item' + i + ' ' + sign(d[this.y.$key]) + ' ' + d[this.y.$key];
         }
       },
       render: function(scope, data) {
@@ -1508,7 +1523,7 @@ relative distribution.
         group.enter().append('g');
         group.exit().remove();
         group.attr('class', function(d, i) {
-          return 'series' + i + ' ' + this.xKey;
+          return 'series' + i + ' ' + this.x.$key;
         }.bind(this));
 
         var rect = group.selectAll('rect')
@@ -1538,11 +1553,11 @@ relative distribution.
     return {
       accessors: {
         x: function(d) {
-          return this.x(d.values[d.values.length - 1][this.xKey]);
+          return this.x(d.values[d.values.length - 1][this.x.$key]);
         },
 
         y: function(d) {
-          return this.y(d.values[d.values.length - 1][this.yKey]);
+          return this.y(d.values[d.values.length - 1][this.y.$key]);
         },
 
         text: function(d) {
@@ -1582,10 +1597,10 @@ relative distribution.
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey]);
+          return this.x(d[this.x.$key]);
         },
         y: function(d) {
-          return this.y(d[this.yKey]);
+          return this.y(d[this.y.$key]);
         },
         interpolate: function() {
           return 'basis';
@@ -1672,16 +1687,16 @@ relative distribution.
     return {
       accessors: {
         x: function(d) {
-          var width = (Math.abs(this.x(d[this.xKey])) + this.x(d[this.xKey]))/2;
+          var width = (Math.abs(this.x(d[this.x.$key])) + this.x(d[this.x.$key]))/2;
           return Math.max(this.x(0), width) + 10;
         },
 
         y: function(d) {
-          return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);
+          return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2);
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.xKey]);
+          return d3.format('').call(this, d[this.x.$key]);
         }
       },
       render: function(scope, data) {
@@ -1690,7 +1705,7 @@ relative distribution.
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
-            return 'series' + i + ' ' + this.xKey;
+            return 'series' + i + ' ' + this.x.$key;
           }.bind(this));
 
         var text = group.selectAll('text')
@@ -1724,16 +1739,16 @@ relative distribution.
     return {
       accessors: {
         x: function(d) {
-          var xVal = d[this.xKey] - Math.max(0, d[this.xKey]);
+          var xVal = d[this.x.$key] - Math.max(0, d[this.x.$key]);
           return this.x(xVal);
         },
 
         y: function(d) {
-          return this.y(d[this.yKey]);
+          return this.y(d[this.y.$key]);
         },
 
         width: function(d) {
-          return Math.abs(this.x(d[this.xKey]) - this.x(0));
+          return Math.abs(this.x(d[this.x.$key]) - this.x(0));
         },
 
         height: function() {
@@ -1741,7 +1756,7 @@ relative distribution.
         },
 
         classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.xKey];
+          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.x.$key];
         }
       },
       render: function(scope, data) {
@@ -1750,7 +1765,7 @@ relative distribution.
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.yKey;
+            return 'series'+ i + ' ' +  this.y.$key;
           }.bind(this));
 
         var rect = group.selectAll('rect')
@@ -1798,7 +1813,7 @@ relative distribution.
         },
 
         y1: function(d) {
-          return this.y(d[this.yKey]);
+          return this.y(d[this.y.$key]);
         },
 
         span: function(){
@@ -1870,7 +1885,7 @@ relative distribution.
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
+          return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
         },
 
         y: function(d) {
@@ -1879,8 +1894,8 @@ relative distribution.
             var yVal = d.y0 + d.y;
             return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
           } else {
-            var height = Math.abs(this.y(d[this.yKey]) - this.y(0));
-            return (d[this.yKey] < 0 ? this.y(d[this.yKey]) - height : this.y(d[this.yKey])) - 5;
+            var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
+            return (d[this.y.$key] < 0 ? this.y(d[this.y.$key]) - height : this.y(d[this.y.$key])) - 5;
           }
         },
 
@@ -1900,7 +1915,7 @@ relative distribution.
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
-            return 'series' + i + ' '+ sign(d.y) + ' ' + this.xKey;
+            return 'series' + i + ' '+ sign(d.y) + ' ' + this.x.$key;
           }.bind(this));
 
         var text = group.selectAll('text')
@@ -1934,7 +1949,7 @@ relative distribution.
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey]);
+          return this.x(d[this.x.$key]);
         },
 
         y: function(d) {
@@ -1942,7 +1957,7 @@ relative distribution.
             var yVal = d.y0 + d.y;
             return  yVal < 0 ? this.y(d.y0) : this.y(yVal);
           } else {
-            return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);
+            return d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key]);
           }
         },
 
@@ -1954,12 +1969,12 @@ relative distribution.
           if(d.y0){
             return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
           }else {
-            return Math.abs(this.y(d[this.yKey]) - this.y(0));
+            return Math.abs(this.y(d[this.y.$key]) - this.y(0));
           }
         },
 
         classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.yKey];
+          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.y.$key];
         }
       },
       render: function(scope, data) {
@@ -1968,7 +1983,7 @@ relative distribution.
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.yKey;
+            return 'series'+ i + ' ' +  this.y.$key;
           }.bind(this));
 
         var rect = group.selectAll('rect')
@@ -2097,13 +2112,13 @@ the direction of the lines.
             }
             return this.x(xVal) + width;
           } else {
-            return this.x(d[this.xKey]);
+            return this.x(d[this.x.$key]);
           }
         },
 
         y: function(d) {
           if(this.orientation() === 'horizontal'){
-            return this.y(d[this.yKey]);
+            return this.y(d[this.y.$key]);
           } else {
             return this.y(d.y0 + d.y);
           }
@@ -2831,13 +2846,13 @@ The `parser` variable will now be an object containing the following structure:
    * @returns {Object} Chart scale object
    */
   d4.builder('linearScaleForNestedData', function(chart, data, dimension) {
-    var key = chart[dimension + 'Key'];
+    var key = chart[dimension].$key;
     var ext = d3.extent(d3.merge(data.map(function(obj) {
       return d3.extent(obj.values, function(d) {
         return d[key] + (d.y0 || 0);
       });
     })));
-    chart[dimension] = d3.scale.linear();
+    //chart[dimension] = d3.scale.linear();
     return chart[dimension].domain([Math.min(0, ext[0]), ext[1]])
     .range(rangeFor(chart, dimension))
     .clamp(true)
@@ -2852,9 +2867,9 @@ The `parser` variable will now be an object containing the following structure:
    * @returns {Object} Chart scale object
    */
   d4.builder('ordinalScaleForNestedData', function(chart, data, dimension) {
-    var parsedData = extractValues(data, chart[dimension + 'Key']);
+    var parsedData = extractValues(data, chart[dimension].$key);
     var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;
-    chart[dimension] = d3.scale.ordinal();
+    //chart[dimension] = d3.scale.ordinal();
     return chart[dimension]
       .domain(parsedData)
       .rangeRoundBands(rangeFor(chart, dimension), bands);

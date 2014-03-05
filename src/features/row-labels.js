@@ -9,16 +9,16 @@
     return {
       accessors: {
         x: function(d) {
-          var width = (Math.abs(this.x(d[this.xKey])) + this.x(d[this.xKey]))/2;
+          var width = (Math.abs(this.x(d[this.x.$key])) + this.x(d[this.x.$key]))/2;
           return Math.max(this.x(0), width) + 10;
         },
 
         y: function(d) {
-          return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);
+          return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2);
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.xKey]);
+          return d3.format('').call(this, d[this.x.$key]);
         }
       },
       render: function(scope, data) {
@@ -27,7 +27,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
-            return 'series' + i + ' ' + this.xKey;
+            return 'series' + i + ' ' + this.x.$key;
           }.bind(this));
 
         var text = group.selectAll('text')

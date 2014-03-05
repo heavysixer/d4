@@ -33,13 +33,13 @@ the direction of the lines.
             }
             return this.x(xVal) + width;
           } else {
-            return this.x(d[this.xKey]);
+            return this.x(d[this.x.$key]);
           }
         },
 
         y: function(d) {
           if(this.orientation() === 'horizontal'){
-            return this.y(d[this.yKey]);
+            return this.y(d[this.y.$key]);
           } else {
             return this.y(d.y0 + d.y);
           }

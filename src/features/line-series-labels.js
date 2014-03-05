@@ -9,11 +9,11 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d.values[d.values.length - 1][this.xKey]);
+          return this.x(d.values[d.values.length - 1][this.x.$key]);
         },
 
         y: function(d) {
-          return this.y(d.values[d.values.length - 1][this.yKey]);
+          return this.y(d.values[d.values.length - 1][this.y.$key]);
         },
 
         text: function(d) {

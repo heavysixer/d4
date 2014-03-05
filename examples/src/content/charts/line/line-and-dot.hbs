@@ -51,8 +51,8 @@ $(document).ready(function(){
 
   var chart = d4.charts.line()
     .width($('#example').width())
-    .xKey('year')
-    .yKey('unitsSold')
+    .x.key('year')
+    .y.key('unitsSold')
     .using('lineSeries', function(line) {
       line.interpolate(function() {
         return 'linear';
@@ -143,8 +143,8 @@ $(document).ready(function(){
 
   var chart = d4.charts.line()
     .width($('#example').width())
-    .xKey('year')
-    .yKey('unitsSold')
+    .x.key('year')
+    .y.key('unitsSold')
     .using('lineSeries', function(line) {
       line.interpolate(function() {
         return 'linear';

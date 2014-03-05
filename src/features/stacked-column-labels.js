@@ -13,7 +13,7 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
+          return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
         },
 
         y: function(d) {
@@ -22,8 +22,8 @@
             var yVal = d.y0 + d.y;
             return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
           } else {
-            var height = Math.abs(this.y(d[this.yKey]) - this.y(0));
-            return (d[this.yKey] < 0 ? this.y(d[this.yKey]) - height : this.y(d[this.yKey])) - 5;
+            var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
+            return (d[this.y.$key] < 0 ? this.y(d[this.y.$key]) - height : this.y(d[this.y.$key])) - 5;
           }
         },
 
@@ -43,7 +43,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
-            return 'series' + i + ' '+ sign(d.y) + ' ' + this.xKey;
+            return 'series' + i + ' '+ sign(d.y) + ' ' + this.x.$key;
           }.bind(this));
 
         var text = group.selectAll('text')

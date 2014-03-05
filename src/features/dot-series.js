@@ -9,11 +9,11 @@
     return {
       accessors: {
         cx: function(d) {
-          return this.x(d[this.xKey]);
+          return this.x(d[this.x.$key]);
         },
 
         cy: function(d) {
-          return this.y(d[this.yKey]);
+          return this.y(d[this.y.$key]);
         },
 
         r: function(d) {
@@ -30,7 +30,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.yKey;
+            return 'series'+ i + ' ' +  this.y.$key;
           }.bind(this));
 
         var dots = group.selectAll('circle')

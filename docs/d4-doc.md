@@ -11,7 +11,7 @@
 * [`features`][6]
 * [`mixin`][7]
 * [`mixout`][8]
-* [`scales`][9]
+* [`axes`][9]
 * [`using`][10]
 * [`functor`][11]
 
@@ -36,19 +36,19 @@
 
 * [``][13]
 
-###### [nested-group.js][18]
+###### [waterfall-connectors.js][18]
 
 * [``][13]
 
-###### [nested-stack.js][19]
+###### [nested-group.js][19]
 
 * [``][13]
 
-###### [waterfall.js][20]
+###### [nested-stack.js][20]
 
 * [``][13]
 
-###### [waterfall-connectors.js][21]
+###### [waterfall.js][21]
 
 * [``][13]
 
@@ -122,7 +122,7 @@ new chart factory.
 
     d4.chart('column', function columnChart() {
         var chart = d4.baseChart({
-          scales: [{
+          axes: [{
             key: 'x',
             kind: 'ordinal'
           }, {
@@ -156,7 +156,7 @@ override the existing builder provided by a chart and use your own.
 
     myChart.builder = function(chart, data){
         return {
-           configure: function(chart, data) {
+           link: function(chart, data) {
                configureScales.bind(this)(chart, data);
            }
         };
@@ -238,12 +238,12 @@ Specifies an existing feature of a chart to be removed (mixed out).
 
 ---
 
-### scales
+### axes
 
 [\#][9]
 [Ⓣ][0]
 
-This function returns the internal scales object as a parameter to the  
+This function returns the internal axes object as a parameter to the  
 supplied function.
 
 #### Arguments
@@ -374,8 +374,8 @@ The default format may not be desired and so we'll override it:
       ['2014', 50]
     ];
     var chart = d4.charts.column()
-    .xKey(0)
-    .yKey(1);
+    .x.$key(0)
+    .y.$key(1);
     
     d3.select('#example')
     .datum(data)
@@ -430,8 +430,8 @@ relative distribution.
     
     var chart = d4.charts.groupedColumn()
     .width($('#example').width())
-    .xKey('year')
-    .yKey('unitsSold')
+    .x.$key('year')
+    .y.$key('unitsSold')
     .groupsOf(parsedData.data[0].values.length);
     
     d3.select('#example')
@@ -491,8 +491,8 @@ along the xAxis.
     
     var chart = d4.charts.line()
     .width($('#example').width())
-    .xKey('year')
-    .yKey('unitsSold');
+    .x.$key('year')
+    .y.$key('unitsSold');
     
     d3.select('#example')
     .datum(parsedData.data)
@@ -534,12 +534,35 @@ has four default features:
 
 ---
 
-## nested-group.js
+## waterfall-connectors.js
 
 ### 
 
 [\#][13]
 [Ⓣ][18]
+
+Waterfall connectors are orthogonal series connectors which visually join  
+column series together by spanning the top or bottom of adjacent columns.
+
+When using this feature in charts other than waterfall, be aware that the  
+mixin expects an accessor property for `orientation`, which it uses to render  
+the direction of the lines.
+
+##### Accessors
+
+`x` - Used in placement of the connector lines.  
+`y` - Used in placement of the connector lines.  
+`span` - calculates the length of the connector line  
+`classes` - applies the class to the connector lines.
+
+---
+
+## nested-group.js
+
+### 
+
+[\#][13]
+[Ⓣ][19]
 
 The nested group parser is useful for grouped column charts where multiple  
 data items need to appear relative to the axis value, for example grouped  
@@ -593,7 +616,7 @@ Keep reading for more information on these various accessor functions.
 ### 
 
 [\#][13]
-[Ⓣ][19]
+[Ⓣ][20]
 
 The nested stack parser is useful for charts which take a data series  
 and wants to sort them across a dimension and then display the results.  
@@ -702,7 +725,7 @@ The `parser` variable will now be an object containing the following structure:
 ### 
 
 [\#][13]
-[Ⓣ][20]
+[Ⓣ][21]
 
 The waterfall parser is useful for waterfall charts where data items need to account  
 for the position of earlier values:
@@ -805,29 +828,6 @@ y - an object with a key representing the y accessor and an array of values
 
 ---
 
-## waterfall-connectors.js
-
-### 
-
-[\#][13]
-[Ⓣ][21]
-
-Waterfall connectors are orthogonal series connectors which visually join  
-column series together by spanning the top or bottom of adjacent columns.
-
-When using this feature in charts other than waterfall, be aware that the  
-mixin expects an accessor property for `orientation`, which it uses to render  
-the direction of the lines.
-
-##### Accessors
-
-`x` - Used in placement of the connector lines.  
-`y` - Used in placement of the connector lines.  
-`span` - calculates the length of the connector line  
-`classes` - applies the class to the connector lines.
-
----
-
 
 
 [0]: #base-js
@@ -839,7 +839,7 @@ the direction of the lines.
 [6]: #features
 [7]: #mixin
 [8]: #mixout
-[9]: #scales
+[9]: #axes
 [10]: #using
 [11]: #functor
 [12]: #scales-js
@@ -848,9 +848,9 @@ the direction of the lines.
 [15]: #grouped-column-js
 [16]: #line-js
 [17]: #row-js
-[18]: #nested-group-js
-[19]: #nested-stack-js
-[20]: #waterfall-js
-[21]: #waterfall-connectors-js
+[18]: #waterfall-connectors-js
+[19]: #nested-group-js
+[20]: #nested-stack-js
+[21]: #waterfall-js
 [22]: https://github.com/mbostock/d3/wiki/Arrays#-nest
 [23]: https://github.com/mbostock/d3/wiki/Stack-Layout

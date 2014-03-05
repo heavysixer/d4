@@ -63,8 +63,8 @@
 
     var chart = d4.charts.line()
     .width($('#example').width())
-    .xKey('year')
-    .yKey('unitsSold');
+    .x.$key('year')
+    .y.$key('unitsSold');
 
     d3.select('#example')
     .datum(parsedData.data)

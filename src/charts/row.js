@@ -8,13 +8,13 @@
   var rowChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        if(!chart.x){
-          d4.builders.linearScaleForNestedData(chart, data, 'x');
-        }
-
-        if(!chart.y){
-          d4.builders.ordinalScaleForNestedData(chart, data, 'y');
-        }
+        //if(!chart.x){
+        d4.builders.linearScaleForNestedData(chart, data, 'x');
+        //}
+        //
+        //if(!chart.y){
+        d4.builders.ordinalScaleForNestedData(chart, data, 'y');
+        //}
       }
     };
     return builder;
@@ -53,6 +53,14 @@
         right: 40,
         bottom: 20,
         left: 40
+      },
+      axes: {
+        x : {
+          kind : 'linear'
+        },
+        y : {
+          kind : 'ordinal'
+        }
       }
     });
     [{

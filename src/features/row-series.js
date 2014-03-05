@@ -13,16 +13,16 @@
     return {
       accessors: {
         x: function(d) {
-          var xVal = d[this.xKey] - Math.max(0, d[this.xKey]);
+          var xVal = d[this.x.$key] - Math.max(0, d[this.x.$key]);
           return this.x(xVal);
         },
 
         y: function(d) {
-          return this.y(d[this.yKey]);
+          return this.y(d[this.y.$key]);
         },
 
         width: function(d) {
-          return Math.abs(this.x(d[this.xKey]) - this.x(0));
+          return Math.abs(this.x(d[this.x.$key]) - this.x(0));
         },
 
         height: function() {
@@ -30,7 +30,7 @@
         },
 
         classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.xKey];
+          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.x.$key];
         }
       },
       render: function(scope, data) {
@@ -39,7 +39,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.yKey;
+            return 'series'+ i + ' ' +  this.y.$key;
           }.bind(this));
 
         var rect = group.selectAll('rect')

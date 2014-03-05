@@ -13,12 +13,12 @@
       accessors: {
         x: function(d, i) {
           var width = this.x.rangeBand() / this.groupsOf;
-          var xPos = this.x(d[this.xKey]) + width * i;
+          var xPos = this.x(d[this.x.$key]) + width * i;
           return xPos;
         },
 
         y: function(d) {
-          return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);
+          return d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key]);
         },
 
         width: function() {
@@ -28,11 +28,11 @@
         },
 
         height: function(d) {
-          return Math.abs(this.y(d[this.yKey]) - this.y(0));
+          return Math.abs(this.y(d[this.y.$key]) - this.y(0));
         },
 
         classes: function(d, i) {
-          return 'bar fill item' + i + ' ' + sign(d[this.yKey]) + ' ' + d[this.yKey];
+          return 'bar fill item' + i + ' ' + sign(d[this.y.$key]) + ' ' + d[this.y.$key];
         }
       },
       render: function(scope, data) {
@@ -42,7 +42,7 @@
         group.enter().append('g');
         group.exit().remove();
         group.attr('class', function(d, i) {
-          return 'series' + i + ' ' + this.xKey;
+          return 'series' + i + ' ' + this.x.$key;
         }.bind(this));
 
         var rect = group.selectAll('rect')

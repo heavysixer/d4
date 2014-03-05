@@ -64,6 +64,18 @@
     }
   };
 
+  var readOnlyProp = function(obj, prop, functName, value){
+    Object.defineProperty(obj, prop, {
+      configurable: true,
+      get: function(){
+        return d4.functor(value)();
+      },
+      set: function() {
+        err(' You cannot directly assign values to the {0} property. Instead use the {1}() function.', prop, functName);
+      }
+    });
+  };
+
   var err = function() {
     var parts = Array.prototype.slice.call(arguments);
     var message = parts.shift();
@@ -91,13 +103,6 @@
     return this;
   };
 
-  var validateScale = function(scale){
-    var supportedScales = ['identity', 'linear', 'log', 'ordinal', 'pow', 'quantile', 'quantize', 'sqrt', 'threshold'];
-    if(supportedScales.indexOf(scale.kind) < 0){
-      err('The scale type: "{0}" is unrecognized. D4 only supports these scale types: {1}', scale.kind, supportedScales.join(', '));
-    }
-  };
-
   /*!
     In an effort to make the API more succient we store the last known proplerty
   of an accessor with the same name but prepended with a $ character. This allows
@@ -108,15 +113,7 @@
   var storeLastValue = function(obj, functName, attr) {
     if(d4.isNotFunction(attr)){
       var prop = '$' + functName;
-      Object.defineProperty(obj, prop, {
-        configurable: true,
-        get: function(){
-          return attr;
-        },
-        set: function() {
-          err(' You cannot directly assign values to the {0} property. Instead use the {1}() function.', prop, functName);
-        }
-      });
+      readOnlyProp(obj, prop, functName, attr);
     }
   };
 
@@ -173,31 +170,44 @@
     });
   };
 
-  var addScale = function(dimension, opts, scale){
-    validateScale(scale);
+  var validateScale = function(scale){
+    var supportedScales = ['identity', 'linear', 'log', 'ordinal', 'pow', 'quantile', 'quantize', 'sqrt', 'threshold'];
+    if(supportedScales.indexOf(scale.kind) < 0){
+      err('The scale type: "{0}" is unrecognized. D4 only supports these scale types: {1}', scale.kind, supportedScales.join(', '));
+    }
+  };
+
+  var addAxis = function(dimension, opts, axis){
+    validateScale(axis);
     opts.axes[dimension] = {
       accessors : d4.extend({
         key : dimension,
         kind : undefined,
         min : undefined,
         max : undefined,
-        scale : undefined
-      },scale)
+        scale: d3.scale[axis.kind]()
+      }, axis)
     };
+    opts[dimension] = opts.axes[dimension].accessors.scale;
     createAccessorsFromObject(opts.axes[dimension]);
+
+    // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.
+    each(d3.keys(opts.axes[dimension].accessors), function(key){
+      readOnlyProp(opts[dimension], '$'+key, opts.axes[dimension][key], opts.axes[dimension].accessors[key]);
+    });
   };
 
   var linkScales = function(opts) {
     each(d3.keys(opts.axes), function(dimension){
-      addScale(dimension, opts, opts.axes[dimension]);
+      addAxis(dimension, opts, opts.axes[dimension]);
     });
 
     if(typeof(opts.axes.x) === 'undefined') {
-      addScale('x', opts, { kind : 'ordinal' });
+      addAxis('x', opts, { kind : 'ordinal' });
     }
 
     if(typeof(opts.axes.y) === 'undefined') {
-      addScale('y', opts, { kind : 'linear' });
+      addAxis('y', opts, { kind : 'linear' });
     }
   };
 
@@ -211,8 +221,6 @@
       features: {},
       mixins: [],
       axes: {},
-      xKey: 'x',
-      yKey: 'y',
       valueKey: 'y',
       margin: {
         top: 20,
@@ -223,7 +231,7 @@
     }, config);
     linkScales(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
-    opts.accessors = ['margin', 'width', 'height', 'xKey', 'yKey', 'valueKey'].concat(config.accessors || []);
+    opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);
     return opts;
   };
 
@@ -280,13 +288,13 @@
   dimensions based on the configuration applied to the chart object itself.
   */
   var applyDefaultParser = function(opts, data) {
-    if(opts.yKey !== opts.valueKey){
-      opts.valueKey = opts.yKey;
+    if(opts.y.$key !== opts.valueKey){
+      opts.valueKey = opts.y.$key;
     }
     var parsed = d4.parsers.nestedGroup()
-    .x(opts.xKey)
-    .y(opts.yKey)
-    .nestKey(opts.xKey)
+    .x(opts.x.$key)
+    .y(opts.y.$key)
+    .nestKey(opts.x.$key)
     .value(opts.valueKey)(data);
     return parsed.data;
   };

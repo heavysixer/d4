@@ -19,13 +19,13 @@
             var yVal = (d.y0 + d.y) - Math.min(0, d.y);
             return this.y(yVal);
           } else {
-            return this.y(d[this.yKey]);
+            return this.y(d[this.y.$key]);
           }
         },
 
         x: function(d) {
           if (this.orientation() === 'vertical') {
-            return this.x(d[this.xKey]);
+            return this.x(d[this.x.$key]);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
             return this.x(xVal);
@@ -53,7 +53,7 @@
           if (n > 0 && d.y0 === 0) {
             klass = 'subtotal';
           }
-          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.yKey];
+          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.y.$key];
         }
       }
     };
@@ -68,13 +68,13 @@
             var yVal = (d.y0 + d.y) - Math.max(0, d.y);
             return this.y(yVal) - 10 - height;
           } else {
-            return this.y(d[this.yKey]) + (this.y.rangeBand() / 2);
+            return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2);
           }
         },
 
         x: function(d) {
           if (this.orientation() === 'vertical') {
-            return this.x(d[this.xKey]) + (this.x.rangeBand() / 2);
+            return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
             var width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));

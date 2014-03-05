@@ -37,6 +37,38 @@ describe('d4.base', function() {
       }).to.throw(Error, '[d4] No builder defined');
     });
 
+    describe('when binding axes', function(){
+      it('should create a d3 scale as part of the build process', function(){
+        var chart = d4.charts.column();
+        chart.x(function(x){
+          expect(x.scale().toString()).to.be.equal(d3.scale.ordinal().toString());
+        });
+      });
+
+      it('should not overwrite an existing scale if a user defined one already exists', function(){
+        var chart = d4.charts.column();
+        chart.x(function(x){
+          x.scale(d3.scale.linear());
+        });
+
+        chart.x(function(x){
+          expect(x.scale().toString()).to.be.equal(d3.scale.linear().toString());
+        });
+      });
+
+      it('should create readonly function properties on a scale instance', function(){
+        var chart = d4.charts.column();
+        var axes = chart.axes();
+        expect(axes.x.$key).to.equal('x');
+        expect(axes.x.$kind).to.equal('ordinal');
+        expect(function(){
+          axes.x.$kind = 'linear';
+        }).to.throw(Error,  '[d4]  You cannot directly assign values to the $kind property. Instead use the kind() function.');
+        chart.axes().x.kind('linear');
+        expect(axes.x.$kind).to.equal('linear');
+      });
+    });
+
     describe('when defining a builder', function() {
       it('should allow you to pass in a custom builder', function() {
         var chart = d4.baseChart(this.builder);
@@ -126,13 +158,7 @@ describe('d4.base', function() {
       });
 
       it('should throw an error if an unsupported scale is used.', function() {
-        var obj = {
-          axes: {
-            z: {
-              kind: 'foo'
-            }
-          }
-        };
+        var obj = { axes : { z : { kind : 'foo' } } };
         var builder = this.builder;
         expect(function() {
           d4.baseChart(builder, obj);
@@ -152,7 +178,6 @@ describe('d4.base', function() {
             link: 'foo'
           };
         };
-
         expect(function() {
           d4.baseChart(badBuilder);
         }).to.throw(Error, '[d4] The supplied builder does not have a link function');
@@ -380,13 +405,6 @@ describe('d4.base', function() {
   });
 
   describe('#using()', function() {
-    //it('should look for a scale, then a feature by name', function(){
-    //  var chart = d4.charts.column();
-    //  chart.using('x', function(x){
-    //    expect(x.accessors).to.not.be.an('undefined');
-    //  });
-    //});
-
     it('should throw an error if you try to use a non-existent feature', function() {
       var chart = d4.charts.column();
       expect(function() {

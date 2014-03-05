@@ -8,12 +8,8 @@
   var groupedColumnChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        if(!chart.x){
-          d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        }
-        if(!chart.y){
-          d4.builders.linearScaleForNestedData(chart, data, 'y');
-        }
+        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
+        d4.builders.linearScaleForNestedData(chart, data, 'y');
       }
     };
     return builder;
@@ -59,8 +55,8 @@ relative distribution.
 
     var chart = d4.charts.groupedColumn()
     .width($('#example').width())
-    .xKey('year')
-    .yKey('unitsSold')
+    .x.$key('year')
+    .y.$key('unitsSold')
     .groupsOf(parsedData.data[0].values.length);
 
     d3.select('#example')

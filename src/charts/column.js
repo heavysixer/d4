@@ -8,12 +8,12 @@
   var columnChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        if (!chart.x) {
-          d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        }
-        if (!chart.y) {
-          d4.builders.linearScaleForNestedData(chart, data, 'y');
-        }
+        // if (!chart.x) {
+        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
+        // }
+        // if (!chart.y) {
+        d4.builders.linearScaleForNestedData(chart, data, 'y');
+        // }
       }
     };
     return builder;
@@ -54,8 +54,8 @@ The default format may not be desired and so we'll override it:
       ['2014', 50]
     ];
     var chart = d4.charts.column()
-    .xKey(0)
-    .yKey(1);
+    .x.$key(0)
+    .y.$key(1);
 
     d3.select('#example')
     .datum(data)

@@ -13,7 +13,7 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.xKey]);
+          return this.x(d[this.x.$key]);
         },
 
         y: function(d) {
@@ -21,7 +21,7 @@
             var yVal = d.y0 + d.y;
             return  yVal < 0 ? this.y(d.y0) : this.y(yVal);
           } else {
-            return d[this.yKey] < 0 ? this.y(0) : this.y(d[this.yKey]);
+            return d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key]);
           }
         },
 
@@ -33,12 +33,12 @@
           if(d.y0){
             return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
           }else {
-            return Math.abs(this.y(d[this.yKey]) - this.y(0));
+            return Math.abs(this.y(d[this.y.$key]) - this.y(0));
           }
         },
 
         classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.yKey];
+          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.y.$key];
         }
       },
       render: function(scope, data) {
@@ -47,7 +47,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.yKey;
+            return 'series'+ i + ' ' +  this.y.$key;
           }.bind(this));
 
         var rect = group.selectAll('rect')

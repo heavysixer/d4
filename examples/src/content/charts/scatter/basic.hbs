@@ -30,8 +30,8 @@ $(document).ready(function(){
 
   var chart = d4.charts.scatterPlot()
   .width($('#example').width())
-  .xKey('age')
-  .yKey('month')
+  .x.key('age')
+  .y.key('month')
   .zKey('unitsSold');
 
   d3.select('#example')
@@ -64,8 +64,8 @@ $(document).ready(function(){
 
   var chart = d4.charts.scatterPlot()
   .width($('#example').width())
-  .xKey('age')
-  .yKey('month')
+  .x.key('age')
+  .y.key('month')
   .zKey('unitsSold');
 
   d3.select('#example')
