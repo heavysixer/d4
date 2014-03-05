@@ -27,10 +27,10 @@
     var chart = d4.baseChart(scatterPlotBuilder, {
       axes : {
         x : {
-          kind : 'linear'
+          scale : 'linear'
         },
         z : {
-          kind : 'linear'
+          scale : 'linear'
         }
       }
     });

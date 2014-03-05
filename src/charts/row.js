@@ -51,10 +51,10 @@
       },
       axes: {
         x : {
-          kind : 'linear'
+          scale : 'linear'
         },
         y : {
-          kind : 'ordinal'
+          scale : 'ordinal'
         }
       }
     });

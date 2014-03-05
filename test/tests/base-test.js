@@ -41,20 +41,21 @@ describe('d4.base', function() {
       it('should create a d3 scale as part of the build process', function(){
         var chart = d4.charts.column();
         chart.x(function(x){
-          expect(x.scale().toString()).to.be.equal(d3.scale.ordinal().toString());
+          expect(x.scale.toString()).to.be.equal(d3.scale.ordinal().toString());
         });
       });
 
       it('should create accessors for the chosen scale from d3', function(){
         var chart = d4.charts.column();
 
-        // clamp is a function of a d3 linear scale.
         chart.y(function(y){
           expect(function() {
-            y.clamp(true)
-            .domain([])
-            .min(1)
-            .max(100);
+
+            // clamp is a function of a d3 linear scale.
+            y.clamp(true);
+
+            // min is a function of d4
+            y.min(1);
 
           }).to.not.throw(Error);
         });
@@ -67,7 +68,7 @@ describe('d4.base', function() {
         });
 
         chart.x(function(x){
-          expect(x.scale().toString()).to.be.equal(d3.scale.linear().toString());
+          expect(x.scale.toString()).to.be.equal(d3.scale.linear().toString());
         });
       });
 
@@ -75,12 +76,12 @@ describe('d4.base', function() {
         var chart = d4.charts.column();
         var axes = chart.axes();
         expect(axes.x.$key).to.equal('x');
-        expect(axes.x.$kind).to.equal('ordinal');
+        expect(axes.x.$scale).to.equal('ordinal');
         expect(function(){
-          axes.x.$kind = 'linear';
-        }).to.throw(Error,  '[d4]  You cannot directly assign values to the $kind property. Instead use the kind() function.');
-        chart.axes().x.kind('linear');
-        expect(axes.x.$kind).to.equal('linear');
+          axes.x.$scale = 'linear';
+        }).to.throw(Error,  '[d4]  You cannot directly assign values to the $scale property. Instead use the scale() function.');
+        chart.axes().x.scale('linear');
+        expect(axes.x.$scale).to.equal('linear');
       });
     });
 
@@ -100,7 +101,7 @@ describe('d4.base', function() {
           .call(chart);
 
         chart.axes(function(axes) {
-          expect(axes.x.kind()).to.equal('ordinal');
+          expect(axes.x.scale()).to.equal('ordinal');
         });
       });
 
@@ -114,7 +115,7 @@ describe('d4.base', function() {
           .call(chart);
 
         chart.axes(function(axes) {
-          expect(axes.y.kind()).to.equal('linear');
+          expect(axes.y.scale()).to.equal('linear');
         });
       });
 
@@ -122,7 +123,7 @@ describe('d4.base', function() {
         var obj = {
           axes: {
             y: {
-              kind: 'ordinal'
+              scale: 'ordinal'
             }
           }
         };
@@ -137,10 +138,10 @@ describe('d4.base', function() {
         chart.axes(function(axes) {
 
           // default for x is unchanged
-          expect(axes.x.kind()).to.equal('ordinal');
+          expect(axes.x.scale()).to.equal('ordinal');
 
           // the y scale is now ordinal instead of linear
-          expect(axes.y.kind()).to.equal('ordinal');
+          expect(axes.y.scale()).to.equal('ordinal');
         });
       });
 
@@ -148,7 +149,7 @@ describe('d4.base', function() {
         var obj = {
           axes: {
             z: {
-              kind: 'ordinal',
+              scale: 'ordinal',
               customProperty: 'foo'
             }
           }
@@ -158,22 +159,22 @@ describe('d4.base', function() {
         expect(chart.z).to.not.be.an('undefined');
 
         // should be able to retrieve a scale accessor
-        chart.z(function(scale){
-          expect(scale.kind()).to.equal('ordinal');
-          scale.kind('linear');
+        chart.z(function(axis){
+          expect(axis.scale()).to.equal('ordinal');
+          axis.scale('linear');
 
           // should create custom accessors
-          expect(scale.customProperty()).to.equal('foo');
+          expect(axis.customProperty()).to.equal('foo');
         });
 
         // should be able to set a scale accessor
-        chart.z(function(scale){
-          expect(scale.kind()).to.equal('linear');
+        chart.z(function(axis){
+          expect(axis.scale()).to.equal('linear');
         });
       });
 
       it('should throw an error if an unsupported scale is used.', function() {
-        var obj = { axes : { z : { kind : 'foo' } } };
+        var obj = { axes : { z : { scale : 'foo' } } };
         var builder = this.builder;
         expect(function() {
           d4.baseChart(builder, obj);

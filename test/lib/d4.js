@@ -175,26 +175,25 @@
     });
   };
 
-  var validateScale = function(scale){
+  var validateScale = function(kind){
     var supportedScales = d3.keys(d3.scale);
-    if(supportedScales.indexOf(scale.kind) < 0){
-      err('The scale type: "{0}" is unrecognized. D4 only supports these scale types: {1}', scale.kind, supportedScales.join(', '));
+    if(supportedScales.indexOf(kind) < 0){
+      err('The scale type: "{0}" is unrecognized. D4 only supports these scale types: {1}', kind, supportedScales.join(', '));
     }
   };
 
   var addAxis = function(dimension, opts, axis){
-    validateScale(axis);
-    var scale = d3.scale[axis.kind]();
+    validateScale(axis.scale);
+    var scale = d3.scale[axis.scale]();
     opts.axes[dimension] = {
+      scale: scale,
       accessors : d4.extend({
         key : dimension,
-        kind : undefined,
         min : undefined,
-        max : undefined,
-        scale: scale
+        max : undefined
       }, axis)
     };
-    opts[dimension] = opts.axes[dimension].accessors.scale;
+    opts[dimension] = opts.axes[dimension].scale;
     createAccessorsFromObject(opts.axes[dimension]);
 
     // Create a transparent proxy for functions needed by the d3 scale.
@@ -212,11 +211,11 @@
     });
 
     if(typeof(opts.axes.x) === 'undefined') {
-      addAxis('x', opts, { kind : 'ordinal' });
+      addAxis('x', opts, { scale : 'ordinal' });
     }
 
     if(typeof(opts.axes.y) === 'undefined') {
-      addAxis('y', opts, { kind : 'linear' });
+      addAxis('y', opts, { scale : 'linear' });
     }
   };
 
@@ -466,10 +465,10 @@
    *         var chart = d4.baseChart({
    *           axes: [{
    *             key: 'x',
-   *             kind: 'ordinal'
+   *             scale: 'ordinal'
    *           }, {
    *             key: 'y',
-   *             kind: 'linear'
+   *             scale: 'linear'
    *           }]
    *         }, columnChartBuilder);
    *         return chart;
@@ -671,6 +670,7 @@
   var columnChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
+        console.log(chart.x.$kind);
         d4.builders.ordinalScaleForNestedData(chart, data, 'x');
         d4.builders.linearScaleForNestedData(chart, data, 'y');
       }
@@ -962,10 +962,10 @@ relative distribution.
       },
       axes: {
         x : {
-          kind : 'linear'
+          scale : 'linear'
         },
         y : {
-          kind : 'ordinal'
+          scale : 'ordinal'
         }
       }
     });
@@ -1012,10 +1012,10 @@ relative distribution.
     var chart = d4.baseChart(scatterPlotBuilder, {
       axes : {
         x : {
-          kind : 'linear'
+          scale : 'linear'
         },
         z : {
-          kind : 'linear'
+          scale : 'linear'
         }
       }
     });
