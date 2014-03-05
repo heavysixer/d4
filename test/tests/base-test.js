@@ -51,7 +51,11 @@ describe('d4.base', function() {
         // clamp is a function of a d3 linear scale.
         chart.y(function(y){
           expect(function() {
-            y.clamp(true);
+            y.clamp(true)
+            .domain([])
+            .min(1)
+            .max(100);
+
           }).to.not.throw(Error);
         });
       });
