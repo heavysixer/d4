@@ -667,12 +667,8 @@
   var columnChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        // if (!chart.x) {
         d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        // }
-        // if (!chart.y) {
         d4.builders.linearScaleForNestedData(chart, data, 'y');
-        // }
       }
     };
     return builder;
@@ -834,12 +830,8 @@ relative distribution.
   var lineChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        //if(!chart.x){
         d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-          //}
-        //if(!chart.y){
         d4.builders.linearScaleForNestedData(chart, data, 'y');
-          //}
       }
     };
     return builder;
@@ -923,13 +915,8 @@ relative distribution.
   var rowChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        //if(!chart.x){
         d4.builders.linearScaleForNestedData(chart, data, 'x');
-        //}
-        //
-        //if(!chart.y){
         d4.builders.ordinalScaleForNestedData(chart, data, 'y');
-        //}
       }
     };
     return builder;
@@ -1001,20 +988,12 @@ relative distribution.
 
   var scatterPlotBuilder = function() {
     var configureScales = function(chart, data) {
-      //if(!chart.x){
-        d4.builders.linearScaleForNestedData(chart, data, 'x');
-        //}
-
-      //if(!chart.y){
-        d4.builders.linearScaleForNestedData(chart, data, 'y');
-        //}
-
-      //if(!chart.z){
-        d4.builders.linearScaleForNestedData(chart, data, 'z');
-        var min = 5;
-        var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
-        chart.z.range([min, max]);
-        //}
+      d4.builders.linearScaleForNestedData(chart, data, 'x');
+      d4.builders.linearScaleForNestedData(chart, data, 'y');
+      d4.builders.linearScaleForNestedData(chart, data, 'z');
+      var min = 5;
+      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
+      chart.z.range([min, max]);
     };
 
     var builder = {
@@ -1059,12 +1038,8 @@ relative distribution.
   var stackedColumnChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        if(!chart.x){
-          d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        }
-        if(!chart.y){
-          d4.builders.linearScaleForNestedData(chart, data, 'y');
-        }
+        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
+        d4.builders.linearScaleForNestedData(chart, data, 'y');
       }
     };
     return builder;
@@ -1192,19 +1167,16 @@ relative distribution.
     };
 
     var setOrdinal = function(chart, dimension, data) {
-      //if (!chart[dimension]) {
-        var keys = data.map(function(d) {
-          return d.key;
-        }.bind(this));
+      var keys = data.map(function(d) {
+        return d.key;
+      }.bind(this));
 
-        chart[dimension]// = d3.scale.ordinal()
-          .domain(keys)
-          .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);
-      //}
+      chart[dimension]
+      .domain(keys)
+      .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);
     };
 
     var setLinear = function(chart, dimension, data) {
-      //if (!chart[dimension]) {
         var ext = d3.extent(d3.merge(data.map(function(datum) {
           return d3.extent(datum.values, function(d) {
 
@@ -1214,13 +1186,11 @@ relative distribution.
           });
         })));
         ext[0] = Math.min(0, ext[0]);
-        chart[dimension]// = d3.scale.linear()
-          .domain(ext);
-      //}
-      chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
+        chart[dimension].domain(ext);
+        chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
         .clamp(true)
         .nice();
-    };
+      };
 
     var configureScales = function(chart, data) {
       if (chart.orientation().toLowerCase() === 'vertical') {

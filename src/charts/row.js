@@ -8,13 +8,8 @@
   var rowChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        //if(!chart.x){
         d4.builders.linearScaleForNestedData(chart, data, 'x');
-        //}
-        //
-        //if(!chart.y){
         d4.builders.ordinalScaleForNestedData(chart, data, 'y');
-        //}
       }
     };
     return builder;
