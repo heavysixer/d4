@@ -45,6 +45,17 @@ describe('d4.base', function() {
         });
       });
 
+      it('should create accessors for the chosen scale from d3', function(){
+        var chart = d4.charts.column();
+
+        // clamp is a function of a d3 linear scale.
+        chart.y(function(y){
+          expect(function() {
+            y.clamp(true);
+          }).to.not.throw(Error);
+        });
+      });
+
       it('should not overwrite an existing scale if a user defined one already exists', function(){
         var chart = d4.charts.column();
         chart.x(function(x){
@@ -162,7 +173,7 @@ describe('d4.base', function() {
         var builder = this.builder;
         expect(function() {
           d4.baseChart(builder, obj);
-        }).to.throw(Error, '[d4] The scale type: "foo" is unrecognized. D4 only supports these scale types: identity, linear, log, ordinal, pow, quantile, quantize, sqrt, threshold');
+        }).to.throw(Error, '[d4] The scale type: "foo" is unrecognized. D4 only supports these scale types: linear, log, pow, sqrt, ordinal, category10, category20, category20b, category20c, quantile, quantize, threshold, identity');
       });
 
       it('should require the builder to have a link function', function() {

@@ -176,7 +176,7 @@
   };
 
   var validateScale = function(scale){
-    var supportedScales = ['identity', 'linear', 'log', 'ordinal', 'pow', 'quantile', 'quantize', 'sqrt', 'threshold'];
+    var supportedScales = d3.keys(d3.scale);
     if(supportedScales.indexOf(scale.kind) < 0){
       err('The scale type: "{0}" is unrecognized. D4 only supports these scale types: {1}', scale.kind, supportedScales.join(', '));
     }
@@ -184,17 +184,21 @@
 
   var addAxis = function(dimension, opts, axis){
     validateScale(axis);
+    var scale = d3.scale[axis.kind]();
     opts.axes[dimension] = {
       accessors : d4.extend({
         key : dimension,
         kind : undefined,
         min : undefined,
         max : undefined,
-        scale: d3.scale[axis.kind]()
+        scale: scale
       }, axis)
     };
     opts[dimension] = opts.axes[dimension].accessors.scale;
     createAccessorsFromObject(opts.axes[dimension]);
+
+    // Create a transparent proxy for functions needed by the d3 scale.
+    createAccessorsFromArray(opts.axes[dimension], scale, d3.keys(scale));
 
     // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.
     each(d3.keys(opts.axes[dimension].accessors), function(key){
