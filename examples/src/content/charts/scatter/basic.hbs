@@ -30,9 +30,16 @@ $(document).ready(function(){
 
   var chart = d4.charts.scatterPlot()
   .width($('#example').width())
-  .x.key('age')
-  .y.key('month')
-  .zKey('unitsSold');
+  .x(function(x){
+    console.log(x);
+    x.key('age');
+  })
+  .y(function(y){
+    y.key('month');
+  })
+  .z(function(z){
+    z.key('unitsSold');
+  });
 
   d3.select('#example')
   .datum(data)

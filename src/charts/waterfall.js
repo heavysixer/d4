@@ -101,19 +101,19 @@
     };
 
     var setOrdinal = function(chart, dimension, data) {
-      if (!chart[dimension]) {
+      //if (!chart[dimension]) {
         var keys = data.map(function(d) {
           return d.key;
         }.bind(this));
 
-        chart[dimension] = d3.scale.ordinal()
+        chart[dimension]// = d3.scale.ordinal()
           .domain(keys)
           .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);
-      }
+      //}
     };
 
     var setLinear = function(chart, dimension, data) {
-      if (!chart[dimension]) {
+      //if (!chart[dimension]) {
         var ext = d3.extent(d3.merge(data.map(function(datum) {
           return d3.extent(datum.values, function(d) {
 
@@ -123,9 +123,9 @@
           });
         })));
         ext[0] = Math.min(0, ext[0]);
-        chart[dimension] = d3.scale.linear()
+        chart[dimension]// = d3.scale.linear()
           .domain(ext);
-      }
+      //}
       chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
         .clamp(true)
         .nice();

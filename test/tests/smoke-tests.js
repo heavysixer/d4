@@ -56,8 +56,12 @@ describe('smoke tests', function() {
       .value('unitsSold')(data);
 
     var chart = d4.charts.groupedColumn()
-    .xKey('year')
-    .yKey('unitsSold')
+    .x(function(x){
+      x.key('year');
+    })
+    .y(function(y){
+      y.key('unitsSold');
+    })
     .groupsOf(parsedData.data[0].values.length);
 
     d3.select('#chart')
@@ -100,8 +104,12 @@ describe('smoke tests', function() {
       })(data);
 
     var chart = d4.charts.line()
-    .xKey('year')
-    .yKey('unitsSold');
+    .x(function(x){
+      x.key('year');
+    })
+    .y(function(y){
+      y.key('unitsSold');
+    });
 
     d3.select('#chart')
     .datum(parsedData.data)
@@ -144,19 +152,19 @@ describe('smoke tests', function() {
       ];
 
     var parsedData = d4.parsers.nestedStack()
-      .x(function(){
-        return 'year';
-      })
-      .y(function(){
-        return 'salesman';
-      })
+      .x('year')
+      .y('unitsSold')
       .value(function(){
         return 'unitsSold';
       })(data);
 
     var chart = d4.charts.stackedColumn()
-    .xKey('year')
-    .yKey('unitsSold');
+      .x(function(x){
+        x.key('year');
+      })
+      .y(function(y){
+        y.key('unitsSold');
+      });
 
     d3.select('#chart')
     .datum(parsedData.data)
@@ -185,9 +193,15 @@ describe('smoke tests', function() {
       ];
 
     var chart = d4.charts.scatterPlot()
-    .xKey('age')
-    .yKey('month')
-    .zKey('unitsSold');
+    .x(function(x){
+      x.key('age');
+    })
+    .y(function(y){
+      y.key('month');
+    })
+    .z(function(z){
+      z.key('unitsSold');
+    });
 
     d3.select('#chart')
     .datum(data)
@@ -230,8 +244,12 @@ describe('smoke tests', function() {
       })(data);
 
     var chart = d4.charts.waterfall()
-      .xKey('category')
-      .yKey('value');
+    .x(function(x){
+      x.key('category');
+    })
+    .y(function(y){
+      y.key('value');
+    });
 
     d3.select('#chart')
       .datum(parsedData.data)

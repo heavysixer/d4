@@ -7,20 +7,20 @@
 
   var scatterPlotBuilder = function() {
     var configureScales = function(chart, data) {
-      if(!chart.x){
+      //if(!chart.x){
         d4.builders.linearScaleForNestedData(chart, data, 'x');
-      }
+        //}
 
-      if(!chart.y){
+      //if(!chart.y){
         d4.builders.linearScaleForNestedData(chart, data, 'y');
-      }
+        //}
 
-      if(!chart.z){
+      //if(!chart.z){
         d4.builders.linearScaleForNestedData(chart, data, 'z');
         var min = 5;
         var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
         chart.z.range([min, max]);
-      }
+        //}
     };
 
     var builder = {
@@ -34,6 +34,9 @@
   d4.chart('scatterPlot', function() {
     var chart = d4.baseChart(scatterPlotBuilder, {
       axes : {
+        x : {
+          kind : 'linear'
+        },
         z : {
           kind : 'linear'
         }

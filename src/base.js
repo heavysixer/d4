@@ -46,6 +46,7 @@
     if (obj === null) {
       return;
     }
+
     if (nativeForEach && obj.forEach === nativeForEach) {
       obj.forEach(iterator, context);
     } else if (obj.length === +obj.length) {
@@ -158,10 +159,10 @@
     }
   };
 
-  var createAccessorsFromScales = function(chart, opts) {
+  var createAccessorsFromAxes = function(chart, opts) {
     each(d3.keys(opts.axes), function(key) {
       chart[key] = function(funct) {
-        usingScale.bind(opts)(key, funct);
+        usingAxis.bind(opts)(key, funct);
         return chart;
       };
       each(d3.keys(opts.axes[key].accessors), function(prop){
@@ -193,11 +194,11 @@
 
     // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.
     each(d3.keys(opts.axes[dimension].accessors), function(key){
-      readOnlyProp(opts[dimension], '$'+key, opts.axes[dimension][key], opts.axes[dimension].accessors[key]);
+      readOnlyProp(opts[dimension], '$' + key, opts.axes[dimension][key], opts.axes[dimension][key]);
     });
   };
 
-  var linkScales = function(opts) {
+  var linkAxes = function(opts) {
     each(d3.keys(opts.axes), function(dimension){
       addAxis(dimension, opts, opts.axes[dimension]);
     });
@@ -229,7 +230,7 @@
         left: 40
       }
     }, config);
-    linkScales(opts);
+    linkAxes(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
     opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);
     return opts;
@@ -391,15 +392,15 @@
     }
   };
 
-  var usingScale = function(key, funct) {
-    var scale = this.axes[key];
+  var usingAxis = function(key, funct) {
+    var axis = this.axes[key];
     if (d4.isNotFunction(funct)) {
-      err('You must supply a continuation function in order to use a chart scale.');
+      err('You must supply a continuation function in order to use a chart axis.');
     }
-    if (!scale) {
-      err('Could not find scale: "{0}", maybe you forgot to define it?', key);
+    if (!axis) {
+      err('Could not find axis: "{0}", maybe you forgot to define it?', key);
     } else {
-      funct.bind(this)(scale);
+      funct.bind(this)(axis);
     }
   };
 
@@ -476,7 +477,7 @@
 
     chart.accessors = opts.accessors;
     createAccessorsFromArray(chart, opts, chart.accessors);
-    createAccessorsFromScales(chart, opts);
+    createAccessorsFromAxes(chart, opts);
 
     /**
      * Specifies an object, which d4 uses to initialize the chart with. By default

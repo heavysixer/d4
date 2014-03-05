@@ -50,6 +50,7 @@
     if (obj === null) {
       return;
     }
+
     if (nativeForEach && obj.forEach === nativeForEach) {
       obj.forEach(iterator, context);
     } else if (obj.length === +obj.length) {
@@ -162,10 +163,10 @@
     }
   };
 
-  var createAccessorsFromScales = function(chart, opts) {
+  var createAccessorsFromAxes = function(chart, opts) {
     each(d3.keys(opts.axes), function(key) {
       chart[key] = function(funct) {
-        usingScale.bind(opts)(key, funct);
+        usingAxis.bind(opts)(key, funct);
         return chart;
       };
       each(d3.keys(opts.axes[key].accessors), function(prop){
@@ -197,11 +198,11 @@
 
     // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.
     each(d3.keys(opts.axes[dimension].accessors), function(key){
-      readOnlyProp(opts[dimension], '$'+key, opts.axes[dimension][key], opts.axes[dimension].accessors[key]);
+      readOnlyProp(opts[dimension], '$' + key, opts.axes[dimension][key], opts.axes[dimension][key]);
     });
   };
 
-  var linkScales = function(opts) {
+  var linkAxes = function(opts) {
     each(d3.keys(opts.axes), function(dimension){
       addAxis(dimension, opts, opts.axes[dimension]);
     });
@@ -233,7 +234,7 @@
         left: 40
       }
     }, config);
-    linkScales(opts);
+    linkAxes(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder);
     opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);
     return opts;
@@ -395,15 +396,15 @@
     }
   };
 
-  var usingScale = function(key, funct) {
-    var scale = this.axes[key];
+  var usingAxis = function(key, funct) {
+    var axis = this.axes[key];
     if (d4.isNotFunction(funct)) {
-      err('You must supply a continuation function in order to use a chart scale.');
+      err('You must supply a continuation function in order to use a chart axis.');
     }
-    if (!scale) {
-      err('Could not find scale: "{0}", maybe you forgot to define it?', key);
+    if (!axis) {
+      err('Could not find axis: "{0}", maybe you forgot to define it?', key);
     } else {
-      funct.bind(this)(scale);
+      funct.bind(this)(axis);
     }
   };
 
@@ -480,7 +481,7 @@
 
     chart.accessors = opts.accessors;
     createAccessorsFromArray(chart, opts, chart.accessors);
-    createAccessorsFromScales(chart, opts);
+    createAccessorsFromAxes(chart, opts);
 
     /**
      * Specifies an object, which d4 uses to initialize the chart with. By default
@@ -833,12 +834,12 @@ relative distribution.
   var lineChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        if(!chart.x){
-          d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        }
-        if(!chart.y){
-          d4.builders.linearScaleForNestedData(chart, data, 'y');
-        }
+        //if(!chart.x){
+        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
+          //}
+        //if(!chart.y){
+        d4.builders.linearScaleForNestedData(chart, data, 'y');
+          //}
       }
     };
     return builder;
@@ -1000,20 +1001,20 @@ relative distribution.
 
   var scatterPlotBuilder = function() {
     var configureScales = function(chart, data) {
-      if(!chart.x){
+      //if(!chart.x){
         d4.builders.linearScaleForNestedData(chart, data, 'x');
-      }
+        //}
 
-      if(!chart.y){
+      //if(!chart.y){
         d4.builders.linearScaleForNestedData(chart, data, 'y');
-      }
+        //}
 
-      if(!chart.z){
+      //if(!chart.z){
         d4.builders.linearScaleForNestedData(chart, data, 'z');
         var min = 5;
         var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
         chart.z.range([min, max]);
-      }
+        //}
     };
 
     var builder = {
@@ -1027,6 +1028,9 @@ relative distribution.
   d4.chart('scatterPlot', function() {
     var chart = d4.baseChart(scatterPlotBuilder, {
       axes : {
+        x : {
+          kind : 'linear'
+        },
         z : {
           kind : 'linear'
         }
@@ -1188,19 +1192,19 @@ relative distribution.
     };
 
     var setOrdinal = function(chart, dimension, data) {
-      if (!chart[dimension]) {
+      //if (!chart[dimension]) {
         var keys = data.map(function(d) {
           return d.key;
         }.bind(this));
 
-        chart[dimension] = d3.scale.ordinal()
+        chart[dimension]// = d3.scale.ordinal()
           .domain(keys)
           .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);
-      }
+      //}
     };
 
     var setLinear = function(chart, dimension, data) {
-      if (!chart[dimension]) {
+      //if (!chart[dimension]) {
         var ext = d3.extent(d3.merge(data.map(function(datum) {
           return d3.extent(datum.values, function(d) {
 
@@ -1210,9 +1214,9 @@ relative distribution.
           });
         })));
         ext[0] = Math.min(0, ext[0]);
-        chart[dimension] = d3.scale.linear()
+        chart[dimension]// = d3.scale.linear()
           .domain(ext);
-      }
+      //}
       chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
         .clamp(true)
         .nice();
@@ -1349,7 +1353,7 @@ relative distribution.
         },
 
         r: function(d) {
-          return this.z(d[this.zKey]);
+          return this.z(d[this.z.$key]);
         },
 
         classes : function(d, i) {

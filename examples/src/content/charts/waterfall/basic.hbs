@@ -58,8 +58,12 @@ $(document).ready(function(){
 
   var chart = d4.charts.waterfall()
     .width($('#example').width())
-    .x.key('category')
-    .y.key('value');
+    .x(function(x){
+      x.key('category')
+    })
+    .y(function(y){
+      y.key('value');
+    });
 
   d3.select('#example')
     .datum(parsedData.data)

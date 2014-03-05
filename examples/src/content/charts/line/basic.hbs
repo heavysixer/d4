@@ -53,8 +53,12 @@ $(document).ready(function(){
 
   var chart = d4.charts.line()
   .width($('#example').width())
-  .x.key('year')
-  .y.key('unitsSold');
+  .x(function(x){
+    x.key('year');
+  })
+  .y(function(y){
+    y.key('unitsSold');
+  });
 
   d3.select('#example')
   .datum(parsedData.data)

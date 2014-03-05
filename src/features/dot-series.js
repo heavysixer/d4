@@ -17,7 +17,7 @@
         },
 
         r: function(d) {
-          return this.z(d[this.zKey]);
+          return this.z(d[this.z.$key]);
         },
 
         classes : function(d, i) {
