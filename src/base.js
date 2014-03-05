@@ -182,13 +182,16 @@
     validateScale(axis.scale);
     var scale = d3.scale[axis.scale]();
     opts.axes[dimension] = {
-      scale: scale,
       accessors : d4.extend({
         key : dimension,
         min : undefined,
         max : undefined
       }, axis)
     };
+
+    // TODO: Write a scale accessor that when set recreates this axis.
+
+    opts.axes[dimension].scale = scale;
     opts[dimension] = opts.axes[dimension].scale;
     createAccessorsFromObject(opts.axes[dimension]);
 

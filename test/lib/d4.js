@@ -186,13 +186,16 @@
     validateScale(axis.scale);
     var scale = d3.scale[axis.scale]();
     opts.axes[dimension] = {
-      scale: scale,
       accessors : d4.extend({
         key : dimension,
         min : undefined,
         max : undefined
       }, axis)
     };
+
+    // TODO: Write a scale accessor that when set recreates this axis.
+
+    opts.axes[dimension].scale = scale;
     opts[dimension] = opts.axes[dimension].scale;
     createAccessorsFromObject(opts.axes[dimension]);
 
@@ -670,7 +673,6 @@
   var columnChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        console.log(chart.x.$kind);
         d4.builders.ordinalScaleForNestedData(chart, data, 'x');
         d4.builders.linearScaleForNestedData(chart, data, 'y');
       }

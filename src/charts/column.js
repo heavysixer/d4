@@ -8,7 +8,6 @@
   var columnChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        console.log(chart.x.$kind);
         d4.builders.ordinalScaleForNestedData(chart, data, 'x');
         d4.builders.linearScaleForNestedData(chart, data, 'y');
       }

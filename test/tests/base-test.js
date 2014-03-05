@@ -64,7 +64,7 @@ describe('d4.base', function() {
       it('should not overwrite an existing scale if a user defined one already exists', function(){
         var chart = d4.charts.column();
         chart.x(function(x){
-          x.scale(d3.scale.linear());
+          x.scale('linear');
         });
 
         chart.x(function(x){
