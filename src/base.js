@@ -215,7 +215,7 @@
         }
         scale[funct].$dirty = true;
         dimension[funct].$dirty = true;
-        return scale[funct](arguments);
+        return scale[funct].apply(scale, arguments);
       };
       scale[funct].$dirty = false;
       dimension[funct].$dirty = false;

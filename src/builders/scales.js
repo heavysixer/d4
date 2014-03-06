@@ -41,11 +41,17 @@
         return d[key] + (d.y0 || 0);
       });
     })));
-
-    return chart[dimension].domain([Math.min(0, ext[0]), ext[1]])
-    .range(rangeFor(chart, dimension))
-    .clamp(true)
-    .nice();
+    var axis = chart[dimension];
+    if(!axis.domain.$dirty) {
+      axis.domain([Math.min(0, ext[0]), ext[1]]);
+    }
+    if(!axis.range.$dirty) {
+      axis.range(rangeFor(chart, dimension));
+    }
+    if(!axis.clamp.$dirty) {
+      axis.clamp(true);
+    }
+    return chart[dimension].nice();
   });
 
   /**
@@ -58,8 +64,13 @@
   d4.builder('ordinalScaleForNestedData', function(chart, data, dimension) {
     var parsedData = extractValues(data, chart[dimension].$key);
     var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;
-    return chart[dimension]
-      .domain(parsedData)
-      .rangeRoundBands(rangeFor(chart, dimension), bands);
+    var axis = chart[dimension];
+    if(!axis.domain.$dirty) {
+      axis.domain(parsedData);
+    }
+    if(!axis.rangeRoundBands.$dirty) {
+      axis.rangeRoundBands(rangeFor(chart, dimension), bands);
+    }
+    return axis;
   });
 }).call(this);
