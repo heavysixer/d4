@@ -50,10 +50,11 @@ $(document).ready(function() {
     .width(element.width())
     .margin(margin)
     .x(function(axis) {
-      axis.scale(d3.scale.linear()
-        .domain([0, sum])
-        .range([0, element.width() - margin.left - margin.right])
-        .clamp(true));
+      console.log(axis.scale('linear'))
+      //axis.scale(d3.scale.linear()
+      //  .domain([0, sum])
+      //  .range([0, element.width() - margin.left - margin.right])
+      //  .clamp(true));
     })
     .using('bars', function(bars) {
       bars

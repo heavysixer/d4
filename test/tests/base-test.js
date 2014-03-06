@@ -41,7 +41,7 @@ describe('d4.base', function() {
       it('should create a d3 scale as part of the build process', function(){
         var chart = d4.charts.column();
         chart.x(function(x){
-          expect(x.scale.toString()).to.be.equal(d3.scale.ordinal().toString());
+          expect(x.scale()).to.be.equal('ordinal');
         });
       });
 
@@ -61,17 +61,6 @@ describe('d4.base', function() {
         });
       });
 
-      it('should not overwrite an existing scale if a user defined one already exists', function(){
-        var chart = d4.charts.column();
-        chart.x(function(x){
-          x.scale('linear');
-        });
-
-        chart.x(function(x){
-          expect(x.scale.toString()).to.be.equal(d3.scale.linear().toString());
-        });
-      });
-
       it('should create readonly function properties on a scale instance', function(){
         var chart = d4.charts.column();
         var axes = chart.axes();
@@ -81,7 +70,11 @@ describe('d4.base', function() {
           axes.x.$scale = 'linear';
         }).to.throw(Error,  '[d4]  You cannot directly assign values to the $scale property. Instead use the scale() function.');
         chart.axes().x.scale('linear');
-        expect(axes.x.$scale).to.equal('linear');
+        chart.x(function(x){
+          expect(x.scale()).to.equal('linear');
+          expect(x.$scale).to.equal('linear');
+        });
+        expect(chart.axes().x.$scale).to.equal('linear');
       });
     });
 

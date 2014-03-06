@@ -178,9 +178,46 @@
     }
   };
 
+  /*!
+   * Unlike the other axis accessors the `scale()` is special because each d3 scale
+   * will have its own collection of functions, which may differ from one another
+   * Therefore, when setting the scale to something say from linear to ordinal
+   * we need to actually tell d4 to recreate the scale again otherwise the user
+   * may try to use scale specific methods that no longer apply, and will create
+   * an error down the road.
+   */
+  var createAxisScaleAccessor = function(scale, dimension, resetFunct) {
+
+    // Create a transparent proxy for functions needed by the d3 scale.
+    createAccessorsFromArray(dimension, scale, d3.keys(scale));
+
+    dimension.scale = function(val){
+      if (!arguments.length) {
+        return dimension.accessors.scale;
+      }
+      dimension.accessors.scale = val;
+      resetFunct();
+      return dimension;
+    };
+  };
+
+  var createAxisScale = function(dimension, opts, axis){
+    validateScale(axis.accessors.scale);
+    var scale = d3.scale[axis.accessors.scale]();
+    createAccessorsFromObject(axis);
+    opts[dimension] = scale;
+
+    createAxisScaleAccessor(scale, opts.axes[dimension], function(){
+      createAxisScale(dimension, opts, axis);
+    });
+
+    // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.
+    // each(d3.keys(opts.axes[dimension].accessors), function(key){
+    //   readOnlyProp(opts[dimension], '$' + key, opts.axes[dimension][key], opts.axes[dimension][key]);
+    // });
+  };
+
   var addAxis = function(dimension, opts, axis){
-    validateScale(axis.scale);
-    var scale = d3.scale[axis.scale]();
     opts.axes[dimension] = {
       accessors : d4.extend({
         key : dimension,
@@ -188,20 +225,7 @@
         max : undefined
       }, axis)
     };
-
-    // TODO: Write a scale accessor that when set recreates this axis.
-
-    opts.axes[dimension].scale = scale;
-    opts[dimension] = opts.axes[dimension].scale;
-    createAccessorsFromObject(opts.axes[dimension]);
-
-    // Create a transparent proxy for functions needed by the d3 scale.
-    createAccessorsFromArray(opts.axes[dimension], scale, d3.keys(scale));
-
-    // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.
-    each(d3.keys(opts.axes[dimension].accessors), function(key){
-      readOnlyProp(opts[dimension], '$' + key, opts.axes[dimension][key], opts.axes[dimension][key]);
-    });
+    createAxisScale(dimension, opts, opts.axes[dimension]);
   };
 
   var linkAxes = function(opts) {
