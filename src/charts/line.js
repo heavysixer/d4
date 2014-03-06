@@ -5,16 +5,6 @@
    */
   'use strict';
 
-  var lineChartBuilder = function() {
-    var builder = {
-      link: function(chart, data) {
-        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
-        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
-      }
-    };
-    return builder;
-  };
-
   /*
   The line series chart is used to compare a series of data elements grouped
   along the xAxis.
@@ -68,7 +58,7 @@
 
   */
   d4.chart('line', function lineChart() {
-    var chart = d4.baseChart(lineChartBuilder);
+    var chart = d4.baseChart();
     [{
       'lineSeries': d4.features.lineSeries
     },{

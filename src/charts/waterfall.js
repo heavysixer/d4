@@ -140,7 +140,7 @@
   };
 
   d4.chart('waterfall', function waterfallChart() {
-    var chart = d4.baseChart(waterfallChartBuilder);
+    var chart = d4.baseChart({ builder: waterfallChartBuilder });
     [{
       'bars': d4.features.stackedColumnSeries,
       'overrides': columnSeriesOverrides

@@ -78,7 +78,7 @@
                 "body": "<p>Special Note: Because builders during the link function may define defaults<br />for a given axis, it will also need to know if the property in question was<br />set by the developer through the API. It is not enough to just check if the<br />property has a value because some d3 properties will have default values.<br />Therefore d4 applies a special $dirty flag to the function itself if the<br />developer has changed its values.</p>\n\n<h4>Example:</h4>\n\n<pre><code>  var chart = d4.charts.column();\n  var chartData = [{x:1,y:2}];\n  chart.builder(function() {\n      return {\n          link: function(chart, data) {\n              console.log(chart.x.domain.$dirty) // false;\n          }\n      }\n  });\n</code></pre>"
             },
             "ignore": true,
-            "code": "var createAxisScaleAccessor = function(scale, dimension, resetFunct) {\n\n    // Create a transparent proxy for functions needed by the d3 scale.\n    each(d3.keys(scale), function(funct){\n      dimension[funct] = function(){\n        if (!arguments.length) {\n          return scale[funct]();\n        }\n        scale[funct].$dirty = true;\n        dimension[funct].$dirty = true;\n        return scale[funct].apply(scale, arguments);\n      };\n      scale[funct].$dirty = false;\n      dimension[funct].$dirty = false;\n    });\n\n    dimension.scale = function(val){\n      if (!arguments.length) {\n        return dimension.accessors.scale;\n      }\n      dimension.accessors.scale = val;\n      resetFunct();\n      return dimension;\n    };\n  };\n\n  var createAxisScale = function(dimension, opts, axis){\n    validateScale(axis.accessors.scale);\n    var scale = d3.scale[axis.accessors.scale]();\n    createAccessorsFromObject(axis);\n    opts[dimension] = scale;\n\n    createAxisScaleAccessor(scale, opts.axes[dimension], function(){\n      createAxisScale(dimension, opts, axis);\n    });\n\n    // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.\n    each(d3.keys(opts.axes[dimension].accessors), function(key){\n      readOnlyProp(opts[dimension], '$' + key, opts.axes[dimension][key], opts.axes[dimension][key]);\n    });\n  };\n\n  var addAxis = function(dimension, opts, axis){\n    opts.axes[dimension] = {\n      accessors : d4.extend({\n        key : dimension,\n        min : undefined,\n        max : undefined\n      }, axis)\n    };\n    createAxisScale(dimension, opts, opts.axes[dimension]);\n  };\n\n  var linkAxes = function(opts) {\n    each(d3.keys(opts.axes), function(dimension){\n      addAxis(dimension, opts, opts.axes[dimension]);\n    });\n\n    if(typeof(opts.axes.x) === 'undefined') {\n      addAxis('x', opts, { scale : 'ordinal' });\n    }\n\n    if(typeof(opts.axes.y) === 'undefined') {\n      addAxis('y', opts, { scale : 'linear' });\n    }\n  };\n\n  var assignDefaults = function(config, defaultBuilder) {\n    if (!defaultBuilder) {\n      err('No builder defined');\n    }\n    var opts = d4.merge({\n      width: 400,\n      height: 400,\n      features: {},\n      mixins: [],\n      axes: {},\n      valueKey: 'y',\n      margin: {\n        top: 20,\n        right: 20,\n        bottom: 20,\n        left: 40\n      }\n    }, config);\n    linkAxes(opts);\n    assignDefaultBuilder.bind(opts)(defaultBuilder);\n    opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);\n    return opts;\n  };",
+            "code": "var createAxisScaleAccessor = function(scale, dimension, resetFunct) {\n\n    // Create a transparent proxy for functions needed by the d3 scale.\n    each(d3.keys(scale), function(funct){\n      dimension[funct] = function(){\n        if (!arguments.length) {\n          return scale[funct]();\n        }\n        scale[funct].$dirty = true;\n        dimension[funct].$dirty = true;\n        return scale[funct].apply(scale, arguments);\n      };\n      scale[funct].$dirty = false;\n      dimension[funct].$dirty = false;\n    });\n\n    dimension.scale = function(val){\n      if (!arguments.length) {\n        return dimension.accessors.scale;\n      }\n      dimension.accessors.scale = val;\n      resetFunct();\n      return dimension;\n    };\n  };\n\n  var createAxisScale = function(dimension, opts, axis){\n    validateScale(axis.accessors.scale);\n    var scale = d3.scale[axis.accessors.scale]();\n    createAccessorsFromObject(axis);\n    opts[dimension] = scale;\n\n    createAxisScaleAccessor(scale, opts.axes[dimension], function(){\n      createAxisScale(dimension, opts, axis);\n    });\n\n    // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.\n    each(d3.keys(opts.axes[dimension].accessors), function(key){\n      readOnlyProp(opts[dimension], '$' + key, opts.axes[dimension][key], opts.axes[dimension][key]);\n    });\n  };\n\n  var addAxis = function(dimension, opts, axis){\n    opts.axes[dimension] = {\n      accessors : d4.extend({\n        key : dimension,\n        min : undefined,\n        max : undefined\n      }, axis)\n    };\n    createAxisScale(dimension, opts, opts.axes[dimension]);\n  };\n\n  var linkAxes = function(opts) {\n    each(d3.keys(opts.axes), function(dimension){\n      addAxis(dimension, opts, opts.axes[dimension]);\n    });\n\n    if(typeof(opts.axes.x) === 'undefined') {\n      addAxis('x', opts, { scale : 'ordinal' });\n    }\n\n    if(typeof(opts.axes.y) === 'undefined') {\n      addAxis('y', opts, { scale : 'linear' });\n    }\n  };\n\n  var assignDefaults = function(config, defaultBuilder) {\n    var builder = d4.functor({\n      link: function(chart, data) {\n        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');\n        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');\n      }\n    });\n    var opts = d4.merge({\n      width: 400,\n      height: 400,\n      features: {},\n      mixins: [],\n      axes: {},\n      valueKey: 'y',\n      margin: {\n        top: 20,\n        right: 20,\n        bottom: 20,\n        left: 40\n      }\n    }, config);\n    linkAxes(opts);\n    assignDefaultBuilder.bind(opts)(defaultBuilder || builder);\n    opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);\n    return opts;\n  };",
             "ctx": {
                 "type": "function",
                 "name": "createAxisScaleAccessor",
@@ -279,18 +279,14 @@
                 {
                     "type": "param",
                     "types": [
-                        "Function"
-                    ],
-                    "name": "defaultBuilder",
-                    "description": "- function which will return a valid builder object when invoked."
-                },
-                {
-                    "type": "param",
-                    "types": [
                         "Object"
                     ],
-                    "name": "config",
-                    "description": "- an object representing chart configuration settings"
+                    "name": "options",
+                    "description": "- object which contains an optional config and /or"
+                },
+                {
+                    "type": "builder",
+                    "string": "property"
                 },
                 {
                     "type": "returns",
@@ -298,13 +294,13 @@
                 }
             ],
             "description": {
-                "full": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>\n\n<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      axes: [{\n        key: 'x',\n        scale: 'ordinal'\n      }, {\n        key: 'y',\n        scale: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>",
+                "full": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>\n\n<h5>Examples</h5>\n\n<pre><code> var chart = d4.baseChart({\n   builder: myBuilder,\n   config: {\n     axes: {\n       x: {\n         scale: 'linear'\n       },\n       y: {\n         scale: 'ordinal'\n       }\n     }\n   }\n });\n</code></pre>",
                 "summary": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>",
-                "body": "<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      axes: [{\n        key: 'x',\n        scale: 'ordinal'\n      }, {\n        key: 'y',\n        scale: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>"
+                "body": "<h5>Examples</h5>\n\n<pre><code> var chart = d4.baseChart({\n   builder: myBuilder,\n   config: {\n     axes: {\n       x: {\n         scale: 'linear'\n       },\n       y: {\n         scale: 'ordinal'\n       }\n     }\n   }\n });\n</code></pre>"
             },
             "isPrivate": false,
             "ignore": false,
-            "code": "d4.baseChart = function(defaultBuilder, config) {\n    var opts = assignDefaults(config || {}, defaultBuilder);\n    var chart = applyScaffold(opts);\n\n    chart.accessors = opts.accessors;\n    createAccessorsFromArray(chart, opts, chart.accessors);\n    createAccessorsFromAxes(chart, opts);",
+            "code": "d4.baseChart = function(options) {\n    var opts = assignDefaults(options && options.config || {}, options && options.builder || undefined);\n    var chart = applyScaffold(opts);\n\n    chart.accessors = opts.accessors;\n    createAccessorsFromArray(chart, opts, chart.accessors);\n    createAccessorsFromAxes(chart, opts);",
             "ctx": {
                 "type": "method",
                 "receiver": "d4",
@@ -816,7 +812,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n\n  var columnChartBuilder = function() {\n    var builder = {\n      link: function(chart, data) {\n        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');\n        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');\n      }\n    };\n    return builder;\n  };",
+            "code": "'use strict';",
             "fileName": "../src/charts/column.js"
         },
         {
@@ -827,7 +823,7 @@
                 "body": "<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n    { x: '2010', y:-10 },\n    { x: '2011', y:20 },\n    { x: '2012', y:30 },\n    { x: '2013', y:40 },\n    { x: '2014', y:50 },\n  ];\nvar chart = d4.charts.column();\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>\n\n<p>By default d4 expects a series object, which uses the following format: <code>{ x : '2010', y : 10 }</code>.<br />The default format may not be desired and so we'll override it:</p>\n\n<pre><code>var data = [\n  ['2010', -10],\n  ['2011', 20],\n  ['2012', 30],\n  ['2013', 40],\n  ['2014', 50]\n];\nvar chart = d4.charts.column()\n.x.$key(0)\n.y.$key(1);\n\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>"
             },
             "ignore": false,
-            "code": "d4.chart('column', function columnChart() {\n    var chart = d4.baseChart(columnChartBuilder);\n    [{\n      'bars': d4.features.stackedColumnSeries\n    }, {\n      'barLabels': d4.features.stackedColumnLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "code": "d4.chart('column', function columnChart() {\n    var chart = d4.baseChart();\n    [{\n      'bars': d4.features.stackedColumnSeries\n    }, {\n      'barLabels': d4.features.stackedColumnLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
             "fileName": "../src/charts/column.js"
         },
         {
@@ -838,7 +834,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n\n  var groupedColumnChartBuilder = function() {\n    var builder = {\n      link: function(chart, data) {\n        d4.builders.ordinalScaleForNestedData(chart, data, 'x');\n        d4.builders.linearScaleForNestedData(chart, data, 'y');\n      }\n    };\n    return builder;\n  };",
+            "code": "'use strict';",
             "fileName": "../src/charts/grouped-column.js"
         },
         {
@@ -849,7 +845,7 @@
                 "body": "<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>groupsOf</strong> - an integer representing the number of columns in each group<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\n\nvar parsedData = d4.parsers.nestedGroup()\n  .x('year')\n  .y('unitsSold')\n  .value('unitsSold')(data);\n\nvar chart = d4.charts.groupedColumn()\n.width($('#example').width())\n.x.$key('year')\n.y.$key('unitsSold')\n.groupsOf(parsedData.data[0].values.length);\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>"
             },
             "ignore": false,
-            "code": "d4.chart('groupedColumn', function groupedColumnChart() {\n    var chart = d4.baseChart(groupedColumnChartBuilder, {\n      accessors: ['groupsOf'],\n      groupsOf: 1\n    });\n    [{\n      'bars': d4.features.groupedColumnSeries\n    }, {\n      'columnLabels': d4.features.groupedColumnLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "code": "d4.chart('groupedColumn', function groupedColumnChart() {\n    var chart = d4.baseChart({\n      config: {\n        accessors: ['groupsOf'],\n        groupsOf: 1\n      }\n    });\n    [{\n      'bars': d4.features.groupedColumnSeries\n    }, {\n      'columnLabels': d4.features.groupedColumnLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
             "fileName": "../src/charts/grouped-column.js"
         },
         {
@@ -860,7 +856,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n\n  var lineChartBuilder = function() {\n    var builder = {\n      link: function(chart, data) {\n        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');\n        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');\n      }\n    };\n    return builder;\n  };",
+            "code": "'use strict';",
             "fileName": "../src/charts/line.js"
         },
         {
@@ -871,7 +867,7 @@
                 "body": "<p><strong>lineSeries</strong> - series lines<br /><strong>lineSeriesLabels</strong> - data labels beside the lines<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\nvar parsedData = d4.parsers.nestedGroup()\n  .x(function(){\n    return 'year';\n  })\n  .nestKey(function(){\n    return 'salesman';\n  })\n  .y(function(){\n    return 'unitsSold';\n  })\n  .value(function(){\n    return 'unitsSold';\n  })(data);\n\nvar chart = d4.charts.line()\n.width($('#example').width())\n.x.$key('year')\n.y.$key('unitsSold');\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>"
             },
             "ignore": false,
-            "code": "d4.chart('line', function lineChart() {\n    var chart = d4.baseChart(lineChartBuilder);\n    [{\n      'lineSeries': d4.features.lineSeries\n    },{\n      'lineSeriesLabels': d4.features.lineSeriesLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "code": "d4.chart('line', function lineChart() {\n    var chart = d4.baseChart();\n    [{\n      'lineSeries': d4.features.lineSeries\n    },{\n      'lineSeriesLabels': d4.features.lineSeriesLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
             "fileName": "../src/charts/line.js"
         },
         {
@@ -882,7 +878,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n\n  var rowChartBuilder = function() {\n    var builder = {\n      link: function(chart, data) {\n        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');\n        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');\n      }\n    };\n    return builder;\n  };",
+            "code": "'use strict';",
             "fileName": "../src/charts/row.js"
         },
         {
@@ -893,7 +889,7 @@
                 "body": "<p><strong>bars</strong> - series bars<br /><strong>rowLabels</strong> - data labels to the right of the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n      { y: '2010', x:-10 },\n      { y: '2011', x:20 },\n      { y: '2012', x:30 },\n      { y: '2013', x:40 },\n      { y: '2014', x:50 },\n    ];\n  var chart = d4.charts.row();\n  d3.select('#example')\n  .datum(data)\n  .call(chart);\n</code></pre>"
             },
             "ignore": false,
-            "code": "d4.chart('row', function rowChart() {\n    var chart = d4.baseChart(rowChartBuilder, {\n      margin: {\n        top: 20,\n        right: 40,\n        bottom: 20,\n        left: 40\n      },\n      axes: {\n        x : {\n          scale : 'linear'\n        },\n        y : {\n          scale : 'ordinal'\n        }\n      }\n    });\n    [{\n      'bars': d4.features.rowSeries\n    }, {\n      'rowLabels': d4.features.rowLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "code": "d4.chart('row', function rowChart() {\n    var chart = d4.baseChart({\n      config: {\n        margin: {\n          top: 20,\n          right: 40,\n          bottom: 20,\n          left: 40\n        },\n        axes: {\n          x: {\n            scale: 'linear'\n          },\n          y: {\n            scale: 'ordinal'\n          }\n        }\n      }\n    });\n    [{\n      'bars': d4.features.rowSeries\n    }, {\n      'rowLabels': d4.features.rowLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
             "fileName": "../src/charts/row.js"
         },
         {
@@ -904,7 +900,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n\n  var scatterPlotBuilder = function() {\n    var configureScales = function(chart, data) {\n      d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');\n      d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');\n      d4.builders[chart.z.$scale + 'ScaleForNestedData'](chart, data, 'z');\n      var min = 5;\n      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);\n      chart.z.range([min, max]);\n    };\n\n    var builder = {\n      link: function(chart, data) {\n        configureScales.bind(this)(chart, data);\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('scatterPlot', function() {\n    var chart = d4.baseChart(scatterPlotBuilder, {\n      axes : {\n        x : {\n          scale : 'linear'\n        },\n        z : {\n          scale : 'linear'\n        }\n      }\n    });\n    [{\n      'circles': d4.features.dotSeries\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "code": "'use strict';\n\n  var scatterPlotBuilder = function() {\n    var configureScales = function(chart, data) {\n      d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');\n      d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');\n      d4.builders[chart.z.$scale + 'ScaleForNestedData'](chart, data, 'z');\n      var min = 5;\n      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom) / 10);\n      chart.z.range([min, max]);\n    };\n\n    var builder = {\n      link: function(chart, data) {\n        configureScales.bind(this)(chart, data);\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('scatterPlot', function() {\n    var chart = d4.baseChart({\n      builder: scatterPlotBuilder,\n      config: {\n        axes: {\n          x: {\n            scale: 'linear'\n          },\n          z: {\n            scale: 'linear'\n          }\n        }\n      }\n    });\n    [{\n      'circles': d4.features.dotSeries\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
             "fileName": "../src/charts/scatter.js"
         },
         {
@@ -915,7 +911,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n\n  var stackedColumnChartBuilder = function() {\n    var builder = {\n      link: function(chart, data) {\n        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');\n        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('stackedColumn', function stackedColumnChart() {\n    var chart = d4.baseChart(stackedColumnChartBuilder);\n    [{\n      'bars': d4.features.stackedColumnSeries\n    }, {\n      'barLabels': d4.features.stackedColumnLabels\n    }, {\n      'connectors': d4.features.stackedColumnConnectors\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "code": "'use strict';\n\n  d4.chart('stackedColumn', function stackedColumnChart() {\n    var chart = d4.baseChart();\n    [{\n      'bars': d4.features.stackedColumnSeries\n    }, {\n      'barLabels': d4.features.stackedColumnLabels\n    }, {\n      'connectors': d4.features.stackedColumnConnectors\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
             "fileName": "../src/charts/stacked-column.js"
         },
         {
@@ -926,7 +922,7 @@
                 "body": ""
             },
             "ignore": true,
-            "code": "'use strict';\n\n  // FIXME: It would be nice not to continually have to check the orientation.\n  var columnSeriesOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.y.$scale === 'linear') {\n            var yVal = (d.y0 + d.y) - Math.min(0, d.y);\n            return this.y(yVal);\n          } else {\n            return this.y(d[this.y.$key]);\n          }\n        },\n\n        x: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x(d[this.x.$key]);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.x(xVal);\n          }\n        },\n\n        width: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x.rangeBand();\n          } else {\n            return Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n          }\n        },\n\n        height: function(d) {\n          if (this.y.$scale === 'linear') {\n            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n          } else {\n            return this.y.rangeBand();\n          }\n        },\n\n        classes: function(d, i, n) {\n          var klass = (d.y > 0) ? 'positive' : 'negative';\n          if (n > 0 && d.y0 === 0) {\n            klass = 'subtotal';\n          }\n          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.y.$key];\n        }\n      }\n    };\n  };\n\n  var columnLabelOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.y.$scale === 'linear') {\n            var height = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n            var yVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.y(yVal) - 10 - height;\n          } else {\n            return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2);\n          }\n        },\n\n        x: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            var width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n            return this.x(xVal) + 10 + width;\n          }\n        },\n\n        text: function(d) {\n          return d3.format('').call(this, d[this.valueKey]);\n        }\n      }\n    };\n  };\n\n  var waterfallChartBuilder = function() {\n    var rangeBoundsFor = function(chart, dimension) {\n      var rangeBounds;\n      if (dimension === 'x') {\n        return [0, chart.width - chart.margin.left - chart.margin.right];\n      } else {\n        rangeBounds = [0, chart.height - chart.margin.top - chart.margin.bottom];\n        return (chart.x.$scale === 'ordinal') ? rangeBounds.reverse() : rangeBounds;\n      }\n    };\n\n    var setOrdinal = function(chart, dimension, data) {\n      var keys = data.map(function(d) {\n        return d.key;\n      }.bind(this));\n\n      chart[dimension]\n      .domain(keys)\n      .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);\n    };\n\n    var setLinear = function(chart, dimension, data) {\n        var ext = d3.extent(d3.merge(data.map(function(datum) {\n          return d3.extent(datum.values, function(d) {\n\n            // This is anti-intuative but the stack only returns y and y0 even\n            // when it applies to the x dimension;\n            return d.y + d.y0;\n          });\n        })));\n        ext[0] = Math.min(0, ext[0]);\n        chart[dimension].domain(ext);\n        chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))\n        .clamp(true)\n        .nice();\n      };\n\n    var configureScales = function(chart, data) {\n      if (chart.x.$scale === 'ordinal') {\n        setOrdinal.bind(this)(chart, 'x', data);\n        setLinear.bind(this)(chart, 'y', data);\n      } else {\n        setOrdinal.bind(this)(chart, 'y', data);\n        setLinear.bind(this)(chart, 'x', data);\n      }\n    };\n\n    var builder = {\n      link: function(chart, data) {\n        configureScales.bind(this)(chart, data);\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('waterfall', function waterfallChart() {\n    var chart = d4.baseChart(waterfallChartBuilder);\n    [{\n      'bars': d4.features.stackedColumnSeries,\n      'overrides': columnSeriesOverrides\n    }, {\n      'connectors': d4.features.waterfallConnectors\n    }, {\n      'columnLabels': d4.features.stackedColumnLabels,\n      'overrides': columnLabelOverrides\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n\n    return chart;\n  });\n}).call(this);",
+            "code": "'use strict';\n\n  // FIXME: It would be nice not to continually have to check the orientation.\n  var columnSeriesOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.y.$scale === 'linear') {\n            var yVal = (d.y0 + d.y) - Math.min(0, d.y);\n            return this.y(yVal);\n          } else {\n            return this.y(d[this.y.$key]);\n          }\n        },\n\n        x: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x(d[this.x.$key]);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.x(xVal);\n          }\n        },\n\n        width: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x.rangeBand();\n          } else {\n            return Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n          }\n        },\n\n        height: function(d) {\n          if (this.y.$scale === 'linear') {\n            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n          } else {\n            return this.y.rangeBand();\n          }\n        },\n\n        classes: function(d, i, n) {\n          var klass = (d.y > 0) ? 'positive' : 'negative';\n          if (n > 0 && d.y0 === 0) {\n            klass = 'subtotal';\n          }\n          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.y.$key];\n        }\n      }\n    };\n  };\n\n  var columnLabelOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.y.$scale === 'linear') {\n            var height = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n            var yVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.y(yVal) - 10 - height;\n          } else {\n            return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2);\n          }\n        },\n\n        x: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            var width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n            return this.x(xVal) + 10 + width;\n          }\n        },\n\n        text: function(d) {\n          return d3.format('').call(this, d[this.valueKey]);\n        }\n      }\n    };\n  };\n\n  var waterfallChartBuilder = function() {\n    var rangeBoundsFor = function(chart, dimension) {\n      var rangeBounds;\n      if (dimension === 'x') {\n        return [0, chart.width - chart.margin.left - chart.margin.right];\n      } else {\n        rangeBounds = [0, chart.height - chart.margin.top - chart.margin.bottom];\n        return (chart.x.$scale === 'ordinal') ? rangeBounds.reverse() : rangeBounds;\n      }\n    };\n\n    var setOrdinal = function(chart, dimension, data) {\n      var keys = data.map(function(d) {\n        return d.key;\n      }.bind(this));\n\n      chart[dimension]\n      .domain(keys)\n      .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);\n    };\n\n    var setLinear = function(chart, dimension, data) {\n        var ext = d3.extent(d3.merge(data.map(function(datum) {\n          return d3.extent(datum.values, function(d) {\n\n            // This is anti-intuative but the stack only returns y and y0 even\n            // when it applies to the x dimension;\n            return d.y + d.y0;\n          });\n        })));\n        ext[0] = Math.min(0, ext[0]);\n        chart[dimension].domain(ext);\n        chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))\n        .clamp(true)\n        .nice();\n      };\n\n    var configureScales = function(chart, data) {\n      if (chart.x.$scale === 'ordinal') {\n        setOrdinal.bind(this)(chart, 'x', data);\n        setLinear.bind(this)(chart, 'y', data);\n      } else {\n        setOrdinal.bind(this)(chart, 'y', data);\n        setLinear.bind(this)(chart, 'x', data);\n      }\n    };\n\n    var builder = {\n      link: function(chart, data) {\n        configureScales.bind(this)(chart, data);\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('waterfall', function waterfallChart() {\n    var chart = d4.baseChart({ builder: waterfallChartBuilder });\n    [{\n      'bars': d4.features.stackedColumnSeries,\n      'overrides': columnSeriesOverrides\n    }, {\n      'connectors': d4.features.waterfallConnectors\n    }, {\n      'columnLabels': d4.features.stackedColumnLabels,\n      'overrides': columnLabelOverrides\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n\n    return chart;\n  });\n}).call(this);",
             "fileName": "../src/charts/waterfall.js"
         },
         {
@@ -1147,27 +1143,21 @@
             "params": [
                 {
                     "types": [
-                        "Function"
-                    ],
-                    "name": "defaultBuilder",
-                    "description": "- function which will return a valid builder object when invoked."
-                },
-                {
-                    "types": [
                         "Object"
                     ],
-                    "name": "config",
-                    "description": "- an object representing chart configuration settings"
+                    "name": "options",
+                    "description": "- object which contains an optional config and /or"
                 }
             ],
             "name": "baseChart",
             "type": "method",
             "fileName": "../src/base.js",
             "description": {
-                "full": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>\n\n<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      axes: [{\n        key: 'x',\n        scale: 'ordinal'\n      }, {\n        key: 'y',\n        scale: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>",
+                "full": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>\n\n<h5>Examples</h5>\n\n<pre><code> var chart = d4.baseChart({\n   builder: myBuilder,\n   config: {\n     axes: {\n       x: {\n         scale: 'linear'\n       },\n       y: {\n         scale: 'ordinal'\n       }\n     }\n   }\n });\n</code></pre>",
                 "summary": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>",
-                "body": "<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      axes: [{\n        key: 'x',\n        scale: 'ordinal'\n      }, {\n        key: 'y',\n        scale: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>"
+                "body": "<h5>Examples</h5>\n\n<pre><code> var chart = d4.baseChart({\n   builder: myBuilder,\n   config: {\n     axes: {\n       x: {\n         scale: 'linear'\n       },\n       y: {\n         scale: 'ordinal'\n       }\n     }\n   }\n });\n</code></pre>"
             },
+            "builder": "property",
             "returns": "a reference to the chart object"
         },
         {
@@ -1615,27 +1605,21 @@
                     "params": [
                         {
                             "types": [
-                                "Function"
-                            ],
-                            "name": "defaultBuilder",
-                            "description": "- function which will return a valid builder object when invoked."
-                        },
-                        {
-                            "types": [
                                 "Object"
                             ],
-                            "name": "config",
-                            "description": "- an object representing chart configuration settings"
+                            "name": "options",
+                            "description": "- object which contains an optional config and /or"
                         }
                     ],
                     "name": "baseChart",
                     "type": "method",
                     "fileName": "../src/base.js",
                     "description": {
-                        "full": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>\n\n<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      axes: [{\n        key: 'x',\n        scale: 'ordinal'\n      }, {\n        key: 'y',\n        scale: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>",
+                        "full": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>\n\n<h5>Examples</h5>\n\n<pre><code> var chart = d4.baseChart({\n   builder: myBuilder,\n   config: {\n     axes: {\n       x: {\n         scale: 'linear'\n       },\n       y: {\n         scale: 'ordinal'\n       }\n     }\n   }\n });\n</code></pre>",
                         "summary": "<p>This function creates a d4 chart object. It is only used when creating a<br />new chart factory.</p>",
-                        "body": "<h5>Examples</h5>\n\n<pre><code>d4.chart('column', function columnChart() {\n    var chart = d4.baseChart({\n      axes: [{\n        key: 'x',\n        scale: 'ordinal'\n      }, {\n        key: 'y',\n        scale: 'linear'\n      }]\n    }, columnChartBuilder);\n    return chart;\n});\n</code></pre>"
+                        "body": "<h5>Examples</h5>\n\n<pre><code> var chart = d4.baseChart({\n   builder: myBuilder,\n   config: {\n     axes: {\n       x: {\n         scale: 'linear'\n       },\n       y: {\n         scale: 'ordinal'\n       }\n     }\n   }\n });\n</code></pre>"
                     },
+                    "builder": "property",
                     "returns": "a reference to the chart object"
                 },
                 {

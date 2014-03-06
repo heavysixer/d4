@@ -5,16 +5,6 @@
    */
   'use strict';
 
-  var rowChartBuilder = function() {
-    var builder = {
-      link: function(chart, data) {
-        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
-        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
-      }
-    };
-    return builder;
-  };
-
   /*
    The row chart has two axes (`x` and `y`). By default the column chart expects
    linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart
@@ -42,19 +32,21 @@
 
   */
   d4.chart('row', function rowChart() {
-    var chart = d4.baseChart(rowChartBuilder, {
-      margin: {
-        top: 20,
-        right: 40,
-        bottom: 20,
-        left: 40
-      },
-      axes: {
-        x : {
-          scale : 'linear'
+    var chart = d4.baseChart({
+      config: {
+        margin: {
+          top: 20,
+          right: 40,
+          bottom: 20,
+          left: 40
         },
-        y : {
-          scale : 'ordinal'
+        axes: {
+          x: {
+            scale: 'linear'
+          },
+          y: {
+            scale: 'ordinal'
+          }
         }
       }
     });

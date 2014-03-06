@@ -11,7 +11,7 @@
       d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
       d4.builders[chart.z.$scale + 'ScaleForNestedData'](chart, data, 'z');
       var min = 5;
-      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
+      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom) / 10);
       chart.z.range([min, max]);
     };
 
@@ -24,13 +24,16 @@
   };
 
   d4.chart('scatterPlot', function() {
-    var chart = d4.baseChart(scatterPlotBuilder, {
-      axes : {
-        x : {
-          scale : 'linear'
-        },
-        z : {
-          scale : 'linear'
+    var chart = d4.baseChart({
+      builder: scatterPlotBuilder,
+      config: {
+        axes: {
+          x: {
+            scale: 'linear'
+          },
+          z: {
+            scale: 'linear'
+          }
         }
       }
     });

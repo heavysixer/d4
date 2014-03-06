@@ -5,16 +5,6 @@
    */
   'use strict';
 
-  var columnChartBuilder = function() {
-    var builder = {
-      link: function(chart, data) {
-        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
-        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
-      }
-    };
-    return builder;
-  };
-
   /*
    The column chart has two axes (`x` and `y`). By default the column chart expects
    linear values for the `y` and ordinal values on the `x`. The basic column chart
@@ -59,7 +49,7 @@ The default format may not be desired and so we'll override it:
 
   */
   d4.chart('column', function columnChart() {
-    var chart = d4.baseChart(columnChartBuilder);
+    var chart = d4.baseChart();
     [{
       'bars': d4.features.stackedColumnSeries
     }, {

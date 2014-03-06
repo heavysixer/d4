@@ -277,9 +277,12 @@
   };
 
   var assignDefaults = function(config, defaultBuilder) {
-    if (!defaultBuilder) {
-      err('No builder defined');
-    }
+    var builder = d4.functor({
+      link: function(chart, data) {
+        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
+        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
+      }
+    });
     var opts = d4.merge({
       width: 400,
       height: 400,
@@ -295,7 +298,7 @@
       }
     }, config);
     linkAxes(opts);
-    assignDefaultBuilder.bind(opts)(defaultBuilder);
+    assignDefaultBuilder.bind(opts)(defaultBuilder || builder);
     opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);
     return opts;
   };
@@ -518,25 +521,26 @@
    *
    *##### Examples
    *
-   *     d4.chart('column', function columnChart() {
-   *         var chart = d4.baseChart({
-   *           axes: [{
-   *             key: 'x',
-   *             scale: 'ordinal'
-   *           }, {
-   *             key: 'y',
-   *             scale: 'linear'
-   *           }]
-   *         }, columnChartBuilder);
-   *         return chart;
-   *     });
+   *      var chart = d4.baseChart({
+   *        builder: myBuilder,
+   *        config: {
+   *          axes: {
+   *            x: {
+   *              scale: 'linear'
+   *            },
+   *            y: {
+   *              scale: 'ordinal'
+   *            }
+   *          }
+   *        }
+   *      });
    *
-   * @param {Function} defaultBuilder - function which will return a valid builder object when invoked.
-   * @param {Object} config - an object representing chart configuration settings
+   * @param {Object} options - object which contains an optional config and /or
+   * builder property
    * @returns a reference to the chart object
    */
-  d4.baseChart = function(defaultBuilder, config) {
-    var opts = assignDefaults(config || {}, defaultBuilder);
+  d4.baseChart = function(options) {
+    var opts = assignDefaults(options && options.config || {}, options && options.builder || undefined);
     var chart = applyScaffold(opts);
 
     chart.accessors = opts.accessors;
@@ -724,16 +728,6 @@
    */
   'use strict';
 
-  var columnChartBuilder = function() {
-    var builder = {
-      link: function(chart, data) {
-        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
-        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
-      }
-    };
-    return builder;
-  };
-
   /*
    The column chart has two axes (`x` and `y`). By default the column chart expects
    linear values for the `y` and ordinal values on the `x`. The basic column chart
@@ -778,7 +772,7 @@ The default format may not be desired and so we'll override it:
 
   */
   d4.chart('column', function columnChart() {
-    var chart = d4.baseChart(columnChartBuilder);
+    var chart = d4.baseChart();
     [{
       'bars': d4.features.stackedColumnSeries
     }, {
@@ -800,16 +794,6 @@ The default format may not be desired and so we'll override it:
    * global d4: false
    */
   'use strict';
-
-  var groupedColumnChartBuilder = function() {
-    var builder = {
-      link: function(chart, data) {
-        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        d4.builders.linearScaleForNestedData(chart, data, 'y');
-      }
-    };
-    return builder;
-  };
 
   /*
 The grouped column chart is used to compare a series of data elements grouped
@@ -861,9 +845,11 @@ relative distribution.
 
   */
   d4.chart('groupedColumn', function groupedColumnChart() {
-    var chart = d4.baseChart(groupedColumnChartBuilder, {
-      accessors: ['groupsOf'],
-      groupsOf: 1
+    var chart = d4.baseChart({
+      config: {
+        accessors: ['groupsOf'],
+        groupsOf: 1
+      }
     });
     [{
       'bars': d4.features.groupedColumnSeries
@@ -886,16 +872,6 @@ relative distribution.
    * global d4: false
    */
   'use strict';
-
-  var lineChartBuilder = function() {
-    var builder = {
-      link: function(chart, data) {
-        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
-        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
-      }
-    };
-    return builder;
-  };
 
   /*
   The line series chart is used to compare a series of data elements grouped
@@ -950,7 +926,7 @@ relative distribution.
 
   */
   d4.chart('line', function lineChart() {
-    var chart = d4.baseChart(lineChartBuilder);
+    var chart = d4.baseChart();
     [{
       'lineSeries': d4.features.lineSeries
     },{
@@ -971,16 +947,6 @@ relative distribution.
    * global d4: false
    */
   'use strict';
-
-  var rowChartBuilder = function() {
-    var builder = {
-      link: function(chart, data) {
-        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
-        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
-      }
-    };
-    return builder;
-  };
 
   /*
    The row chart has two axes (`x` and `y`). By default the column chart expects
@@ -1009,19 +975,21 @@ relative distribution.
 
   */
   d4.chart('row', function rowChart() {
-    var chart = d4.baseChart(rowChartBuilder, {
-      margin: {
-        top: 20,
-        right: 40,
-        bottom: 20,
-        left: 40
-      },
-      axes: {
-        x : {
-          scale : 'linear'
+    var chart = d4.baseChart({
+      config: {
+        margin: {
+          top: 20,
+          right: 40,
+          bottom: 20,
+          left: 40
         },
-        y : {
-          scale : 'ordinal'
+        axes: {
+          x: {
+            scale: 'linear'
+          },
+          y: {
+            scale: 'ordinal'
+          }
         }
       }
     });
@@ -1039,6 +1007,7 @@ relative distribution.
     return chart;
   });
 }).call(this);
+
 (function() {
   /*!
    * global d3: false
@@ -1052,7 +1021,7 @@ relative distribution.
       d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
       d4.builders[chart.z.$scale + 'ScaleForNestedData'](chart, data, 'z');
       var min = 5;
-      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
+      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom) / 10);
       chart.z.range([min, max]);
     };
 
@@ -1065,13 +1034,16 @@ relative distribution.
   };
 
   d4.chart('scatterPlot', function() {
-    var chart = d4.baseChart(scatterPlotBuilder, {
-      axes : {
-        x : {
-          scale : 'linear'
-        },
-        z : {
-          scale : 'linear'
+    var chart = d4.baseChart({
+      builder: scatterPlotBuilder,
+      config: {
+        axes: {
+          x: {
+            scale: 'linear'
+          },
+          z: {
+            scale: 'linear'
+          }
         }
       }
     });
@@ -1095,18 +1067,8 @@ relative distribution.
    */
   'use strict';
 
-  var stackedColumnChartBuilder = function() {
-    var builder = {
-      link: function(chart, data) {
-        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
-        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
-      }
-    };
-    return builder;
-  };
-
   d4.chart('stackedColumn', function stackedColumnChart() {
-    var chart = d4.baseChart(stackedColumnChartBuilder);
+    var chart = d4.baseChart();
     [{
       'bars': d4.features.stackedColumnSeries
     }, {
@@ -1266,7 +1228,7 @@ relative distribution.
   };
 
   d4.chart('waterfall', function waterfallChart() {
-    var chart = d4.baseChart(waterfallChartBuilder);
+    var chart = d4.baseChart({ builder: waterfallChartBuilder });
     [{
       'bars': d4.features.stackedColumnSeries,
       'overrides': columnSeriesOverrides

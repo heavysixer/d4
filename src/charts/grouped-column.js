@@ -5,16 +5,6 @@
    */
   'use strict';
 
-  var groupedColumnChartBuilder = function() {
-    var builder = {
-      link: function(chart, data) {
-        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        d4.builders.linearScaleForNestedData(chart, data, 'y');
-      }
-    };
-    return builder;
-  };
-
   /*
 The grouped column chart is used to compare a series of data elements grouped
 along the xAxis. This chart is often useful in conjunction with a stacked column
@@ -65,9 +55,11 @@ relative distribution.
 
   */
   d4.chart('groupedColumn', function groupedColumnChart() {
-    var chart = d4.baseChart(groupedColumnChartBuilder, {
-      accessors: ['groupsOf'],
-      groupsOf: 1
+    var chart = d4.baseChart({
+      config: {
+        accessors: ['groupsOf'],
+        groupsOf: 1
+      }
     });
     [{
       'bars': d4.features.groupedColumnSeries

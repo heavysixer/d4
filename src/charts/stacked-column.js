@@ -5,18 +5,8 @@
    */
   'use strict';
 
-  var stackedColumnChartBuilder = function() {
-    var builder = {
-      link: function(chart, data) {
-        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
-        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
-      }
-    };
-    return builder;
-  };
-
   d4.chart('stackedColumn', function stackedColumnChart() {
-    var chart = d4.baseChart(stackedColumnChartBuilder);
+    var chart = d4.baseChart();
     [{
       'bars': d4.features.stackedColumnSeries
     }, {

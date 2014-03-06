@@ -31,12 +31,6 @@ describe('d4.base', function() {
       };
     });
 
-    it('should require a config and builder object', function() {
-      expect(function() {
-        d4.baseChart();
-      }).to.throw(Error, '[d4] No builder defined');
-    });
-
     describe('when binding axes', function(){
       it('should create a d3 scale as part of the build process', function(){
         var chart = d4.charts.column();
@@ -80,12 +74,12 @@ describe('d4.base', function() {
 
     describe('when defining a builder', function() {
       it('should allow you to pass in a custom builder', function() {
-        var chart = d4.baseChart(this.builder);
+        var chart = d4.baseChart({ builder : this.builder });
         expect(chart.builder).to.not.be.an('undefined');
       });
 
       it('should create a ordinal scale for the x dimension if no axes are provided', function() {
-        var chart = d4.baseChart(this.builder);
+        var chart = d4.baseChart({ builder : this.builder });
         d3.select('#chart')
           .datum([{
             x: 1,
@@ -99,7 +93,7 @@ describe('d4.base', function() {
       });
 
       it('should create a linear scale for the y dimension if no axes are provided', function() {
-        var chart = d4.baseChart(this.builder);
+        var chart = d4.baseChart({ builder : this.builder });
         d3.select('#chart')
           .datum([{
             x: 1,
@@ -120,7 +114,7 @@ describe('d4.base', function() {
             }
           }
         };
-        var chart = d4.baseChart(this.builder, obj);
+        var chart = d4.baseChart( { builder : this.builder, config : obj });
         d3.select('#chart')
           .datum([{
             x: 1,
@@ -147,7 +141,7 @@ describe('d4.base', function() {
             }
           }
         };
-        var chart = d4.baseChart(this.builder, obj);
+        var chart = d4.baseChart({ builder : this.builder, config : obj });
         expect(d3.keys(chart.axes()).length).to.equal(3);
         expect(chart.z).to.not.be.an('undefined');
 
@@ -170,7 +164,7 @@ describe('d4.base', function() {
         var obj = { axes : { z : { scale : 'foo' } } };
         var builder = this.builder;
         expect(function() {
-          d4.baseChart(builder, obj);
+          d4.baseChart({ builder : builder, config : obj });
         }).to.throw(Error, '[d4] The scale type: "foo" is unrecognized. D4 only supports these scale types: linear, log, pow, sqrt, ordinal, category10, category20, category20b, category20c, quantile, quantize, threshold, identity');
       });
 
@@ -179,7 +173,7 @@ describe('d4.base', function() {
           return {};
         };
         expect(function() {
-          d4.baseChart(badBuilder);
+          d4.baseChart({ builder : badBuilder });
         }).to.throw(Error, '[d4] The supplied builder does not have a link function');
 
         badBuilder = function() {
@@ -188,7 +182,7 @@ describe('d4.base', function() {
           };
         };
         expect(function() {
-          d4.baseChart(badBuilder);
+          d4.baseChart({ builder : badBuilder });
         }).to.throw(Error, '[d4] The supplied builder does not have a link function');
       });
 
@@ -196,7 +190,7 @@ describe('d4.base', function() {
 
     describe('when using accessors', function() {
       it('should set a custom property for each accessor, which will give you the last assigned value', function(){
-        var chart = d4.baseChart(this.builder);
+        var chart = d4.baseChart({ builder : this.builder });
         expect(chart.$width).to.equal(400);
         expect(chart.width()).to.equal(400);
         expect(chart.$width).to.equal(400);
@@ -205,7 +199,7 @@ describe('d4.base', function() {
       });
 
       it('should not allow you to directly set the variables which store the last assigned value', function(){
-        var chart = d4.baseChart(this.builder);
+        var chart = d4.baseChart({ builder : this.builder });
         expect(chart.$width).to.equal(400);
         expect(function(){
           chart.$width = 500;
@@ -215,7 +209,7 @@ describe('d4.base', function() {
       });
 
       it('should allow you to get and set nested accessors', function(){
-        var chart = d4.baseChart(this.builder);
+        var chart = d4.baseChart({ builder : this.builder });
         expect(chart.x).to.be.an('function');
         expect(chart.x.key()).to.equal('x');
         chart.x.key('y');
@@ -225,26 +219,26 @@ describe('d4.base', function() {
 
     describe('when defining a config object', function() {
       it('should allow you to specify public accessors functions', function() {
-        var chart = d4.baseChart(this.builder, {
+        var chart = d4.baseChart({ builder : this.builder, config : {
           accessors: ['z']
-        });
+        }});
         expect(chart.z).to.not.be.an('undefined');
         expect(chart.accessors).to.include('z');
       });
 
       it('should allow you to get the value or set the value using the accessor methods', function() {
-        var chart = d4.baseChart(this.builder, {
+        var chart = d4.baseChart({builder : this.builder, config : {
           margin: {
             left: 4000
           }
-        });
+        }});
         expect(chart.margin().left).to.equal(4000);
         chart.margin({left:500});
         expect(chart.margin().left).to.equal(500);
       });
 
       it('should define a collection of common accessors useful to all charts which are exposed through an accessors array', function() {
-        var chart = d4.baseChart(this.builder);
+        var chart = d4.baseChart({ builder : this.builder });
         expect(chart.z).to.be.an('undefined');
         chart.accessors.forEach(function(accessor) {
           expect(chart[accessor]).to.not.be.an('undefined');

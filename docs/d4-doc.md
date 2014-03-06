@@ -120,24 +120,24 @@ new chart factory.
 
 ##### Examples
 
-    d4.chart('column', function columnChart() {
-        var chart = d4.baseChart({
-          axes: [{
-            key: 'x',
-            scale: 'ordinal'
-          }, {
-            key: 'y',
-            scale: 'linear'
-          }]
-        }, columnChartBuilder);
-        return chart;
-    });
+     var chart = d4.baseChart({
+       builder: myBuilder,
+       config: {
+         axes: {
+           x: {
+             scale: 'linear'
+           },
+           y: {
+             scale: 'ordinal'
+           }
+         }
+       }
+     });
     
 
 #### Arguments
 
-1. `defaultBuilder`_(Function) -- function which will return a valid builder object when invoked._
-2. `config`_(Object) -- an object representing chart configuration settings_
+1. `options`_(Object) -- object which contains an optional config and /or_
 
 ---
 

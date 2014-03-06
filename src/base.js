@@ -273,9 +273,12 @@
   };
 
   var assignDefaults = function(config, defaultBuilder) {
-    if (!defaultBuilder) {
-      err('No builder defined');
-    }
+    var builder = d4.functor({
+      link: function(chart, data) {
+        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
+        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
+      }
+    });
     var opts = d4.merge({
       width: 400,
       height: 400,
@@ -291,7 +294,7 @@
       }
     }, config);
     linkAxes(opts);
-    assignDefaultBuilder.bind(opts)(defaultBuilder);
+    assignDefaultBuilder.bind(opts)(defaultBuilder || builder);
     opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);
     return opts;
   };
@@ -514,25 +517,26 @@
    *
    *##### Examples
    *
-   *     d4.chart('column', function columnChart() {
-   *         var chart = d4.baseChart({
-   *           axes: [{
-   *             key: 'x',
-   *             scale: 'ordinal'
-   *           }, {
-   *             key: 'y',
-   *             scale: 'linear'
-   *           }]
-   *         }, columnChartBuilder);
-   *         return chart;
-   *     });
+   *      var chart = d4.baseChart({
+   *        builder: myBuilder,
+   *        config: {
+   *          axes: {
+   *            x: {
+   *              scale: 'linear'
+   *            },
+   *            y: {
+   *              scale: 'ordinal'
+   *            }
+   *          }
+   *        }
+   *      });
    *
-   * @param {Function} defaultBuilder - function which will return a valid builder object when invoked.
-   * @param {Object} config - an object representing chart configuration settings
+   * @param {Object} options - object which contains an optional config and /or
+   * builder property
    * @returns a reference to the chart object
    */
-  d4.baseChart = function(defaultBuilder, config) {
-    var opts = assignDefaults(config || {}, defaultBuilder);
+  d4.baseChart = function(options) {
+    var opts = assignDefaults(options && options.config || {}, options && options.builder || undefined);
     var chart = applyScaffold(opts);
 
     chart.accessors = opts.accessors;
