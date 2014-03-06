@@ -20,23 +20,23 @@
 * [``][13]
 * [``][13]
 
-###### [waterfall-connectors.js][14]
+###### [column.js][14]
 
 * [``][13]
 
-###### [column.js][15]
+###### [grouped-column.js][15]
 
 * [``][13]
 
-###### [grouped-column.js][16]
+###### [line.js][16]
 
 * [``][13]
 
-###### [line.js][17]
+###### [row.js][17]
 
 * [``][13]
 
-###### [row.js][18]
+###### [waterfall-connectors.js][18]
 
 * [``][13]
 
@@ -332,35 +332,12 @@ Creates an ordinal scale for a dimension of a given chart.
 
 ---
 
-## waterfall-connectors.js
-
-### 
-
-[\#][13]
-[Ⓣ][14]
-
-Waterfall connectors are orthogonal series connectors which visually join  
-column series together by spanning the top or bottom of adjacent columns.
-
-When using this feature in charts other than waterfall, be aware that the  
-mixin expects an accessor property for `orientation`, which it uses to render  
-the direction of the lines.
-
-##### Accessors
-
-`x` - Used in placement of the connector lines.  
-`y` - Used in placement of the connector lines.  
-`span` - calculates the length of the connector line  
-`classes` - applies the class to the connector lines.
-
----
-
 ## column.js
 
 ### 
 
 [\#][13]
-[Ⓣ][15]
+[Ⓣ][14]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -412,7 +389,7 @@ The default format may not be desired and so we'll override it:
 ### 
 
 [\#][13]
-[Ⓣ][16]
+[Ⓣ][15]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -469,7 +446,7 @@ relative distribution.
 ### 
 
 [\#][13]
-[Ⓣ][17]
+[Ⓣ][16]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -529,7 +506,7 @@ along the xAxis.
 ### 
 
 [\#][13]
-[Ⓣ][18]
+[Ⓣ][17]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -554,6 +531,29 @@ has four default features:
       .datum(data)
       .call(chart);
     
+
+---
+
+## waterfall-connectors.js
+
+### 
+
+[\#][13]
+[Ⓣ][18]
+
+Waterfall connectors are orthogonal series connectors which visually join  
+column series together by spanning the top or bottom of adjacent columns.
+
+When using this feature in charts other than waterfall, be aware that the  
+mixin expects an accessor property for `orientation`, which it uses to render  
+the direction of the lines.
+
+##### Accessors
+
+`x` - Used in placement of the connector lines.  
+`y` - Used in placement of the connector lines.  
+`span` - calculates the length of the connector line  
+`classes` - applies the class to the connector lines.
 
 ---
 
@@ -844,11 +844,11 @@ y - an object with a key representing the y accessor and an array of values
 [11]: #functor
 [12]: #scales-js
 [13]: #
-[14]: #waterfall-connectors-js
-[15]: #column-js
-[16]: #grouped-column-js
-[17]: #line-js
-[18]: #row-js
+[14]: #column-js
+[15]: #grouped-column-js
+[16]: #line-js
+[17]: #row-js
+[18]: #waterfall-connectors-js
 [19]: #nested-group-js
 [20]: #nested-stack-js
 [21]: #waterfall-js

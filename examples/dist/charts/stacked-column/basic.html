@@ -96,8 +96,12 @@ $(document).ready(function(){
 
   var chart = d4.charts.stackedColumn()
   .width($('#example').width())
-  .xKey('year')
-  .yKey('unitsSold')
+  .x(function(x){
+    x.key('year');
+  })
+  .y(function(y){
+    y.key('unitsSold');
+  })
   .mixin({ 'zeroLine' : d4.features.referenceLine })
   .using('zeroLine', function(zero) {
     zero
@@ -175,8 +179,12 @@ $(document).ready(function(){
 
   var chart = d4.charts.stackedColumn()
   .width($('#example').width())
-  .xKey('year')
-  .yKey('unitsSold')
+  .x(function(x){
+    x.key('year');
+  })
+  .y(function(y){
+    y.key('unitsSold');
+  })
   .mixin({ 'zeroLine' : d4.features.referenceLine })
   .using('zeroLine', function(zero) {
     zero

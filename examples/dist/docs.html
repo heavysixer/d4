@@ -50,47 +50,49 @@
 <li><a href="#feature"><code>feature</code></a></li>
 <li><a href="#builder"><code>builder</code></a></li>
 <li><a href="#parser"><code>parser</code></a></li>
-<li><a href="#using"><code>using</code></a></li>
-<li><a href="#mixin"><code>mixin</code></a></li>
-<li><a href="#mixout"><code>mixout</code></a></li>
+<li><a href="#basechart"><code>baseChart</code></a></li>
 <li><a href="#builder"><code>builder</code></a></li>
 <li><a href="#features"><code>features</code></a></li>
+<li><a href="#mixin"><code>mixin</code></a></li>
+<li><a href="#mixout"><code>mixout</code></a></li>
+<li><a href="#axes"><code>axes</code></a></li>
+<li><a href="#using"><code>using</code></a></li>
 <li><a href="#functor"><code>functor</code></a></li>
 </ul>
-<h6 id="-scales-js-10-"><a href="#scales-js">scales.js</a></h6>
+<h6 id="-scales-js-12-"><a href="#scales-js">scales.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-column-js-12-"><a href="#column-js">column.js</a></h6>
+<h6 id="-column-js-14-"><a href="#column-js">column.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-grouped-column-js-13-"><a href="#grouped-column-js">grouped-column.js</a></h6>
+<h6 id="-grouped-column-js-15-"><a href="#grouped-column-js">grouped-column.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-line-js-14-"><a href="#line-js">line.js</a></h6>
+<h6 id="-line-js-16-"><a href="#line-js">line.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-row-js-15-"><a href="#row-js">row.js</a></h6>
+<h6 id="-row-js-17-"><a href="#row-js">row.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-waterfall-connectors-js-16-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
+<h6 id="-waterfall-connectors-js-18-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-nested-group-js-17-"><a href="#nested-group-js">nested-group.js</a></h6>
+<h6 id="-nested-group-js-19-"><a href="#nested-group-js">nested-group.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-nested-stack-js-18-"><a href="#nested-stack-js">nested-stack.js</a></h6>
+<h6 id="-nested-stack-js-20-"><a href="#nested-stack-js">nested-stack.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-waterfall-js-19-"><a href="#waterfall-js">waterfall.js</a></h6>
+<h6 id="-waterfall-js-21-"><a href="#waterfall-js">waterfall.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
@@ -135,23 +137,58 @@
 <li><code>funct</code><em>(Function) -- function which will instantiate the data parser.</em></li>
 </ol>
 <hr>
-<h3 id="using">using</h3>
-<p><a href="#using">#</a>
+<h3 id="basechart">baseChart</h3>
+<p><a href="#basechart">#</a>
 <a href="#base-js">Ⓣ</a></p>
-<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br>contextually modify attributes of the chart or one of its features.</p>
+<p>This function creates a d4 chart object. It is only used when creating a<br>new chart factory.</p>
 <h5 id="examples">Examples</h5>
-<pre><code> chart.mixin({ &#39;zeroLine&#39;: d4.features.referenceLine })
- .using(&#39;zeroLine&#39;, function(zero) {
-   zero
-     .x1(function() {
-       return this.x(0);
-     })
+<pre><code> var chart = d4.baseChart({
+   builder: myBuilder,
+   config: {
+     axes: {
+       x: {
+         scale: &#39;linear&#39;
+       },
+       y: {
+         scale: &#39;ordinal&#39;
+       }
+     }
+   }
  });</code></pre>
 <h4 id="arguments">Arguments</h4>
 <ol>
-<li><code>name</code><em>(String) -- accessor name for chart feature.</em></li>
-<li><code>funct</code><em>(Function) -- function which will perform the modifcation.</em></li>
+<li><code>options</code><em>(Object) -- object which contains an optional config and /or</em></li>
 </ol>
+<hr>
+<h3 id="builder">builder</h3>
+<p><a href="#builder">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>Specifies an object, which d4 uses to initialize the chart with. By default<br>d4 expects charts to return a builder object, which will be used to<br>configure defaults for the chart. Typically this means determining the<br>the default value for the various axes. This accessor allows you to<br>override the existing builder provided by a chart and use your own.</p>
+<h5 id="examples">Examples</h5>
+<pre><code>myChart.builder = function(chart, data){
+    return {
+       link: function(chart, data) {
+           configureScales.bind(this)(chart, data);
+       }
+    };
+};</code></pre>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>funct</code><em>(Function) -- function which returns a builder object.</em></li>
+</ol>
+<hr>
+<h3 id="features">features</h3>
+<p><a href="#features">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>To see what features are currently mixed into your chart you can use<br>this method. This function cannot be chained.</p>
+<h5 id="examples">Examples</h5>
+<pre><code> // Mixout the yAxis which is provided as a default
+ var chart = d4.charts.column()
+ .mixout(&#39;yAxis&#39;);
+
+ // Now test that the feature has been removed.
+ console.log(chart.features());
+ =&gt; [&quot;bars&quot;, &quot;barLabels&quot;, &quot;xAxis&quot;]</code></pre>
 <hr>
 <h3 id="mixin">mixin</h3>
 <p><a href="#mixin">#</a>
@@ -185,35 +222,32 @@
 <li><code>name</code><em>(String) -- accessor name for chart feature.</em></li>
 </ol>
 <hr>
-<h3 id="builder">builder</h3>
-<p><a href="#builder">#</a>
+<h3 id="axes">axes</h3>
+<p><a href="#axes">#</a>
 <a href="#base-js">Ⓣ</a></p>
-<p>Specifies an object, which d4 uses to initialize the chart with. By default<br>d4 expects charts to return a builder object, which will be used to<br>configure defaults for the chart. Typically this means determining the<br>the default value for the various axes. This accessor allows you to<br>override the existing builder provided by a chart and use your own.</p>
-<h5 id="examples">Examples</h5>
-<pre><code>myChart.builder = function(chart, data){
-    return {
-       configure: function(chart, data) {
-           configureScales.bind(this)(chart, data);
-       }
-    };
-};</code></pre>
+<p>This function returns the internal axes object as a parameter to the<br>supplied function.</p>
 <h4 id="arguments">Arguments</h4>
 <ol>
-<li><code>funct</code><em>(Function) -- function which returns a builder object.</em></li>
+<li><code>funct</code><em>(Function) -- function which will perform the modifcation.</em></li>
 </ol>
 <hr>
-<h3 id="features">features</h3>
-<p><a href="#features">#</a>
+<h3 id="using">using</h3>
+<p><a href="#using">#</a>
 <a href="#base-js">Ⓣ</a></p>
-<p>To see what features are currently mixed into your chart you can use<br>this method.</p>
+<p>The heart of the d4 API is the <code>using</code> function, which allows you to<br>contextually modify attributes of the chart or one of its features.</p>
 <h5 id="examples">Examples</h5>
-<pre><code> // Mixout the yAxis which is provided as a default
- var chart = d4.charts.column()
- .mixout(&#39;yAxis&#39;);
-
- // Now test that the feature has been removed.
- console.log(chart.features());
- =&gt; [&quot;bars&quot;, &quot;barLabels&quot;, &quot;xAxis&quot;]</code></pre>
+<pre><code> chart.mixin({ &#39;zeroLine&#39;: d4.features.referenceLine })
+ .using(&#39;zeroLine&#39;, function(zero) {
+   zero
+     .x1(function() {
+       return this.x(0);
+     })
+ });</code></pre>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code><em>(String) -- accessor name for chart feature.</em></li>
+<li><code>funct</code><em>(Function) -- function which will perform the modifcation.</em></li>
+</ol>
 <hr>
 <h3 id="functor">functor</h3>
 <p><a href="#functor">#</a>
@@ -277,8 +311,8 @@ d3.select(&#39;#example&#39;)
   [&#39;2014&#39;, 50]
 ];
 var chart = d4.charts.column()
-.xKey(0)
-.yKey(1);
+.x.$key(0)
+.y.$key(1);
 
 d3.select(&#39;#example&#39;)
 .datum(data)
@@ -316,8 +350,8 @@ var parsedData = d4.parsers.nestedGroup()
 
 var chart = d4.charts.groupedColumn()
 .width($(&#39;#example&#39;).width())
-.xKey(&#39;year&#39;)
-.yKey(&#39;unitsSold&#39;)
+.x.$key(&#39;year&#39;)
+.y.$key(&#39;unitsSold&#39;)
 .groupsOf(parsedData.data[0].values.length);
 
 d3.select(&#39;#example&#39;)
@@ -364,8 +398,8 @@ var parsedData = d4.parsers.nestedGroup()
 
 var chart = d4.charts.line()
 .width($(&#39;#example&#39;).width())
-.xKey(&#39;year&#39;)
-.yKey(&#39;unitsSold&#39;);
+.x.$key(&#39;year&#39;)
+.y.$key(&#39;unitsSold&#39;);
 
 d3.select(&#39;#example&#39;)
 .datum(parsedData.data)
@@ -516,8 +550,8 @@ var groupedColumnData = parser(data);</code></pre>
 ----------------------
 
 This module makes use of the d3&#39;s &quot;nest&quot; data structure, and &quot;stack&quot; layout
-[https://github.com/mbostock/d3/wiki/Arrays#-nest][20]
-[https://github.com/mbostock/d3/wiki/Stack-Layout][21]
+[https://github.com/mbostock/d3/wiki/Arrays#-nest][22]
+[https://github.com/mbostock/d3/wiki/Stack-Layout][23]
 
 
 Approach:

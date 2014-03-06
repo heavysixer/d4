@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Custom Data Dimensions | d4 Examples</title>
+    <title>Shared chart properties | d4 Examples</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
@@ -40,64 +40,99 @@
       <div class="container" role="main">
 
         
-<h5>Custom Data Dimensions</h5>
+<h5>Shared chart properties</h5>
 <p>
-  By default d4 expects a data objet where <code>x</code> and <code>y</code> keys define the chart
-  dimensions. These can easily be overridden as the following example demonstrates:
+  Many times multiple charts are used to tell a more complex story about the
+  interrelationship between datasets. Often this means that the charts need to
+  share the same visual scale along their axis, even if the supplied data doesn't
+  include these data values. d4 allows you to specify specific <code>min</code>
+  and <code>max</code> values for each axis, which is demonstrated in the
+  following example:
 </p>
 <hr/>
 <script type="text/javascript" charset="utf-8">
 'use strict';
 
 $(document).ready(function(){
-  // By default d4 expects a series object, which uses the following format:
-  // { x : '2010', y : 10 }.
-  // The default format is not desired and so we'll override it.
-  var data = [
-    ['2010', -10],
-    ['2011', 20],
-    ['2012', 30],
-    ['2013', 40],
-    ['2014', 50]
-  ];
-  var chart = d4.charts.column()
-  .x(function(x){
-    x.key(0);
-  })
-  .y(function(y){
-    y.key(1);
-  })
+  var data1 = [
+      { x: '2010', y:-50 },
+      { x: '2011', y:20 },
+    ];
+  var data2 = [
+      { x: '2010', y:-10 },
+      { x: '2011', y:100 },
+    ];
+  var min = -50;
+  var max = 100;
+  var chart1 = d4.charts.column();
 
-  d3.select('#example')
-  .datum(data)
-  .call(chart);
+  chart1
+  .width($('#example1').width())
+  .y(function(y){
+    y.min(min);
+    y.max(max);
+  });
+
+  var chart2 = d4.charts.column();
+  chart2
+  .width($('#example2').width())
+  .y(function(y){
+    y.min(min);
+    y.max(max);
+  });
+
+  d3.select('#example1')
+  .datum(data1)
+  .call(chart1);
+
+  d3.select('#example2')
+  .datum(data2)
+  .call(chart2);
 });
 
 </script>
-<div id="example"></div>
+<div class="clearfix">
+  <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6" id="example1"></div>
+    <div class="col-xs-6 col-sm-6 col-md-6" id="example2"></div>
+  </div>
+</div>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript">
-  // By default d4 expects a series object, which uses the following format:
-  // { x : '2010', y : 10 }.
-  // The default format is not desired and so we'll override it.
-  var data = [
-    ['2010', -10],
-    ['2011', 20],
-    ['2012', 30],
-    ['2013', 40],
-    ['2014', 50]
-  ];
-  var chart = d4.charts.column()
-  .x(function(x){
-    x.key(0);
-  })
-  .y(function(y){
-    y.key(1);
-  })
+  var data1 = [
+      { x: '2010', y:-50 },
+      { x: '2011', y:20 },
+    ];
+  var data2 = [
+      { x: '2010', y:-10 },
+      { x: '2011', y:100 },
+    ];
+  var min = -50;
+  var max = 100;
+  var chart1 = d4.charts.column();
 
-  d3.select('#example')
-  .datum(data)
-  .call(chart);
+  chart1
+  .width($('#example1').width())
+  .y(function(y){
+    y.min(min);
+    y.max(max);
+  });
+
+  var chart2 = d4.charts.column();
+  chart2
+  .width($('#example2').width())
+  .y(function(y){
+    y.min(min);
+    y.max(max);
+  });
+
+  d3.select('#example1')
+  .datum(data1)
+  .call(chart1);
+
+  d3.select('#example2')
+  .datum(data2)
+  .call(chart2);
 </code></pre>
 
 

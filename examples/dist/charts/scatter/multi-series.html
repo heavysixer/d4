@@ -73,9 +73,15 @@ $(document).ready(function(){
   var chart = d4.charts.scatterPlot()
   .width($('#example').width())
   .mixin({'grid' : d4.features.grid},0)
-  .xKey('unitsSold')
-  .yKey('month')
-  .zKey('age');
+  .x(function(x){
+    x.key('unitsSold');
+  })
+  .y(function(y){
+    y.key('month');
+  })
+  .z(function(z){
+    z.key('age');
+  });
 
   d3.select('#example')
   .datum(parsedData.data)
@@ -143,14 +149,20 @@ $(document).ready(function(){
 
   var chart = d4.charts.scatterPlot()
   .width($('#example').width())
-  .xKey('unitsSold')
-  .yKey('month')
-  .zKey('age');
+  .mixin({'grid' : d4.features.grid},0)
+  .x(function(x){
+    x.key('unitsSold');
+  })
+  .y(function(y){
+    y.key('month');
+  })
+  .z(function(z){
+    z.key('age');
+  });
 
   d3.select('#example')
   .datum(parsedData.data)
   .call(chart);
-});
 </code></pre>
 
       </div>

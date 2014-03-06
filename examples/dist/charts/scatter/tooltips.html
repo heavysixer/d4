@@ -67,9 +67,15 @@ $(document).ready(function(){
 
   var chart = d4.charts.scatterPlot()
   .width($('#example').width())
-  .xKey('age')
-  .yKey('month')
-  .zKey('unitsSold')
+  .x(function(x){
+    x.key('age');
+  })
+  .y(function(y){
+    y.key('month');
+  })
+  .z(function(z){
+    z.key('unitsSold');
+  })
   .using('circles', function(circle) {
 
     // Note: d4 proxies the "on" function to d3, so it will work just like
@@ -110,8 +116,6 @@ $(document).ready(function(){
   $('div').tooltip({
     selector: '.dot'
   });
-
-
 });
 </script>
 <div id="scatter">
@@ -139,9 +143,15 @@ $(document).ready(function(){
 
   var chart = d4.charts.scatterPlot()
   .width($('#example').width())
-  .xKey('age')
-  .yKey('month')
-  .zKey('unitsSold')
+  .x(function(x){
+    x.key('age');
+  })
+  .y(function(y){
+    y.key('month');
+  })
+  .z(function(z){
+    z.key('unitsSold');
+  })
   .using('circles', function(circle) {
 
     // Note: d4 proxies the "on" function to d3, so it will work just like

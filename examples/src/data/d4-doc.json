@@ -605,6 +605,127 @@
                 "body": ""
             },
             "ignore": true,
+            "code": "'use strict';",
+            "fileName": "../src/charts/column.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>The column chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear values for the <code>y</code> and ordinal values on the <code>x</code>. The basic column chart<br />   has four default features:</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n    { x: '2010', y:-10 },\n    { x: '2011', y:20 },\n    { x: '2012', y:30 },\n    { x: '2013', y:40 },\n    { x: '2014', y:50 },\n  ];\nvar chart = d4.charts.column();\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>\n\n<p>By default d4 expects a series object, which uses the following format: <code>{ x : '2010', y : 10 }</code>.<br />The default format may not be desired and so we'll override it:</p>\n\n<pre><code>var data = [\n  ['2010', -10],\n  ['2011', 20],\n  ['2012', 30],\n  ['2013', 40],\n  ['2014', 50]\n];\nvar chart = d4.charts.column()\n.x.$key(0)\n.y.$key(1);\n\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>",
+                "summary": "<p>The column chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear values for the <code>y</code> and ordinal values on the <code>x</code>. The basic column chart<br />   has four default features:</p>",
+                "body": "<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n    { x: '2010', y:-10 },\n    { x: '2011', y:20 },\n    { x: '2012', y:30 },\n    { x: '2013', y:40 },\n    { x: '2014', y:50 },\n  ];\nvar chart = d4.charts.column();\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>\n\n<p>By default d4 expects a series object, which uses the following format: <code>{ x : '2010', y : 10 }</code>.<br />The default format may not be desired and so we'll override it:</p>\n\n<pre><code>var data = [\n  ['2010', -10],\n  ['2011', 20],\n  ['2012', 30],\n  ['2013', 40],\n  ['2014', 50]\n];\nvar chart = d4.charts.column()\n.x.$key(0)\n.y.$key(1);\n\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>"
+            },
+            "ignore": false,
+            "code": "d4.chart('column', function columnChart() {\n    var chart = d4.baseChart();\n    [{\n      'bars': d4.features.stackedColumnSeries\n    }, {\n      'barLabels': d4.features.stackedColumnLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "fileName": "../src/charts/column.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d3: false<br />global d4: false</p>",
+                "summary": "<p>global d3: false<br />global d4: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "code": "'use strict';",
+            "fileName": "../src/charts/grouped-column.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>The grouped column chart is used to compare a series of data elements grouped<br />along the xAxis. This chart is often useful in conjunction with a stacked column<br />chart because they can use the same data series, and where the stacked column highlights<br />the sum of the data series across an axis the grouped column can be used to show the<br />relative distribution.</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>groupsOf</strong> - an integer representing the number of columns in each group<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\n\nvar parsedData = d4.parsers.nestedGroup()\n  .x('year')\n  .y('unitsSold')\n  .value('unitsSold')(data);\n\nvar chart = d4.charts.groupedColumn()\n.width($('#example').width())\n.x.$key('year')\n.y.$key('unitsSold')\n.groupsOf(parsedData.data[0].values.length);\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>",
+                "summary": "<p>The grouped column chart is used to compare a series of data elements grouped<br />along the xAxis. This chart is often useful in conjunction with a stacked column<br />chart because they can use the same data series, and where the stacked column highlights<br />the sum of the data series across an axis the grouped column can be used to show the<br />relative distribution.</p>",
+                "body": "<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>groupsOf</strong> - an integer representing the number of columns in each group<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\n\nvar parsedData = d4.parsers.nestedGroup()\n  .x('year')\n  .y('unitsSold')\n  .value('unitsSold')(data);\n\nvar chart = d4.charts.groupedColumn()\n.width($('#example').width())\n.x.$key('year')\n.y.$key('unitsSold')\n.groupsOf(parsedData.data[0].values.length);\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>"
+            },
+            "ignore": false,
+            "code": "d4.chart('groupedColumn', function groupedColumnChart() {\n    var chart = d4.baseChart({\n      config: {\n        accessors: ['groupsOf'],\n        groupsOf: 1\n      }\n    });\n    [{\n      'bars': d4.features.groupedColumnSeries\n    }, {\n      'columnLabels': d4.features.groupedColumnLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "fileName": "../src/charts/grouped-column.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d3: false<br />global d4: false</p>",
+                "summary": "<p>global d3: false<br />global d4: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "code": "'use strict';",
+            "fileName": "../src/charts/line.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>The line series chart is used to compare a series of data elements grouped<br />  along the xAxis.</p>\n\n<p><strong>lineSeries</strong> - series lines<br /><strong>lineSeriesLabels</strong> - data labels beside the lines<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\nvar parsedData = d4.parsers.nestedGroup()\n  .x(function(){\n    return 'year';\n  })\n  .nestKey(function(){\n    return 'salesman';\n  })\n  .y(function(){\n    return 'unitsSold';\n  })\n  .value(function(){\n    return 'unitsSold';\n  })(data);\n\nvar chart = d4.charts.line()\n.width($('#example').width())\n.x.$key('year')\n.y.$key('unitsSold');\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>",
+                "summary": "<p>The line series chart is used to compare a series of data elements grouped<br />  along the xAxis.</p>",
+                "body": "<p><strong>lineSeries</strong> - series lines<br /><strong>lineSeriesLabels</strong> - data labels beside the lines<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\nvar parsedData = d4.parsers.nestedGroup()\n  .x(function(){\n    return 'year';\n  })\n  .nestKey(function(){\n    return 'salesman';\n  })\n  .y(function(){\n    return 'unitsSold';\n  })\n  .value(function(){\n    return 'unitsSold';\n  })(data);\n\nvar chart = d4.charts.line()\n.width($('#example').width())\n.x.$key('year')\n.y.$key('unitsSold');\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>"
+            },
+            "ignore": false,
+            "code": "d4.chart('line', function lineChart() {\n    var chart = d4.baseChart();\n    [{\n      'lineSeries': d4.features.lineSeries\n    },{\n      'lineSeriesLabels': d4.features.lineSeriesLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "fileName": "../src/charts/line.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d3: false<br />global d4: false</p>",
+                "summary": "<p>global d3: false<br />global d4: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "code": "'use strict';",
+            "fileName": "../src/charts/row.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br />   has four default features:</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>rowLabels</strong> - data labels to the right of the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n      { y: '2010', x:-10 },\n      { y: '2011', x:20 },\n      { y: '2012', x:30 },\n      { y: '2013', x:40 },\n      { y: '2014', x:50 },\n    ];\n  var chart = d4.charts.row();\n  d3.select('#example')\n  .datum(data)\n  .call(chart);\n</code></pre>",
+                "summary": "<p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br />   has four default features:</p>",
+                "body": "<p><strong>bars</strong> - series bars<br /><strong>rowLabels</strong> - data labels to the right of the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n      { y: '2010', x:-10 },\n      { y: '2011', x:20 },\n      { y: '2012', x:30 },\n      { y: '2013', x:40 },\n      { y: '2014', x:50 },\n    ];\n  var chart = d4.charts.row();\n  d3.select('#example')\n  .datum(data)\n  .call(chart);\n</code></pre>"
+            },
+            "ignore": false,
+            "code": "d4.chart('row', function rowChart() {\n    var chart = d4.baseChart({\n      config: {\n        margin: {\n          top: 20,\n          right: 40,\n          bottom: 20,\n          left: 40\n        },\n        axes: {\n          x: {\n            scale: 'linear'\n          },\n          y: {\n            scale: 'ordinal'\n          }\n        }\n      }\n    });\n    [{\n      'bars': d4.features.rowSeries\n    }, {\n      'rowLabels': d4.features.rowLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "fileName": "../src/charts/row.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d3: false<br />global d4: false</p>",
+                "summary": "<p>global d3: false<br />global d4: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "code": "'use strict';\n\n  var scatterPlotBuilder = function() {\n    var configureScales = function(chart, data) {\n      d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');\n      d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');\n      d4.builders[chart.z.$scale + 'ScaleForNestedData'](chart, data, 'z');\n      var min = 5;\n      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom) / 10);\n      chart.z.range([min, max]);\n    };\n\n    var builder = {\n      link: function(chart, data) {\n        configureScales.bind(this)(chart, data);\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('scatterPlot', function() {\n    var chart = d4.baseChart({\n      builder: scatterPlotBuilder,\n      config: {\n        axes: {\n          x: {\n            scale: 'linear'\n          },\n          z: {\n            scale: 'linear'\n          }\n        }\n      }\n    });\n    [{\n      'circles': d4.features.dotSeries\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "fileName": "../src/charts/scatter.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d3: false<br />global d4: false</p>",
+                "summary": "<p>global d3: false<br />global d4: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "code": "'use strict';\n\n  d4.chart('stackedColumn', function stackedColumnChart() {\n    var chart = d4.baseChart();\n    [{\n      'bars': d4.features.stackedColumnSeries\n    }, {\n      'barLabels': d4.features.stackedColumnLabels\n    }, {\n      'connectors': d4.features.stackedColumnConnectors\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
+            "fileName": "../src/charts/stacked-column.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d3: false<br />global d4: false</p>",
+                "summary": "<p>global d3: false<br />global d4: false</p>",
+                "body": ""
+            },
+            "ignore": true,
+            "code": "'use strict';\n\n  // FIXME: It would be nice not to continually have to check the orientation.\n  var columnSeriesOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.y.$scale === 'linear') {\n            var yVal = (d.y0 + d.y) - Math.min(0, d.y);\n            return this.y(yVal);\n          } else {\n            return this.y(d[this.y.$key]);\n          }\n        },\n\n        x: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x(d[this.x.$key]);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.x(xVal);\n          }\n        },\n\n        width: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x.rangeBand();\n          } else {\n            return Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n          }\n        },\n\n        height: function(d) {\n          if (this.y.$scale === 'linear') {\n            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n          } else {\n            return this.y.rangeBand();\n          }\n        },\n\n        classes: function(d, i, n) {\n          var klass = (d.y > 0) ? 'positive' : 'negative';\n          if (n > 0 && d.y0 === 0) {\n            klass = 'subtotal';\n          }\n          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.y.$key];\n        }\n      }\n    };\n  };\n\n  var columnLabelOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.y.$scale === 'linear') {\n            var height = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n            var yVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.y(yVal) - 10 - height;\n          } else {\n            return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2);\n          }\n        },\n\n        x: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            var width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n            return this.x(xVal) + 10 + width;\n          }\n        },\n\n        text: function(d) {\n          return d3.format('').call(this, d[this.valueKey]);\n        }\n      }\n    };\n  };\n\n  var waterfallChartBuilder = function() {\n    var rangeBoundsFor = function(chart, dimension) {\n      var rangeBounds;\n      if (dimension === 'x') {\n        return [0, chart.width - chart.margin.left - chart.margin.right];\n      } else {\n        rangeBounds = [0, chart.height - chart.margin.top - chart.margin.bottom];\n        return (chart.x.$scale === 'ordinal') ? rangeBounds.reverse() : rangeBounds;\n      }\n    };\n\n    var setOrdinal = function(chart, dimension, data) {\n      var keys = data.map(function(d) {\n        return d.key;\n      }.bind(this));\n\n      chart[dimension]\n      .domain(keys)\n      .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);\n    };\n\n    var setLinear = function(chart, dimension, data) {\n        var ext = d3.extent(d3.merge(data.map(function(datum) {\n          return d3.extent(datum.values, function(d) {\n\n            // This is anti-intuative but the stack only returns y and y0 even\n            // when it applies to the x dimension;\n            return d.y + d.y0;\n          });\n        })));\n        ext[0] = Math.min(0, ext[0]);\n        chart[dimension].domain(ext);\n        chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))\n        .clamp(true)\n        .nice();\n      };\n\n    var configureScales = function(chart, data) {\n      if (chart.x.$scale === 'ordinal') {\n        setOrdinal.bind(this)(chart, 'x', data);\n        setLinear.bind(this)(chart, 'y', data);\n      } else {\n        setOrdinal.bind(this)(chart, 'y', data);\n        setLinear.bind(this)(chart, 'x', data);\n      }\n    };\n\n    var builder = {\n      link: function(chart, data) {\n        configureScales.bind(this)(chart, data);\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('waterfall', function waterfallChart() {\n    var chart = d4.baseChart({ builder: waterfallChartBuilder });\n    [{\n      'bars': d4.features.stackedColumnSeries,\n      'overrides': columnSeriesOverrides\n    }, {\n      'connectors': d4.features.waterfallConnectors\n    }, {\n      'columnLabels': d4.features.stackedColumnLabels,\n      'overrides': columnLabelOverrides\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n\n    return chart;\n  });\n}).call(this);",
+            "fileName": "../src/charts/waterfall.js"
+        },
+        {
+            "tags": [],
+            "description": {
+                "full": "<p>global d3: false<br />global d4: false</p>",
+                "summary": "<p>global d3: false<br />global d4: false</p>",
+                "body": ""
+            },
+            "ignore": true,
             "code": "'use strict';\n  d4.feature('arrow', function(name) {\n    return {\n      accessors: {\n        tipSize: function(){\n          return 6;\n        },\n        x1: function() {\n          return this.x(0);\n        },\n\n        x2: function() {\n          return this.x(this.width - this.margin.left - this.margin.right);\n        },\n\n        y1: function() {\n          return this.y(0);\n        },\n\n        y2: function() {\n          return  this.y(this.height - this.margin.top - this.margin.bottom);\n        }\n      },\n      render: function(scope) {\n        var defs = this.svg.select('defs');\n\n        defs.append('marker')\n          .attr('id', name + '-end')\n          .attr('viewBox', '0 0 10 10')\n          .attr('refX', 10)\n          .attr('refY', 5)\n          .attr('markerWidth', scope.accessors.tipSize.bind(this))\n          .attr('markerHeight', scope.accessors.tipSize.bind(this))\n          .attr('orient', 'auto')\n          .append('path')\n          .attr('d', 'M 0 0 L 10 5 L 0 10 z');\n\n        defs.append('marker')\n          .attr('id', name + '-start')\n          .attr('viewBox', '0 0 10 10')\n          .attr('refX', 10)\n          .attr('refY', 5)\n          .attr('markerWidth', -scope.accessors.tipSize.bind(this)())\n          .attr('markerHeight', scope.accessors.tipSize.bind(this))\n          .attr('orient', 'auto')\n          .append('path')\n          .attr('d', 'M 0 0 L 10 5 L 0 10 z');\n\n        this.featuresGroup.append('g').attr('class', name);\n        var arrow = this.svg.select('.' + name)\n          .append('line')\n          .attr('class', 'line')\n          .attr('x1', scope.accessors.x1.bind(this))\n          .attr('x2', scope.accessors.x2.bind(this))\n          .attr('y1', scope.accessors.y1.bind(this))\n          .attr('y2', scope.accessors.y2.bind(this))\n          .attr('marker-end', 'url(#' + name + '-end)');\n\n        return arrow;\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/arrow.js"
         },
@@ -803,127 +924,6 @@
             "ignore": true,
             "code": "'use strict';\n  d4.feature('yAxis', function(name) {\n\n    // FIXME: This should be a util function\n    // Extracted from: http://bl.ocks.org/mbostock/7555321\n    var wrap = function(text, width) {\n      text.each(function() {\n        var text = d3.select(this),\n            words = text.text().split(/\\s+/).reverse(),\n            word,\n            line = [],\n            lineNumber = 0,\n            lineHeight = 1.1, // ems\n            x = text.attr('x'),\n            y = text.attr('y'),\n            dy = parseFloat(text.attr('dy')),\n            tspan = text.text(null).append('tspan').attr('x', x).attr('y', y).attr('dy', dy + 'em');\n        word = words.pop();\n        while (word) {\n          line.push(word);\n          tspan.text(line.join(' '));\n          if (tspan.node().getComputedTextLength() > width - Math.abs(x)) {\n            line.pop();\n            tspan.text(line.join(' '));\n            line = [word];\n            tspan = text.append('tspan').attr('x', x).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);\n          }\n          word = words.pop();\n        }\n      });\n    };\n\n    return {\n      accessors: {\n        format: function(yAxis) {\n          return yAxis.orient('left').tickSize(0);\n        }\n      },\n      render: function(scope) {\n        var yAxis = d3.svg.axis().scale(this.y);\n        var formattedAxis = scope.accessors.format.bind(this)(yAxis);\n        this.featuresGroup.append('g').attr('class', 'y axis ' + name)\n          .attr('transform', 'translate(0,0)')\n          .call(formattedAxis)\n          .selectAll('.tick text')\n          .call(wrap, this.margin.left);\n      }\n    };\n  });\n}).call(this);",
             "fileName": "../src/features/y-axis.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d3: false<br />global d4: false</p>",
-                "summary": "<p>global d3: false<br />global d4: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "code": "'use strict';",
-            "fileName": "../src/charts/column.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>The column chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear values for the <code>y</code> and ordinal values on the <code>x</code>. The basic column chart<br />   has four default features:</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n    { x: '2010', y:-10 },\n    { x: '2011', y:20 },\n    { x: '2012', y:30 },\n    { x: '2013', y:40 },\n    { x: '2014', y:50 },\n  ];\nvar chart = d4.charts.column();\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>\n\n<p>By default d4 expects a series object, which uses the following format: <code>{ x : '2010', y : 10 }</code>.<br />The default format may not be desired and so we'll override it:</p>\n\n<pre><code>var data = [\n  ['2010', -10],\n  ['2011', 20],\n  ['2012', 30],\n  ['2013', 40],\n  ['2014', 50]\n];\nvar chart = d4.charts.column()\n.x.$key(0)\n.y.$key(1);\n\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>",
-                "summary": "<p>The column chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear values for the <code>y</code> and ordinal values on the <code>x</code>. The basic column chart<br />   has four default features:</p>",
-                "body": "<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n    { x: '2010', y:-10 },\n    { x: '2011', y:20 },\n    { x: '2012', y:30 },\n    { x: '2013', y:40 },\n    { x: '2014', y:50 },\n  ];\nvar chart = d4.charts.column();\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>\n\n<p>By default d4 expects a series object, which uses the following format: <code>{ x : '2010', y : 10 }</code>.<br />The default format may not be desired and so we'll override it:</p>\n\n<pre><code>var data = [\n  ['2010', -10],\n  ['2011', 20],\n  ['2012', 30],\n  ['2013', 40],\n  ['2014', 50]\n];\nvar chart = d4.charts.column()\n.x.$key(0)\n.y.$key(1);\n\nd3.select('#example')\n.datum(data)\n.call(chart);\n</code></pre>"
-            },
-            "ignore": false,
-            "code": "d4.chart('column', function columnChart() {\n    var chart = d4.baseChart();\n    [{\n      'bars': d4.features.stackedColumnSeries\n    }, {\n      'barLabels': d4.features.stackedColumnLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/column.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d3: false<br />global d4: false</p>",
-                "summary": "<p>global d3: false<br />global d4: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "code": "'use strict';",
-            "fileName": "../src/charts/grouped-column.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>The grouped column chart is used to compare a series of data elements grouped<br />along the xAxis. This chart is often useful in conjunction with a stacked column<br />chart because they can use the same data series, and where the stacked column highlights<br />the sum of the data series across an axis the grouped column can be used to show the<br />relative distribution.</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>groupsOf</strong> - an integer representing the number of columns in each group<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\n\nvar parsedData = d4.parsers.nestedGroup()\n  .x('year')\n  .y('unitsSold')\n  .value('unitsSold')(data);\n\nvar chart = d4.charts.groupedColumn()\n.width($('#example').width())\n.x.$key('year')\n.y.$key('unitsSold')\n.groupsOf(parsedData.data[0].values.length);\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>",
-                "summary": "<p>The grouped column chart is used to compare a series of data elements grouped<br />along the xAxis. This chart is often useful in conjunction with a stacked column<br />chart because they can use the same data series, and where the stacked column highlights<br />the sum of the data series across an axis the grouped column can be used to show the<br />relative distribution.</p>",
-                "body": "<p><strong>bars</strong> - series bars<br /><strong>barLabels</strong> - data labels above the bars<br /><strong>groupsOf</strong> - an integer representing the number of columns in each group<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\n\nvar parsedData = d4.parsers.nestedGroup()\n  .x('year')\n  .y('unitsSold')\n  .value('unitsSold')(data);\n\nvar chart = d4.charts.groupedColumn()\n.width($('#example').width())\n.x.$key('year')\n.y.$key('unitsSold')\n.groupsOf(parsedData.data[0].values.length);\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>"
-            },
-            "ignore": false,
-            "code": "d4.chart('groupedColumn', function groupedColumnChart() {\n    var chart = d4.baseChart({\n      config: {\n        accessors: ['groupsOf'],\n        groupsOf: 1\n      }\n    });\n    [{\n      'bars': d4.features.groupedColumnSeries\n    }, {\n      'columnLabels': d4.features.groupedColumnLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/grouped-column.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d3: false<br />global d4: false</p>",
-                "summary": "<p>global d3: false<br />global d4: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "code": "'use strict';",
-            "fileName": "../src/charts/line.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>The line series chart is used to compare a series of data elements grouped<br />  along the xAxis.</p>\n\n<p><strong>lineSeries</strong> - series lines<br /><strong>lineSeriesLabels</strong> - data labels beside the lines<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\nvar parsedData = d4.parsers.nestedGroup()\n  .x(function(){\n    return 'year';\n  })\n  .nestKey(function(){\n    return 'salesman';\n  })\n  .y(function(){\n    return 'unitsSold';\n  })\n  .value(function(){\n    return 'unitsSold';\n  })(data);\n\nvar chart = d4.charts.line()\n.width($('#example').width())\n.x.$key('year')\n.y.$key('unitsSold');\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>",
-                "summary": "<p>The line series chart is used to compare a series of data elements grouped<br />  along the xAxis.</p>",
-                "body": "<p><strong>lineSeries</strong> - series lines<br /><strong>lineSeriesLabels</strong> - data labels beside the lines<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n  { year: '2010', unitsSold:-100, salesman : 'Bob' },\n  { year: '2011', unitsSold:200, salesman : 'Bob' },\n  { year: '2012', unitsSold:300, salesman : 'Bob' },\n  { year: '2013', unitsSold:400, salesman : 'Bob' },\n  { year: '2014', unitsSold:500, salesman : 'Bob' },\n  { year: '2010', unitsSold:100, salesman : 'Gina' },\n  { year: '2011', unitsSold:100, salesman : 'Gina' },\n  { year: '2012', unitsSold:-100, salesman : 'Gina' },\n  { year: '2013', unitsSold:500, salesman : 'Gina' },\n  { year: '2014', unitsSold:600, salesman : 'Gina' },\n  { year: '2010', unitsSold:400, salesman : 'Average' },\n  { year: '2011', unitsSold:0, salesman : 'Average' },\n  { year: '2012', unitsSold:400, salesman : 'Average' },\n  { year: '2013', unitsSold:400, salesman : 'Average' },\n  { year: '2014', unitsSold:400, salesman : 'Average' }\n];\nvar parsedData = d4.parsers.nestedGroup()\n  .x(function(){\n    return 'year';\n  })\n  .nestKey(function(){\n    return 'salesman';\n  })\n  .y(function(){\n    return 'unitsSold';\n  })\n  .value(function(){\n    return 'unitsSold';\n  })(data);\n\nvar chart = d4.charts.line()\n.width($('#example').width())\n.x.$key('year')\n.y.$key('unitsSold');\n\nd3.select('#example')\n.datum(parsedData.data)\n.call(chart);\n</code></pre>"
-            },
-            "ignore": false,
-            "code": "d4.chart('line', function lineChart() {\n    var chart = d4.baseChart();\n    [{\n      'lineSeries': d4.features.lineSeries\n    },{\n      'lineSeriesLabels': d4.features.lineSeriesLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/line.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d3: false<br />global d4: false</p>",
-                "summary": "<p>global d3: false<br />global d4: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "code": "'use strict';",
-            "fileName": "../src/charts/row.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br />   has four default features:</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>rowLabels</strong> - data labels to the right of the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n      { y: '2010', x:-10 },\n      { y: '2011', x:20 },\n      { y: '2012', x:30 },\n      { y: '2013', x:40 },\n      { y: '2014', x:50 },\n    ];\n  var chart = d4.charts.row();\n  d3.select('#example')\n  .datum(data)\n  .call(chart);\n</code></pre>",
-                "summary": "<p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br />   has four default features:</p>",
-                "body": "<p><strong>bars</strong> - series bars<br /><strong>rowLabels</strong> - data labels to the right of the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n      { y: '2010', x:-10 },\n      { y: '2011', x:20 },\n      { y: '2012', x:30 },\n      { y: '2013', x:40 },\n      { y: '2014', x:50 },\n    ];\n  var chart = d4.charts.row();\n  d3.select('#example')\n  .datum(data)\n  .call(chart);\n</code></pre>"
-            },
-            "ignore": false,
-            "code": "d4.chart('row', function rowChart() {\n    var chart = d4.baseChart({\n      config: {\n        margin: {\n          top: 20,\n          right: 40,\n          bottom: 20,\n          left: 40\n        },\n        axes: {\n          x: {\n            scale: 'linear'\n          },\n          y: {\n            scale: 'ordinal'\n          }\n        }\n      }\n    });\n    [{\n      'bars': d4.features.rowSeries\n    }, {\n      'rowLabels': d4.features.rowLabels\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/row.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d3: false<br />global d4: false</p>",
-                "summary": "<p>global d3: false<br />global d4: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "code": "'use strict';\n\n  var scatterPlotBuilder = function() {\n    var configureScales = function(chart, data) {\n      d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');\n      d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');\n      d4.builders[chart.z.$scale + 'ScaleForNestedData'](chart, data, 'z');\n      var min = 5;\n      var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom) / 10);\n      chart.z.range([min, max]);\n    };\n\n    var builder = {\n      link: function(chart, data) {\n        configureScales.bind(this)(chart, data);\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('scatterPlot', function() {\n    var chart = d4.baseChart({\n      builder: scatterPlotBuilder,\n      config: {\n        axes: {\n          x: {\n            scale: 'linear'\n          },\n          z: {\n            scale: 'linear'\n          }\n        }\n      }\n    });\n    [{\n      'circles': d4.features.dotSeries\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/scatter.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d3: false<br />global d4: false</p>",
-                "summary": "<p>global d3: false<br />global d4: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "code": "'use strict';\n\n  d4.chart('stackedColumn', function stackedColumnChart() {\n    var chart = d4.baseChart();\n    [{\n      'bars': d4.features.stackedColumnSeries\n    }, {\n      'barLabels': d4.features.stackedColumnLabels\n    }, {\n      'connectors': d4.features.stackedColumnConnectors\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/stacked-column.js"
-        },
-        {
-            "tags": [],
-            "description": {
-                "full": "<p>global d3: false<br />global d4: false</p>",
-                "summary": "<p>global d3: false<br />global d4: false</p>",
-                "body": ""
-            },
-            "ignore": true,
-            "code": "'use strict';\n\n  // FIXME: It would be nice not to continually have to check the orientation.\n  var columnSeriesOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.y.$scale === 'linear') {\n            var yVal = (d.y0 + d.y) - Math.min(0, d.y);\n            return this.y(yVal);\n          } else {\n            return this.y(d[this.y.$key]);\n          }\n        },\n\n        x: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x(d[this.x.$key]);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.x(xVal);\n          }\n        },\n\n        width: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x.rangeBand();\n          } else {\n            return Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n          }\n        },\n\n        height: function(d) {\n          if (this.y.$scale === 'linear') {\n            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n          } else {\n            return this.y.rangeBand();\n          }\n        },\n\n        classes: function(d, i, n) {\n          var klass = (d.y > 0) ? 'positive' : 'negative';\n          if (n > 0 && d.y0 === 0) {\n            klass = 'subtotal';\n          }\n          return 'bar fill item' + i + ' ' + klass + ' ' + d[this.y.$key];\n        }\n      }\n    };\n  };\n\n  var columnLabelOverrides = function() {\n    return {\n      accessors: {\n        y: function(d) {\n          if (this.y.$scale === 'linear') {\n            var height = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));\n            var yVal = (d.y0 + d.y) - Math.max(0, d.y);\n            return this.y(yVal) - 10 - height;\n          } else {\n            return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2);\n          }\n        },\n\n        x: function(d) {\n          if (this.x.$scale === 'ordinal') {\n            return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);\n          } else {\n            var xVal = (d.y0 + d.y) - Math.max(0, d.y);\n            var width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));\n            return this.x(xVal) + 10 + width;\n          }\n        },\n\n        text: function(d) {\n          return d3.format('').call(this, d[this.valueKey]);\n        }\n      }\n    };\n  };\n\n  var waterfallChartBuilder = function() {\n    var rangeBoundsFor = function(chart, dimension) {\n      var rangeBounds;\n      if (dimension === 'x') {\n        return [0, chart.width - chart.margin.left - chart.margin.right];\n      } else {\n        rangeBounds = [0, chart.height - chart.margin.top - chart.margin.bottom];\n        return (chart.x.$scale === 'ordinal') ? rangeBounds.reverse() : rangeBounds;\n      }\n    };\n\n    var setOrdinal = function(chart, dimension, data) {\n      var keys = data.map(function(d) {\n        return d.key;\n      }.bind(this));\n\n      chart[dimension]\n      .domain(keys)\n      .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);\n    };\n\n    var setLinear = function(chart, dimension, data) {\n        var ext = d3.extent(d3.merge(data.map(function(datum) {\n          return d3.extent(datum.values, function(d) {\n\n            // This is anti-intuative but the stack only returns y and y0 even\n            // when it applies to the x dimension;\n            return d.y + d.y0;\n          });\n        })));\n        ext[0] = Math.min(0, ext[0]);\n        chart[dimension].domain(ext);\n        chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))\n        .clamp(true)\n        .nice();\n      };\n\n    var configureScales = function(chart, data) {\n      if (chart.x.$scale === 'ordinal') {\n        setOrdinal.bind(this)(chart, 'x', data);\n        setLinear.bind(this)(chart, 'y', data);\n      } else {\n        setOrdinal.bind(this)(chart, 'y', data);\n        setLinear.bind(this)(chart, 'x', data);\n      }\n    };\n\n    var builder = {\n      link: function(chart, data) {\n        configureScales.bind(this)(chart, data);\n      }\n    };\n    return builder;\n  };\n\n  d4.chart('waterfall', function waterfallChart() {\n    var chart = d4.baseChart({ builder: waterfallChartBuilder });\n    [{\n      'bars': d4.features.stackedColumnSeries,\n      'overrides': columnSeriesOverrides\n    }, {\n      'connectors': d4.features.waterfallConnectors\n    }, {\n      'columnLabels': d4.features.stackedColumnLabels,\n      'overrides': columnLabelOverrides\n    }, {\n      'xAxis': d4.features.xAxis\n    }, {\n      'yAxis': d4.features.yAxis\n    }].forEach(function(feature) {\n      chart.mixin(feature);\n    });\n\n    return chart;\n  });\n}).call(this);",
-            "fileName": "../src/charts/waterfall.js"
         },
         {
             "tags": [],
@@ -1369,35 +1369,6 @@
             "returns": "{Object} Chart scale object"
         },
         {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {
-            "params": [],
-            "name": "",
-            "type": "",
-            "fileName": "../src/features/waterfall-connectors.js",
-            "description": {
-                "full": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>\n\n<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>",
-                "summary": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>",
-                "body": "<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>"
-            }
-        },
-        {},
-        {},
-        {},
         {
             "params": [],
             "name": "",
@@ -1446,6 +1417,35 @@
             }
         },
         {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {
+            "params": [],
+            "name": "",
+            "type": "",
+            "fileName": "../src/features/waterfall-connectors.js",
+            "description": {
+                "full": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>\n\n<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>",
+                "summary": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>",
+                "body": "<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>"
+            }
+        },
         {},
         {},
         {},
@@ -1837,22 +1837,6 @@
             ]
         },
         {
-            "tag": "../src/features/waterfall-connectors.js",
-            "moxComments": [
-                {
-                    "params": [],
-                    "name": "",
-                    "type": "",
-                    "fileName": "../src/features/waterfall-connectors.js",
-                    "description": {
-                        "full": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>\n\n<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>",
-                        "summary": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>",
-                        "body": "<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>"
-                    }
-                }
-            ]
-        },
-        {
             "tag": "../src/charts/column.js",
             "moxComments": [
                 {
@@ -1912,6 +1896,22 @@
                         "full": "<p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br />   has four default features:</p>\n\n<p><strong>bars</strong> - series bars<br /><strong>rowLabels</strong> - data labels to the right of the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n      { y: '2010', x:-10 },\n      { y: '2011', x:20 },\n      { y: '2012', x:30 },\n      { y: '2013', x:40 },\n      { y: '2014', x:50 },\n    ];\n  var chart = d4.charts.row();\n  d3.select('#example')\n  .datum(data)\n  .call(chart);\n</code></pre>",
                         "summary": "<p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br />   linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br />   has four default features:</p>",
                         "body": "<p><strong>bars</strong> - series bars<br /><strong>rowLabels</strong> - data labels to the right of the bars<br /><strong>xAxis</strong> - the axis for the x dimension<br /><strong>yAxis</strong> - the axis for the y dimension</p>\n\n<h5>Example Usage</h5>\n\n<pre><code>var data = [\n      { y: '2010', x:-10 },\n      { y: '2011', x:20 },\n      { y: '2012', x:30 },\n      { y: '2013', x:40 },\n      { y: '2014', x:50 },\n    ];\n  var chart = d4.charts.row();\n  d3.select('#example')\n  .datum(data)\n  .call(chart);\n</code></pre>"
+                    }
+                }
+            ]
+        },
+        {
+            "tag": "../src/features/waterfall-connectors.js",
+            "moxComments": [
+                {
+                    "params": [],
+                    "name": "",
+                    "type": "",
+                    "fileName": "../src/features/waterfall-connectors.js",
+                    "description": {
+                        "full": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>\n\n<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>",
+                        "summary": "<p>Waterfall connectors are orthogonal series connectors which visually join<br />column series together by spanning the top or bottom of adjacent columns.</p>",
+                        "body": "<p>When using this feature in charts other than waterfall, be aware that the<br />mixin expects an accessor property for <code>orientation</code>, which it uses to render<br />the direction of the lines.</p>\n\n<h5>Accessors</h5>\n\n<p><code>x</code> - Used in placement of the connector lines.<br /><code>y</code> - Used in placement of the connector lines.<br /><code>span</code> - calculates the length of the connector line<br /><code>classes</code> - applies the class to the connector lines.</p>"
                     }
                 }
             ]

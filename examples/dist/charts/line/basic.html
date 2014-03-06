@@ -90,8 +90,12 @@ $(document).ready(function(){
 
   var chart = d4.charts.line()
   .width($('#example').width())
-  .xKey('year')
-  .yKey('unitsSold');
+  .x(function(x){
+    x.key('year');
+  })
+  .y(function(y){
+    y.key('unitsSold');
+  });
 
   d3.select('#example')
   .datum(parsedData.data)
@@ -124,7 +128,7 @@ $(document).ready(function(){
       return 'year';
     })
     .nestKey(function(){
-      return 'salesman'
+      return 'salesman';
     })
     .y(function(){
       return 'unitsSold';
@@ -135,8 +139,12 @@ $(document).ready(function(){
 
   var chart = d4.charts.line()
   .width($('#example').width())
-  .xKey('year')
-  .yKey('unitsSold');
+  .x(function(x){
+    x.key('year');
+  })
+  .y(function(y){
+    y.key('unitsSold');
+  });
 
   d3.select('#example')
   .datum(parsedData.data)
