@@ -449,16 +449,38 @@ describe('d4.base', function() {
       }).to.throw(Error, '[d4] The supplied builder does not have a link function');
     });
 
+    it('should be able to determine if a d3 scale property has been overridden by the user', function(){
+      var chart = d4.charts.column();
+      chart.x(function(x){
+        expect(x.range.$dirty).to.equal(false);
+        x.range([1,10]);
+        expect(x.range.$dirty).to.equal(true);
+      });
+      var chartData = [{ x: 1, y: 2 }];
+      chart.builder(function() {
+        return {
+          link: function(chart, data) {
+            expect(chart.x.domain.$dirty).to.equal(false);
+            expect(chart.x.range.$dirty).to.equal(true);
+            d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
+            d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
+          }
+        };
+      });
+
+      d3.select('#chart')
+        .datum(chartData)
+        .call(chart);
+    });
+
     it('should allow you to replace the default builder with your custom one', function() {
       var chart = d4.charts.column();
       var chartData = [1, 2, 3];
       chart.builder(function() {
         return {
-          link: function(data) {
-            expect(data).to.equal(chartData);
-          },
-          render: function(data) {
-            expect(data).to.equal(chartData);
+          link: function(chart, data) {
+            expect(chart).to.not.be.an('undefined');
+            expect(data).to.not.be.an('undefined');
           }
         };
       });

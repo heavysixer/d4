@@ -20,12 +20,12 @@ categories:
 $(document).ready(function() {
   var element = $('#example');
   var data = [
-    { x: 200, y: 1 },
-    { x: 100, y: 10 },
-    { x: 400, y: 20 },
+    { x: 200, y: 1   },
+    { x: 100, y: 10  },
+    { x: 400, y: 20  },
     { x: 300, y: -30 },
-    { x: 400, y: 40 },
-    { x: 500, y: 50}
+    { x: 400, y: 40  },
+    { x: 500, y: 50  }
   ];
 
   var cumulativeLabelX = 0;
@@ -36,12 +36,6 @@ $(document).ready(function() {
     bottom: 40,
     left: 30
   };
-  // var xScale = function(){
-  //   var sum = d3.sum(data, function (d) {
-  //     return d.x;
-  //   });
-  //   return d3.scale.linear().domain([0, sum]).range([0, element.width() - margin.left - margin.right]).clamp(true);
-  // };
   var sum = d3.sum(data, function(d) {
     return d.x;
   });
@@ -53,28 +47,24 @@ $(document).ready(function() {
       axis.scale('linear')
       .domain([0, sum])
       .range([0, element.width() - margin.left - margin.right])
-      .clamp(true)
-      //axis.scale(d3.scale.linear()
-      //  .domain([0, sum])
-      //  .range([0, element.width() - margin.left - margin.right])
-      //  .clamp(true));
+      .clamp(true);
     })
     .using('bars', function(bars) {
       bars
         .x(function(d) {
-          cumulativeX += d[this.xKey];
-          return this.x(cumulativeX - d[this.xKey]);
+          cumulativeX += d[this.x.$key];
+          return this.x(cumulativeX - d[this.x.$key]);
         })
         .width(function(d) {
-          return this.x(d[this.xKey]);
+          return this.x(d[this.x.$key]);
         });
     })
 
   .using('barLabels', function(label) {
     label
       .x(function(d) {
-        cumulativeLabelX += d[this.xKey];
-        return this.x(cumulativeLabelX - d[this.xKey] / 2);
+        cumulativeLabelX += d[this.x.$key];
+        return this.x(cumulativeLabelX - d[this.x.$key] / 2);
       });
   });
 

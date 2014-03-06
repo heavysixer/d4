@@ -41,7 +41,7 @@
         return d[key] + (d.y0 || 0);
       });
     })));
-    //chart[dimension] = d3.scale.linear();
+
     return chart[dimension].domain([Math.min(0, ext[0]), ext[1]])
     .range(rangeFor(chart, dimension))
     .clamp(true)
@@ -58,8 +58,6 @@
   d4.builder('ordinalScaleForNestedData', function(chart, data, dimension) {
     var parsedData = extractValues(data, chart[dimension].$key);
     var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;
-    //chart[dimension] = d3.scale.ordinal();
-    window.FOO = chart[dimension]
     return chart[dimension]
       .domain(parsedData)
       .rangeRoundBands(rangeFor(chart, dimension), bands);

@@ -185,14 +185,41 @@
    * we need to actually tell d4 to recreate the scale again otherwise the user
    * may try to use scale specific methods that no longer apply, and will create
    * an error down the road.
+   *
+   * Special Note: Because builders during the link function may define defaults
+   * for a given axis, it will also need to know if the property in question was
+   * set by the developer through the API. It is not enough to just check if the
+   * property has a value because some d3 properties will have default values.
+   * Therefore d4 applies a special $dirty flag to the function itself if the
+   * developer has changed its values.
+   *
+   *#### Example:
+   *
+   *       var chart = d4.charts.column();
+   *       var chartData = [{x:1,y:2}];
+   *       chart.builder(function() {
+   *           return {
+   *               link: function(chart, data) {
+   *                   console.log(chart.x.domain.$dirty) // false;
+   *               }
+   *           }
+   *       });
    */
   var createAxisScaleAccessor = function(scale, dimension, resetFunct) {
 
     // Create a transparent proxy for functions needed by the d3 scale.
     each(d3.keys(scale), function(funct){
-      dimension[funct] = scale[funct];
+      dimension[funct] = function(){
+        if (!arguments.length) {
+          return scale[funct]();
+        }
+        scale[funct].$dirty = true;
+        dimension[funct].$dirty = true;
+        return scale[funct](arguments);
+      };
+      scale[funct].$dirty = false;
+      dimension[funct].$dirty = false;
     });
-    //createAccessorsFromArray(dimension, scale, d3.keys(scale));
 
     dimension.scale = function(val){
       if (!arguments.length) {
@@ -532,7 +559,7 @@
      * @param {Function} funct - function which returns a builder object.
      */
     chart.builder = function(funct) {
-      validateBuilder(funct.bind(chart)(opts));
+      opts.builder = validateBuilder(funct.bind(opts)());
       return chart;
     };
 
