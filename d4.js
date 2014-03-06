@@ -2880,7 +2880,7 @@ The `parser` variable will now be an object containing the following structure:
     })));
     var axis = chart[dimension];
     if(!axis.domain.$dirty) {
-      axis.domain([Math.min(0, ext[0]), ext[1]]);
+      axis.domain([Math.min(axis.$min || 0, ext[0]), axis.$max || ext[1]]);
     }
     if(!axis.range.$dirty) {
       axis.range(rangeFor(chart, dimension));
