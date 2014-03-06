@@ -68,7 +68,7 @@ $(document).ready(function(){
   var chart = d4.charts.scatterPlot()
   .width($('#example').width())
   .x(function(x){
-    console.log(x);
+    x.min(-10)
     x.key('age');
   })
   .y(function(y){
@@ -109,7 +109,7 @@ $(document).ready(function(){
   var chart = d4.charts.scatterPlot()
   .width($('#example').width())
   .x(function(x){
-    console.log(x);
+    x.min(-10)
     x.key('age');
   })
   .y(function(y){

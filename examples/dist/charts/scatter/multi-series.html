@@ -74,10 +74,14 @@ $(document).ready(function(){
   .width($('#example').width())
   .mixin({'grid' : d4.features.grid},0)
   .x(function(x){
-    x.key('unitsSold');
+    x.min(-250)
+    .max(610)
+    .key('unitsSold');
   })
   .y(function(y){
-    y.key('month');
+    y.max(14)
+    .min(-2)
+    .key('month');
   })
   .z(function(z){
     z.key('age');
@@ -151,10 +155,14 @@ $(document).ready(function(){
   .width($('#example').width())
   .mixin({'grid' : d4.features.grid},0)
   .x(function(x){
-    x.key('unitsSold');
+    x.min(-250)
+    .max(610)
+    .key('unitsSold');
   })
   .y(function(y){
-    y.key('month');
+    y.max(14)
+    .min(-2)
+    .key('month');
   })
   .z(function(z){
     z.key('age');
