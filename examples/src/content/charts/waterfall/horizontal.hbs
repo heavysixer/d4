@@ -44,6 +44,12 @@ $(document).ready(function(){
     })(data);
 
   var chart = d4.charts.waterfall()
+    .margin({
+      top: 20,
+      right: 20,
+      bottom: 20,
+      left: 80
+    })
     .width($('#example').width())
     .x(function(x){
       x
@@ -81,70 +87,43 @@ $(document).ready(function(){
 </code></pre>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript">
-  var data = [{
-    'category': 'Job',
-    'value': 27
-  }, {
-    'category': 'Groceries',
-    'value': -3
-  }, {
-    'category': 'Allowance',
-    'value': 22
-  }, {
-    'category': 'Subtotal',
-    'value': 'e'
-  }, {
-    'category': 'Videos',
-    'value': -22
-  }, {
-    'category': 'Coffee',
-    'value': -40
-  }, {
-    'category': 'Total',
-    'value': 'e'
-  }];
+  var data = [
+    { 'category': 'Job',       'value': 27  },
+    { 'category': 'Groceries', 'value': -3  },
+    { 'category': 'Allowance', 'value': 22  },
+    { 'category': 'Subtotal',  'value': 'e' },
+    { 'category': 'Videos',    'value': -22 },
+    { 'category': 'Coffee',    'value': -4  },
+    { 'category': 'Total',     'value': 'e' }
+  ];
   var parsedData = d4.parsers.waterfall()
     .x(function() {
-      return 'value';
+      return 'category';
     })
     .y(function() {
-      return 'category';
+      return 'value';
     })
     .nestKey(function() {
       return 'category';
     })(data);
 
   var chart = d4.charts.waterfall()
-    .width($('#example').width())
     .margin({
       top: 20,
       right: 20,
       bottom: 20,
-      left: 100
+      left: 80
     })
-    .orientation(function() {
-      return 'horizontal';
+    .width($('#example').width())
+    .x(function(x){
+      x
+      .scale('linear')
+      .key('category');
     })
-    .x.key('value')
-    .y.key('category')
-    .valueKey('value')
-    .mixin({
-      'zeroLine': d4.features.referenceLine
-    }, 0)
-    .using('zeroLine', function(zero) {
-      zero
-        .x1(function() {
-          return this.x(0);
-        })
-        .x2(function() {
-          return this.x(0);
-        })
-        .y1(function() {
-          return this.y(0);
-        })
-        .y2(function() {
-          return this.height - this.margin.top - this.margin.bottom;
-        });
+    .y(function(y){
+      y
+      .scale('ordinal')
+      .key('category');
     });
 
   d3.select('#example')
