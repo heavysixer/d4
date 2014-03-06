@@ -193,7 +193,10 @@
   var createAxisScaleAccessor = function(scale, dimension, resetFunct) {
 
     // Create a transparent proxy for functions needed by the d3 scale.
-    createAccessorsFromArray(dimension, scale, d3.keys(scale));
+    each(d3.keys(scale), function(funct){
+      dimension[funct] = scale[funct];
+    });
+    //createAccessorsFromArray(dimension, scale, d3.keys(scale));
 
     dimension.scale = function(val){
       if (!arguments.length) {
@@ -216,9 +219,9 @@
     });
 
     // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.
-    // each(d3.keys(opts.axes[dimension].accessors), function(key){
-    //   readOnlyProp(opts[dimension], '$' + key, opts.axes[dimension][key], opts.axes[dimension][key]);
-    // });
+    each(d3.keys(opts.axes[dimension].accessors), function(key){
+      readOnlyProp(opts[dimension], '$' + key, opts.axes[dimension][key], opts.axes[dimension][key]);
+    });
   };
 
   var addAxis = function(dimension, opts, axis){
@@ -697,8 +700,8 @@
   var columnChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        d4.builders.linearScaleForNestedData(chart, data, 'y');
+        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
+        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
       }
     };
     return builder;
@@ -860,8 +863,8 @@ relative distribution.
   var lineChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        d4.builders.linearScaleForNestedData(chart, data, 'y');
+        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
+        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
       }
     };
     return builder;
@@ -945,8 +948,8 @@ relative distribution.
   var rowChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        d4.builders.linearScaleForNestedData(chart, data, 'x');
-        d4.builders.ordinalScaleForNestedData(chart, data, 'y');
+        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
+        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
       }
     };
     return builder;
@@ -1018,9 +1021,9 @@ relative distribution.
 
   var scatterPlotBuilder = function() {
     var configureScales = function(chart, data) {
-      d4.builders.linearScaleForNestedData(chart, data, 'x');
-      d4.builders.linearScaleForNestedData(chart, data, 'y');
-      d4.builders.linearScaleForNestedData(chart, data, 'z');
+      d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
+      d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
+      d4.builders[chart.z.$scale + 'ScaleForNestedData'](chart, data, 'z');
       var min = 5;
       var max = Math.max(min + 1, (chart.height - chart.margin.top - chart.margin.bottom)/10);
       chart.z.range([min, max]);
@@ -1068,8 +1071,8 @@ relative distribution.
   var stackedColumnChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        d4.builders.linearScaleForNestedData(chart, data, 'y');
+        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
+        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
       }
     };
     return builder;
@@ -2874,6 +2877,7 @@ The `parser` variable will now be an object containing the following structure:
     var parsedData = extractValues(data, chart[dimension].$key);
     var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;
     //chart[dimension] = d3.scale.ordinal();
+    window.FOO = chart[dimension]
     return chart[dimension]
       .domain(parsedData)
       .rangeRoundBands(rangeFor(chart, dimension), bands);

@@ -50,7 +50,10 @@ $(document).ready(function() {
     .width(element.width())
     .margin(margin)
     .x(function(axis) {
-      console.log(axis.scale('linear'))
+      axis.scale('linear')
+      .domain([0, sum])
+      .range([0, element.width() - margin.left - margin.right])
+      .clamp(true)
       //axis.scale(d3.scale.linear()
       //  .domain([0, sum])
       //  .range([0, element.width() - margin.left - margin.right])

@@ -8,8 +8,8 @@
   var lineChartBuilder = function() {
     var builder = {
       link: function(chart, data) {
-        d4.builders.ordinalScaleForNestedData(chart, data, 'x');
-        d4.builders.linearScaleForNestedData(chart, data, 'y');
+        d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
+        d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
       }
     };
     return builder;

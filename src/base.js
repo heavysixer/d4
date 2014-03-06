@@ -189,7 +189,10 @@
   var createAxisScaleAccessor = function(scale, dimension, resetFunct) {
 
     // Create a transparent proxy for functions needed by the d3 scale.
-    createAccessorsFromArray(dimension, scale, d3.keys(scale));
+    each(d3.keys(scale), function(funct){
+      dimension[funct] = scale[funct];
+    });
+    //createAccessorsFromArray(dimension, scale, d3.keys(scale));
 
     dimension.scale = function(val){
       if (!arguments.length) {
@@ -212,9 +215,9 @@
     });
 
     // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.
-    // each(d3.keys(opts.axes[dimension].accessors), function(key){
-    //   readOnlyProp(opts[dimension], '$' + key, opts.axes[dimension][key], opts.axes[dimension][key]);
-    // });
+    each(d3.keys(opts.axes[dimension].accessors), function(key){
+      readOnlyProp(opts[dimension], '$' + key, opts.axes[dimension][key], opts.axes[dimension][key]);
+    });
   };
 
   var addAxis = function(dimension, opts, axis){
