@@ -25,7 +25,7 @@ the direction of the lines.
     return {
       accessors: {
         x: function(d) {
-          if(this.orientation() === 'horizontal'){
+          if(this.x.$scale === 'linear'){
             var width = 0;
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
             if(d.y > 0){
@@ -38,7 +38,7 @@ the direction of the lines.
         },
 
         y: function(d) {
-          if(this.orientation() === 'horizontal'){
+          if(this.x.$scale === 'linear'){
             return this.y(d[this.y.$key]);
           } else {
             return this.y(d.y0 + d.y);
@@ -46,7 +46,7 @@ the direction of the lines.
         },
 
         span: function(){
-          if(this.orientation() === 'horizontal'){
+          if(this.x.$scale === 'linear'){
             return this.y.rangeBand();
           } else {
             return this.x.rangeBand();
@@ -87,7 +87,7 @@ the direction of the lines.
           if(i === 0){
             return 0;
           }
-          if(this.orientation() === 'vertical') {
+          if(this.x.$scale === 'ordinal') {
             return scope.accessors.x.bind(this)(d) + scope.accessors.span.bind(this)();
           } else {
             return scope.accessors.x.bind(this)(data[i - 1].values[0]);
@@ -98,7 +98,7 @@ the direction of the lines.
           if(i === 0){
             return 0;
           }
-          if(this.orientation() === 'vertical') {
+          if(this.x.$scale === 'ordinal') {
             return scope.accessors.y.bind(this)(data[i - 1].values[0]);
           }else {
             return scope.accessors.y.bind(this)(d) + scope.accessors.span.bind(this)(d);

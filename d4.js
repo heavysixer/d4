@@ -1131,17 +1131,12 @@ relative distribution.
    */
   'use strict';
 
-  // This accessor can be overridden
-  var orientation = function() {
-    return 'vertical';
-  };
-
   // FIXME: It would be nice not to continually have to check the orientation.
   var columnSeriesOverrides = function() {
     return {
       accessors: {
         y: function(d) {
-          if (this.orientation() === 'vertical') {
+          if (this.y.$scale === 'linear') {
             var yVal = (d.y0 + d.y) - Math.min(0, d.y);
             return this.y(yVal);
           } else {
@@ -1150,7 +1145,7 @@ relative distribution.
         },
 
         x: function(d) {
-          if (this.orientation() === 'vertical') {
+          if (this.x.$scale === 'ordinal') {
             return this.x(d[this.x.$key]);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
@@ -1159,7 +1154,7 @@ relative distribution.
         },
 
         width: function(d) {
-          if (this.orientation() === 'vertical') {
+          if (this.x.$scale === 'ordinal') {
             return this.x.rangeBand();
           } else {
             return Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
@@ -1167,7 +1162,7 @@ relative distribution.
         },
 
         height: function(d) {
-          if (this.orientation() === 'vertical') {
+          if (this.y.$scale === 'linear') {
             return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
           } else {
             return this.y.rangeBand();
@@ -1189,7 +1184,7 @@ relative distribution.
     return {
       accessors: {
         y: function(d) {
-          if (this.orientation() === 'vertical') {
+          if (this.y.$scale === 'linear') {
             var height = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
             var yVal = (d.y0 + d.y) - Math.max(0, d.y);
             return this.y(yVal) - 10 - height;
@@ -1199,7 +1194,7 @@ relative distribution.
         },
 
         x: function(d) {
-          if (this.orientation() === 'vertical') {
+          if (this.x.$scale === 'ordinal') {
             return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
@@ -1222,7 +1217,7 @@ relative distribution.
         return [0, chart.width - chart.margin.left - chart.margin.right];
       } else {
         rangeBounds = [0, chart.height - chart.margin.top - chart.margin.bottom];
-        return (chart.orientation().toLowerCase() === 'vertical') ? rangeBounds.reverse() : rangeBounds;
+        return (chart.x.$scale === 'ordinal') ? rangeBounds.reverse() : rangeBounds;
       }
     };
 
@@ -1253,7 +1248,7 @@ relative distribution.
       };
 
     var configureScales = function(chart, data) {
-      if (chart.orientation().toLowerCase() === 'vertical') {
+      if (chart.x.$scale === 'ordinal') {
         setOrdinal.bind(this)(chart, 'x', data);
         setLinear.bind(this)(chart, 'y', data);
       } else {
@@ -1271,10 +1266,7 @@ relative distribution.
   };
 
   d4.chart('waterfall', function waterfallChart() {
-    var chart = d4.baseChart(waterfallChartBuilder, {
-      accessors: ['orientation'],
-      orientation: orientation
-    });
+    var chart = d4.baseChart(waterfallChartBuilder);
     [{
       'bars': d4.features.stackedColumnSeries,
       'overrides': columnSeriesOverrides
@@ -2138,7 +2130,7 @@ the direction of the lines.
     return {
       accessors: {
         x: function(d) {
-          if(this.orientation() === 'horizontal'){
+          if(this.x.$scale === 'linear'){
             var width = 0;
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
             if(d.y > 0){
@@ -2151,7 +2143,7 @@ the direction of the lines.
         },
 
         y: function(d) {
-          if(this.orientation() === 'horizontal'){
+          if(this.x.$scale === 'linear'){
             return this.y(d[this.y.$key]);
           } else {
             return this.y(d.y0 + d.y);
@@ -2159,7 +2151,7 @@ the direction of the lines.
         },
 
         span: function(){
-          if(this.orientation() === 'horizontal'){
+          if(this.x.$scale === 'linear'){
             return this.y.rangeBand();
           } else {
             return this.x.rangeBand();
@@ -2200,7 +2192,7 @@ the direction of the lines.
           if(i === 0){
             return 0;
           }
-          if(this.orientation() === 'vertical') {
+          if(this.x.$scale === 'ordinal') {
             return scope.accessors.x.bind(this)(d) + scope.accessors.span.bind(this)();
           } else {
             return scope.accessors.x.bind(this)(data[i - 1].values[0]);
@@ -2211,7 +2203,7 @@ the direction of the lines.
           if(i === 0){
             return 0;
           }
-          if(this.orientation() === 'vertical') {
+          if(this.x.$scale === 'ordinal') {
             return scope.accessors.y.bind(this)(data[i - 1].values[0]);
           }else {
             return scope.accessors.y.bind(this)(d) + scope.accessors.span.bind(this)(d);
