@@ -1321,6 +1321,9 @@ relative distribution.
 
         y2: function() {
           return  this.y(this.height - this.margin.top - this.margin.bottom);
+        },
+        classes: function(){
+          return 'line';
         }
       },
       render: function(scope) {
@@ -1351,7 +1354,7 @@ relative distribution.
         this.featuresGroup.append('g').attr('class', name);
         var arrow = this.svg.select('.' + name)
           .append('line')
-          .attr('class', 'line')
+          .attr('class', scope.accessors.classes.bind(this))
           .attr('x1', scope.accessors.x1.bind(this))
           .attr('x2', scope.accessors.x2.bind(this))
           .attr('y1', scope.accessors.y1.bind(this))
@@ -1449,13 +1452,15 @@ relative distribution.
           .attr('width', this.width - this.margin.left - this.margin.right)
           .attr('height', this.height - this.margin.top - this.margin.bottom);
 
-        this.featuresGroup.append('g').attr('class', 'x grid '+ name)
+        this.featuresGroup.append('g')
+          .attr('class', 'x grid '+ name)
           .attr('transform', 'translate(0,' + (this.height - this.margin.top - this.margin.bottom) + ')')
           .call(formattedXAxis
           .tickSize(-(this.height - this.margin.top - this.margin.bottom), 0, 0)
           .tickFormat(''));
 
-        this.featuresGroup.append('g').attr('class', 'y grid '+ name)
+        this.featuresGroup.append('g')
+          .attr('class', 'y grid '+ name)
           .attr('transform', 'translate(0,0)')
           .call(formattedYAxis
           .tickSize(-(this.width - this.margin.left - this.margin.right), 0, 0)
@@ -1486,6 +1491,10 @@ relative distribution.
 
         text: function(d) {
           return d3.format('').call(this, d[this.y.$key]);
+        },
+
+        classes: function() {
+          return 'column-label';
         }
       },
       render: function(scope, data) {
@@ -1503,7 +1512,7 @@ relative distribution.
           }.bind(this));
         text.exit().remove();
         text.enter().append('text')
-          .attr('class', 'column-label')
+          .attr('class', scope.accessors.classes.bind(this))
           .text(scope.accessors.text.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));
@@ -1633,12 +1642,15 @@ relative distribution.
         x: function(d) {
           return this.x(d[this.x.$key]);
         },
+
         y: function(d) {
           return this.y(d[this.y.$key]);
         },
+
         interpolate: function() {
           return 'basis';
         },
+
         classes: function(d, n) {
           return 'line stroke series' + n;
         }
@@ -1657,9 +1669,7 @@ relative distribution.
           .attr('data-key', function(d) {
             return d.key;
           })
-          .attr('class', function(d, i) {
-            return 'series' + i;
-          }.bind(this))
+          .attr('class', scope.accessors.classes.bind(this))
           .append('path')
           .attr('d', function(d) {
             return line(d.values);
@@ -1693,13 +1703,16 @@ relative distribution.
 
         y2: function() {
           return this.y(this.height);
+        },
+        classes: function() {
+          return 'line';
         }
       },
       render: function(scope) {
         this.featuresGroup.append('g').attr('class', name);
         var referenceLine = this.svg.select('.' + name)
           .append('line')
-          .attr('class', 'line')
+          .attr('class', scope.accessors.classes.bind(this))
           .attr('x1', scope.accessors.x1.bind(this))
           .attr('x2', scope.accessors.x2.bind(this))
           .attr('y1', scope.accessors.y1.bind(this))
@@ -1862,6 +1875,10 @@ relative distribution.
           } else {
             return d3.format('').call(this, d[this.valueKey]);
           }
+        },
+
+        classes : function() {
+          return 'column-label';
         }
       },
 
@@ -1881,7 +1898,7 @@ relative distribution.
         text.exit().remove();
         text.enter().append('text')
           .text(scope.accessors.text.bind(this))
-          .attr('class', 'column-label')
+          .attr('class', scope.accessors.classes.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));
         return text;

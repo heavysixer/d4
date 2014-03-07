@@ -15,25 +15,25 @@
 * [`using`][10]
 * [`functor`][11]
 
-###### [scales.js][12]
-
-* [``][13]
-* [``][13]
-
-###### [column.js][14]
+###### [column.js][12]
 
 * [``][13]
 
-###### [grouped-column.js][15]
+###### [grouped-column.js][14]
 
 * [``][13]
 
-###### [line.js][16]
+###### [line.js][15]
 
 * [``][13]
 
-###### [row.js][17]
+###### [row.js][16]
 
+* [``][13]
+
+###### [scales.js][17]
+
+* [``][13]
 * [``][13]
 
 ###### [waterfall-connectors.js][18]
@@ -300,44 +300,12 @@ Based on D3's own functor function.
 
 ---
 
-## scales.js
-
-### 
-
-[\#][13]
-[Ⓣ][12]
-
-Creates a linear scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
----
-
-### 
-
-[\#][13]
-[Ⓣ][12]
-
-Creates an ordinal scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
----
-
 ## column.js
 
 ### 
 
 [\#][13]
-[Ⓣ][14]
+[Ⓣ][12]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -374,8 +342,12 @@ The default format may not be desired and so we'll override it:
       ['2014', 50]
     ];
     var chart = d4.charts.column()
-    .x.$key(0)
-    .y.$key(1);
+    .x(function(x) {
+         x.key(0)
+    })
+    .y(function(y){
+         y.key(1);
+    });
     
     d3.select('#example')
     .datum(data)
@@ -389,7 +361,7 @@ The default format may not be desired and so we'll override it:
 ### 
 
 [\#][13]
-[Ⓣ][15]
+[Ⓣ][14]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -446,7 +418,7 @@ relative distribution.
 ### 
 
 [\#][13]
-[Ⓣ][16]
+[Ⓣ][15]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -506,7 +478,7 @@ along the xAxis.
 ### 
 
 [\#][13]
-[Ⓣ][17]
+[Ⓣ][16]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -531,6 +503,38 @@ has four default features:
       .datum(data)
       .call(chart);
     
+
+---
+
+## scales.js
+
+### 
+
+[\#][13]
+[Ⓣ][17]
+
+Creates a linear scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
+
+---
+
+### 
+
+[\#][13]
+[Ⓣ][17]
+
+Creates an ordinal scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
 
 ---
 
@@ -842,12 +846,12 @@ y - an object with a key representing the y accessor and an array of values
 [9]: #axes
 [10]: #using
 [11]: #functor
-[12]: #scales-js
+[12]: #column-js
 [13]: #
-[14]: #column-js
-[15]: #grouped-column-js
-[16]: #line-js
-[17]: #row-js
+[14]: #grouped-column-js
+[15]: #line-js
+[16]: #row-js
+[17]: #scales-js
 [18]: #waterfall-connectors-js
 [19]: #nested-group-js
 [20]: #nested-stack-js

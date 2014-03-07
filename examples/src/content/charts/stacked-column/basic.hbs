@@ -26,7 +26,7 @@ categories:
   stacked column, which are often used for financial analysis.
 </p>
 <hr/>
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8" id='source_code'>
 'use strict';
 
 $(document).ready(function(){
@@ -112,62 +112,4 @@ $(document).ready(function(){
   };
 </code></pre>
 <h6>JavaScript Code</h6>
-<pre><code id="code" class="language-javascript">
-  var data = [
-      { year: '2010', unitsSold: -200, salesman : 'Bob' },
-      { year: '2011', unitsSold: 200, salesman : 'Bob' },
-      { year: '2012', unitsSold: 300, salesman : 'Bob' },
-      { year: '2013', unitsSold: 400, salesman : 'Bob' },
-      { year: '2014', unitsSold: 500, salesman : 'Bob' },
-      { year: '2010', unitsSold: 100, salesman : 'Gina' },
-      { year: '2011', unitsSold: 100, salesman : 'Gina' },
-      { year: '2012', unitsSold: -200, salesman : 'Gina' },
-      { year: '2013', unitsSold: 500, salesman : 'Gina' },
-      { year: '2014', unitsSold: 600, salesman : 'Gina' },
-      { year: '2010', unitsSold: 400, salesman : 'Average' },
-      { year: '2011', unitsSold: 0, salesman : 'Average' },
-      { year: '2012', unitsSold: 400, salesman : 'Average' },
-      { year: '2013', unitsSold: 400, salesman : 'Average' },
-      { year: '2014', unitsSold: 400, salesman : 'Average' }
-    ];
-
-  var parsedData = d4.parsers.nestedStack()
-    .x(function(){
-      return 'year';
-    })
-    .y(function(){
-      return 'salesman';
-    })
-    .value(function(){
-      return 'unitsSold';
-    })(data);
-
-  var chart = d4.charts.stackedColumn()
-  .width($('#example').width())
-  .x(function(x){
-    x.key('year');
-  })
-  .y(function(y){
-    y.key('unitsSold');
-  })
-  .mixin({ 'zeroLine' : d4.features.referenceLine })
-  .using('zeroLine', function(zero) {
-    zero
-      .x1(function() {
-        return this.x(0);
-      })
-      .x2(function() {
-        return this.width - this.margin.left - this.margin.right;
-      })
-      .y1(function() {
-        return this.y(0);
-      })
-      .y2(function() {
-        return this.y(0);
-      });
-  });
-
-  d3.select('#example')
-  .datum(parsedData.data)
-  .call(chart);
-</code></pre>
+<pre><code id="code" class="language-javascript"></code></pre>

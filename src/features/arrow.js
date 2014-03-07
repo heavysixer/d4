@@ -24,6 +24,9 @@
 
         y2: function() {
           return  this.y(this.height - this.margin.top - this.margin.bottom);
+        },
+        classes: function(){
+          return 'line';
         }
       },
       render: function(scope) {
@@ -54,7 +57,7 @@
         this.featuresGroup.append('g').attr('class', name);
         var arrow = this.svg.select('.' + name)
           .append('line')
-          .attr('class', 'line')
+          .attr('class', scope.accessors.classes.bind(this))
           .attr('x1', scope.accessors.x1.bind(this))
           .attr('x2', scope.accessors.x2.bind(this))
           .attr('y1', scope.accessors.y1.bind(this))

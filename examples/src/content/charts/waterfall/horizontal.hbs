@@ -19,7 +19,7 @@ categories:
   waterfall, which are often used for financial analysis.
 </p>
 <hr/>
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8" id='source_code'>
 'use strict';
 
 $(document).ready(function(){
@@ -86,47 +86,4 @@ $(document).ready(function(){
   }
 </code></pre>
 <h6>JavaScript Code</h6>
-<pre><code id="code" class="language-javascript">
-  var data = [
-    { 'category': 'Job',       'value': 27  },
-    { 'category': 'Groceries', 'value': -3  },
-    { 'category': 'Allowance', 'value': 22  },
-    { 'category': 'Subtotal',  'value': 'e' },
-    { 'category': 'Videos',    'value': -22 },
-    { 'category': 'Coffee',    'value': -4  },
-    { 'category': 'Total',     'value': 'e' }
-  ];
-  var parsedData = d4.parsers.waterfall()
-    .x(function() {
-      return 'category';
-    })
-    .y(function() {
-      return 'value';
-    })
-    .nestKey(function() {
-      return 'category';
-    })(data);
-
-  var chart = d4.charts.waterfall()
-    .margin({
-      top: 20,
-      right: 20,
-      bottom: 20,
-      left: 80
-    })
-    .width($('#example').width())
-    .x(function(x){
-      x
-      .scale('linear')
-      .key('category');
-    })
-    .y(function(y){
-      y
-      .scale('ordinal')
-      .key('category');
-    });
-
-  d3.select('#example')
-    .datum(parsedData.data)
-    .call(chart);
-</code></pre>
+<pre><code id="code" class="language-javascript"></code></pre>

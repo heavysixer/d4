@@ -11,12 +11,15 @@
         x: function(d) {
           return this.x(d[this.x.$key]);
         },
+
         y: function(d) {
           return this.y(d[this.y.$key]);
         },
+
         interpolate: function() {
           return 'basis';
         },
+
         classes: function(d, n) {
           return 'line stroke series' + n;
         }
@@ -35,9 +38,7 @@
           .attr('data-key', function(d) {
             return d.key;
           })
-          .attr('class', function(d, i) {
-            return 'series' + i;
-          }.bind(this))
+          .attr('class', scope.accessors.classes.bind(this))
           .append('path')
           .attr('d', function(d) {
             return line(d.values);

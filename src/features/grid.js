@@ -30,13 +30,15 @@
           .attr('width', this.width - this.margin.left - this.margin.right)
           .attr('height', this.height - this.margin.top - this.margin.bottom);
 
-        this.featuresGroup.append('g').attr('class', 'x grid '+ name)
+        this.featuresGroup.append('g')
+          .attr('class', 'x grid '+ name)
           .attr('transform', 'translate(0,' + (this.height - this.margin.top - this.margin.bottom) + ')')
           .call(formattedXAxis
           .tickSize(-(this.height - this.margin.top - this.margin.bottom), 0, 0)
           .tickFormat(''));
 
-        this.featuresGroup.append('g').attr('class', 'y grid '+ name)
+        this.featuresGroup.append('g')
+          .attr('class', 'y grid '+ name)
           .attr('transform', 'translate(0,0)')
           .call(formattedYAxis
           .tickSize(-(this.width - this.margin.left - this.margin.right), 0, 0)

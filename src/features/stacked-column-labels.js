@@ -65,6 +65,10 @@
           } else {
             return d3.format('').call(this, d[this.valueKey]);
           }
+        },
+
+        classes : function() {
+          return 'column-label';
         }
       },
 
@@ -84,7 +88,7 @@
         text.exit().remove();
         text.enter().append('text')
           .text(scope.accessors.text.bind(this))
-          .attr('class', 'column-label')
+          .attr('class', scope.accessors.classes.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));
         return text;

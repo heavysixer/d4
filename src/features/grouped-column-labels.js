@@ -20,6 +20,10 @@
 
         text: function(d) {
           return d3.format('').call(this, d[this.y.$key]);
+        },
+
+        classes: function() {
+          return 'column-label';
         }
       },
       render: function(scope, data) {
@@ -37,7 +41,7 @@
           }.bind(this));
         text.exit().remove();
         text.enter().append('text')
-          .attr('class', 'column-label')
+          .attr('class', scope.accessors.classes.bind(this))
           .text(scope.accessors.text.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));
