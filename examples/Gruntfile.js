@@ -190,7 +190,6 @@ module.exports = function(grunt) {
           name: '<%= meta.pkg.name %>',
           version: '<%= meta.pkg.version %>',
           template: 'file',
-          moxFile: '<%=app.src %>/data/<%= meta.pkg.name %>-doc.json',
           outputFile: '../docs/<%= meta.pkg.name %>-doc.md'
         }
       },
