@@ -18,16 +18,18 @@
     var useContinuousPosition = function(dimension, d) {
       var axis = this[dimension];
       var offset = Math.abs(axis(d.y0) - axis(d.y0 + d.y)) / 2;
+      var padding = 5;
       var val;
       if (dimension === 'x') {
         offset *= -1;
+      } {
+        padding *= -1;
       }
       if (typeof d.y0 !== 'undefined') {
         val = d.y0 + d.y;
-        return (val < 0 ? axis(d.y0) : axis(val)) + offset;
+        return (val <= 0 ? axis(d.y0) : axis(val)) + offset;
       } else {
-        offset = Math.abs(axis(d[axis.$key]) - axis(0));
-        return (d[axis.$key] < 0 ? axis(d[axis.$key]) - offset : axis(d[axis.$key])) - 5;
+        return (d[axis.$key] <= 0 ? axis(0) : axis(d[axis.$key])) + padding;
       }
     };
 
