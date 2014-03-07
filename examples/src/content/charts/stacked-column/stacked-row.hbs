@@ -67,6 +67,22 @@ $(document).ready(function(){
   .valueKey('unitsSold')
   .y(function(y){
     y.key('year');
+  })
+  .mixin({ 'zeroLine' : d4.features.referenceLine })
+  .using('zeroLine', function(zero) {
+    zero
+      .x1(function() {
+        return this.x(0);
+      })
+      .x2(function() {
+        return this.x(0)
+      })
+      .y1(function() {
+        return this.y(0);
+      })
+      .y2(function() {
+        return this.height - this.margin.top - this.margin.bottom;;
+      });
   });
 
   d3.select('#example')

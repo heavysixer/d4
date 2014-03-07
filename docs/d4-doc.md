@@ -20,35 +20,35 @@
 * [``][13]
 * [``][13]
 
-###### [waterfall-connectors.js][14]
+###### [column.js][14]
 
 * [``][13]
 
-###### [column.js][15]
+###### [grouped-column.js][15]
 
 * [``][13]
 
-###### [grouped-column.js][16]
+###### [line.js][16]
 
 * [``][13]
 
-###### [line.js][17]
+###### [row.js][17]
 
 * [``][13]
 
-###### [row.js][18]
+###### [nested-group.js][18]
 
 * [``][13]
 
-###### [nested-group.js][19]
+###### [nested-stack.js][19]
 
 * [``][13]
 
-###### [nested-stack.js][20]
+###### [waterfall.js][20]
 
 * [``][13]
 
-###### [waterfall.js][21]
+###### [waterfall-connectors.js][21]
 
 * [``][13]
 
@@ -332,35 +332,12 @@ Creates an ordinal scale for a dimension of a given chart.
 
 ---
 
-## waterfall-connectors.js
-
-### 
-
-[\#][13]
-[Ⓣ][14]
-
-Waterfall connectors are orthogonal series connectors which visually join  
-column series together by spanning the top or bottom of adjacent columns.
-
-When using this feature in charts other than waterfall, be aware that the  
-mixin expects an accessor property for `orientation`, which it uses to render  
-the direction of the lines.
-
-##### Accessors
-
-`x` - Used in placement of the connector lines.  
-`y` - Used in placement of the connector lines.  
-`span` - calculates the length of the connector line  
-`classes` - applies the class to the connector lines.
-
----
-
 ## column.js
 
 ### 
 
 [\#][13]
-[Ⓣ][15]
+[Ⓣ][14]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -416,7 +393,7 @@ The default format may not be desired and so we'll override it:
 ### 
 
 [\#][13]
-[Ⓣ][16]
+[Ⓣ][15]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -473,7 +450,7 @@ relative distribution.
 ### 
 
 [\#][13]
-[Ⓣ][17]
+[Ⓣ][16]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -533,7 +510,7 @@ along the xAxis.
 ### 
 
 [\#][13]
-[Ⓣ][18]
+[Ⓣ][17]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -566,7 +543,7 @@ has four default features:
 ### 
 
 [\#][13]
-[Ⓣ][19]
+[Ⓣ][18]
 
 The nested group parser is useful for grouped column charts where multiple  
 data items need to appear relative to the axis value, for example grouped  
@@ -620,7 +597,7 @@ Keep reading for more information on these various accessor functions.
 ### 
 
 [\#][13]
-[Ⓣ][20]
+[Ⓣ][19]
 
 The nested stack parser is useful for charts which take a data series  
 and wants to sort them across a dimension and then display the results.  
@@ -729,7 +706,7 @@ The `parser` variable will now be an object containing the following structure:
 ### 
 
 [\#][13]
-[Ⓣ][21]
+[Ⓣ][20]
 
 The waterfall parser is useful for waterfall charts where data items need to account  
 for the position of earlier values:
@@ -832,6 +809,29 @@ y - an object with a key representing the y accessor and an array of values
 
 ---
 
+## waterfall-connectors.js
+
+### 
+
+[\#][13]
+[Ⓣ][21]
+
+Waterfall connectors are orthogonal series connectors which visually join  
+column series together by spanning the top or bottom of adjacent columns.
+
+When using this feature in charts other than waterfall, be aware that the  
+mixin expects an accessor property for `orientation`, which it uses to render  
+the direction of the lines.
+
+##### Accessors
+
+`x` - Used in placement of the connector lines.  
+`y` - Used in placement of the connector lines.  
+`span` - calculates the length of the connector line  
+`classes` - applies the class to the connector lines.
+
+---
+
 
 
 [0]: #base-js
@@ -848,13 +848,13 @@ y - an object with a key representing the y accessor and an array of values
 [11]: #functor
 [12]: #scales-js
 [13]: #
-[14]: #waterfall-connectors-js
-[15]: #column-js
-[16]: #grouped-column-js
-[17]: #line-js
-[18]: #row-js
-[19]: #nested-group-js
-[20]: #nested-stack-js
-[21]: #waterfall-js
+[14]: #column-js
+[15]: #grouped-column-js
+[16]: #line-js
+[17]: #row-js
+[18]: #nested-group-js
+[19]: #nested-stack-js
+[20]: #waterfall-js
+[21]: #waterfall-connectors-js
 [22]: https://github.com/mbostock/d3/wiki/Arrays#-nest
 [23]: https://github.com/mbostock/d3/wiki/Stack-Layout
