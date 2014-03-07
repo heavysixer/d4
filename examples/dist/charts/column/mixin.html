@@ -20,6 +20,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="../../assets/js/jquery.js"></script>
+    <script src="../../assets/js/main.js"></script>
   </head>
   <body>
     <div class="container">
@@ -62,7 +63,7 @@
   <hr/>
 </p>
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8" id='source_code'>
 'use strict';
 
 $(document).ready(function(){
@@ -109,36 +110,7 @@ $(document).ready(function(){
 </code></pre>
 
 <h6>JavaScript Code</h6>
-<pre><code id="code" class="language-javascript">
-  var data = [
-      { x: '2010', y:-50 },
-      { x: '2011', y:50 },
-      { x: '2012', y:30 },
-      { x: '2013', y:20 },
-      { x: '2014', y:10 },
-    ];
-  var chart = d4.charts.column()
-  .mixin({ 'zeroLine' : d4.features.referenceLine })
-  .using('zeroLine', function(zeroLine){
-    zeroLine
-    .x1(function(){
-      return 0;
-    })
-    .x2(function(){
-      return this.width - this.margin.left - this.margin.right;
-    })
-    .y1(function(){
-      return this.y(0);
-    })
-    .y2(function(){
-      return this.y(0);
-    });
-  });
-
-  d3.select('#example')
-  .datum(data)
-  .call(chart);
-</code></pre>
+<pre><code id="code" class="language-javascript"></code></pre>
 
 
       </div>

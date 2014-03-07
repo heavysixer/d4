@@ -20,6 +20,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="../../assets/js/jquery.js"></script>
+    <script src="../../assets/js/main.js"></script>
   </head>
   <body>
     <div class="container">
@@ -43,7 +44,7 @@
 <h5>Basic Scatter Plot</h5>
 <p>This is a basic example of the scatter plot.</p>
 <hr/>
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8" id='source_code'>
 'use strict';
 
 $(document).ready(function(){
@@ -87,43 +88,7 @@ $(document).ready(function(){
   <div id="example"></div>
 </div>
 <h6>JavaScript Code</h6>
-<pre><code id="code" class="language-javascript">
-  var data = [
-      { age: 12, unitsSold: 0,    month: 1 },
-      { age: 22, unitsSold: 200,  month: 2 },
-      { age: 42, unitsSold: 300,  month: 3 },
-      { age: 32, unitsSold: 400,  month: 4 },
-      { age: 22, unitsSold: 500,  month: 5 },
-      { age: 12, unitsSold: 100,  month: 6 },
-      { age: 72, unitsSold: 100,  month: 7 },
-      { age: 42, unitsSold: -200, month: 8 },
-      { age: 32, unitsSold: 500,  month: 9 },
-      { age: 12, unitsSold: 600,  month: 10 },
-      { age: 62, unitsSold: 400,  month: 11 },
-      { age: 82, unitsSold: 0,    month: 12 },
-      { age: 92, unitsSold: 400,  month: 1 },
-      { age: 12, unitsSold: 400,  month: 2 },
-      { age: 2 , unitsSold: 400,  month: 2 }
-    ];
-
-  var chart = d4.charts.scatterPlot()
-  .width($('#example').width())
-  .x(function(x){
-    x.min(-10)
-    x.key('age');
-  })
-  .y(function(y){
-    y.key('month');
-  })
-  .z(function(z){
-    z.key('unitsSold');
-  });
-
-  d3.select('#example')
-  .datum(data)
-  .call(chart);
-});
-</code></pre>
+<pre><code id="code" class="language-javascript"></code></pre>
 
       </div>
       <div class="footer">

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Basic Stacked Column | d4 Examples</title>
+    <title>Basic Stacked Row | d4 Examples</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
@@ -42,11 +42,11 @@
 
         
 
-<h5>Basic Stacked Column</h5>
+<h5>Basic Stacked Row</h5>
 <p>
-  The stacked column chart is used to sum a series of data elements grouped
+  The stacked row chart is used to sum a series of data elements grouped
   along the xAxis. This chart is often useful in conjunction with a grouped column
-  chart because they can use the same data series, and where the stacked column highlights
+  chart because they can use the same data series, and where the stacked row highlights
   the sum of the data series across an axis the grouped column can be used to show the
   relative distribution.
 </p>
@@ -59,7 +59,7 @@
 <p>
   This example also mixes in a zero line to visually demarcate where the series
   elements dip below zero. This is especially helpful in charts like the
-  stacked column, which are often used for financial analysis.
+  stacked row, which are often used for financial analysis.
 </p>
 <hr/>
 <script type="text/javascript" charset="utf-8" id='source_code'>
@@ -95,13 +95,14 @@ $(document).ready(function(){
       return 'unitsSold';
     })(data);
 
-  var chart = d4.charts.stackedColumn()
+  var chart = d4.charts.stackedRow()
   .width($('#example').width())
   .x(function(x){
-    x.key('year');
+    x.key('unitsSold');
   })
+  .valueKey('unitsSold')
   .y(function(y){
-    y.key('unitsSold');
+    y.key('year');
   })
   .mixin({ 'zeroLine' : d4.features.referenceLine })
   .using('zeroLine', function(zero) {
@@ -110,13 +111,13 @@ $(document).ready(function(){
         return this.x(0);
       })
       .x2(function() {
-        return this.width - this.margin.left - this.margin.right;
+        return this.x(0)
       })
       .y1(function() {
         return this.y(0);
       })
       .y2(function() {
-        return this.y(0);
+        return this.height - this.margin.top - this.margin.bottom;;
       });
   });
 

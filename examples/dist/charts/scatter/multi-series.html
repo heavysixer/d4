@@ -20,6 +20,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="../../assets/js/jquery.js"></script>
+    <script src="../../assets/js/main.js"></script>
   </head>
   <body>
     <div class="container">
@@ -43,7 +44,7 @@
 <h5>Multi-series Scatterplot</h5>
 <p>This examples how you can map multiple data series in a scatter plot</p>
 <hr/>
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8" id='source_code'>
 'use strict';
 
 $(document).ready(function(){
@@ -127,51 +128,7 @@ $(document).ready(function(){
   }
 </code></pre>
 <h6>JavaScript Code</h6>
-<pre><code id="code" class="language-javascript">
-  var data = [
-      { age: 12, state: 'mo', unitsSold: 0,    month: 1 },
-      { age: 22, state: 'mo', unitsSold: 200,  month: 2 },
-      { age: 42, state: 'mo', unitsSold: 300,  month: 3 },
-      { age: 32, state: 'mo', unitsSold: 400,  month: 4 },
-      { age: 22, state: 'mo', unitsSold: 500,  month: 5 },
-      { age: 12, state: 'mo', unitsSold: 100,  month: 6 },
-      { age: 72, state: 'mo', unitsSold: 100,  month: 7 },
-      { age: 42, state: 'mo', unitsSold: -200, month: 8 },
-      { age: 32, state: 'ks', unitsSold: 500,  month: 9 },
-      { age: 12, state: 'ks', unitsSold: 600,  month: 10 },
-      { age: 62, state: 'ks', unitsSold: 400,  month: 11 },
-      { age: 82, state: 'ks', unitsSold: 0,    month: 12 },
-      { age: 92, state: 'ks', unitsSold: 400,  month: 1 },
-      { age: 12, state: 'ks', unitsSold: 400,  month: 2 },
-      { age: 2 , state: 'ks', unitsSold: 400,  month: 2 }
-    ];
-  var parsedData = d4.parsers.nestedGroup()
-    .x('age')
-    .y('month')
-    .nestKey('state')
-    .value('unitsSold')(data);
-
-  var chart = d4.charts.scatterPlot()
-  .width($('#example').width())
-  .mixin({'grid' : d4.features.grid},0)
-  .x(function(x){
-    x.min(-250)
-    .max(610)
-    .key('unitsSold');
-  })
-  .y(function(y){
-    y.max(14)
-    .min(-2)
-    .key('month');
-  })
-  .z(function(z){
-    z.key('age');
-  });
-
-  d3.select('#example')
-  .datum(parsedData.data)
-  .call(chart);
-</code></pre>
+<pre><code id="code" class="language-javascript"></code></pre>
 
       </div>
       <div class="footer">

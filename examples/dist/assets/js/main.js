@@ -1,0 +1,1 @@
+$(document).ready(function(){$("#source_code").each(function(a,b){$("#code").text($(b).html())})});

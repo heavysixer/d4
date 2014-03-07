@@ -20,6 +20,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="../../assets/js/jquery.js"></script>
+    <script src="../../assets/js/main.js"></script>
   </head>
   <body>
     <div class="container">
@@ -46,7 +47,7 @@
   dimensions. These can easily be overridden as the following example demonstrates:
 </p>
 <hr/>
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8" id='source_code'>
 'use strict';
 
 $(document).ready(function(){
@@ -76,29 +77,7 @@ $(document).ready(function(){
 </script>
 <div id="example"></div>
 <h6>JavaScript Code</h6>
-<pre><code id="code" class="language-javascript">
-  // By default d4 expects a series object, which uses the following format:
-  // { x : '2010', y : 10 }.
-  // The default format is not desired and so we'll override it.
-  var data = [
-    ['2010', -10],
-    ['2011', 20],
-    ['2012', 30],
-    ['2013', 40],
-    ['2014', 50]
-  ];
-  var chart = d4.charts.column()
-  .x(function(x){
-    x.key(0);
-  })
-  .y(function(y){
-    y.key(1);
-  })
-
-  d3.select('#example')
-  .datum(data)
-  .call(chart);
-</code></pre>
+<pre><code id="code" class="language-javascript"></code></pre>
 
 
       </div>

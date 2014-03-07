@@ -20,6 +20,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/main.js"></script>
   </head>
   <body>
     <div class="container">
@@ -43,7 +44,7 @@
 <div class='content'>
     <div class="col-md-12">
       <div class="alert alert-info">Documentation is in flux, many sections of d4 remain to be covered.</div>
-      <h1 id="d4-0-5-0">d4 -0.5.0</h1>
+      <h1 id="d4-0-5-1">d4 -0.5.1</h1>
 <h6 id="-base-js-0-"><a href="#base-js">base.js</a></h6>
 <ul>
 <li><a href="#chart"><code>chart</code></a></li>
@@ -311,8 +312,12 @@ d3.select(&#39;#example&#39;)
   [&#39;2014&#39;, 50]
 ];
 var chart = d4.charts.column()
-.x.$key(0)
-.y.$key(1);
+.x(function(x) {
+     x.key(0)
+})
+.y(function(y){
+     y.key(1);
+});
 
 d3.select(&#39;#example&#39;)
 .datum(data)
