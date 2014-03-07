@@ -5,7 +5,6 @@
    */
   'use strict';
 
-  // FIXME: It would be nice not to continually have to check the orientation.
   var columnSeriesOverrides = function() {
     return {
       accessors: {

@@ -1,6 +1,6 @@
 /*! d4 - v0.5.0
  *  License: MIT Expat
- *  Date: 2014-03-06
+ *  Date: 2014-03-07
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -289,7 +289,6 @@
       features: {},
       mixins: [],
       axes: {},
-      valueKey: 'y',
       margin: {
         top: 20,
         right: 20,
@@ -356,9 +355,6 @@
   dimensions based on the configuration applied to the chart object itself.
   */
   var applyDefaultParser = function(opts, data) {
-    if(opts.y.$key !== opts.valueKey){
-      opts.valueKey = opts.y.$key;
-    }
     var parsed = d4.parsers.nestedGroup()
     .x(opts.x.$key)
     .y(opts.y.$key)
@@ -368,6 +364,10 @@
   };
 
   var prepareData = function(opts, data) {
+    if(typeof opts.valueKey === 'undefined'){
+      opts.valueKey = opts.y.$key;
+    }
+
     var needsParsing = false, keys, item;
     if(data.length > 0){
       item = data[0];
@@ -763,8 +763,12 @@ The default format may not be desired and so we'll override it:
       ['2014', 50]
     ];
     var chart = d4.charts.column()
-    .x.$key(0)
-    .y.$key(1);
+    .x(function(x) {
+         x.key(0)
+    })
+    .y(function(y){
+         y.key(1);
+    });
 
     d3.select('#example')
     .datum(data)
@@ -983,6 +987,7 @@ relative distribution.
           bottom: 20,
           left: 40
         },
+        valueKey: 'x',
         axes: {
           x: {
             scale: 'linear'
@@ -994,9 +999,9 @@ relative distribution.
       }
     });
     [{
-      'bars': d4.features.rowSeries
+      'bars': d4.features.stackedColumnSeries
     }, {
-      'rowLabels': d4.features.rowLabels
+      'rowLabels': d4.features.stackedColumnLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
@@ -1093,7 +1098,48 @@ relative distribution.
    */
   'use strict';
 
-  // FIXME: It would be nice not to continually have to check the orientation.
+  d4.chart('stackedRow', function stackedColumnChart() {
+    var chart = d4.baseChart({
+      config: {
+        margin: {
+          top: 20,
+          right: 40,
+          bottom: 20,
+          left: 40
+        },
+        axes: {
+          x: {
+            scale: 'linear'
+          },
+          y: {
+            scale: 'ordinal'
+          }
+        }
+      }
+    });
+    [{
+      'bars': d4.features.stackedColumnSeries
+    }, {
+      'barLabels': d4.features.stackedColumnLabels
+    }, {
+      'connectors': d4.features.stackedColumnConnectors
+    }, {
+      'xAxis': d4.features.xAxis
+    }, {
+      'yAxis': d4.features.yAxis
+    }].forEach(function(feature) {
+      chart.mixin(feature);
+    });
+    return chart;
+  });
+}).call(this);
+(function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+  'use strict';
+
   var columnSeriesOverrides = function() {
     return {
       accessors: {
@@ -1870,40 +1916,69 @@ relative distribution.
       return val > 0 ? 'positive' : 'negative';
     };
 
+    var useDiscretePosition = function(dimension, d) {
+      var axis = this[dimension];
+      return axis(d[axis.$key]) + (axis.rangeBand() / 2);
+    };
+
+    var useContinuousPosition = function(dimension, d) {
+      var axis = this[dimension];
+      var offset = Math.abs(axis(d.y0) - axis(d.y0 + d.y)) / 2;
+      var val;
+      if (dimension === 'x') {
+        offset *= -1;
+      }
+      if (typeof d.y0 !== 'undefined') {
+        val = d.y0 + d.y;
+        return (val < 0 ? axis(d.y0) : axis(val)) + offset;
+      } else {
+        offset = Math.abs(axis(d[axis.$key]) - axis(0));
+        return (d[axis.$key] < 0 ? axis(d[axis.$key]) - offset : axis(d[axis.$key])) - 5;
+      }
+    };
+
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
+          if (this.x.$scale === 'ordinal') {
+            return useDiscretePosition.bind(this)('x', d);
+          } else {
+            return useContinuousPosition.bind(this)('x', d);
+          }
         },
 
         y: function(d) {
-          if(typeof d.y0 !== 'undefined'){
-            var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
-            var yVal = d.y0 + d.y;
-            return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+          if (this.y.$scale === 'ordinal') {
+            return useDiscretePosition.bind(this)('y', d);
           } else {
-            var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
-            return (d[this.y.$key] < 0 ? this.y(d[this.y.$key]) - height : this.y(d[this.y.$key])) - 5;
+            return useContinuousPosition.bind(this)('y', d);
           }
         },
 
         text: function(d) {
-          if(typeof d.y0 !== 'undefined'){
-            if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
-              return d3.format('').call(this, d[this.valueKey]);
+          if (typeof d.y0 !== 'undefined') {
+            if (this.x.$scale === 'ordinal') {
+              if (Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
+                return d3.format('').call(this, d[this.valueKey]);
+              }
+            } else {
+              if (Math.abs(this.x(d.y0) - this.x(d.y0 + d.y)) > 20) {
+                return d3.format('').call(this, d[this.valueKey]);
+              }
             }
           } else {
             return d3.format('').call(this, d[this.valueKey]);
           }
         }
       },
+
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('.group')
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
-            return 'series' + i + ' '+ sign(d.y) + ' ' + this.x.$key;
+            return 'series' + i + ' ' + sign(d.y) + ' ' + this.x.$key;
           }.bind(this));
 
         var text = group.selectAll('text')
@@ -1934,30 +2009,77 @@ relative distribution.
       return (val > 0) ? 'positive' : 'negative';
     };
 
+    var useDiscretePosition = function(dimension, d){
+      var axis = this[dimension];
+      return axis(d[axis.$key]);
+    };
+
+    var useDiscreteSize = function(dimension) {
+      var axis = this[dimension];
+      return axis.rangeBand();
+    };
+
+    var useContinuousSize = function(dimension, d) {
+      var axis = this[dimension];
+      if(typeof d.y0 !== 'undefined'){
+        return Math.abs(axis(d.y0) - axis(d.y0 + d.y));
+      }else {
+        return Math.abs(axis(d[axis.$key]) - axis(0));
+      }
+    };
+
+    var useContinuousPosition = function(dimension, d) {
+      var axis = this[dimension];
+      var val;
+      if(typeof d.y0 !== 'undefined'){
+        if(dimension === 'y') {
+          val = d.y0 + d.y;
+          return  val < 0 ? axis(d.y0) : axis(val);
+        } else {
+          val = (d.y0 + d.y) - Math.max(0, d.y);
+          return axis(val);
+        }
+      } else {
+        if(dimension === 'y') {
+          return d[axis.$key] < 0 ? axis(0) : axis(d[axis.$key]);
+        } else {
+          val = d[axis.$key] - Math.max(0, d[axis.$key]);
+          return axis(val);
+        }
+      }
+    };
+
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.x.$key]);
-        },
-
-        y: function(d) {
-          if(d.y0){
-            var yVal = d.y0 + d.y;
-            return  yVal < 0 ? this.y(d.y0) : this.y(yVal);
+          if(this.x.$scale === 'ordinal'){
+            return useDiscretePosition.bind(this)('x', d);
           } else {
-            return d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key]);
+            return  useContinuousPosition.bind(this)('x', d);
           }
         },
 
-        width: function() {
-          return this.x.rangeBand();
+        y: function(d) {
+          if(this.y.$scale === 'ordinal'){
+            return useDiscretePosition.bind(this)('y', d);
+          } else {
+            return useContinuousPosition.bind(this)('y', d);
+          }
+        },
+
+        width: function(d) {
+          if(this.x.$scale === 'ordinal'){
+            return useDiscreteSize.bind(this)('x');
+          } else {
+            return useContinuousSize.bind(this)('x', d);
+          }
         },
 
         height: function(d) {
-          if(d.y0){
-            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
-          }else {
-            return Math.abs(this.y(d[this.y.$key]) - this.y(0));
+          if(this.y.$scale === 'ordinal'){
+            return useDiscreteSize.bind(this)('y');
+          } else {
+            return useContinuousSize.bind(this)('y', d);
           }
         },
 

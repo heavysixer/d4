@@ -40,6 +40,7 @@
           bottom: 20,
           left: 40
         },
+        valueKey: 'x',
         axes: {
           x: {
             scale: 'linear'
@@ -51,9 +52,9 @@
       }
     });
     [{
-      'bars': d4.features.rowSeries
+      'bars': d4.features.stackedColumnSeries
     }, {
-      'rowLabels': d4.features.rowLabels
+      'rowLabels': d4.features.stackedColumnLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {

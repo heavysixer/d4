@@ -285,7 +285,6 @@
       features: {},
       mixins: [],
       axes: {},
-      valueKey: 'y',
       margin: {
         top: 20,
         right: 20,
@@ -352,9 +351,6 @@
   dimensions based on the configuration applied to the chart object itself.
   */
   var applyDefaultParser = function(opts, data) {
-    if(opts.y.$key !== opts.valueKey){
-      opts.valueKey = opts.y.$key;
-    }
     var parsed = d4.parsers.nestedGroup()
     .x(opts.x.$key)
     .y(opts.y.$key)
@@ -364,6 +360,10 @@
   };
 
   var prepareData = function(opts, data) {
+    if(typeof opts.valueKey === 'undefined'){
+      opts.valueKey = opts.y.$key;
+    }
+
     var needsParsing = false, keys, item;
     if(data.length > 0){
       item = data[0];

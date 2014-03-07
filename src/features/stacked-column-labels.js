@@ -10,40 +10,69 @@
       return val > 0 ? 'positive' : 'negative';
     };
 
+    var useDiscretePosition = function(dimension, d) {
+      var axis = this[dimension];
+      return axis(d[axis.$key]) + (axis.rangeBand() / 2);
+    };
+
+    var useContinuousPosition = function(dimension, d) {
+      var axis = this[dimension];
+      var offset = Math.abs(axis(d.y0) - axis(d.y0 + d.y)) / 2;
+      var val;
+      if (dimension === 'x') {
+        offset *= -1;
+      }
+      if (typeof d.y0 !== 'undefined') {
+        val = d.y0 + d.y;
+        return (val < 0 ? axis(d.y0) : axis(val)) + offset;
+      } else {
+        offset = Math.abs(axis(d[axis.$key]) - axis(0));
+        return (d[axis.$key] < 0 ? axis(d[axis.$key]) - offset : axis(d[axis.$key])) - 5;
+      }
+    };
+
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
+          if (this.x.$scale === 'ordinal') {
+            return useDiscretePosition.bind(this)('x', d);
+          } else {
+            return useContinuousPosition.bind(this)('x', d);
+          }
         },
 
         y: function(d) {
-          if(typeof d.y0 !== 'undefined'){
-            var halfHeight = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) / 2;
-            var yVal = d.y0 + d.y;
-            return (yVal < 0 ? this.y(d.y0) : this.y(yVal)) + halfHeight;
+          if (this.y.$scale === 'ordinal') {
+            return useDiscretePosition.bind(this)('y', d);
           } else {
-            var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
-            return (d[this.y.$key] < 0 ? this.y(d[this.y.$key]) - height : this.y(d[this.y.$key])) - 5;
+            return useContinuousPosition.bind(this)('y', d);
           }
         },
 
         text: function(d) {
-          if(typeof d.y0 !== 'undefined'){
-            if(Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
-              return d3.format('').call(this, d[this.valueKey]);
+          if (typeof d.y0 !== 'undefined') {
+            if (this.x.$scale === 'ordinal') {
+              if (Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
+                return d3.format('').call(this, d[this.valueKey]);
+              }
+            } else {
+              if (Math.abs(this.x(d.y0) - this.x(d.y0 + d.y)) > 20) {
+                return d3.format('').call(this, d[this.valueKey]);
+              }
             }
           } else {
             return d3.format('').call(this, d[this.valueKey]);
           }
         }
       },
+
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('.group')
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
-            return 'series' + i + ' '+ sign(d.y) + ' ' + this.x.$key;
+            return 'series' + i + ' ' + sign(d.y) + ' ' + this.x.$key;
           }.bind(this));
 
         var text = group.selectAll('text')

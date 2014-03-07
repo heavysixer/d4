@@ -40,8 +40,12 @@ The default format may not be desired and so we'll override it:
       ['2014', 50]
     ];
     var chart = d4.charts.column()
-    .x.$key(0)
-    .y.$key(1);
+    .x(function(x) {
+         x.key(0)
+    })
+    .y(function(y){
+         y.key(1);
+    });
 
     d3.select('#example')
     .datum(data)

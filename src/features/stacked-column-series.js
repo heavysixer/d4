@@ -10,30 +10,77 @@
       return (val > 0) ? 'positive' : 'negative';
     };
 
+    var useDiscretePosition = function(dimension, d){
+      var axis = this[dimension];
+      return axis(d[axis.$key]);
+    };
+
+    var useDiscreteSize = function(dimension) {
+      var axis = this[dimension];
+      return axis.rangeBand();
+    };
+
+    var useContinuousSize = function(dimension, d) {
+      var axis = this[dimension];
+      if(typeof d.y0 !== 'undefined'){
+        return Math.abs(axis(d.y0) - axis(d.y0 + d.y));
+      }else {
+        return Math.abs(axis(d[axis.$key]) - axis(0));
+      }
+    };
+
+    var useContinuousPosition = function(dimension, d) {
+      var axis = this[dimension];
+      var val;
+      if(typeof d.y0 !== 'undefined'){
+        if(dimension === 'y') {
+          val = d.y0 + d.y;
+          return  val < 0 ? axis(d.y0) : axis(val);
+        } else {
+          val = (d.y0 + d.y) - Math.max(0, d.y);
+          return axis(val);
+        }
+      } else {
+        if(dimension === 'y') {
+          return d[axis.$key] < 0 ? axis(0) : axis(d[axis.$key]);
+        } else {
+          val = d[axis.$key] - Math.max(0, d[axis.$key]);
+          return axis(val);
+        }
+      }
+    };
+
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.x.$key]);
-        },
-
-        y: function(d) {
-          if(d.y0){
-            var yVal = d.y0 + d.y;
-            return  yVal < 0 ? this.y(d.y0) : this.y(yVal);
+          if(this.x.$scale === 'ordinal'){
+            return useDiscretePosition.bind(this)('x', d);
           } else {
-            return d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key]);
+            return  useContinuousPosition.bind(this)('x', d);
           }
         },
 
-        width: function() {
-          return this.x.rangeBand();
+        y: function(d) {
+          if(this.y.$scale === 'ordinal'){
+            return useDiscretePosition.bind(this)('y', d);
+          } else {
+            return useContinuousPosition.bind(this)('y', d);
+          }
+        },
+
+        width: function(d) {
+          if(this.x.$scale === 'ordinal'){
+            return useDiscreteSize.bind(this)('x');
+          } else {
+            return useContinuousSize.bind(this)('x', d);
+          }
         },
 
         height: function(d) {
-          if(d.y0){
-            return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
-          }else {
-            return Math.abs(this.y(d[this.y.$key]) - this.y(0));
+          if(this.y.$scale === 'ordinal'){
+            return useDiscreteSize.bind(this)('y');
+          } else {
+            return useContinuousSize.bind(this)('y', d);
           }
         },
 
