@@ -149,7 +149,6 @@ charts in d3.
 
 #### Roadmap
 * Allow for multiple charts within the same SVG element
-* Allow charts to specify min, max values which do not appear in the data series.
 
 #### Other Projects using d4
 [d4-rails](https://github.com/gouravtiwari/d4-rails)

@@ -60,7 +60,8 @@ $(document).ready(function(){
       y
       .scale('ordinal')
       .key('category');
-    });
+    })
+    .valueKey('value');
 
   d3.select('#example')
     .datum(parsedData.data)
