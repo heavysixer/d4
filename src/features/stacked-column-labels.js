@@ -22,14 +22,13 @@
       var val;
       if (dimension === 'x') {
         offset *= -1;
-      } {
         padding *= -1;
       }
       if (typeof d.y0 !== 'undefined') {
         val = d.y0 + d.y;
         return (val <= 0 ? axis(d.y0) : axis(val)) + offset;
       } else {
-        return (d[axis.$key] <= 0 ? axis(0) : axis(d[axis.$key])) + padding;
+        return (d[axis.$key] <= 0 ? axis(0) : axis(d[axis.$key])) - padding;
       }
     };
 
@@ -88,6 +87,9 @@
         text.exit().remove();
         text.enter().append('text')
           .text(scope.accessors.text.bind(this))
+          .attr('text-anchor', function(d){
+            return typeof d.y0 !== 'undefined' || this.x.$scale === 'ordinal' ? 'middle' : 'left';
+          }.bind(this))
           .attr('class', scope.accessors.classes.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));

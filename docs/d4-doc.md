@@ -15,28 +15,28 @@
 * [`using`][10]
 * [`functor`][11]
 
-###### [column.js][12]
-
-* [``][13]
-
-###### [grouped-column.js][14]
-
-* [``][13]
-
-###### [line.js][15]
-
-* [``][13]
-
-###### [row.js][16]
-
-* [``][13]
-
-###### [scales.js][17]
+###### [scales.js][12]
 
 * [``][13]
 * [``][13]
 
-###### [waterfall-connectors.js][18]
+###### [waterfall-connectors.js][14]
+
+* [``][13]
+
+###### [column.js][15]
+
+* [``][13]
+
+###### [grouped-column.js][16]
+
+* [``][13]
+
+###### [line.js][17]
+
+* [``][13]
+
+###### [row.js][18]
 
 * [``][13]
 
@@ -300,12 +300,67 @@ Based on D3's own functor function.
 
 ---
 
-## column.js
+## scales.js
 
 ### 
 
 [\#][13]
 [Ⓣ][12]
+
+Creates a linear scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
+
+---
+
+### 
+
+[\#][13]
+[Ⓣ][12]
+
+Creates an ordinal scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
+
+---
+
+## waterfall-connectors.js
+
+### 
+
+[\#][13]
+[Ⓣ][14]
+
+Waterfall connectors are orthogonal series connectors which visually join  
+column series together by spanning the top or bottom of adjacent columns.
+
+When using this feature in charts other than waterfall, be aware that the  
+mixin expects an accessor property for `orientation`, which it uses to render  
+the direction of the lines.
+
+##### Accessors
+
+`x` - Used in placement of the connector lines.  
+`y` - Used in placement of the connector lines.  
+`span` - calculates the length of the connector line  
+`classes` - applies the class to the connector lines.
+
+---
+
+## column.js
+
+### 
+
+[\#][13]
+[Ⓣ][15]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -361,7 +416,7 @@ The default format may not be desired and so we'll override it:
 ### 
 
 [\#][13]
-[Ⓣ][14]
+[Ⓣ][16]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -418,7 +473,7 @@ relative distribution.
 ### 
 
 [\#][13]
-[Ⓣ][15]
+[Ⓣ][17]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -478,7 +533,7 @@ along the xAxis.
 ### 
 
 [\#][13]
-[Ⓣ][16]
+[Ⓣ][18]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -503,61 +558,6 @@ has four default features:
       .datum(data)
       .call(chart);
     
-
----
-
-## scales.js
-
-### 
-
-[\#][13]
-[Ⓣ][17]
-
-Creates a linear scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
----
-
-### 
-
-[\#][13]
-[Ⓣ][17]
-
-Creates an ordinal scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
----
-
-## waterfall-connectors.js
-
-### 
-
-[\#][13]
-[Ⓣ][18]
-
-Waterfall connectors are orthogonal series connectors which visually join  
-column series together by spanning the top or bottom of adjacent columns.
-
-When using this feature in charts other than waterfall, be aware that the  
-mixin expects an accessor property for `orientation`, which it uses to render  
-the direction of the lines.
-
-##### Accessors
-
-`x` - Used in placement of the connector lines.  
-`y` - Used in placement of the connector lines.  
-`span` - calculates the length of the connector line  
-`classes` - applies the class to the connector lines.
 
 ---
 
@@ -846,13 +846,13 @@ y - an object with a key representing the y accessor and an array of values
 [9]: #axes
 [10]: #using
 [11]: #functor
-[12]: #column-js
+[12]: #scales-js
 [13]: #
-[14]: #grouped-column-js
-[15]: #line-js
-[16]: #row-js
-[17]: #scales-js
-[18]: #waterfall-connectors-js
+[14]: #waterfall-connectors-js
+[15]: #column-js
+[16]: #grouped-column-js
+[17]: #line-js
+[18]: #row-js
 [19]: #nested-group-js
 [20]: #nested-stack-js
 [21]: #waterfall-js
