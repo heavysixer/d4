@@ -10,6 +10,21 @@
       return val > 0 ? 'positive' : 'negative';
     };
 
+    var anchorText = function(d){
+      if(typeof d.y0 !== 'undefined'){
+        if(this.x.$scale === 'ordinal') {
+          return 'middle';
+        } else {
+          return 'left';
+        }
+      }
+      if(this.y.$scale !== 'ordinal' || this.x.$scale === 'ordinal'){
+        return 'middle';
+      } else {
+        return 'left';
+      }
+    };
+
     var useDiscretePosition = function(dimension, d) {
       var axis = this[dimension];
       return axis(d[axis.$key]) + (axis.rangeBand() / 2);
@@ -65,10 +80,8 @@
             return d3.format('').call(this, d[this.valueKey]);
           }
         },
-
-        classes : function() {
-          return 'column-label';
-        }
+        stagger : true,
+        classes : 'column-label'
       },
 
       render: function(scope, data) {
@@ -87,12 +100,15 @@
         text.exit().remove();
         text.enter().append('text')
           .text(scope.accessors.text.bind(this))
-          .attr('text-anchor', function(d){
-            return typeof d.y0 !== 'undefined' || this.x.$scale === 'ordinal' ? 'middle' : 'left';
-          }.bind(this))
-          .attr('class', scope.accessors.classes.bind(this))
+          .attr('text-anchor', anchorText.bind(this))
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));
+
+        if(d4.functor(scope.accessors.stagger).bind(this)()){
+          //group.selectAll('text')
+          //.call(d4.utils.staggerText);
+        }
         return text;
       }
     };

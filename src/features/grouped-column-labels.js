@@ -5,6 +5,21 @@
    */
   'use strict';
   d4.feature('groupedColumnLabels', function(name) {
+    var anchorText = function(d){
+      if(typeof d.y0 !== 'undefined'){
+        if(this.x.$scale === 'ordinal') {
+          return 'middle';
+        } else {
+          return 'left';
+        }
+      }
+      if(this.y.$scale === 'linear' || this.x.$scale === 'ordinal'){
+        return 'middle';
+      } else {
+        return 'left';
+      }
+    };
+
     return {
       accessors: {
         x: function(d, i) {
@@ -43,6 +58,7 @@
         text.enter().append('text')
           .attr('class', scope.accessors.classes.bind(this))
           .text(scope.accessors.text.bind(this))
+          .attr('text-anchor', anchorText.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));
         return text;

@@ -123,21 +123,26 @@ __Parser__ - A parser prepares the data for a chart.
 * Line Chart
 * Mekko Chart (Coming Soon)
 * Pie Chart
-* Row Chart (Bar Chart)
+* Row Chart
 * Scatter Chart
+* Stacked Column Chart
+* Stacked Row Chart
 * Waterfall Chart
 
 #### Chart Features (Mix-ins)
 
 * Arrows
-* Column Labels
-* Column Series Connectors (Coming Soon)
+* Dot Series
 * Grid
-* Legend (Coming Soon)
+* Grouped Column Labels
+* Grouped Column Series
 * Line Series
+* Line Series Labels
 * Reference Lines
-* Row Labels
+* Stacked Column Labels
+* Stacked Column Series
 * Trend Line
+* Waterfall Column Connectors
 * X Axis
 * Y Axis
 

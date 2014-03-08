@@ -1,0 +1,64 @@
+---
+title: Staggered Data Labels
+categories:
+  - Column Chart
+  - Basic Concepts
+---
+<h5>{{title}}</h5>
+<p>
+  Sometimes large data series labels visually run together, which makes the chart
+  hard to understand. By default d4 will try to stagger both the data series labels
+  and the axis labels. You can disable this feature by setting
+  <code>stagger(false)</code>.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8" id='source_code'>
+'use strict';
+
+$(document).ready(function(){
+  var data = [
+      { x: '2010', y:100 },
+      { x: '2011', y:200 },
+      { x: '2012', y:300 },
+      { x: '2013', y:300 },
+      { x: '2014', y:300 },
+    ];
+  var chart1 = d4.charts.column();
+  chart1
+  .width(150);
+
+  d3.select('#example1')
+  .datum(data)
+  .call(chart1);
+
+  // disable staggering for the second chart
+  var chart2 = d4.charts.column();
+  chart2
+  .using('barLabels', function(labels){
+    labels.stagger(false);
+  })
+  .width(150);
+
+  d3.select('#example2')
+  .datum(data)
+  .call(chart2);
+
+});
+
+</script>
+<div class="clearfix">
+  <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6">
+      <h5>Staggered (default)</h5>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6">
+      <h5>Staggered disabled</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6" id="example1"></div>
+    <div class="col-xs-6 col-sm-6 col-md-6" id="example2"></div>
+  </div>
+</div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript"></code></pre>
