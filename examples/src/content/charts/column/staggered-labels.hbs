@@ -23,25 +23,33 @@ $(document).ready(function(){
       { x: '2013', y:300 },
       { x: '2014', y:300 },
     ];
+  var margin = {
+      top: 40,
+      right: 20,
+      bottom: 40,
+      left: 40
+    };
   var chart1 = d4.charts.column();
   chart1
-  .width(150);
+    .margin(margin)
+    .width(150);
 
   d3.select('#example1')
-  .datum(data)
-  .call(chart1);
+    .datum(data)
+    .call(chart1);
 
   // disable staggering for the second chart
   var chart2 = d4.charts.column();
   chart2
-  .using('barLabels', function(labels){
-    labels.stagger(false);
-  })
-  .width(150);
+    .margin(margin)
+    .using('barLabels', function(labels) {
+      labels.stagger(false);
+    })
+    .width(150);
 
   d3.select('#example2')
-  .datum(data)
-  .call(chart2);
+    .datum(data)
+    .call(chart2);
 
 });
 
