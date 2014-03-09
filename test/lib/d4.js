@@ -726,6 +726,63 @@
    * global d3: false
    * global d4: false
    */
+
+  'use strict';
+  d4.helpers = {};
+
+  // FIXME: Provide this using DI.
+  d4.helpers.staggerText = function(text, direction) {
+    var maxAttempts = 5,
+      attempts = 0,
+      move = function(rect, direction) {
+        var text = d3.select(this);
+        var lastOffset = text.attr('data-last-offset') || 1;
+        var offset = (rect.height + lastOffset) * direction;
+        text.attr('transform', 'translate(0,' + offset + ')');
+        text.attr('data-last-offset', Math.abs(offset));
+      },
+
+      intersects = function(rect1, rect2) {
+        return !(rect1.right < rect2.left ||
+          rect1.left > rect2.right ||
+          rect1.bottom < rect2.top ||
+          rect1.top > rect2.bottom);
+      },
+
+      loop = function(text, direction) {
+        var intersecting = false,
+        index = 0,
+          bb,
+          pbb,
+          last;
+
+        text.each(function(d) {
+          if (index > 0) {
+            bb = this.getBoundingClientRect();
+            pbb = last.getBoundingClientRect();
+            console.log(pbb);
+            if (intersects(bb, pbb)) {
+              move.bind(this)(bb, direction);
+              intersecting = true;
+            }
+          }
+          index++;
+          last = this;
+        });
+
+        if (intersecting && attempts < maxAttempts) {
+          attempts++;
+          loop.bind(this)(text, direction);
+        }
+      };
+    loop.bind(this)(text, direction);
+  };
+}).call(this);
+(function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
   'use strict';
 
   /*
@@ -1832,52 +1889,6 @@ relative distribution.
 
   'use strict';
   d4.feature('stackedColumnLabels', function(name) {
-
-    // FIXME: Provide this using DI.
-    var staggerText = function(text, direction) {
-      var maxAttempts = 5,
-        attempts = 0,
-        move = function(rect, direction) {
-          var text = d3.select(this);
-          var lastOffset = text.attr('data-last-offset') || 1;
-          var offset = (rect.height + lastOffset) * direction;
-          text.attr('transform', 'translate(0,' + offset + ')');
-          text.attr('data-last-offset', Math.abs(offset));
-        },
-
-        intersects = function(rect1, rect2) {
-          return !(rect1.right < rect2.left ||
-            rect1.left > rect2.right ||
-            rect1.bottom < rect2.top ||
-            rect1.top > rect2.bottom);
-        },
-
-        loop = function(text, direction) {
-          var intersecting = false,
-            bb,
-            pbb,
-            last;
-
-          text.each(function(d, i, n) {
-            if (n > 1) {
-              bb = this.getBoundingClientRect();
-              pbb = last.getBoundingClientRect();
-              if (intersects(bb, pbb)) {
-                move.bind(this)(bb, direction);
-                intersecting = true;
-              }
-            }
-            last = this;
-          });
-
-          if (intersecting && attempts < maxAttempts) {
-            attempts++;
-            loop.bind(this)(text, direction);
-          }
-        };
-      loop.bind(this)(text, direction);
-    };
-
     var sign = function(val) {
       return val > 0 ? 'positive' : 'negative';
     };
@@ -1978,8 +1989,9 @@ relative distribution.
           .attr('x', scope.accessors.x.bind(this));
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
+
           // FIXME: This should be moved into a helper injected using DI.
-          group.selectAll('text').call(staggerText, -1);
+          group.selectAll('text').call(d4.helpers.staggerText, -1);
         }
         return text;
       }
@@ -2302,15 +2314,20 @@ the direction of the lines.
       accessors: {
         format: function(xAxis) {
           return xAxis.orient('bottom').tickSize(0);
-        }
+        },
+        stagger: true
       },
       render: function(scope) {
         var xAxis = d3.svg.axis().scale(this.x);
         var formattedAxis = scope.accessors.format.bind(this)(xAxis);
-        this.featuresGroup.append('g').attr('class', 'x axis '+ name)
+        var group = this.featuresGroup.append('g').attr('class', 'x axis '+ name)
           .attr('transform', 'translate(0,' + (this.height - this.margin.top - this.margin.bottom) + ')')
           .call(formattedAxis);
+        if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
+          // FIXME: This should be moved into a helper injected using DI.
+          group.selectAll('.tick text').call(d4.helpers.staggerText, 1);
+        }
       }
     };
   });

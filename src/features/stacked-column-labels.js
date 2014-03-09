@@ -6,52 +6,6 @@
 
   'use strict';
   d4.feature('stackedColumnLabels', function(name) {
-
-    // FIXME: Provide this using DI.
-    var staggerText = function(text, direction) {
-      var maxAttempts = 5,
-        attempts = 0,
-        move = function(rect, direction) {
-          var text = d3.select(this);
-          var lastOffset = text.attr('data-last-offset') || 1;
-          var offset = (rect.height + lastOffset) * direction;
-          text.attr('transform', 'translate(0,' + offset + ')');
-          text.attr('data-last-offset', Math.abs(offset));
-        },
-
-        intersects = function(rect1, rect2) {
-          return !(rect1.right < rect2.left ||
-            rect1.left > rect2.right ||
-            rect1.bottom < rect2.top ||
-            rect1.top > rect2.bottom);
-        },
-
-        loop = function(text, direction) {
-          var intersecting = false,
-            bb,
-            pbb,
-            last;
-
-          text.each(function(d, i, n) {
-            if (n > 1) {
-              bb = this.getBoundingClientRect();
-              pbb = last.getBoundingClientRect();
-              if (intersects(bb, pbb)) {
-                move.bind(this)(bb, direction);
-                intersecting = true;
-              }
-            }
-            last = this;
-          });
-
-          if (intersecting && attempts < maxAttempts) {
-            attempts++;
-            loop.bind(this)(text, direction);
-          }
-        };
-      loop.bind(this)(text, direction);
-    };
-
     var sign = function(val) {
       return val > 0 ? 'positive' : 'negative';
     };
@@ -152,8 +106,9 @@
           .attr('x', scope.accessors.x.bind(this));
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
+
           // FIXME: This should be moved into a helper injected using DI.
-          group.selectAll('text').call(staggerText, -1);
+          group.selectAll('text').call(d4.helpers.staggerText, -1);
         }
         return text;
       }

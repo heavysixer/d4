@@ -29,10 +29,11 @@ $(document).ready(function(){
       bottom: 40,
       left: 40
     };
+
   var chart1 = d4.charts.column();
   chart1
     .margin(margin)
-    .width(150);
+    .width(190);
 
   d3.select('#example1')
     .datum(data)
@@ -45,7 +46,10 @@ $(document).ready(function(){
     .using('barLabels', function(labels) {
       labels.stagger(false);
     })
-    .width(150);
+    .using('xAxis', function(xAxis){
+      xAxis.stagger(false);
+    })
+    .width(190);
 
   d3.select('#example2')
     .datum(data)

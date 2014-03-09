@@ -7,6 +7,7 @@ module.exports = function(grunt) {
       pkg: grunt.file.readJSON('package.json'),
       srcFiles: [
         'src/base.js',
+        'src/helpers.js',
         'src/charts/**/*.js',
         'src/features/**/*.js',
         'src/parsers/**/*.js',
