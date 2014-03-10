@@ -1746,10 +1746,11 @@ relative distribution.
           return d3.format('').call(this, d[this.y.$key]);
         },
 
-        classes: function() {
-          return 'column-label';
-        }
+        stagger: true,
+
+        classes: 'column-label'
       },
+
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('.group')
@@ -1765,11 +1766,17 @@ relative distribution.
           }.bind(this));
         text.exit().remove();
         text.enter().append('text')
-          .attr('class', scope.accessors.classes.bind(this))
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .text(scope.accessors.text.bind(this))
           .attr('text-anchor', anchorText.bind(this))
           .attr('y', scope.accessors.y.bind(this))
           .attr('x', scope.accessors.x.bind(this));
+
+        if (d4.functor(scope.accessors.stagger).bind(this)()) {
+
+          // FIXME: This should be moved into a helper injected using DI.
+          group.selectAll('text').call(d4.helpers.staggerText, -1);
+        }
         return text;
       }
     };
