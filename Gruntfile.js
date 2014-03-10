@@ -89,6 +89,11 @@ module.exports = function(grunt) {
         }
       }
     },
+    removelogging: {
+      release: {
+        src: 'd4*.js'
+      }
+    },
     uglify: {
       options: {
         preserveComments: 'some'
@@ -107,9 +112,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha');
   grunt.loadNpmTasks('grunt-plato');
+  grunt.loadNpmTasks('grunt-remove-logging');
 
   grunt.registerTask('test', ['concat', 'mocha']);
   grunt.registerTask('quality', ['plato']);
   grunt.registerTask('default', ['jshint', 'test']);
-  grunt.registerTask('release', ['default', 'concat', 'uglify']);
+  grunt.registerTask('release', ['default', 'concat', 'uglify', 'removelogging']);
 };
