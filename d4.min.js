@@ -1,6 +1,6 @@
-/*! d4 - v0.5.2
+/*! d4 - v0.5.3
  *  License: MIT Expat
- *  Date: 2014-03-09
+ *  Date: 2014-03-10
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2

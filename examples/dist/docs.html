@@ -44,7 +44,7 @@
 <div class='content'>
     <div class="col-md-12">
       <div class="alert alert-info">Documentation is in flux, many sections of d4 remain to be covered.</div>
-      <h1 id="d4-0-5-2">d4 -0.5.2</h1>
+      <h1 id="d4-0-5-3">d4 -0.5.3</h1>
 <h6 id="-base-js-0-"><a href="#base-js">base.js</a></h6>
 <ul>
 <li><a href="#chart"><code>chart</code></a></li>
@@ -81,19 +81,19 @@
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-waterfall-connectors-js-18-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
+<h6 id="-nested-group-js-18-"><a href="#nested-group-js">nested-group.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-nested-group-js-19-"><a href="#nested-group-js">nested-group.js</a></h6>
+<h6 id="-nested-stack-js-19-"><a href="#nested-stack-js">nested-stack.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-nested-stack-js-20-"><a href="#nested-stack-js">nested-stack.js</a></h6>
+<h6 id="-waterfall-js-20-"><a href="#waterfall-js">waterfall.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-waterfall-js-21-"><a href="#waterfall-js">waterfall.js</a></h6>
+<h6 id="-waterfall-connectors-js-21-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
@@ -429,15 +429,6 @@ d3.select(&#39;#example&#39;)
   .datum(data)
   .call(chart);</code></pre>
 <hr>
-<h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
-<a href="#waterfall-connectors-js">Ⓣ</a></p>
-<p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
-<p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
-<h5 id="accessors">Accessors</h5>
-<p><code>x</code> - Used in placement of the connector lines.<br><code>y</code> - Used in placement of the connector lines.<br><code>span</code> - calculates the length of the connector line<br><code>classes</code> - applies the class to the connector lines.</p>
-<hr>
 <h2 id="nested-group-js">nested-group.js</h2>
 <h3 id="-"> </h3>
 <p><a href="#">#</a>
@@ -623,6 +614,15 @@ The `parser` variable will now be an object containing the following structure:
 
 Taking these attributes one-by-one:</code></pre>
 <p>data - is an array of items stacked by D3<br>value - an object with a key representing the value accessor and an array of values<br>x - an object with a key representing the x accessor and an array of values<br>y - an object with a key representing the y accessor and an array of values</p>
+<hr>
+<h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
+<a href="#waterfall-connectors-js">Ⓣ</a></p>
+<p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
+<p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>x</code> - Used in placement of the connector lines.<br><code>y</code> - Used in placement of the connector lines.<br><code>span</code> - calculates the length of the connector line<br><code>classes</code> - applies the class to the connector lines.</p>
 <hr>
 
     </div>
