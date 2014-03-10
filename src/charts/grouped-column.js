@@ -55,6 +55,19 @@ relative distribution.
 
   */
   d4.chart('groupedColumn', function groupedColumn() {
+    var columnLabelOverrides = function() {
+      return {
+        accessors : {
+          x: function(d, i) {
+            var width = this.x.rangeBand() / this.groupsOf;
+            var xPos = this.x(d[this.x.$key]) + width * i;
+            var gutter = width * 0.1;
+            return xPos + width/2 - gutter;
+          }
+        }
+      };
+    };
+
     var chart = d4.baseChart({
       config: {
         accessors: ['groupsOf'],
@@ -64,7 +77,8 @@ relative distribution.
     [{
       'bars': d4.features.groupedColumnSeries
     }, {
-      'columnLabels': d4.features.groupedColumnLabels
+      'columnLabels': d4.features.stackedColumnLabels,
+      'overrides': columnLabelOverrides
     }, {
       'xAxis': d4.features.xAxis
     }, {
