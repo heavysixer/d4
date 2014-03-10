@@ -1,5 +1,5 @@
 .d4 .column-label {
-    /* text-anchor: middle; */
+    text-anchor: middle;
 }
 
 .d4 .axis .domain, .d4 .axis .tick line {

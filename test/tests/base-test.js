@@ -345,6 +345,52 @@ describe('d4.base', function() {
       expect(chart.features()[chart.features().length - 1]).to.equal('grid3');
     });
 
+    it('should allow a feature to prepare the data before rendering', function(){
+      var chartData = [{
+        x: '2010',
+        y: -10
+      }];
+      var overrides = function() {
+        return {
+          prepare : function(data) {
+            return {x : data.y, y: data.x};
+          },
+          render : function(data) {
+            expect(data.x).to.be.equal(chartData.y);
+            expect(data.y).to.be.equal(chartData.x);
+          }
+        };
+      };
+      var chart = d4.charts.column();
+      chart.mixin({
+        'grid': d4.features.grid,
+        'overrides': overrides
+      });
+
+      d3.select('#chart')
+        .datum(chartData)
+        .call(chart);
+    });
+
+    it('should require a feature\'s prepare function to return a data array', function(){
+      var chartData = [];
+      var overrides = function() {
+        return {
+          prepare : function() {}
+        };
+      };
+      var chart = d4.charts.column();
+      chart.mixin({
+        'grid': d4.features.grid,
+        'overrides': overrides
+      });
+      expect(function() {
+        d3.select('#chart')
+          .datum(chartData)
+          .call(chart);
+      }).to.throw(Error, ' "feature.prepare()" must return a data array. However, the prepare function for the "grid" feature did not');
+    });
+
     it('should allow the mixin to specify overrides to the feature at the point of being mixed in', function() {
       var spy = chai.spy(function(yAxis) {
         return yAxis.orient('left');

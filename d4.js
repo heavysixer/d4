@@ -320,8 +320,20 @@
     }
   };
 
+  var prepareDataForFeature = function(opts, name, data) {
+    var feature = opts.features[name];
+    if(d4.isFunction(feature.prepare)){
+      data = feature.prepare.bind(opts)(data);
+      if(typeof data === 'undefined') {
+        err('"feature.prepare()" must return a data array. However, the prepare function for the "{0}" feature did not', name);
+      }
+    }
+    return data;
+  };
+
   var linkFeatures = function(opts, data) {
     opts.mixins.forEach(function(name) {
+      data = prepareDataForFeature(opts, name, data);
       var selection = opts.features[name].render.bind(opts)(opts.features[name], data);
       addEventsProxy(opts.features[name], selection);
     });
@@ -393,9 +405,9 @@
     };
   };
 
-  var extractOverrides = function(feature) {
+  var extractOverrides = function(feature, name) {
     if (feature.overrides) {
-      return feature.overrides(this);
+      return feature.overrides(name);
     } else {
       return {};
     }
@@ -1129,6 +1141,63 @@ relative distribution.
   'use strict';
 
   d4.chart('stackedColumn', function stackedColumnChart() {
+    var columnLabelsOverrides = function() {
+      var extractValues = function(data) {
+        var arr = [];
+        data.map(function(d) {
+          d.values.map(function(n) {
+            arr.push(n);
+          });
+        });
+        return arr;
+      };
+
+      var calculateTotalsAsNest = function(arr) {
+        return d3.nest()
+          .key(function(d) {
+            return d[this.x.$key];
+          }.bind(this))
+
+          .rollup(function(leaves) {
+            var text = d3.sum(leaves, function(d) {
+              return d[this.valueKey];
+            }.bind(this));
+
+            var size = d3.sum(leaves, function(d) {
+              return Math.max(0, d[this.valueKey]);
+            }.bind(this));
+
+            return {
+              text: text,
+              size: size
+            };
+          }.bind(this))
+          .entries(arr);
+      };
+
+      var calculateStackTotals = function(data) {
+        return calculateTotalsAsNest.bind(this)(extractValues(data)).map(function(d) {
+          var item = {};
+          item[this.x.$key] = d.key;
+          item.size = d.values.size;
+          item[this.valueKey] = d.values.text;
+          return item;
+        }.bind(this));
+      };
+
+      return {
+        accessors : {
+          y: function(d){
+            var padding = 5;
+            return this.y(d.size) - padding;
+          }
+        },
+        prepare: function(data) {
+          return calculateStackTotals.bind(this)(data);
+        }
+      };
+    };
+
     var chart = d4.baseChart();
     [{
       'bars': d4.features.stackedColumnSeries
@@ -1136,6 +1205,9 @@ relative distribution.
       'barLabels': d4.features.stackedColumnLabels
     }, {
       'connectors': d4.features.stackedColumnConnectors
+    }, {
+      'columnTotals': d4.features.columnLabels,
+      'overrides': columnLabelsOverrides
     }, {
       'xAxis': d4.features.xAxis
     }, {
@@ -1423,6 +1495,43 @@ relative distribution.
   });
 }).call(this);
 
+(function() {
+  /*!
+   * global d3: false
+   * global d4: false
+   */
+
+  'use strict';
+  d4.feature('columnLabels',function(name) {
+    return {
+      accessors: {
+        x: function(d) {
+          return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
+        },
+
+        y: function(d) {
+          var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
+          return (d[this.y.$key] < 0 ? this.y(d[this.y.$key]) - height : this.y(d[this.y.$key])) - 5;
+        },
+
+        text: function(d) {
+          return d3.format('').call(this, d[this.y.$key]);
+        }
+      },
+      render: function(scope, data) {
+        this.featuresGroup.append('g').attr('class', name);
+        var label = this.svg.select('.'+name).selectAll('.'+name).data(data);
+        label.enter().append('text');
+        label.exit().remove();
+        label.attr('class', 'column-label')
+          .text(scope.accessors.text.bind(this))
+          .attr('x', scope.accessors.x.bind(this))
+          .attr('y', scope.accessors.y.bind(this));
+        return label;
+      }
+    };
+  });
+}).call(this);
 (function() {
   /*!
    * global d3: false

@@ -316,8 +316,20 @@
     }
   };
 
+  var prepareDataForFeature = function(opts, name, data) {
+    var feature = opts.features[name];
+    if(d4.isFunction(feature.prepare)){
+      data = feature.prepare.bind(opts)(data);
+      if(typeof data === 'undefined') {
+        err('"feature.prepare()" must return a data array. However, the prepare function for the "{0}" feature did not', name);
+      }
+    }
+    return data;
+  };
+
   var linkFeatures = function(opts, data) {
     opts.mixins.forEach(function(name) {
+      data = prepareDataForFeature(opts, name, data);
       var selection = opts.features[name].render.bind(opts)(opts.features[name], data);
       addEventsProxy(opts.features[name], selection);
     });
@@ -389,9 +401,9 @@
     };
   };
 
-  var extractOverrides = function(feature) {
+  var extractOverrides = function(feature, name) {
     if (feature.overrides) {
-      return feature.overrides(this);
+      return feature.overrides(name);
     } else {
       return {};
     }
