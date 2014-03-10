@@ -5,7 +5,7 @@
    */
   'use strict';
 
-  var columnSeriesOverrides = function() {
+  var columnSeriesOverrides = function waterfall() {
     return {
       accessors: {
         y: function(d) {

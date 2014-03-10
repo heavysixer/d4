@@ -371,6 +371,43 @@ describe('d4.base', function() {
         .datum(chartData)
         .call(chart);
     });
+    it('should not touch existing accessors that were specified in the override object', function(){
+      var lameFeature = function(){
+        return {
+          accessors : {
+            foo : function() {
+              return 'foo';
+            },
+            bar : function() {
+              return 'bar';
+            }
+          },
+          render : function(scope) {
+            expect(scope.accessors.foo.bind(this)()).to.be.equal('foo');
+            expect(scope.accessors.bar.bind(this)()).to.be.equal('baz');
+          }
+        };
+      };
+
+      var overrides = function() {
+        return {
+          accessors : {
+            bar : function(){
+              return 'baz';
+            }
+          }
+        };
+      };
+
+      var chart = d4.charts.column();
+      chart.mixin({
+        'lameness' : lameFeature,
+        'overrides' : overrides
+      });
+      d3.select('#chart')
+        .datum([])
+        .call(chart);
+    });
 
     it('should require a feature\'s prepare function to return a data array', function(){
       var chartData = [];

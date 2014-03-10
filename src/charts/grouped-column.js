@@ -54,7 +54,7 @@ relative distribution.
     .call(chart);
 
   */
-  d4.chart('groupedColumn', function groupedColumnChart() {
+  d4.chart('groupedColumn', function groupedColumn() {
     var chart = d4.baseChart({
       config: {
         accessors: ['groupsOf'],

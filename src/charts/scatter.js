@@ -23,7 +23,7 @@
     return builder;
   };
 
-  d4.chart('scatterPlot', function() {
+  d4.chart('scatterPlot', function scatterPlot() {
     var chart = d4.baseChart({
       builder: scatterPlotBuilder,
       config: {

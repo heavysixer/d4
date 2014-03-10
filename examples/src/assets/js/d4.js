@@ -843,7 +843,7 @@ The default format may not be desired and so we'll override it:
     .call(chart);
 
   */
-  d4.chart('column', function columnChart() {
+  d4.chart('column', function column() {
     var chart = d4.baseChart();
     [{
       'bars': d4.features.stackedColumnSeries
@@ -916,7 +916,7 @@ relative distribution.
     .call(chart);
 
   */
-  d4.chart('groupedColumn', function groupedColumnChart() {
+  d4.chart('groupedColumn', function groupedColumn() {
     var chart = d4.baseChart({
       config: {
         accessors: ['groupsOf'],
@@ -997,7 +997,7 @@ relative distribution.
     .call(chart);
 
   */
-  d4.chart('line', function lineChart() {
+  d4.chart('line', function line() {
     var chart = d4.baseChart();
     [{
       'lineSeries': d4.features.lineSeries
@@ -1046,7 +1046,7 @@ relative distribution.
 
 
   */
-  d4.chart('row', function rowChart() {
+  d4.chart('row', function row() {
     var chart = d4.baseChart({
       config: {
         margin: {
@@ -1106,7 +1106,7 @@ relative distribution.
     return builder;
   };
 
-  d4.chart('scatterPlot', function() {
+  d4.chart('scatterPlot', function scatterPlot() {
     var chart = d4.baseChart({
       builder: scatterPlotBuilder,
       config: {
@@ -1140,7 +1140,7 @@ relative distribution.
    */
   'use strict';
 
-  d4.chart('stackedColumn', function stackedColumnChart() {
+  d4.chart('stackedColumn', function stackedColumn() {
     var columnLabelsOverrides = function() {
       var extractValues = function(data) {
         var arr = [];
@@ -1226,7 +1226,64 @@ relative distribution.
    */
   'use strict';
 
-  d4.chart('stackedRow', function stackedColumnChart() {
+  d4.chart('stackedRow', function stackedRow() {
+    var columnLabelsOverrides = function() {
+      var extractValues = function(data) {
+        var arr = [];
+        data.map(function(d) {
+          d.values.map(function(n) {
+            arr.push(n);
+          });
+        });
+        return arr;
+      };
+
+      var calculateTotalsAsNest = function(arr) {
+        return d3.nest()
+          .key(function(d) {
+            return d[this.y.$key];
+          }.bind(this))
+
+          .rollup(function(leaves) {
+            var text = d3.sum(leaves, function(d) {
+              return d[this.valueKey];
+            }.bind(this));
+
+            var size = d3.sum(leaves, function(d) {
+              return Math.max(0, d[this.valueKey]);
+            }.bind(this));
+
+            return {
+              text: text,
+              size: size
+            };
+          }.bind(this))
+          .entries(arr);
+      };
+
+      var calculateStackTotals = function(data) {
+        return calculateTotalsAsNest.bind(this)(extractValues(data)).map(function(d) {
+          var item = {};
+          item[this.y.$key] = d.key;
+          item.size = d.values.size;
+          item[this.valueKey] = d.values.text;
+          return item;
+        }.bind(this));
+      };
+
+      return {
+        accessors : {
+          x: function(d){
+            var padding = 5;
+            return this.x(d.size) + padding;
+          }
+        },
+        prepare: function(data) {
+          return calculateStackTotals.bind(this)(data);
+        }
+      };
+    };
+
     var chart = d4.baseChart({
       config: {
         margin: {
@@ -1252,6 +1309,9 @@ relative distribution.
     }, {
       'connectors': d4.features.stackedColumnConnectors
     }, {
+      'columnTotals': d4.features.columnLabels,
+      'overrides': columnLabelsOverrides
+    }, {
       'xAxis': d4.features.xAxis
     }, {
       'yAxis': d4.features.yAxis
@@ -1268,7 +1328,7 @@ relative distribution.
    */
   'use strict';
 
-  var columnSeriesOverrides = function() {
+  var columnSeriesOverrides = function waterfall() {
     return {
       accessors: {
         y: function(d) {
@@ -1503,6 +1563,14 @@ relative distribution.
 
   'use strict';
   d4.feature('columnLabels',function(name) {
+    var padding = 5;
+    var anchorText = function() {
+      if (this.y.$scale !== 'ordinal') {
+        return 'middle';
+      } else {
+        return 'start';
+      }
+    };
     return {
       accessors: {
         x: function(d) {
@@ -1510,8 +1578,12 @@ relative distribution.
         },
 
         y: function(d) {
-          var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
-          return (d[this.y.$key] < 0 ? this.y(d[this.y.$key]) - height : this.y(d[this.y.$key])) - 5;
+          if(this.y.$scale === 'ordinal') {
+            return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2) + padding;
+          } else {
+            var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
+            return (d[this.y.$key] < 0 ? this.y(d[this.y.$key]) - height : this.y(d[this.y.$key])) - padding;
+          }
         },
 
         text: function(d) {
@@ -1525,6 +1597,7 @@ relative distribution.
         label.exit().remove();
         label.attr('class', 'column-label')
           .text(scope.accessors.text.bind(this))
+          .attr('text-anchor', anchorText.bind(this))
           .attr('x', scope.accessors.x.bind(this))
           .attr('y', scope.accessors.y.bind(this));
         return label;
@@ -2003,16 +2076,12 @@ relative distribution.
 
     var anchorText = function(d) {
       if (typeof d.y0 !== 'undefined') {
-        if (this.x.$scale === 'ordinal') {
-          return 'middle';
-        } else {
-          return 'left';
-        }
+        return 'middle';
       }
-      if (this.y.$scale !== 'ordinal' || this.x.$scale === 'ordinal') {
+      if (this.y.$scale !== 'ordinal') {
         return 'middle';
       } else {
-        return 'left';
+        return 'start';
       }
     };
 

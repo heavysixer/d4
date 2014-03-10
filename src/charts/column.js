@@ -52,7 +52,7 @@ The default format may not be desired and so we'll override it:
     .call(chart);
 
   */
-  d4.chart('column', function columnChart() {
+  d4.chart('column', function column() {
     var chart = d4.baseChart();
     [{
       'bars': d4.features.stackedColumnSeries

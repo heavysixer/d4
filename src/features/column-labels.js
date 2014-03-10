@@ -6,6 +6,14 @@
 
   'use strict';
   d4.feature('columnLabels',function(name) {
+    var padding = 5;
+    var anchorText = function() {
+      if (this.y.$scale !== 'ordinal') {
+        return 'middle';
+      } else {
+        return 'start';
+      }
+    };
     return {
       accessors: {
         x: function(d) {
@@ -13,8 +21,12 @@
         },
 
         y: function(d) {
-          var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
-          return (d[this.y.$key] < 0 ? this.y(d[this.y.$key]) - height : this.y(d[this.y.$key])) - 5;
+          if(this.y.$scale === 'ordinal') {
+            return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2) + padding;
+          } else {
+            var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
+            return (d[this.y.$key] < 0 ? this.y(d[this.y.$key]) - height : this.y(d[this.y.$key])) - padding;
+          }
         },
 
         text: function(d) {
@@ -28,6 +40,7 @@
         label.exit().remove();
         label.attr('class', 'column-label')
           .text(scope.accessors.text.bind(this))
+          .attr('text-anchor', anchorText.bind(this))
           .attr('x', scope.accessors.x.bind(this))
           .attr('y', scope.accessors.y.bind(this));
         return label;

@@ -31,7 +31,7 @@
 
 
   */
-  d4.chart('row', function rowChart() {
+  d4.chart('row', function row() {
     var chart = d4.baseChart({
       config: {
         margin: {

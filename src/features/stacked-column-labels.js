@@ -12,16 +12,12 @@
 
     var anchorText = function(d) {
       if (typeof d.y0 !== 'undefined') {
-        if (this.x.$scale === 'ordinal') {
-          return 'middle';
-        } else {
-          return 'left';
-        }
+        return 'middle';
       }
-      if (this.y.$scale !== 'ordinal' || this.x.$scale === 'ordinal') {
+      if (this.y.$scale !== 'ordinal') {
         return 'middle';
       } else {
-        return 'left';
+        return 'start';
       }
     };
 

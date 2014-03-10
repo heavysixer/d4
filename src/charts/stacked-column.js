@@ -5,7 +5,7 @@
    */
   'use strict';
 
-  d4.chart('stackedColumn', function stackedColumnChart() {
+  d4.chart('stackedColumn', function stackedColumn() {
     var columnLabelsOverrides = function() {
       var extractValues = function(data) {
         var arr = [];

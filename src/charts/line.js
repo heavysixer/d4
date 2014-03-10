@@ -57,7 +57,7 @@
     .call(chart);
 
   */
-  d4.chart('line', function lineChart() {
+  d4.chart('line', function line() {
     var chart = d4.baseChart();
     [{
       'lineSeries': d4.features.lineSeries
