@@ -1,4 +1,4 @@
-/*! d4 - v0.5.1
+/*! d4 - v0.5.2
  *  License: MIT Expat
  *  Date: 2014-03-09
  */
@@ -756,11 +756,10 @@
           pbb,
           last;
 
-        text.each(function(d) {
+        text.each(function() {
           if (index > 0) {
             bb = this.getBoundingClientRect();
             pbb = last.getBoundingClientRect();
-            console.log(pbb);
             if (intersects(bb, pbb)) {
               move.bind(this)(bb, direction);
               intersecting = true;

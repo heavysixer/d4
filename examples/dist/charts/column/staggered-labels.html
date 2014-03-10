@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Staggered Data Labels | d4 Examples</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/prism.css">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/d4.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../assets/js/main.js"></script>
+  </head>
+  <body>
+    <div class="container">
+
+      
+<div class="header clearfix">
+    <ul class="nav nav-pills pull-right col-xs-9">
+        <li><a href="/index.html">Introduction</a></li>
+        <li><a href="/getting_started.html">Getting Started</a></li>
+        <li><a href="/docs.html">Documentation</a></li>
+        <li><a href="/examples.html">Examples</a></li>
+    </ul>
+    <div class="col-xs-3">
+      <a href="/index.html"><img src="../../assets/images/d4-logo.png" width="50" height="50" class='nav-logo' alt="D4 Logo"></a>
+    </div>
+</div>
+
+      <div class="container" role="main">
+
+        
+<h5>Staggered Data Labels</h5>
+<p>
+  Sometimes large data series labels visually run together, which makes the chart
+  hard to understand. By default d4 will try to stagger both the data series labels
+  and the axis labels. You can disable this feature by setting
+  <code>stagger(false)</code>.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8" id='source_code'>
+'use strict';
+
+$(document).ready(function(){
+  var data = [
+      { x: '2010', y:100 },
+      { x: '2011', y:200 },
+      { x: '2012', y:300 },
+      { x: '2013', y:300 },
+      { x: '2014', y:300 },
+    ];
+  var margin = {
+      top: 40,
+      right: 20,
+      bottom: 40,
+      left: 40
+    };
+
+  var chart1 = d4.charts.column();
+  chart1
+    .margin(margin)
+    .width(190);
+
+  d3.select('#example1')
+    .datum(data)
+    .call(chart1);
+
+  // disable staggering for the second chart
+  var chart2 = d4.charts.column();
+  chart2
+    .margin(margin)
+    .using('barLabels', function(labels) {
+      labels.stagger(false);
+    })
+    .using('xAxis', function(xAxis){
+      xAxis.stagger(false);
+    })
+    .width(190);
+
+  d3.select('#example2')
+    .datum(data)
+    .call(chart2);
+
+});
+
+</script>
+<div class="clearfix">
+  <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6">
+      <h5>Staggered (default)</h5>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6">
+      <h5>Staggered disabled</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6" id="example1"></div>
+    <div class="col-xs-6 col-sm-6 col-md-6" id="example2"></div>
+  </div>
+</div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript"></code></pre>
+
+
+      </div>
+      <div class="footer">
+          <p>&copy; Mark Daggett 2014</p>
+      </div>
+    </div>
+
+    <script src="../../assets/js/vendor.js"></script>
+
+  </body>
+</html>

@@ -33,11 +33,10 @@
           pbb,
           last;
 
-        text.each(function(d) {
+        text.each(function() {
           if (index > 0) {
             bb = this.getBoundingClientRect();
             pbb = last.getBoundingClientRect();
-            console.log(pbb);
             if (intersects(bb, pbb)) {
               move.bind(this)(bb, direction);
               intersecting = true;
