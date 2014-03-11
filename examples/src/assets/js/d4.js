@@ -1601,7 +1601,7 @@ relative distribution.
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.y.$key]);
+          return d3.format('').call(this, d[this.valueKey]);
         }
       },
       render: function(scope, data) {
@@ -1944,22 +1944,38 @@ relative distribution.
       return (sign(a[key]) === sign(b[key]));
     };
 
+    var processPoint = function(d, i, n, data, callback) {
+      var key = (this.y.$scale === 'ordinal') ? this.x.$key : this.y.$key;
+      if(i === 0 || !sharedSigns(data[n].values[i-1], d, key)){
+        return 0;
+      }
+      return callback.bind(this)();
+    };
+
     return {
       accessors: {
         x1: function(d) {
-          return this.x(d[this.x.$key]);
-        },
-
-        y1: function(d) {
-          if(this.x.$scale === 'linear'){
-            return this.y(d[this.y.$key]);
+          if(this.x.$scale === 'ordinal'){
+            return this.x(d[this.x.$key]);
           } else {
-            return this.y(Math.max(0, d.y0 + d.y));
+            return this.x(d.y0 + d.y);
           }
         },
 
-        span: function(){
-          return this.x.rangeBand();
+        y1: function(d) {
+          if(this.y.$scale === 'ordinal'){
+            return this.y(d[this.y.$key]);
+          } else {
+            return this.y(d.y0 + d.y);
+          }
+        },
+
+        size: function(){
+          if(this.x.$scale === 'ordinal') {
+            return this.x.rangeBand();
+          } else {
+            return this.y.rangeBand();
+          }
         },
 
         classes : function(d, i){
@@ -1987,31 +2003,29 @@ relative distribution.
         .attr('class', scope.accessors.classes.bind(this))
         .attr('stroke-dasharray','5, 5')
         .attr('x1', function(d, i, n) {
-          if(i === 0 || !sharedSigns(data[n].values[i-1], d, this.y.$key)){
-            return 0;
-          }
-          return scope.accessors.x1.bind(this)(data[n].values[i-1]) + scope.accessors.span.bind(this)(d);
+          return processPoint.bind(this)(d, i, n, data, function(){
+            return scope.accessors.x1.bind(this)(d);
+          });
         }.bind(this))
 
         .attr('y1', function(d, i, n) {
-          if(i === 0 || !sharedSigns(data[n].values[i-1], d, this.y.$key)){
-            return 0;
-          }
-          return scope.accessors.y1.bind(this)(data[n].values[i-1]);
+          var offset = (this.y.$scale === 'ordinal') ? scope.accessors.size.bind(this)(d) : 0;
+          return processPoint.bind(this)(d, i, n, data, function(){
+            return scope.accessors.y1.bind(this)(d) + offset;
+          });
         }.bind(this))
 
         .attr('x2', function(d, i, n) {
-          if(i === 0 || !sharedSigns(data[n].values[i-1], d, this.y.$key)){
-            return 0;
-          }
-          return scope.accessors.x1.bind(this)(d);
+          var offset = (this.x.$scale === 'ordinal') ? scope.accessors.size.bind(this)(d) : 0;
+          return processPoint.bind(this)(d, i, n, data, function(){
+            return scope.accessors.x1.bind(this)(data[n].values[i-1]) + offset;
+          });
         }.bind(this))
 
         .attr('y2', function(d, i, n) {
-          if(i === 0 || !sharedSigns(data[n].values[i-1], d, this.y.$key)){
-            return 0;
-          }
-          return scope.accessors.y1.bind(this)(d);
+          return processPoint.bind(this)(d, i, n, data, function(){
+            return scope.accessors.y1.bind(this)(data[n].values[i-1]);
+          });
         }.bind(this));
 
         return lines;

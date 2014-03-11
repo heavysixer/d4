@@ -30,7 +30,7 @@
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.y.$key]);
+          return d3.format('').call(this, d[this.valueKey]);
         }
       },
       render: function(scope, data) {
