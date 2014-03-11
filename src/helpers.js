@@ -11,10 +11,11 @@
   d4.helpers.staggerText = function(text, direction) {
     var maxAttempts = 5,
       attempts = 0,
-      move = function(rect, direction) {
+      move = function(lastRect, rect, direction) {
         var text = d3.select(this);
         var lastOffset = text.attr('data-last-offset') || 1;
-        var offset = (rect.height + lastOffset) * direction;
+        var top = lastRect.top - rect.top;
+        var offset = (rect.height - top + lastOffset) * direction;
         text.attr('transform', 'translate(0,' + offset + ')');
         text.attr('data-last-offset', Math.abs(offset));
       },
@@ -38,7 +39,7 @@
             bb = this.getBoundingClientRect();
             pbb = last.getBoundingClientRect();
             if (intersects(bb, pbb)) {
-              move.bind(this)(bb, direction);
+              move.bind(this)(pbb, bb, direction);
               intersecting = true;
             }
           }
