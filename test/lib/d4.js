@@ -1,4 +1,4 @@
-/*! d4 - v0.5.3
+/*! d4 - v0.5.4
  *  License: MIT Expat
  *  Date: 2014-03-11
  */
