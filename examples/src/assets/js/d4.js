@@ -1,6 +1,6 @@
 /*! d4 - v0.5.3
  *  License: MIT Expat
- *  Date: 2014-03-10
+ *  Date: 2014-03-11
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -1936,25 +1936,30 @@ relative distribution.
   */
   'use strict';
   d4.feature('stackedColumnConnectors', function(name) {
+    var sign = function(num) {
+      return (num) ? (num < 0) ? -1 : 1 : 0;
+    };
+
+    var sharedSigns = function(a, b, key){
+      return (sign(a[key]) === sign(b[key]));
+    };
 
     return {
       accessors: {
         x1: function(d) {
-          var width = 0;
-          var xVal = (d.y0 + d.y) - Math.max(0, d.y);
-          if(d.y > 0){
-            width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
-          }
-          return this.x(xVal) + width;
-
+          return this.x(d[this.x.$key]);
         },
 
         y1: function(d) {
-          return this.y(d[this.y.$key]);
+          if(this.x.$scale === 'linear'){
+            return this.y(d[this.y.$key]);
+          } else {
+            return this.y(Math.max(0, d.y0 + d.y));
+          }
         },
 
         span: function(){
-          return this.y.rangeBand();
+          return this.x.rangeBand();
         },
 
         classes : function(d, i){
@@ -1962,43 +1967,51 @@ relative distribution.
         }
       },
 
-      render: function(scope) {
+      render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var lines = this.svg.select('.' + name).selectAll('.' + name).data(function(d) {
-          return d.map(function(o) {
-            return o.values[0];
-          });
-        }.bind(this));
+        var group = this.svg.select('.' + name).selectAll('.group')
+          .data(data)
+          .enter().append('g')
+          .attr('class', function(d,i) {
+            return 'series'+ i + ' ' +  this.y.$key;
+          }.bind(this));
+
+        var lines = group.selectAll('lines')
+          .data(function(d) {
+            return d.values;
+          }.bind(this));
+
         lines.enter().append('line');
         lines.exit().remove();
         lines
         .attr('class', scope.accessors.classes.bind(this))
-        .attr('x1', function() {
-          // if(i === 0){
-          //   return 0;
-          // }
-          // return scope.accessors.x1.bind(this)(data[i - 1].values[0]);
+        .attr('stroke-dasharray','5, 5')
+        .attr('x1', function(d, i, n) {
+          if(i === 0 || !sharedSigns(data[n].values[i-1], d, this.y.$key)){
+            return 0;
+          }
+          return scope.accessors.x1.bind(this)(data[n].values[i-1]) + scope.accessors.span.bind(this)(d);
         }.bind(this))
 
-        .attr('y1', function() {
-          // if(i === 0){
-          //   return 0;
-          // }
-          // return scope.accessors.y1.bind(this)(data[i - 1].values[0]);
+        .attr('y1', function(d, i, n) {
+          if(i === 0 || !sharedSigns(data[n].values[i-1], d, this.y.$key)){
+            return 0;
+          }
+          return scope.accessors.y1.bind(this)(data[n].values[i-1]);
         }.bind(this))
 
-        .attr('x2', function() {
-          // if(i === 0){
-          //   return 0;
-          // }
-          // return scope.accessors.x1.bind(this)(data[i - 1].values[0]);
+        .attr('x2', function(d, i, n) {
+          if(i === 0 || !sharedSigns(data[n].values[i-1], d, this.y.$key)){
+            return 0;
+          }
+          return scope.accessors.x1.bind(this)(d);
         }.bind(this))
 
-        .attr('y2', function() {
-          // if(i === 0){
-          //   return 0;
-          // }
-          // return scope.accessors.y1.bind(this)(d) + scope.accessors.span.bind(this)(d);
+        .attr('y2', function(d, i, n) {
+          if(i === 0 || !sharedSigns(data[n].values[i-1], d, this.y.$key)){
+            return 0;
+          }
+          return scope.accessors.y1.bind(this)(d);
         }.bind(this));
 
         return lines;
