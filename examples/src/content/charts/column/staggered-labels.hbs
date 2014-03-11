@@ -19,9 +19,9 @@ $(document).ready(function(){
   var data = [
       { x: '2010', y:100 },
       { x: '2011', y:200 },
-      { x: '2012', y:300 },
-      { x: '2013', y:310 },
-      { x: '2014', y:300 },
+      { x: '2012', y:3000 },
+      { x: '2013', y:3005 },
+      { x: '2014', y:3000 },
     ];
   var margin = {
       top: 40,
@@ -33,7 +33,7 @@ $(document).ready(function(){
   var chart1 = d4.charts.column();
   chart1
     .margin(margin)
-    .width(190);
+    .width(180);
 
   d3.select('#example1')
     .datum(data)
