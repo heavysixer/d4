@@ -132,9 +132,9 @@ __Parser__ - A parser prepares the data for a chart.
 #### Chart Features (Mix-ins)
 
 * Arrows
+* Column Labels
 * Dot Series
 * Grid
-* Grouped Column Labels
 * Grouped Column Series
 * Line Series
 * Line Series Labels

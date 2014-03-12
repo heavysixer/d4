@@ -27,19 +27,16 @@
     <!-- endbuild -->
   </head>
   <body>
-    <div class="container">
+    {{> navbar-top }}
+    <div class="container" role="main">
 
-      {{> navbar-top }}
+      {{> body }}
 
-      <div class="container" role="main">
-
-        {{> body }}
-
-      </div>
-      <div class="footer">
-          <p>&copy; Mark Daggett 2014</p>
-      </div>
     </div>
+    <div class="footer">
+        <p>&copy; Mark Daggett 2014</p>
+    </div>
+
 
     <!-- build:js({.tmp,src}) {{assets}}/js/vendor.js -->
     <script src="{{src}}/bower_components/d3/d3.js"></script>
