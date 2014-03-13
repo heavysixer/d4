@@ -25,7 +25,7 @@
   <body>
     <div class="container">
 
-      
+
 <div class="header clearfix">
     <ul class="nav nav-pills pull-right col-xs-9">
         <li><a href="/index.html">Introduction</a></li>
@@ -40,7 +40,7 @@
 
       <div class="container" role="main">
 
-        
+
 <h5>Staggered Data Labels</h5>
 <p>
   Sometimes large data series labels visually run together, which makes the chart
@@ -92,6 +92,31 @@ $(document).ready(function(){
     .datum(data)
     .call(chart2);
 
+  var chart3 = d4.charts.row();
+  chart3
+    .margin(margin)
+    .width(190);
+
+  d3.select('#example3')
+    .datum(data)
+    .call(chart3);
+
+  // disable staggering for the second chart
+  var chart4 = d4.charts.row();
+  chart4
+    .margin(margin)
+    .using('barLabels', function(labels) {
+      labels.stagger(false);
+    })
+    .using('xAxis', function(xAxis){
+      xAxis.stagger(false);
+    })
+    .width(190);
+
+  d3.select('#example4')
+    .datum(data)
+    .call(chart4);
+
 });
 
 </script>
@@ -107,6 +132,10 @@ $(document).ready(function(){
   <div class="row">
     <div class="col-xs-6 col-sm-6 col-md-6" id="example1"></div>
     <div class="col-xs-6 col-sm-6 col-md-6" id="example2"></div>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6" id="example3"></div>
+    <div class="col-xs-6 col-sm-6 col-md-6" id="example4"></div>
   </div>
 </div>
 <h6>JavaScript Code</h6>

@@ -19,21 +19,22 @@ $(document).ready(function(){
   var data = [
       { x: '2010', y:100 },
       { x: '2011', y:200 },
-      { x: '2012', y:3000 },
-      { x: '2013', y:3005 },
-      { x: '2014', y:3000 },
+      { x: '2012', y:300 },
+      { x: '2013', y:300 },
+      { x: '2014', y:300 },
     ];
   var margin = {
       top: 40,
-      right: 20,
+      right: 80,
       bottom: 40,
-      left: 40
+      left: 80
     };
 
   var chart1 = d4.charts.column();
   chart1
     .margin(margin)
-    .width(180);
+    .height(160)
+    .width(290);
 
   d3.select('#example1')
     .datum(data)
@@ -49,11 +50,53 @@ $(document).ready(function(){
     .using('xAxis', function(xAxis){
       xAxis.stagger(false);
     })
-    .width(190);
+    .height(160)
+    .width(290);
 
   d3.select('#example2')
     .datum(data)
     .call(chart2);
+
+  var chart3 = d4.charts.row();
+  chart3
+    .x(function(x){
+      x.key('y');
+    })
+    .y(function(y){
+      y.key('x');
+    })
+    .valueKey('y')
+    .margin(margin)
+    .height(160)
+    .width(290);
+
+  d3.select('#example3')
+    .datum(data)
+    .call(chart3);
+
+  // disable staggering for the second chart
+  var chart4 = d4.charts.row();
+  chart4
+    .x(function(x){
+      x.key('y');
+    })
+    .y(function(y){
+      y.key('x');
+    })
+    .valueKey('y')
+    .margin(margin)
+    .using('barLabels', function(labels) {
+      labels.stagger(false);
+    })
+    .using('xAxis', function(xAxis){
+      xAxis.stagger(false);
+    })
+    .height(160)
+    .width(290);
+
+  d3.select('#example4')
+    .datum(data)
+    .call(chart4);
 
 });
 
@@ -71,6 +114,11 @@ $(document).ready(function(){
     <div class="col-xs-6 col-sm-6 col-md-6" id="example1"></div>
     <div class="col-xs-6 col-sm-6 col-md-6" id="example2"></div>
   </div>
+  <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6" id="example3"></div>
+    <div class="col-xs-6 col-sm-6 col-md-6" id="example4"></div>
+  </div>
+
 </div>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript"></code></pre>

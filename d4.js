@@ -1084,7 +1084,7 @@ relative distribution.
     [{
       'bars': d4.features.stackedColumnSeries
     }, {
-      'rowLabels': d4.features.stackedColumnLabels
+      'barLabels': d4.features.stackedColumnLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
