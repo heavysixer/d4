@@ -109,7 +109,11 @@
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
-          group.selectAll('text').call(d4.helpers.staggerTextVertically, -1);
+          if(this.y.$scale !== 'ordinal') {
+            group.selectAll('text').call(d4.helpers.staggerTextVertically, -1);
+          } else {
+            group.selectAll('text').call(d4.helpers.staggerTextHorizontally, 1);
+          }
         }
         return text;
       }

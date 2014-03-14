@@ -11,6 +11,11 @@ categories:
   and the axis labels. You can disable this feature by setting
   <code>stagger(false)</code>.
 </p>
+<div class="alert alert-warning">Obviously none of these charts are partially
+  nice to look at. d4's <code>stagger</code> is an attempt to make the best
+  of a bad visual situation. Ideally these kinds of situations can be avoided by
+  giving charts enough visual space to breath.
+</div>
 <hr/>
 <script type="text/javascript" charset="utf-8" id='source_code'>
 'use strict';
@@ -35,7 +40,7 @@ $(document).ready(function(){
   var chart1 = d4.charts.column();
   chart1
     .margin(margin)
-    .height(160)
+    .height(140)
     .width(300);
 
   d3.select('#example1')
@@ -52,7 +57,10 @@ $(document).ready(function(){
     .using('xAxis', function(xAxis){
       xAxis.stagger(false);
     })
-    .height(160)
+    .using('yAxis', function(yAxis){
+      yAxis.stagger(false);
+    })
+    .height(140)
     .width(300);
 
   d3.select('#example2')
@@ -92,6 +100,9 @@ $(document).ready(function(){
     })
     .using('xAxis', function(xAxis){
       xAxis.stagger(false);
+    })
+    .using('yAxis', function(yAxis){
+      yAxis.stagger(false);
     })
     .height(160)
     .width(300);
