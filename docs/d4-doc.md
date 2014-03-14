@@ -293,6 +293,7 @@ proxy that links the two.
 
 1. `proxy`_(Object) -- The proxy object, which masks the target._
 2. `target`_(Object) -- The target objet, which is masked by the proxy_
+3. `prefix`_(String) -- Optional prefix to add to the method names, which helps avoid naming collisions on the proxy._
 
 ---
 

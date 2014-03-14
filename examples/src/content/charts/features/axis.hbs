@@ -65,11 +65,12 @@ $(document).ready(function(){
   .using('xAxis', function(axis){
 
     // position the tickmarks on the top of the axis line
-    axis.orient('top')
+    axis.orient('top');
 
     // move the axis to the top of the chart.
-    axis.y(0);
+    axis.y(-20);
   })
+  .marginTop(50)
   .groupsOf(parsedData.data[0].values.length);
 
   d3.select('#example')
