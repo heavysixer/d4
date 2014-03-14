@@ -10,15 +10,20 @@
       return val > 0 ? 'positive' : 'negative';
     };
 
-    var anchorText = function(d) {
+    // FIXME: We should not need to sniff this out.
+    var dataInColumns = function(d) {
       if (typeof d.y0 !== 'undefined') {
-        return 'middle';
+        return true;
       }
       if (this.y.$scale !== 'ordinal') {
-        return 'middle';
+        return true;
       } else {
-        return 'start';
+        return false;
       }
+    };
+
+    var anchorText = function(d) {
+      return dataInColumns.bind(this)(d) ? 'middle' : 'start';
     };
 
     var useDiscretePosition = function(dimension, d) {
@@ -104,7 +109,7 @@
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
-          group.selectAll('text').call(d4.helpers.staggerText, -1);
+          group.selectAll('text').call(d4.helpers.staggerTextVertically, -1);
         }
         return text;
       }

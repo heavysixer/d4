@@ -17,6 +17,8 @@ categories:
 
 $(document).ready(function(){
   var data = [
+      { x: '2008', y:100 },
+      { x: '2009', y:110 },
       { x: '2010', y:100 },
       { x: '2011', y:200 },
       { x: '2012', y:300 },
@@ -34,7 +36,7 @@ $(document).ready(function(){
   chart1
     .margin(margin)
     .height(160)
-    .width(290);
+    .width(300);
 
   d3.select('#example1')
     .datum(data)
@@ -51,7 +53,7 @@ $(document).ready(function(){
       xAxis.stagger(false);
     })
     .height(160)
-    .width(290);
+    .width(300);
 
   d3.select('#example2')
     .datum(data)
@@ -68,7 +70,7 @@ $(document).ready(function(){
     .valueKey('y')
     .margin(margin)
     .height(160)
-    .width(290);
+    .width(300);
 
   d3.select('#example3')
     .datum(data)
@@ -92,7 +94,7 @@ $(document).ready(function(){
       xAxis.stagger(false);
     })
     .height(160)
-    .width(290);
+    .width(300);
 
   d3.select('#example4')
     .datum(data)

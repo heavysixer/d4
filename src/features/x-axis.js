@@ -22,7 +22,7 @@
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
-          group.selectAll('.tick text').call(d4.helpers.staggerText, 1);
+          group.selectAll('.tick text').call(d4.helpers.staggerTextVertically, 1);
         }
       }
     };
