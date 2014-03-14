@@ -5,21 +5,40 @@
    */
 
   'use strict';
-  d4.feature('yAxis', function(name) {
 
-    return {
+  /* This feature creates an xAxis for use within d4. There are a variety of
+   * accessors described below which modify the behavior and apperance of the axis.
+   *
+   *##### Accessors
+   * `axis` - The d3 axis object itself.
+   * `innerTickSize` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize
+   * `orient` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#orient
+   * `outerTickSize`- see: https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize
+   * `scale` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#scale
+   * `stagger` - (true | false) determines if the axis should stagger overlapping text (true by default)
+   * `tickFormat` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat
+   * `tickPadding` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding
+   * `tickSize` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize
+   * `tickSubdivide`- see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide
+   * `tickValues` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues
+   * `ticks` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#ticks
+   *
+  */
+  d4.feature('yAxis', function(name) {
+    var axis = d3.svg.axis()
+    .orient('left')
+    .tickSize(0);
+
+    var obj = {
       accessors: {
-        format: function(yAxis) {
-          return yAxis.orient('left').tickSize(0);
-        },
+        axis: axis,
         stagger: true
       },
       render: function(scope) {
-        var yAxis = d3.svg.axis().scale(this.y);
-        var formattedAxis = scope.accessors.format.bind(this)(yAxis);
-        var group = this.featuresGroup.append('g').attr('class', 'y axis ' + name)
+        scope.scale(this.y);
+        this.featuresGroup.append('g').attr('class', 'y axis ' + name)
           .attr('transform', 'translate(0,0)')
-          .call(formattedAxis)
+          .call(scope.axis())
           .selectAll('.tick text')
           .call(d4.helpers.wrapText, this.margin.left);
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
@@ -29,5 +48,7 @@
         }
       }
     };
+    d4.createAccessorProxy(obj, axis);
+    return obj;
   });
 }).call(this);

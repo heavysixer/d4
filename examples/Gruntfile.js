@@ -198,6 +198,7 @@ module.exports = function(grunt) {
     assemble: {
       pages: {
         options: {
+          collections: [{name : 'concepts', sortorder: 'asc', sortby: 'title' }, { name: 'features', sortorder: 'asc', sortby: 'title' },{ name: 'charts', sortorder: 'asc', sortby: 'title' }],
           flatten: true,
           assets: '.tmp/assets',
           layout: '<%= app.src %>/templates/layouts/default.hbs',
@@ -208,6 +209,7 @@ module.exports = function(grunt) {
         files: {
           '.tmp/': ['<%= app.src %>/templates/pages/*.hbs'],
           '.tmp/charts/column/': ['<%= app.src %>/content/charts/column/*.hbs'],
+          '.tmp/charts/features/': ['<%= app.src %>/content/charts/features/*.hbs'],
           '.tmp/charts/grouped-column/': ['<%= app.src %>/content/charts/grouped-column/*.hbs'],
           '.tmp/charts/line/': ['<%= app.src %>/content/charts/line/*.hbs'],
           '.tmp/charts/row/': ['<%= app.src %>/content/charts/row/*.hbs'],

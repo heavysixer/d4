@@ -2,117 +2,70 @@
 
 ###### [base.js][0]
 
-* [`chart`][1]
-* [`feature`][2]
-* [`builder`][3]
-* [`parser`][4]
-* [`baseChart`][5]
-* [`builder`][3]
-* [`features`][6]
-* [`mixin`][7]
-* [`mixout`][8]
-* [`axes`][9]
-* [`using`][10]
+* [`baseChart`][1]
+* [`builder`][2]
+* [`features`][3]
+* [`mixin`][4]
+* [`mixout`][5]
+* [`axes`][6]
+* [`using`][7]
+* [`builder`][2]
+* [`chart`][8]
+* [`createAccessorProxy`][9]
+* [`feature`][10]
 * [`functor`][11]
+* [`parser`][12]
 
-###### [scales.js][12]
+###### [scales.js][13]
 
-* [``][13]
-* [``][13]
+* [``][14]
+* [``][14]
 
-###### [column.js][14]
+###### [column.js][15]
 
-* [``][13]
+* [``][14]
 
-###### [grouped-column.js][15]
+###### [grouped-column.js][16]
 
-* [``][13]
+* [``][14]
 
-###### [line.js][16]
+###### [line.js][17]
 
-* [``][13]
+* [``][14]
 
-###### [row.js][17]
+###### [row.js][18]
 
-* [``][13]
+* [``][14]
 
-###### [nested-group.js][18]
+###### [waterfall-connectors.js][19]
 
-* [``][13]
+* [``][14]
 
-###### [nested-stack.js][19]
+###### [x-axis.js][20]
 
-* [``][13]
+* [``][14]
 
-###### [waterfall.js][20]
+###### [y-axis.js][21]
 
-* [``][13]
+* [``][14]
 
-###### [waterfall-connectors.js][21]
+###### [nested-group.js][22]
 
-* [``][13]
+* [``][14]
+
+###### [nested-stack.js][23]
+
+* [``][14]
+
+###### [waterfall.js][24]
+
+* [``][14]
 
 ## base.js
 
-### chart
-
-[\#][1]
-[Ⓣ][0]
-
-This function allows you to register a reusable chart with d4\.
-
-#### Arguments
-
-1. `name`_(String) -- accessor name for chart._
-2. `funct`_(Function) -- function which will instantiate the chart._
-
----
-
-### feature
-
-[\#][2]
-[Ⓣ][0]
-
-This function allows you to register a reusable chart feature with d4\.
-
-#### Arguments
-
-1. `name`_(String) -- accessor name for chart feature._
-2. `funct`_(Function) -- function which will instantiate the chart feature._
-
----
-
-### builder
-
-[\#][3]
-[Ⓣ][0]
-
-This function allows you to register a reusable chart builder with d4\.
-
-#### Arguments
-
-1. `name`_(String) -- accessor name for chart builder._
-2. `funct`_(Function) -- function which will instantiate the chart builder._
-
----
-
-### parser
-
-[\#][4]
-[Ⓣ][0]
-
-This function allows you to register a reusable data parser with d4\.
-
-#### Arguments
-
-1. `name`_(String) -- accessor name for data parser._
-2. `funct`_(Function) -- function which will instantiate the data parser._
-
----
-
 ### baseChart
 
-[\#][5]
+[\#][1]
 [Ⓣ][0]
 
 This function creates a d4 chart object. It is only used when creating a  
@@ -143,7 +96,7 @@ new chart factory.
 
 ### builder
 
-[\#][3]
+[\#][2]
 [Ⓣ][0]
 
 Specifies an object, which d4 uses to initialize the chart with. By default  
@@ -171,7 +124,7 @@ override the existing builder provided by a chart and use your own.
 
 ### features
 
-[\#][6]
+[\#][3]
 [Ⓣ][0]
 
 To see what features are currently mixed into your chart you can use  
@@ -192,7 +145,7 @@ this method. This function cannot be chained.
 
 ### mixin
 
-[\#][7]
+[\#][4]
 [Ⓣ][0]
 
 Specifies a feature to be mixed into a given chart.  
@@ -216,7 +169,7 @@ value which is a function that when invoked returns a d4 feature object.
 
 ### mixout
 
-[\#][8]
+[\#][5]
 [Ⓣ][0]
 
 Specifies an existing feature of a chart to be removed (mixed out).
@@ -240,7 +193,7 @@ Specifies an existing feature of a chart to be removed (mixed out).
 
 ### axes
 
-[\#][9]
+[\#][6]
 [Ⓣ][0]
 
 This function returns the internal axes object as a parameter to the  
@@ -254,7 +207,7 @@ supplied function.
 
 ### using
 
-[\#][10]
+[\#][7]
 [Ⓣ][0]
 
 The heart of the d4 API is the `using` function, which allows you to  
@@ -275,6 +228,85 @@ contextually modify attributes of the chart or one of its features.
 
 1. `name`_(String) -- accessor name for chart feature._
 2. `funct`_(Function) -- function which will perform the modifcation._
+
+---
+
+### builder
+
+[\#][2]
+[Ⓣ][0]
+
+This function allows you to register a reusable chart builder with d4\.
+
+#### Arguments
+
+1. `name`_(String) -- accessor name for chart builder._
+2. `funct`_(Function) -- function which will instantiate the chart builder._
+
+---
+
+### chart
+
+[\#][8]
+[Ⓣ][0]
+
+This function allows you to register a reusable chart with d4\.
+
+#### Arguments
+
+1. `name`_(String) -- accessor name for chart._
+2. `funct`_(Function) -- function which will instantiate the chart._
+
+---
+
+### createAccessorProxy
+
+[\#][9]
+[Ⓣ][0]
+
+This function allows create proxy accessor to other objects. This is most  
+useful when you need a feature to transparently control a component of a  
+d3 object. Consider the example of the yAxis feature. It allows you to control  
+a d3 axis object. To the user the d4 axis feature and the d3 axis object are  
+one in the same, and they will expect that they can interact with an d4 axis  
+feature in the same way they could with a d3 axis object. Therefore before  
+the feature is created we first use this function to create a transparent  
+proxy that links the two.
+
+##### Examples
+
+       d4.feature('yAxis', function(name) {
+           var axis = d3.svg.axis();
+           var obj = { accessors : {} };
+           d4.createAccessorProxy(obj, axis);
+           return obj;
+      });
+    
+      // Then when using the feature you can transparently access the axis properties
+      chart.using('yAxis', function(axis){
+          // => 0
+          axis.ticks();
+      });
+    
+
+#### Arguments
+
+1. `proxy`_(Object) -- The proxy object, which masks the target._
+2. `target`_(Object) -- The target objet, which is masked by the proxy_
+
+---
+
+### feature
+
+[\#][10]
+[Ⓣ][0]
+
+This function allows you to register a reusable chart feature with d4\.
+
+#### Arguments
+
+1. `name`_(String) -- accessor name for chart feature._
+2. `funct`_(Function) -- function which will instantiate the chart feature._
 
 ---
 
@@ -300,12 +332,26 @@ Based on D3's own functor function.
 
 ---
 
+### parser
+
+[\#][12]
+[Ⓣ][0]
+
+This function allows you to register a reusable data parser with d4\.
+
+#### Arguments
+
+1. `name`_(String) -- accessor name for data parser._
+2. `funct`_(Function) -- function which will instantiate the data parser._
+
+---
+
 ## scales.js
 
 ### 
 
-[\#][13]
-[Ⓣ][12]
+[\#][14]
+[Ⓣ][13]
 
 Creates a linear scale for a dimension of a given chart.
 
@@ -319,8 +365,8 @@ Creates a linear scale for a dimension of a given chart.
 
 ### 
 
-[\#][13]
-[Ⓣ][12]
+[\#][14]
+[Ⓣ][13]
 
 Creates an ordinal scale for a dimension of a given chart.
 
@@ -336,8 +382,8 @@ Creates an ordinal scale for a dimension of a given chart.
 
 ### 
 
-[\#][13]
-[Ⓣ][14]
+[\#][14]
+[Ⓣ][15]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -392,8 +438,8 @@ The default format may not be desired and so we'll override it:
 
 ### 
 
-[\#][13]
-[Ⓣ][15]
+[\#][14]
+[Ⓣ][16]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -449,8 +495,8 @@ relative distribution.
 
 ### 
 
-[\#][13]
-[Ⓣ][16]
+[\#][14]
+[Ⓣ][17]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -509,8 +555,8 @@ along the xAxis.
 
 ### 
 
-[\#][13]
-[Ⓣ][17]
+[\#][14]
+[Ⓣ][18]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -538,12 +584,89 @@ has four default features:
 
 ---
 
+## waterfall-connectors.js
+
+### 
+
+[\#][14]
+[Ⓣ][19]
+
+Waterfall connectors are orthogonal series connectors which visually join  
+column series together by spanning the top or bottom of adjacent columns.
+
+When using this feature in charts other than waterfall, be aware that the  
+mixin expects an accessor property for `orientation`, which it uses to render  
+the direction of the lines.
+
+##### Accessors
+
+`x` - Used in placement of the connector lines.  
+`y` - Used in placement of the connector lines.  
+`span` - calculates the length of the connector line  
+`classes` - applies the class to the connector lines.
+
+---
+
+## x-axis.js
+
+### 
+
+[\#][14]
+[Ⓣ][20]
+
+This feature creates an xAxis for use within d4\. There are a variety of  
+accessors described below which modify the behavior and apperance of the axis.
+
+##### Accessors
+
+`axis` - The d3 axis object itself.  
+`innerTickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize][25]  
+`orient` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#orient][26]  
+`outerTickSize`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize][27]  
+`scale` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#scale][28]  
+`stagger` - (true | false) determines if the axis should stagger overlapping text (true by default)  
+`tickFormat` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat][29]  
+`tickPadding` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding][30]  
+`tickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize][31]  
+`tickSubdivide`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide][32]  
+`tickValues` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues][33]  
+`ticks` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks][34]
+
+---
+
+## y-axis.js
+
+### 
+
+[\#][14]
+[Ⓣ][21]
+
+This feature creates an xAxis for use within d4\. There are a variety of  
+accessors described below which modify the behavior and apperance of the axis.
+
+##### Accessors
+
+`axis` - The d3 axis object itself.  
+`innerTickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize][25]  
+`orient` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#orient][26]  
+`outerTickSize`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize][27]  
+`scale` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#scale][28]  
+`stagger` - (true | false) determines if the axis should stagger overlapping text (true by default)  
+`tickFormat` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat][29]  
+`tickPadding` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding][30]  
+`tickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize][31]  
+`tickSubdivide`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide][32]  
+`tickValues` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues][33]  
+`ticks` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks][34]
+
+---
+
 ## nested-group.js
 
 ### 
 
-[\#][13]
-[Ⓣ][18]
+[\#][14]
+[Ⓣ][22]
 
 The nested group parser is useful for grouped column charts where multiple  
 data items need to appear relative to the axis value, for example grouped  
@@ -558,7 +681,7 @@ column charts or multi-series line charts.
 
 This module makes use of the d3's "nest" data structure layout
 
-[https://github.com/mbostock/d3/wiki/Arrays\#-nest][22]
+[https://github.com/mbostock/d3/wiki/Arrays\#-nest][35]
 
 #### Approach
 
@@ -596,8 +719,8 @@ Keep reading for more information on these various accessor functions.
 
 ### 
 
-[\#][13]
-[Ⓣ][19]
+[\#][14]
+[Ⓣ][23]
 
 The nested stack parser is useful for charts which take a data series  
 and wants to sort them across a dimension and then display the results.  
@@ -614,8 +737,8 @@ The most common usecase would be a stacked column chart like this:
 
 This module makes use of the d3's "nest" data structure, and "stack" layout
 
-[https://github.com/mbostock/d3/wiki/Arrays\#-nest][22]  
-[https://github.com/mbostock/d3/wiki/Stack-Layout][23]
+[https://github.com/mbostock/d3/wiki/Arrays\#-nest][35]  
+[https://github.com/mbostock/d3/wiki/Stack-Layout][36]
 
 #### Approach
 
@@ -705,8 +828,8 @@ The `parser` variable will now be an object containing the following structure:
 
 ### 
 
-[\#][13]
-[Ⓣ][20]
+[\#][14]
+[Ⓣ][24]
 
 The waterfall parser is useful for waterfall charts where data items need to account  
 for the position of earlier values:
@@ -719,8 +842,8 @@ for the position of earlier values:
     ----------------------
     
     This module makes use of the d3's "nest" data structure, and "stack" layout
-    [https://github.com/mbostock/d3/wiki/Arrays#-nest][22]
-    [https://github.com/mbostock/d3/wiki/Stack-Layout][23]
+    [https://github.com/mbostock/d3/wiki/Arrays#-nest][35]
+    [https://github.com/mbostock/d3/wiki/Stack-Layout][36]
     
     
     Approach:
@@ -809,52 +932,42 @@ y - an object with a key representing the y accessor and an array of values
 
 ---
 
-## waterfall-connectors.js
-
-### 
-
-[\#][13]
-[Ⓣ][21]
-
-Waterfall connectors are orthogonal series connectors which visually join  
-column series together by spanning the top or bottom of adjacent columns.
-
-When using this feature in charts other than waterfall, be aware that the  
-mixin expects an accessor property for `orientation`, which it uses to render  
-the direction of the lines.
-
-##### Accessors
-
-`x` - Used in placement of the connector lines.  
-`y` - Used in placement of the connector lines.  
-`span` - calculates the length of the connector line  
-`classes` - applies the class to the connector lines.
-
----
-
 
 
 [0]: #base-js
-[1]: #chart
-[2]: #feature
-[3]: #builder
-[4]: #parser
-[5]: #basechart
-[6]: #features
-[7]: #mixin
-[8]: #mixout
-[9]: #axes
-[10]: #using
+[1]: #basechart
+[2]: #builder
+[3]: #features
+[4]: #mixin
+[5]: #mixout
+[6]: #axes
+[7]: #using
+[8]: #chart
+[9]: #createaccessorproxy
+[10]: #feature
 [11]: #functor
-[12]: #scales-js
-[13]: #
-[14]: #column-js
-[15]: #grouped-column-js
-[16]: #line-js
-[17]: #row-js
-[18]: #nested-group-js
-[19]: #nested-stack-js
-[20]: #waterfall-js
-[21]: #waterfall-connectors-js
-[22]: https://github.com/mbostock/d3/wiki/Arrays#-nest
-[23]: https://github.com/mbostock/d3/wiki/Stack-Layout
+[12]: #parser
+[13]: #scales-js
+[14]: #
+[15]: #column-js
+[16]: #grouped-column-js
+[17]: #line-js
+[18]: #row-js
+[19]: #waterfall-connectors-js
+[20]: #x-axis-js
+[21]: #y-axis-js
+[22]: #nested-group-js
+[23]: #nested-stack-js
+[24]: #waterfall-js
+[25]: https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize
+[26]: https://github.com/mbostock/d3/wiki/SVG-Axes#orient
+[27]: https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize
+[28]: https://github.com/mbostock/d3/wiki/SVG-Axes#scale
+[29]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat
+[30]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding
+[31]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize
+[32]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide
+[33]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues
+[34]: https://github.com/mbostock/d3/wiki/SVG-Axes#ticks
+[35]: https://github.com/mbostock/d3/wiki/Arrays#-nest
+[36]: https://github.com/mbostock/d3/wiki/Stack-Layout

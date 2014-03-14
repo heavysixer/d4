@@ -208,18 +208,7 @@
   var createAxisScaleAccessor = function(scale, dimension, resetFunct) {
 
     // Create a transparent proxy for functions needed by the d3 scale.
-    each(d3.keys(scale), function(funct){
-      dimension[funct] = function(){
-        if (!arguments.length) {
-          return scale[funct]();
-        }
-        scale[funct].$dirty = true;
-        dimension[funct].$dirty = true;
-        return scale[funct].apply(scale, arguments);
-      };
-      scale[funct].$dirty = false;
-      dimension[funct].$dirty = false;
-    });
+    d4.createAccessorProxy(dimension, scale);
 
     dimension.scale = function(val){
       if (!arguments.length) {
@@ -480,50 +469,6 @@
   };
 
   /**
-   * This function allows you to register a reusable chart with d4.
-   * @param {String} name - accessor name for chart.
-   * @param {Function} funct - function which will instantiate the chart.
-   * @returns a reference to the chart function
-  */
-  d4.chart = function(name, funct) {
-    d4.charts[name] = funct;
-    return d4.charts[name];
-  };
-
-  /**
-   * This function allows you to register a reusable chart feature with d4.
-   * @param {String} name - accessor name for chart feature.
-   * @param {Function} funct - function which will instantiate the chart feature.
-   * @returns a reference to the chart feature
-  */
-  d4.feature = function(name, funct) {
-    d4.features[name] = funct;
-    return d4.features[name];
-  };
-
-  /**
-   * This function allows you to register a reusable chart builder with d4.
-   * @param {String} name - accessor name for chart builder.
-   * @param {Function} funct - function which will instantiate the chart builder.
-   * @returns a reference to the chart builder
-  */
-  d4.builder = function(name, funct) {
-    d4.builders[name] = funct;
-    return d4.builders[name];
-  };
-
-  /**
-   * This function allows you to register a reusable data parser with d4.
-   * @param {String} name - accessor name for data parser.
-   * @param {Function} funct - function which will instantiate the data parser.
-   * @returns a reference to the data parser
-  */
-  d4.parser = function(name, funct) {
-    d4.parsers[name] = funct;
-    return d4.parsers[name];
-  };
-
-  /**
    * This function creates a d4 chart object. It is only used when creating a
    * new chart factory.
    *
@@ -677,6 +622,99 @@
   };
 
   /**
+   * This function allows you to register a reusable chart builder with d4.
+   * @param {String} name - accessor name for chart builder.
+   * @param {Function} funct - function which will instantiate the chart builder.
+   * @returns a reference to the chart builder
+  */
+  d4.builder = function(name, funct) {
+    d4.builders[name] = funct;
+    return d4.builders[name];
+  };
+
+  /**
+   * This function allows you to register a reusable chart with d4.
+   * @param {String} name - accessor name for chart.
+   * @param {Function} funct - function which will instantiate the chart.
+   * @returns a reference to the chart function
+  */
+  d4.chart = function(name, funct) {
+    d4.charts[name] = funct;
+    return d4.charts[name];
+  };
+
+  /**
+   * This function allows create proxy accessor to other objects. This is most
+   * useful when you need a feature to transparently control a component of a
+   * d3 object. Consider the example of the yAxis feature. It allows you to control
+   * a d3 axis object. To the user the d4 axis feature and the d3 axis object are
+   * one in the same, and they will expect that they can interact with an d4 axis
+   * feature in the same way they could with a d3 axis object. Therefore before
+   * the feature is created we first use this function to create a transparent
+   * proxy that links the two.
+   *
+   *##### Examples
+   *
+   *        d4.feature('yAxis', function(name) {
+   *            var axis = d3.svg.axis();
+   *            var obj = { accessors : {} };
+   *            d4.createAccessorProxy(obj, axis);
+   *            return obj;
+   *       });
+   *
+   *       // Then when using the feature you can transparently access the axis properties
+   *       chart.using('yAxis', function(axis){
+   *           // => 0
+   *           axis.ticks();
+   *       });
+   *
+   * @param {Object} proxy - The proxy object, which masks the target.
+   * @param {Object} target - The target objet, which is masked by the proxy
+  */
+  d4.createAccessorProxy = function(proxy, target) {
+    each(d3.keys(target), function(funct){
+      proxy[funct] = function(){
+        if (!arguments.length) {
+          return target[funct]();
+        }
+        target[funct].$dirty = true;
+        proxy[funct].$dirty = true;
+        return target[funct].apply(target, arguments);
+      };
+      target[funct].$dirty = false;
+      proxy[funct].$dirty = false;
+    });
+  };
+
+  d4.extend = function(obj) {
+    each(Array.prototype.slice.call(arguments, 1), function(source) {
+      if (source) {
+        for (var prop in source) {
+          if (source[prop] && source[prop].constructor &&
+            source[prop].constructor === Object) {
+            obj[prop] = obj[prop] || {};
+            d4.extend(obj[prop], source[prop]);
+          } else {
+            obj[prop] = source[prop];
+          }
+        }
+      }
+    });
+    return obj;
+  };
+
+  /**
+   * This function allows you to register a reusable chart feature with d4.
+   * @param {String} name - accessor name for chart feature.
+   * @param {Function} funct - function which will instantiate the chart feature.
+   * @returns a reference to the chart feature
+  */
+  d4.feature = function(name, funct) {
+    d4.features[name] = funct;
+    return d4.features[name];
+  };
+
+  /**
    * Based on D3's own functor function.
    * > If the specified value is a function, returns the specified value. Otherwise,
    * > returns a function that returns the specified value. This method is used
@@ -710,21 +748,15 @@
     return d4.extend(d4.extend({}, options), overrides);
   };
 
-  d4.extend = function(obj) {
-    each(Array.prototype.slice.call(arguments, 1), function(source) {
-      if (source) {
-        for (var prop in source) {
-          if (source[prop] && source[prop].constructor &&
-            source[prop].constructor === Object) {
-            obj[prop] = obj[prop] || {};
-            d4.extend(obj[prop], source[prop]);
-          } else {
-            obj[prop] = source[prop];
-          }
-        }
-      }
-    });
-    return obj;
+  /**
+   * This function allows you to register a reusable data parser with d4.
+   * @param {String} name - accessor name for data parser.
+   * @param {Function} funct - function which will instantiate the data parser.
+   * @returns a reference to the data parser
+  */
+  d4.parser = function(name, funct) {
+    d4.parsers[name] = funct;
+    return d4.parsers[name];
   };
 
 }).call(this);
