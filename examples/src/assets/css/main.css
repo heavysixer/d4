@@ -17,6 +17,10 @@ body {
     margin-bottom:10px;
 }
 
+#example {
+    min-height: 100px;
+}
+
 
 table {
 max-width: 100%;

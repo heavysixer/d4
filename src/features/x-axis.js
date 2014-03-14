@@ -31,13 +31,19 @@
     var obj = {
       accessors: {
         axis : axis,
-        stagger: true
+        stagger: true,
+        x: 0,
+        y: function(){
+          return this.height - this.margin.top - this.margin.bottom;
+        },
       },
 
       render: function(scope) {
         scope.scale(this.x);
+        var x = d4.functor(scope.accessors.x).bind(this)();
+        var y = d4.functor(scope.accessors.y).bind(this)();
         var group = this.featuresGroup.append('g').attr('class', 'x axis '+ name)
-          .attr('transform', 'translate(0,' + (this.height - this.margin.top - this.margin.bottom) + ')')
+          .attr('transform', 'translate(' + x + ',' + y + ')')
           .call(scope.axis());
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 

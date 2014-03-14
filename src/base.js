@@ -281,6 +281,8 @@
         left: 40
       }
     }, config);
+
+    d4.createAccessorProxy(opts, opts.margin, 'margin');
     linkAxes(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder || builder);
     opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);
@@ -670,19 +672,29 @@
    *
    * @param {Object} proxy - The proxy object, which masks the target.
    * @param {Object} target - The target objet, which is masked by the proxy
+   * @param {String} prefix - Optional prefix to add to the method names, which helps avoid naming collisions on the proxy.
   */
-  d4.createAccessorProxy = function(proxy, target) {
+  d4.createAccessorProxy = function(proxy, target, prefix) {
+    var capitalize = function(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
     each(d3.keys(target), function(funct){
-      proxy[funct] = function(){
+      var proxyFunct = funct;
+      if(typeof prefix !== 'undefined') {
+        proxyFunct = prefix + capitalize(funct);
+      }
+
+      proxy[proxyFunct] = function(){
         if (!arguments.length) {
           return target[funct]();
         }
         target[funct].$dirty = true;
-        proxy[funct].$dirty = true;
+        proxy[proxyFunct].$dirty = true;
         return target[funct].apply(target, arguments);
       };
       target[funct].$dirty = false;
-      proxy[funct].$dirty = false;
+      proxy[proxyFunct].$dirty = false;
     });
   };
 

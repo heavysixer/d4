@@ -32,12 +32,16 @@
     var obj = {
       accessors: {
         axis: axis,
-        stagger: true
+        stagger: true,
+        x: 0,
+        y: 0,
       },
       render: function(scope) {
         scope.scale(this.y);
+        var x = d4.functor(scope.accessors.x).bind(this)();
+        var y = d4.functor(scope.accessors.y).bind(this)();
         this.featuresGroup.append('g').attr('class', 'y axis ' + name)
-          .attr('transform', 'translate(0,0)')
+          .attr('transform', 'translate(' + x + ',' + y + ')')
           .call(scope.axis())
           .selectAll('.tick text')
           .call(d4.helpers.wrapText, this.margin.left);
