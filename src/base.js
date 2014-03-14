@@ -65,6 +65,10 @@
     }
   };
 
+  var capitalize = function(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   var readOnlyProp = function(obj, prop, functName, value){
     Object.defineProperty(obj, prop, {
       configurable: true,
@@ -127,8 +131,12 @@
   values. Ideally the API should support something like this:
   chart.width(300) or chart.width(function(){ return 300; })
   */
-  var accessorForObject = function(wrapperObj, innerObj, functName) {
-    wrapperObj[functName] = function(attr) {
+  var accessorForObject = function(wrapperObj, innerObj, functName, prefix) {
+    var wrapperFunct = functName;
+    if(typeof prefix !== 'undefined') {
+      wrapperFunct = prefix + capitalize(functName);
+    }
+    wrapperObj[wrapperFunct] = function(attr) {
       if (!arguments.length) {
         return innerObj[functName];
       }
@@ -139,9 +147,9 @@
     storeLastValue(wrapperObj, functName, innerObj[functName]);
   };
 
-  var createAccessorsFromArray = function(wrapperObj, innerObj, accessors){
+  var createAccessorsFromArray = function(wrapperObj, innerObj, accessors, prefix){
     each(accessors, function(functName) {
-      accessorForObject(wrapperObj, innerObj, functName);
+      accessorForObject(wrapperObj, innerObj, functName, prefix);
     });
   };
 
@@ -282,7 +290,6 @@
       }
     }, config);
 
-    d4.createAccessorProxy(opts, opts.margin, 'margin');
     linkAxes(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder || builder);
     opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);
@@ -497,6 +504,7 @@
   d4.baseChart = function(options) {
     var opts = assignDefaults(options && options.config || {}, options && options.builder || undefined);
     var chart = applyScaffold(opts);
+    createAccessorsFromArray(chart, opts.margin, d3.keys(opts.margin), 'margin');
 
     chart.accessors = opts.accessors;
     createAccessorsFromArray(chart, opts, chart.accessors);
@@ -675,9 +683,6 @@
    * @param {String} prefix - Optional prefix to add to the method names, which helps avoid naming collisions on the proxy.
   */
   d4.createAccessorProxy = function(proxy, target, prefix) {
-    var capitalize = function(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    };
 
     each(d3.keys(target), function(funct){
       var proxyFunct = funct;

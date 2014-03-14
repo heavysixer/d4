@@ -237,6 +237,18 @@ describe('d4.base', function() {
         expect(chart.margin().left).to.equal(500);
       });
 
+      it('should allow you to set a single attribute of the margin object', function(){
+        var chart = d4.baseChart({builder : this.builder, config : {
+          margin: {
+            left: 4000
+          }
+        }});
+        expect(chart.margin().left).to.equal(4000);
+        chart.marginLeft(500);
+        expect(chart.margin().left).to.equal(500);
+        expect(chart.marginLeft()).to.equal(500);
+      });
+
       it('should define a collection of common accessors useful to all charts which are exposed through an accessors array', function() {
         var chart = d4.baseChart({ builder : this.builder });
         expect(chart.z).to.be.an('undefined');
