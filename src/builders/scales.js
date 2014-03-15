@@ -28,7 +28,9 @@
   };
 
   /**
+   *
    * Creates a linear scale for a dimension of a given chart.
+   * @name linearScaleForNestedData
    * @param {Object} d4 chart object
    * @param {Array} data array
    * @param {string} string represnting a dimension e.g. `x`,`y`.
@@ -56,6 +58,7 @@
 
   /**
    * Creates an ordinal scale for a dimension of a given chart.
+   * @name ordinalScaleForNestedData
    * @param {Object} d4 chart object
    * @param {Array} data array
    * @param {string} string represnting a dimension e.g. `x`,`y`.

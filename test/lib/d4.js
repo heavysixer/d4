@@ -890,52 +890,53 @@
    */
   'use strict';
 
-  /*
-   The column chart has two axes (`x` and `y`). By default the column chart expects
-   linear values for the `y` and ordinal values on the `x`. The basic column chart
-   has four default features:
-
-   * **bars** - series bars
-   * **barLabels** - data labels above the bars
-   * **xAxis** - the axis for the x dimension
-   * **yAxis** - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-        { x: '2010', y:-10 },
-        { x: '2011', y:20 },
-        { x: '2012', y:30 },
-        { x: '2013', y:40 },
-        { x: '2014', y:50 },
-      ];
-    var chart = d4.charts.column();
-    d3.select('#example')
-    .datum(data)
-    .call(chart);
-
-By default d4 expects a series object, which uses the following format: `{ x : '2010', y : 10 }`.
-The default format may not be desired and so we'll override it:
-
-    var data = [
-      ['2010', -10],
-      ['2011', 20],
-      ['2012', 30],
-      ['2013', 40],
-      ['2014', 50]
-    ];
-    var chart = d4.charts.column()
-    .x(function(x) {
-         x.key(0)
-    })
-    .y(function(y){
-         y.key(1);
-    });
-
-    d3.select('#example')
-    .datum(data)
-    .call(chart);
-
+ /*
+  * The column chart has two axes (`x` and `y`). By default the column chart expects
+  * linear values for the `y` and ordinal values on the `x`. The basic column chart
+  * has four default features:
+  *
+  * * **bars** - series bars
+  * * **barLabels** - data labels above the bars
+  * * **xAxis** - the axis for the x dimension
+  * * **yAxis** - the axis for the y dimension
+  *
+  *###### Example Usage
+  *
+  *     var data = [
+  *         { x: '2010', y:-10 },
+  *         { x: '2011', y:20 },
+  *         { x: '2012', y:30 },
+  *         { x: '2013', y:40 },
+  *         { x: '2014', y:50 },
+  *       ];
+  *     var chart = d4.charts.column();
+  *     d3.select('#example')
+  *     .datum(data)
+  *     .call(chart);
+  *
+  * By default d4 expects a series object, which uses the following format: `{ x : '2010', y : 10 }`.
+  * The default format may not be desired and so we'll override it:
+  *
+  *     var data = [
+  *       ['2010', -10],
+  *       ['2011', 20],
+  *       ['2012', 30],
+  *       ['2013', 40],
+  *       ['2014', 50]
+  *     ];
+  *     var chart = d4.charts.column()
+  *     .x(function(x) {
+  *          x.key(0)
+  *     })
+  *     .y(function(y){
+  *          y.key(1);
+  *     });
+  *
+  *     d3.select('#example')
+  *     .datum(data)
+  *     .call(chart);
+  *
+  * @name column
   */
   d4.chart('column', function column() {
     var chart = d4.baseChart();
@@ -961,54 +962,55 @@ The default format may not be desired and so we'll override it:
    */
   'use strict';
 
-  /*
-The grouped column chart is used to compare a series of data elements grouped
-along the xAxis. This chart is often useful in conjunction with a stacked column
-chart because they can use the same data series, and where the stacked column highlights
-the sum of the data series across an axis the grouped column can be used to show the
-relative distribution.
-
-   * **bars** - series bars
-   * **barLabels** - data labels above the bars
-   * **groupsOf** - an integer representing the number of columns in each group
-   * **xAxis** - the axis for the x dimension
-   * **yAxis** - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-      { year: '2010', unitsSold:-100, salesman : 'Bob' },
-      { year: '2011', unitsSold:200, salesman : 'Bob' },
-      { year: '2012', unitsSold:300, salesman : 'Bob' },
-      { year: '2013', unitsSold:400, salesman : 'Bob' },
-      { year: '2014', unitsSold:500, salesman : 'Bob' },
-      { year: '2010', unitsSold:100, salesman : 'Gina' },
-      { year: '2011', unitsSold:100, salesman : 'Gina' },
-      { year: '2012', unitsSold:-100, salesman : 'Gina' },
-      { year: '2013', unitsSold:500, salesman : 'Gina' },
-      { year: '2014', unitsSold:600, salesman : 'Gina' },
-      { year: '2010', unitsSold:400, salesman : 'Average' },
-      { year: '2011', unitsSold:0, salesman : 'Average' },
-      { year: '2012', unitsSold:400, salesman : 'Average' },
-      { year: '2013', unitsSold:400, salesman : 'Average' },
-      { year: '2014', unitsSold:400, salesman : 'Average' }
-    ];
-
-    var parsedData = d4.parsers.nestedGroup()
-      .x('year')
-      .y('unitsSold')
-      .value('unitsSold')(data);
-
-    var chart = d4.charts.groupedColumn()
-    .width($('#example').width())
-    .x.$key('year')
-    .y.$key('unitsSold')
-    .groupsOf(parsedData.data[0].values.length);
-
-    d3.select('#example')
-    .datum(parsedData.data)
-    .call(chart);
-
+ /*
+  * The grouped column chart is used to compare a series of data elements grouped
+  * along the xAxis. This chart is often useful in conjunction with a stacked column
+  * chart because they can use the same data series, and where the stacked column highlights
+  * the sum of the data series across an axis the grouped column can be used to show the
+  * relative distribution.
+  *
+  * * **bars** - series bars
+  * * **barLabels** - data labels above the bars
+  * * **groupsOf** - an integer representing the number of columns in each group
+  * * **xAxis** - the axis for the x dimension
+  * * **yAxis** - the axis for the y dimension
+  *
+  *###### Example Usage
+  *
+  *     var data = [
+  *       { year: '2010', unitsSold:-100, salesman : 'Bob' },
+  *       { year: '2011', unitsSold:200, salesman : 'Bob' },
+  *       { year: '2012', unitsSold:300, salesman : 'Bob' },
+  *       { year: '2013', unitsSold:400, salesman : 'Bob' },
+  *       { year: '2014', unitsSold:500, salesman : 'Bob' },
+  *       { year: '2010', unitsSold:100, salesman : 'Gina' },
+  *       { year: '2011', unitsSold:100, salesman : 'Gina' },
+  *       { year: '2012', unitsSold:-100, salesman : 'Gina' },
+  *       { year: '2013', unitsSold:500, salesman : 'Gina' },
+  *       { year: '2014', unitsSold:600, salesman : 'Gina' },
+  *       { year: '2010', unitsSold:400, salesman : 'Average' },
+  *       { year: '2011', unitsSold:0, salesman : 'Average' },
+  *       { year: '2012', unitsSold:400, salesman : 'Average' },
+  *       { year: '2013', unitsSold:400, salesman : 'Average' },
+  *       { year: '2014', unitsSold:400, salesman : 'Average' }
+  *     ];
+  *
+  *     var parsedData = d4.parsers.nestedGroup()
+  *       .x('year')
+  *       .y('unitsSold')
+  *       .value('unitsSold')(data);
+  *
+  *     var chart = d4.charts.groupedColumn()
+  *     .width($('#example').width())
+  *     .x.$key('year')
+  *     .y.$key('unitsSold')
+  *     .groupsOf(parsedData.data[0].values.length);
+  *
+  *     d3.select('#example')
+  *     .datum(parsedData.data)
+  *     .call(chart);
+  *
+  * @name groupedColumn
   */
   d4.chart('groupedColumn', function groupedColumn() {
     var columnLabelOverrides = function() {
@@ -3239,7 +3241,9 @@ the direction of the lines.
   };
 
   /**
+   *
    * Creates a linear scale for a dimension of a given chart.
+   * @name linearScaleForNestedData
    * @param {Object} d4 chart object
    * @param {Array} data array
    * @param {string} string represnting a dimension e.g. `x`,`y`.
@@ -3267,6 +3271,7 @@ the direction of the lines.
 
   /**
    * Creates an ordinal scale for a dimension of a given chart.
+   * @name ordinalScaleForNestedData
    * @param {Object} d4 chart object
    * @param {Array} data array
    * @param {string} string represnting a dimension e.g. `x`,`y`.
