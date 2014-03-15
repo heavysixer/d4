@@ -4,7 +4,11 @@ concepts:
   - Intermediate Concepts
 ---
 <h5>{{title}}</h5>
-<p>This example demonstrates how to use an external tooltip library with d4.</p>
+<p>This example demonstrates how to use an external tooltip library with d4. In
+this case we are using Twitter Bootstrap's tooltip (on mouse over) and popover
+effects (on mouse click). More importantly, this example shows how d4 creates
+a transparent proxy between d3's own <a href="https://github.com/mbostock/d3/wiki/Selections#on"> mouse event handler</a> so that d4 doesn't have to
+reinvent the wheel.</p>
 <hr/>
 <script type="text/javascript" charset="utf-8" id='source_code'>
 'use strict';
