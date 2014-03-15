@@ -23,6 +23,31 @@
    * `tickValues` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues
    * `ticks` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#ticks
    *
+   *##### Examples
+   *
+   *     var chart = d4.charts.groupedColumn()
+   *     .using('yAxis', function(axis){
+   *
+   *       // adjust the number of tick marks based on the height of the chart
+   *       axis.ticks($('#example').height()/20);
+   *
+   *       // set the inner and outer tick sizes
+   *       axis.tickSize(10,5);
+   *
+   *       // adjust the tick padding
+   *       axis.tickPadding(5);
+   *
+   *     })
+   *     .using('xAxis', function(axis){
+   *
+   *       // position the tickmarks on the top of the axis line
+   *       axis.orient('top');
+   *
+   *       // move the axis to the top of the chart.
+   *       axis.y(-20);
+   *     })
+   *
+   * @name yAxis
   */
   d4.feature('yAxis', function(name) {
     var axis = d3.svg.axis()
