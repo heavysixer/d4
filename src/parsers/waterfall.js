@@ -3,99 +3,98 @@
   /*! global d4: false */
   'use strict';
 
-  /**
-    The waterfall parser is useful for waterfall charts where data items need to account
-    for the position of earlier values:
-
-    _____________________
-    |   _        _______ |
-    |  |_|___   | |  | | |
-    |      |_|__|_|  | | |
-    |                |_| |
-    ----------------------
-
-    This module makes use of the d3's "nest" data structure, and "stack" layout
-    https://github.com/mbostock/d3/wiki/Arrays#-nest
-    https://github.com/mbostock/d3/wiki/Stack-Layout
-
-
-    Approach:
-    Just like D3, this parser uses a chaining declaritiave style to build up
-    the necessary prerequistes to create the waterfall data. Here is a simple
-    example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
-
-    var parser = d4.parsers.waterfall()
-        .x(function() {
-          return 'category';
-        })
-        .y(function(){
-          return 'value';
-        })
-        .value(function() {
-          return 'value';
-        });
-
-    var waterfallData = parser(data);
-
-    Keep reading for more information on these various accessor functions.
-
-    Benefits:
+   /**
+    * The waterfall parser is useful for waterfall charts where data items need to account
+    * for the position of earlier values:
+    *
+    *      _____________________
+    *      |   _        _______ |
+    *      |  |_|___   | |  | | |
+    *      |      |_|__|_|  | | |
+    *      |                |_| |
+    *      ----------------------
+    *
+    * This module makes use of the d3's "nest" data structure, and "stack" layout
+    * https://github.com/mbostock/d3/wiki/Arrays#-nest
+    * https://github.com/mbostock/d3/wiki/Stack-Layout
+    *
+    *
+    *##### Approach:
+    * Just like D3, this parser uses a chaining declaritiave style to build up
+    * the necessary prerequistes to create the waterfall data. Here is a simple
+    * example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
+    *
+    *      var parser = d4.parsers.waterfall()
+    *          .x(function() {
+    *            return 'category';
+    *          })
+    *          .y(function(){
+    *            return 'value';
+    *          })
+    *          .value(function() {
+    *            return 'value';
+    *          });
+    *
+    *      var waterfallData = parser(data);
+    *
+    * Keep reading for more information on these various accessor functions.
+    *
+    *##### Benefits:
     * Supports horizontal or vertical waterfalls
     * Supports totaling series using a special "e" value in a data item.
-
-    Limitations:
+    *
+    *##### Limitations:
     * Does not support stacked waterfalls.
-
-    Accessor Methods:
-    * x : - function which returns a key to access the x values in the data array
-    * y : - function which returns a key to access the y values in the data array
-    * value : - function which returns a key to access the values in the data array.
-    * data : array - An array of objects with their dimensions specified
-      like this:
-
-      var data = [
-      {"category" : "Category One", "value" : 23 },
-      {"category" : "Category Two", "value" : 55 },
-      {"category" : "Category Three", "value" : -10 },
-      {"category" : "Category Four", "value" : 5 },
-      {"category" : "Category Five", "value" : "e" }]
-
-    SPECIAL NOTE:
-    Waterfalls charts typically have the ability to display subtotals at any point.
-    In order to use this feature simply set the value of your subtotal column to "e."
-
-    Example Usage:
-    Given the example data and dimension variables above you can use this module
-    in the following way:
-
-    var parser = d4.parsers.nestedStack()
-    .dimensions(dimensions)
-    .call(data);
-
-    The `parser` variable will now be an object containing the following structure:
-    {
-      data: Array
-      value: {
-        key: string,
-        values: Array
-      },
-      x: {
-        key: string,
-        values: Array
-      },
-      y: {
-        key: string,
-        values: Array
-      }
-    }
-
-    Taking these attributes one-by-one:
-    * data - is an array of items stacked by D3
-    * value - an object with a key representing the value accessor and an array of values
-    * x - an object with a key representing the x accessor and an array of values
-    * y - an object with a key representing the y accessor and an array of values
-
-  **/
+    *
+    *##### Accessor Methods:
+    * `x` : - function which returns a key to access the x values in the data array
+    * `y` : - function which returns a key to access the y values in the data array
+    * `value` : - function which returns a key to access the values in the data array.
+    * `data` : array - An array of objects with their dimensions specified
+    *   like this:
+    *
+    *      var data = [
+    *      {"category" : "Category One", "value" : 23 },
+    *      {"category" : "Category Two", "value" : 55 },
+    *      {"category" : "Category Three", "value" : -10 },
+    *      {"category" : "Category Four", "value" : 5 },
+    *      {"category" : "Category Five", "value" : "e" }]
+    *
+    *##### SPECIAL NOTE:
+    * Waterfalls charts typically have the ability to display subtotals at any point.
+    * In order to use this feature simply set the value of your subtotal column to "e."
+    *
+    *##### Example Usage:
+    * Given the example data and dimension variables above you can use this module
+    * in the following way:
+    *
+    *     var parser = d4.parsers.nestedStack()
+    *     .dimensions(dimensions)
+    *     .call(data);
+    *
+    *     The `parser` variable will now be an object containing the following structure:
+    *     {
+    *       data: Array
+    *       value: {
+    *         key: string,
+    *         values: Array
+    *       },
+    *       x: {
+    *         key: string,
+    *         values: Array
+    *       },
+    *       y: {
+    *         key: string,
+    *         values: Array
+    *       }
+    *     }
+    *
+    * Taking these attributes one-by-one:
+    * + data - is an array of items stacked by D3
+    * + value - an object with a key representing the value accessor and an array of values
+    * + x - an object with a key representing the x accessor and an array of values
+    * + y - an object with a key representing the y accessor and an array of values
+    **/
   d4.parser('waterfall', function waterfall() {
 
     var opts = {

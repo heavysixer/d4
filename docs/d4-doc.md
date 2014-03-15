@@ -673,45 +673,45 @@ The nested group parser is useful for grouped column charts where multiple
 data items need to appear relative to the axis value, for example grouped  
 column charts or multi-series line charts.
 
-    _____________________
-    |           _        |
-    |   _ _    | |_      |
-    |  | | |   | | |     |
-    ----------------------
+      _____________________
+      |           _        |
+      |   _ _    | |_      |
+      |  | | |   | | |     |
+      ----------------------
     
 
 This module makes use of the d3's "nest" data structure layout
 
 [https://github.com/mbostock/d3/wiki/Arrays\#-nest][35]
 
-#### Approach
+##### Approach
 
 Just like D3, this parser uses a chaining declaritiave style to build up  
 the necessary prerequistes to create the waterfall data. Here is a simple  
 example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
 
-    var parser = d4.parsers.nestedGroup()
-        .x('category')
-        .y('value')
-        .value('value');
+     var parser = d4.parsers.nestedGroup()
+         .x('category')
+         .y('value')
+         .value('value');
     
-    var groupedColumnData = parser(data);
+     var groupedColumnData = parser(data);
     
 
 Keep reading for more information on these various accessor functions.
 
-#### Accessor Methods
+##### Accessor Methods
 
 `x` - A function which returns a key to access the x values in the data array  
 `y` - A function which returns a key to access the y values in the data array  
 `value` - A function which returns a key to access the values in the data array.  
 `data` - An array of objects with their dimensions specified like this:
 
-    var data = [
-    {"year" : "2010", "category" : "Category One", "value" : 23 },
-    {"year" : "2010", "category" : "Category Two", "value" : 55 },
-    {"year" : "2010", "category" : "Category Three", "value" : -10 },
-    {"year" : "2010", "category" : "Category Four", "value" : 5 }]
+      var data = [
+      {"year" : "2010", "category" : "Category One", "value" : 23 },
+      {"year" : "2010", "category" : "Category Two", "value" : 55 },
+      {"year" : "2010", "category" : "Category Three", "value" : -10 },
+      {"year" : "2010", "category" : "Category Four", "value" : 5 }]
     
 
 ---
@@ -727,38 +727,38 @@ The nested stack parser is useful for charts which take a data series
 and wants to sort them across a dimension and then display the results.  
 The most common usecase would be a stacked column chart like this:
 
-    _____________________
-    |    _               |
-    |   | |   _          |
-    |   |-|  | |   _     |
-    |   |-|  |-|  |-|    |
-    |   | |  |-|  |-|    |
-    ----------------------
+      _____________________
+      |    _               |
+      |   | |   _          |
+      |   |-|  | |   _     |
+      |   |-|  |-|  |-|    |
+      |   | |  |-|  |-|    |
+      ----------------------
     
 
 This module makes use of the d3's "nest" data structure, and "stack" layout
 
-[https://github.com/mbostock/d3/wiki/Arrays\#-nest][35]  
-[https://github.com/mbostock/d3/wiki/Stack-Layout][36]
+* [https://github.com/mbostock/d3/wiki/Arrays\#-nest][35]
+* [https://github.com/mbostock/d3/wiki/Stack-Layout][36]
 
-#### Approach
+##### Approach
 
 Just like D3, this parser uses a chaining declaritiave style to build up  
 the necessary prerequistes to create the stacked data. Here is a simple  
 example:
 
-        var parser = d4.parsers.nestedStack()
-            .x(function() {
-              return 'title';
-            })
-            .y(function(){
-              return 'group';
-            })
-            .value(function() {
-              return 'values';
-            });
+     var parser = d4.parsers.nestedStack()
+         .x(function() {
+           return 'title';
+         })
+         .y(function(){
+           return 'group';
+         })
+         .value(function() {
+           return 'values';
+         });
     
-        var stackedData = parser(data);
+     var stackedData = parser(data);
     
 
 Keep reading for more information on these various accessor functions.
@@ -778,12 +778,12 @@ Keep reading for more information on these various accessor functions.
 `value` : - function which returns a key to access the values in the data array.  
 `data` : array - An array of objects with their dimensions specified like this:
 
-    var data = [{ "title": "3 Years", "group" : "one", "value": 30 },
-                { "title": "3 Years", "group" : "two", "value": 20 },
-                { "title": "3 Years", "group" : "three", "value": 10 },
-                { "title": "5 Years", "group" : "one",  "value": 3 },
-                { "title": "5 Years", "group" : "two", "value": 2 },
-                { "title": "5 Years", "group" : "three", "value": 1 }]
+     var data = [{ "title": "3 Years", "group" : "one", "value": 30 },
+                 { "title": "3 Years", "group" : "two", "value": 20 },
+                 { "title": "3 Years", "group" : "three", "value": 10 },
+                 { "title": "5 Years", "group" : "one",  "value": 3 },
+                 { "title": "5 Years", "group" : "two", "value": 2 },
+                 { "title": "5 Years", "group" : "three", "value": 1 }]
     
 
 ##### Example Usage
@@ -791,36 +791,36 @@ Keep reading for more information on these various accessor functions.
 Given the example data and dimension variables above you can use this module  
 in the following way:
 
-    var parser = d4.parsers.nestedStack()
-    .x(function() {
-      return 'title';
-    })
-    .y(function(){
-      return 'group';
-    })
-    .value(function() {
-      return 'value';
-    })
-    .call(data);
+     var parser = d4.parsers.nestedStack()
+     .x(function() {
+       return 'title';
+     })
+     .y(function(){
+       return 'group';
+     })
+     .value(function() {
+       return 'value';
+     })
+     .call(data);
     
 
 The `parser` variable will now be an object containing the following structure:
 
-    {
-      data: Array
-      value: {
-        key: string,
-        values: Array
-      },
-      x: {
-        key: string,
-        values: Array
-      },
-      y: {
-        key: string,
-        values: Array
-      }
-    }
+     {
+       data: Array
+       value: {
+         key: string,
+         values: Array
+       },
+       x: {
+         key: string,
+         values: Array
+       },
+       y: {
+         key: string,
+         values: Array
+       }
+     }
     
 
 ---
@@ -835,73 +835,75 @@ The `parser` variable will now be an object containing the following structure:
 The waterfall parser is useful for waterfall charts where data items need to account  
 for the position of earlier values:
 
-    _____________________
-    |   _        _______ |
-    |  |_|___   | |  | | |
-    |      |_|__|_|  | | |
-    |                |_| |
-    ----------------------
+     _____________________
+     |   _        _______ |
+     |  |_|___   | |  | | |
+     |      |_|__|_|  | | |
+     |                |_| |
+     ----------------------
     
-    This module makes use of the d3's "nest" data structure, and "stack" layout
-    [https://github.com/mbostock/d3/wiki/Arrays#-nest][35]
-    [https://github.com/mbostock/d3/wiki/Stack-Layout][36]
+
+This module makes use of the d3's "nest" data structure, and "stack" layout  
+[https://github.com/mbostock/d3/wiki/Arrays\#-nest][35]  
+[https://github.com/mbostock/d3/wiki/Stack-Layout][36]
+
+##### Approach:
+
+Just like D3, this parser uses a chaining declaritiave style to build up  
+the necessary prerequistes to create the waterfall data. Here is a simple  
+example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
+
+     var parser = d4.parsers.waterfall()
+         .x(function() {
+           return 'category';
+         })
+         .y(function(){
+           return 'value';
+         })
+         .value(function() {
+           return 'value';
+         });
     
+     var waterfallData = parser(data);
     
-    Approach:
-    Just like D3, this parser uses a chaining declaritiave style to build up
-    the necessary prerequistes to create the waterfall data. Here is a simple
-    example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
-    
-    var parser = d4.parsers.waterfall()
-        .x(function() {
-          return 'category';
-        })
-        .y(function(){
-          return 'value';
-        })
-        .value(function() {
-          return 'value';
-        });
-    
-    var waterfallData = parser(data);
-    
-    Keep reading for more information on these various accessor functions.
-    
-    Benefits:
-    
+
+Keep reading for more information on these various accessor functions.
+
+##### Benefits:
 
 Supports horizontal or vertical waterfalls  
 Supports totaling series using a special "e" value in a data item.
 
-    Limitations:
-    
+##### Limitations:
 
 Does not support stacked waterfalls.
 
-    Accessor Methods:
-    
+##### Accessor Methods:
 
-x : - function which returns a key to access the x values in the data array  
-y : - function which returns a key to access the y values in the data array  
-value : - function which returns a key to access the values in the data array.  
-data : array - An array of objects with their dimensions specified  
+`x` : - function which returns a key to access the x values in the data array  
+`y` : - function which returns a key to access the y values in the data array  
+`value` : - function which returns a key to access the values in the data array.  
+`data` : array - An array of objects with their dimensions specified  
 like this:
 
-      var data = [
-      {"category" : "Category One", "value" : 23 },
-      {"category" : "Category Two", "value" : 55 },
-      {"category" : "Category Three", "value" : -10 },
-      {"category" : "Category Four", "value" : 5 },
-      {"category" : "Category Five", "value" : "e" }]
+     var data = [
+     {"category" : "Category One", "value" : 23 },
+     {"category" : "Category Two", "value" : 55 },
+     {"category" : "Category Three", "value" : -10 },
+     {"category" : "Category Four", "value" : 5 },
+     {"category" : "Category Five", "value" : "e" }]
     
-    SPECIAL NOTE:
-    Waterfalls charts typically have the ability to display subtotals at any point.
-    In order to use this feature simply set the value of your subtotal column to "e."
-    
-    Example Usage:
-    Given the example data and dimension variables above you can use this module
-    in the following way:
-    
+
+##### SPECIAL NOTE:
+
+Waterfalls charts typically have the ability to display subtotals at any point.  
+In order to use this feature simply set the value of your subtotal column to "e."
+
+##### Example Usage:
+
+Given the example data and dimension variables above you can use this module  
+in the following way:
+
     var parser = d4.parsers.nestedStack()
     .dimensions(dimensions)
     .call(data);
@@ -923,13 +925,12 @@ like this:
       }
     }
     
-    Taking these attributes one-by-one:
-    
 
-data - is an array of items stacked by D3  
-value - an object with a key representing the value accessor and an array of values  
-x - an object with a key representing the x accessor and an array of values  
-y - an object with a key representing the y accessor and an array of values
+Taking these attributes one-by-one:  
++ data - is an array of items stacked by D3  
++ value - an object with a key representing the value accessor and an array of values  
++ x - an object with a key representing the x accessor and an array of values  
++ y - an object with a key representing the y accessor and an array of values
 
 ---
 
