@@ -287,12 +287,18 @@
         right: 20,
         bottom: 20,
         left: 40
+      },
+      padding: {
+        top: 20,
+        left: 20,
+        right: 20,
+        bottom: 20
       }
     }, config);
 
     linkAxes(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder || builder);
-    opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);
+    opts.accessors = ['margin', 'padding', 'width', 'height', 'valueKey'].concat(config.accessors || []);
     return opts;
   };
 
@@ -343,13 +349,21 @@
   };
 
   var scaffoldChart = function(selection, data) {
+    var innerWidth = this.width - this.margin.left - this.margin.right;
+    var innerHeight = this.height - this.margin.top - this.margin.bottom;
+    this.width = innerWidth - this.padding.left - this.padding.right;
+    this.height = innerHeight - this.padding.top - this.padding.bottom;
     this.svg = d3.select(selection).selectAll('svg').data([data]);
-    this.featuresGroup = this.svg.enter().append('svg').append('g')
+    this.featuresGroup = this.svg.enter().append('svg')
+    .append('g')
+    .attr('class', 'container')
+    .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')')
+    .append('g')
       .attr('class', 'featuresGroup')
-      .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+      .attr('transform', 'translate(' + this.padding.left + ',' + this.padding.top + ')');
     this.svg
-    .attr('width', this.width + this.margin.left + this.margin.right)
-    .attr('height', this.height + this.margin.top + this.margin.bottom)
+    .attr('width', this.width + this.padding.left + this.padding.right + this.margin.left + this.margin.right)
+    .attr('height', this.height + this.padding.top + this.padding.bottom + this.margin.top + this.margin.bottom)
     .attr('class', 'd4');
     this.svg.append('defs');
   };
@@ -508,6 +522,7 @@
     var opts = assignDefaults(options && options.config || {}, options && options.builder || undefined);
     var chart = applyScaffold(opts);
     createAccessorsFromArray(chart, opts.margin, d3.keys(opts.margin), 'margin');
+    createAccessorsFromArray(chart, opts.padding, d3.keys(opts.padding), 'padding');
 
     chart.accessors = opts.accessors;
     createAccessorsFromArray(chart, opts, chart.accessors);
