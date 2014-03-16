@@ -58,6 +58,8 @@
       accessors: {
         axis: axis,
         stagger: true,
+        subtitle: undefined,
+        title: undefined,
         x: 0,
         y: 0,
       },

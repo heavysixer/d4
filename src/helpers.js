@@ -70,6 +70,25 @@
     staggerText.bind(this)(text, move);
   };
 
+  d4.helpers.textSize = function(text, klasses) {
+    var obj = {
+      height: 0,
+      width: 0,
+      x: 0,
+      y: 0
+    };
+    if (typeof text !== 'undefined') {
+      var container = d3.select('body').append('svg').attr('class', '' + klasses);
+      container.append('text')
+        .attr('x', -5000)
+        .text(text);
+      obj = container.node().getBBox();
+      container.remove();
+    }
+    return obj;
+  };
+
+  // From Mike Bostock's example on wrapping long axis text.
   d4.helpers.wrapText = function(text, width) {
     text.each(function() {
       var text = d3.select(this),

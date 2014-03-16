@@ -61,8 +61,13 @@ $(document).ready(function(){
     // adjust the tick padding
     axis.tickPadding(5);
 
+    axis.title('widgets sold');
+
   })
   .using('xAxis', function(axis){
+
+    axis.title('years');
+    axis.subtitle('five year max');
 
     // position the tickmarks on the top of the axis line
     axis.orient('top');

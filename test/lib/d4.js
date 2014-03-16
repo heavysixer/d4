@@ -1,6 +1,6 @@
 /*! d4 - v0.5.4
  *  License: MIT Expat
- *  Date: 2014-03-14
+ *  Date: 2014-03-16
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -854,6 +854,25 @@
     staggerText.bind(this)(text, move);
   };
 
+  d4.helpers.textSize = function(text, klasses) {
+    var obj = {
+      height: 0,
+      width: 0,
+      x: 0,
+      y: 0
+    };
+    if (typeof text !== 'undefined') {
+      var container = d3.select('body').append('svg').attr('class', '' + klasses);
+      container.append('text')
+        .attr('x', -5000)
+        .text(text);
+      obj = container.node().getBBox();
+      container.remove();
+    }
+    return obj;
+  };
+
+  // From Mike Bostock's example on wrapping long axis text.
   d4.helpers.wrapText = function(text, width) {
     text.each(function() {
       var text = d3.select(this),
@@ -2610,10 +2629,19 @@ the direction of the lines.
     var axis = d3.svg.axis()
     .orient('bottom')
     .tickSize(0);
+
+    var textRect = function(text,klasses) {
+      var rect = d4.helpers.textSize(text, klasses);
+      rect.text = text;
+      return rect;
+    };
+
     var obj = {
       accessors: {
         axis : axis,
         stagger: true,
+        subtitle: undefined,
+        title: undefined,
         x: 0,
         y: function(){
           return this.height - this.margin.top - this.margin.bottom;
@@ -2622,8 +2650,14 @@ the direction of the lines.
 
       render: function(scope) {
         scope.scale(this.x);
+        var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
+        var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var x = d4.functor(scope.accessors.x).bind(this)();
-        var y = d4.functor(scope.accessors.y).bind(this)();
+
+        // FIXME: The position of the title should conform to the orientation of the ticks, e.g. top, bottom, left right;
+        var y = d4.functor(scope.accessors.y).bind(this)() + title.height + subtitle.height;
+
+        var text;
         var group = this.featuresGroup.append('g').attr('class', 'x axis '+ name)
           .attr('transform', 'translate(' + x + ',' + y + ')')
           .call(scope.axis());
@@ -2631,6 +2665,22 @@ the direction of the lines.
 
           // FIXME: This should be moved into a helper injected using DI.
           group.selectAll('.tick text').call(d4.helpers.staggerTextVertically, 1);
+        }
+
+        if(title.text){
+          text = this.svg.selectAll('.x.axis');
+          text.append('text')
+          .text(title.text)
+          .attr('class', 'title')
+          .attr('transform', 'translate(0,' + (y - title.height - subtitle.height) + ')');
+        }
+
+        if(subtitle){
+          text = this.svg.selectAll('.x.axis');
+          text.append('text')
+          .text(subtitle.text)
+          .attr('class', 'subtitle')
+          .attr('transform', 'translate(0,' + (y - subtitle.height) + ')');
         }
       }
     };
@@ -2700,6 +2750,8 @@ the direction of the lines.
       accessors: {
         axis: axis,
         stagger: true,
+        subtitle: undefined,
+        title: undefined,
         x: 0,
         y: 0,
       },

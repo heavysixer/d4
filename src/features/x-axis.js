@@ -52,10 +52,19 @@
     var axis = d3.svg.axis()
     .orient('bottom')
     .tickSize(0);
+
+    var textRect = function(text,klasses) {
+      var rect = d4.helpers.textSize(text, klasses);
+      rect.text = text;
+      return rect;
+    };
+
     var obj = {
       accessors: {
         axis : axis,
         stagger: true,
+        subtitle: undefined,
+        title: undefined,
         x: 0,
         y: function(){
           return this.height - this.margin.top - this.margin.bottom;
@@ -64,8 +73,14 @@
 
       render: function(scope) {
         scope.scale(this.x);
+        var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
+        var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var x = d4.functor(scope.accessors.x).bind(this)();
-        var y = d4.functor(scope.accessors.y).bind(this)();
+
+        // FIXME: The position of the title should conform to the orientation of the ticks, e.g. top, bottom, left right;
+        var y = d4.functor(scope.accessors.y).bind(this)() + title.height + subtitle.height;
+
+        var text;
         var group = this.featuresGroup.append('g').attr('class', 'x axis '+ name)
           .attr('transform', 'translate(' + x + ',' + y + ')')
           .call(scope.axis());
@@ -73,6 +88,22 @@
 
           // FIXME: This should be moved into a helper injected using DI.
           group.selectAll('.tick text').call(d4.helpers.staggerTextVertically, 1);
+        }
+
+        if(title.text){
+          text = this.svg.selectAll('.x.axis');
+          text.append('text')
+          .text(title.text)
+          .attr('class', 'title')
+          .attr('transform', 'translate(0,' + (y - title.height - subtitle.height) + ')');
+        }
+
+        if(subtitle){
+          text = this.svg.selectAll('.x.axis');
+          text.append('text')
+          .text(subtitle.text)
+          .attr('class', 'subtitle')
+          .attr('transform', 'translate(0,' + (y - subtitle.height) + ')');
         }
       }
     };

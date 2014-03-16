@@ -16,42 +16,42 @@
 * [`functor`][11]
 * [`parser`][12]
 
-###### [scales.js][13]
+###### [column.js][13]
 
-* [`linearScaleForNestedData`][14]
-* [`ordinalScaleForNestedData`][15]
+* [`column`][14]
 
-###### [column.js][16]
+###### [grouped-column.js][15]
 
-* [`column`][17]
+* [`groupedColumn`][16]
 
-###### [grouped-column.js][18]
+###### [line.js][17]
 
-* [`groupedColumn`][19]
+* [``][18]
 
-###### [line.js][20]
+###### [row.js][19]
 
-* [``][21]
+* [``][18]
 
-###### [row.js][22]
+###### [scales.js][20]
 
-* [``][21]
+* [`linearScaleForNestedData`][21]
+* [`ordinalScaleForNestedData`][22]
 
 ###### [nested-group.js][23]
 
-* [``][21]
+* [``][18]
 
 ###### [nested-stack.js][24]
 
-* [``][21]
+* [``][18]
 
 ###### [waterfall.js][25]
 
-* [``][21]
+* [``][18]
 
 ###### [waterfall-connectors.js][26]
 
-* [``][21]
+* [``][18]
 
 ###### [x-axis.js][27]
 
@@ -347,44 +347,12 @@ This function allows you to register a reusable data parser with d4\.
 
 ---
 
-## scales.js
-
-### linearScaleForNestedData
-
-[\#][14]
-[Ⓣ][13]
-
-Creates a linear scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
----
-
-### ordinalScaleForNestedData
-
-[\#][15]
-[Ⓣ][13]
-
-Creates an ordinal scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
----
-
 ## column.js
 
 ### column
 
-[\#][17]
-[Ⓣ][16]
+[\#][14]
+[Ⓣ][13]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -439,8 +407,8 @@ The default format may not be desired and so we'll override it:
 
 ### groupedColumn
 
-[\#][19]
-[Ⓣ][18]
+[\#][16]
+[Ⓣ][15]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -496,8 +464,8 @@ relative distribution.
 
 ### 
 
-[\#][21]
-[Ⓣ][20]
+[\#][18]
+[Ⓣ][17]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -556,8 +524,8 @@ along the xAxis.
 
 ### 
 
-[\#][21]
-[Ⓣ][22]
+[\#][18]
+[Ⓣ][19]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -585,11 +553,43 @@ has four default features:
 
 ---
 
+## scales.js
+
+### linearScaleForNestedData
+
+[\#][21]
+[Ⓣ][20]
+
+Creates a linear scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
+
+---
+
+### ordinalScaleForNestedData
+
+[\#][22]
+[Ⓣ][20]
+
+Creates an ordinal scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
+
+---
+
 ## nested-group.js
 
 ### 
 
-[\#][21]
+[\#][18]
 [Ⓣ][23]
 
 The nested group parser is useful for grouped column charts where multiple  
@@ -643,7 +643,7 @@ Keep reading for more information on these various accessor functions.
 
 ### 
 
-[\#][21]
+[\#][18]
 [Ⓣ][24]
 
 The nested stack parser is useful for charts which take a data series  
@@ -752,7 +752,7 @@ The `parser` variable will now be an object containing the following structure:
 
 ### 
 
-[\#][21]
+[\#][18]
 [Ⓣ][25]
 
 The waterfall parser is useful for waterfall charts where data items need to account  
@@ -861,7 +861,7 @@ Taking these attributes one-by-one:
 
 ### 
 
-[\#][21]
+[\#][18]
 [Ⓣ][26]
 
 Waterfall connectors are orthogonal series connectors which visually join  
@@ -997,16 +997,16 @@ accessors described below which modify the behavior and apperance of the axis.
 [10]: #feature
 [11]: #functor
 [12]: #parser
-[13]: #scales-js
-[14]: #linearscalefornesteddata
-[15]: #ordinalscalefornesteddata
-[16]: #column-js
-[17]: #column
-[18]: #grouped-column-js
-[19]: #groupedcolumn
-[20]: #line-js
-[21]: #
-[22]: #row-js
+[13]: #column-js
+[14]: #column
+[15]: #grouped-column-js
+[16]: #groupedcolumn
+[17]: #line-js
+[18]: #
+[19]: #row-js
+[20]: #scales-js
+[21]: #linearscalefornesteddata
+[22]: #ordinalscalefornesteddata
 [23]: #nested-group-js
 [24]: #nested-stack-js
 [25]: #waterfall-js
