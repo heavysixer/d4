@@ -53,7 +53,7 @@
     .orient('bottom')
     .tickSize(0);
 
-    var textRect = function(text,klasses) {
+    var textRect = function(text, klasses) {
       var rect = d4.helpers.textSize(text, klasses);
       rect.text = text;
       return rect;
@@ -67,8 +67,8 @@
         title: undefined,
         x: 0,
         y: function(){
-          return this.height - this.margin.top - this.margin.bottom;
-        },
+          return this.height;
+        }
       },
 
       render: function(scope) {
@@ -98,7 +98,7 @@
           .attr('transform', 'translate(0,' + (y - title.height - subtitle.height) + ')');
         }
 
-        if(subtitle){
+        if(subtitle.text){
           text = this.svg.selectAll('.x.axis');
           text.append('text')
           .text(subtitle.text)

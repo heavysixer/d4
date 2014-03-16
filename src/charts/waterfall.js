@@ -87,9 +87,9 @@
     var rangeBoundsFor = function(chart, dimension) {
       var rangeBounds;
       if (dimension === 'x') {
-        return [0, chart.width - chart.margin.left - chart.margin.right];
+        return [0, chart.width];
       } else {
-        rangeBounds = [0, chart.height - chart.margin.top - chart.margin.bottom];
+        rangeBounds = [0, chart.height];
         return (chart.x.$scale === 'ordinal') ? rangeBounds.reverse() : rangeBounds;
       }
     };

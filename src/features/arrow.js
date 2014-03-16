@@ -15,7 +15,7 @@
         },
 
         x2: function() {
-          return this.x(this.width - this.margin.left - this.margin.right);
+          return this.x(this.width);
         },
 
         y1: function() {
@@ -23,7 +23,7 @@
         },
 
         y2: function() {
-          return  this.y(this.height - this.margin.top - this.margin.bottom);
+          return  this.y(this.height);
         },
         classes: function(){
           return 'line';

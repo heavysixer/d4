@@ -46,7 +46,7 @@ $(document).ready(function() {
       axis
       .scale('linear')
       .domain([0, sum])
-      .range([0, element.width() - margin.left - margin.right])
+      .range([0, element.width()])
       .clamp(true);
     })
     .using('bars', function(bars) {

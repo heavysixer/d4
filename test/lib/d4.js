@@ -351,7 +351,10 @@
     this.featuresGroup = this.svg.enter().append('svg').append('g')
       .attr('class', 'featuresGroup')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
-    this.svg.attr('width', this.width).attr('height', this.height).attr('class', 'd4');
+    this.svg
+    .attr('width', this.width + this.margin.left + this.margin.right)
+    .attr('height', this.height + this.margin.top + this.margin.bottom)
+    .attr('class', 'd4');
     this.svg.append('defs');
   };
 
@@ -1539,9 +1542,9 @@
     var rangeBoundsFor = function(chart, dimension) {
       var rangeBounds;
       if (dimension === 'x') {
-        return [0, chart.width - chart.margin.left - chart.margin.right];
+        return [0, chart.width];
       } else {
-        rangeBounds = [0, chart.height - chart.margin.top - chart.margin.bottom];
+        rangeBounds = [0, chart.height];
         return (chart.x.$scale === 'ordinal') ? rangeBounds.reverse() : rangeBounds;
       }
     };
@@ -1629,7 +1632,7 @@
         },
 
         x2: function() {
-          return this.x(this.width - this.margin.left - this.margin.right);
+          return this.x(this.width);
         },
 
         y1: function() {
@@ -1637,7 +1640,7 @@
         },
 
         y2: function() {
-          return  this.y(this.height - this.margin.top - this.margin.bottom);
+          return  this.y(this.height);
         },
         classes: function(){
           return 'line';
@@ -1816,21 +1819,21 @@
           .append('rect')
           .attr('x', 0)
           .attr('y', 0)
-          .attr('width', this.width - this.margin.left - this.margin.right)
-          .attr('height', this.height - this.margin.top - this.margin.bottom);
+          .attr('width', this.width)
+          .attr('height', this.height);
 
         this.featuresGroup.append('g')
           .attr('class', 'x grid '+ name)
-          .attr('transform', 'translate(0,' + (this.height - this.margin.top - this.margin.bottom) + ')')
+          .attr('transform', 'translate(0,' + this.height + ')')
           .call(formattedXAxis
-          .tickSize(-(this.height - this.margin.top - this.margin.bottom), 0, 0)
+          .tickSize(-this.height, 0, 0)
           .tickFormat(''));
 
         this.featuresGroup.append('g')
           .attr('class', 'y grid '+ name)
           .attr('transform', 'translate(0,0)')
           .call(formattedYAxis
-          .tickSize(-(this.width - this.margin.left - this.margin.right), 0, 0)
+          .tickSize(-this.width, 0, 0)
           .tickFormat(''));
       }
     };
@@ -2008,7 +2011,7 @@
         },
 
         x2: function() {
-          return this.x(this.width - this.margin.left - this.margin.right);
+          return this.x(this.width);
         },
 
         y1: function() {
@@ -2630,7 +2633,7 @@ the direction of the lines.
     .orient('bottom')
     .tickSize(0);
 
-    var textRect = function(text,klasses) {
+    var textRect = function(text, klasses) {
       var rect = d4.helpers.textSize(text, klasses);
       rect.text = text;
       return rect;
@@ -2644,8 +2647,8 @@ the direction of the lines.
         title: undefined,
         x: 0,
         y: function(){
-          return this.height - this.margin.top - this.margin.bottom;
-        },
+          return this.height;
+        }
       },
 
       render: function(scope) {
@@ -2675,7 +2678,7 @@ the direction of the lines.
           .attr('transform', 'translate(0,' + (y - title.height - subtitle.height) + ')');
         }
 
-        if(subtitle){
+        if(subtitle.text){
           text = this.svg.selectAll('.x.axis');
           text.append('text')
           .text(subtitle.text)
@@ -3333,9 +3336,9 @@ the direction of the lines.
     // This may not be a very robust approach.
     switch (dimension) {
       case 'x':
-        return [0, chart.width - chart.margin.left - chart.margin.right];
+        return [0, chart.width];
       case 'y':
-        return [chart.height - chart.margin.top - chart.margin.bottom, 0];
+        return [chart.height, 0];
       default:
         return [];
     }

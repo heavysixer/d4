@@ -19,9 +19,9 @@
     // This may not be a very robust approach.
     switch (dimension) {
       case 'x':
-        return [0, chart.width - chart.margin.left - chart.margin.right];
+        return [0, chart.width];
       case 'y':
-        return [chart.height - chart.margin.top - chart.margin.bottom, 0];
+        return [chart.height, 0];
       default:
         return [];
     }

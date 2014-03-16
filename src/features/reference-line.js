@@ -13,7 +13,7 @@
         },
 
         x2: function() {
-          return this.x(this.width - this.margin.left - this.margin.right);
+          return this.x(this.width);
         },
 
         y1: function() {

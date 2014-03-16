@@ -27,21 +27,21 @@
           .append('rect')
           .attr('x', 0)
           .attr('y', 0)
-          .attr('width', this.width - this.margin.left - this.margin.right)
-          .attr('height', this.height - this.margin.top - this.margin.bottom);
+          .attr('width', this.width)
+          .attr('height', this.height);
 
         this.featuresGroup.append('g')
           .attr('class', 'x grid '+ name)
-          .attr('transform', 'translate(0,' + (this.height - this.margin.top - this.margin.bottom) + ')')
+          .attr('transform', 'translate(0,' + this.height + ')')
           .call(formattedXAxis
-          .tickSize(-(this.height - this.margin.top - this.margin.bottom), 0, 0)
+          .tickSize(-this.height, 0, 0)
           .tickFormat(''));
 
         this.featuresGroup.append('g')
           .attr('class', 'y grid '+ name)
           .attr('transform', 'translate(0,0)')
           .call(formattedYAxis
-          .tickSize(-(this.width - this.margin.left - this.margin.right), 0, 0)
+          .tickSize(-this.width, 0, 0)
           .tickFormat(''));
       }
     };

@@ -347,7 +347,10 @@
     this.featuresGroup = this.svg.enter().append('svg').append('g')
       .attr('class', 'featuresGroup')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
-    this.svg.attr('width', this.width).attr('height', this.height).attr('class', 'd4');
+    this.svg
+    .attr('width', this.width + this.margin.left + this.margin.right)
+    .attr('height', this.height + this.margin.top + this.margin.bottom)
+    .attr('class', 'd4');
     this.svg.append('defs');
   };
 

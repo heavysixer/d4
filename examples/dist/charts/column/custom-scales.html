@@ -25,7 +25,7 @@
   <body>
     <div class="container">
 
-      
+
 <div class="header clearfix">
     <ul class="nav nav-pills pull-right col-xs-9">
         <li><a href="/index.html">Introduction</a></li>
@@ -40,7 +40,7 @@
 
       <div class="container" role="main">
 
-        
+
 <h5>Custom Scales</h5>
 <p>
   d3 uses the concept of <a href="https://github.com/mbostock/d3/wiki/Scales">scales</a>
@@ -84,7 +84,7 @@ $(document).ready(function() {
       axis
       .scale('linear')
       .domain([0, sum])
-      .range([0, element.width() - margin.left - margin.right])
+      .range([0, element.width()])
       .clamp(true);
     })
     .using('bars', function(bars) {
