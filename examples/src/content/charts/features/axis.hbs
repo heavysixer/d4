@@ -43,6 +43,7 @@ $(document).ready(function(){
     .value('unitsSold')(data);
 
   var chart = d4.charts.groupedColumn()
+  .marginLeft(0)
   .width($('#example').width())
   .x(function(x){
     x.key('year');
@@ -62,6 +63,8 @@ $(document).ready(function(){
     axis.tickPadding(5);
 
     axis.title('widgets sold');
+    axis.x($('#example').width() - 60);
+    axis.orient('right');
 
   })
   .using('xAxis', function(axis){
@@ -69,13 +72,8 @@ $(document).ready(function(){
     axis.title('years');
     axis.subtitle('five year max');
 
-    // position the tickmarks on the top of the axis line
-    axis.orient('top');
-
-    // move the axis to the top of the chart.
-    axis.y(-20);
   })
-  .marginTop(50)
+  .paddingTop(50)
   .groupsOf(parsedData.data[0].values.length);
 
   d3.select('#example')

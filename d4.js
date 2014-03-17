@@ -2673,7 +2673,7 @@ the direction of the lines.
         var x = d4.functor(scope.accessors.x).bind(this)();
 
         // FIXME: The position of the title should conform to the orientation of the ticks, e.g. top, bottom, left right;
-        var y = d4.functor(scope.accessors.y).bind(this)() + title.height + subtitle.height;
+        var y = d4.functor(scope.accessors.y).bind(this)();
 
         var text;
         var group = this.featuresGroup.append('g').attr('class', 'x axis '+ name)
