@@ -39,14 +39,15 @@ $(document).ready(function() {
     return d.x;
   });
 
-  var chart = d4.charts.column()
+  var chart = d4.charts.column();
+  chart
     .width(element.width())
     .margin(margin)
     .x(function(axis){
       axis
       .scale('linear')
       .domain([0, sum])
-      .range([0, element.width()])
+      .range([0, element.width() - chart.marginLeft() - chart.marginRight() - chart.paddingLeft() - chart.paddingRight()])
       .clamp(true);
     })
     .using('bars', function(bars) {
