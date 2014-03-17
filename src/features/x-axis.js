@@ -89,7 +89,6 @@
 
     var obj = {
       accessors: {
-        axis: axis,
         stagger: true,
         subtitle: undefined,
         title: undefined,
@@ -102,7 +101,7 @@
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
         var group = this.featuresGroup.append('g').attr('class', 'x axis ' + name)
-          .call(scope.axis());
+          .call(axis);
         alignAxis.bind(this)(aligned, group);
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 

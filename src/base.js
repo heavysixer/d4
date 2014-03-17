@@ -714,7 +714,17 @@
         }
         target[funct].$dirty = true;
         proxy[proxyFunct].$dirty = true;
-        return target[funct].apply(target, arguments);
+
+        /*!
+         * Instead of returning the target object we must return the proxy, this
+         * is so that we do not break the functional programming chaining of
+         * proxy function calls. Unfortunately, this also means that the results
+         * of the target function are not captured. Ideally, it would be nice
+         * to return the value of the target command if the target object
+         * itself is not returned.
+         */
+        target[funct].apply(target, arguments);
+        return proxy;
       };
       target[funct].$dirty = false;
       proxy[proxyFunct].$dirty = false;

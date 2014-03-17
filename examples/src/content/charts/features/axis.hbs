@@ -46,7 +46,7 @@ $(document).ready(function(){
   .marginLeft(0)
   .marginTop(0)
   .marginBottom(50)
-  .marginRight(60)
+  .marginRight(80)
   .width($('#example').width())
   .x(function(x){
     x.key('year');
@@ -66,7 +66,8 @@ $(document).ready(function(){
     axis.tickPadding(5);
 
     axis.title('widgets sold');
-    axis.align('left');
+    axis.subtitle('USD');
+    axis.align('right');
     axis.orient('right');
 
   })
@@ -74,9 +75,7 @@ $(document).ready(function(){
 
     axis
     .title('years')
-    .subtitle('five year max')
-    .orient('top');
-    axis.align('top');
+    .subtitle('five year max');
   })
   .paddingTop(50)
   .groupsOf(parsedData.data[0].values.length);

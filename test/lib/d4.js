@@ -718,7 +718,17 @@
         }
         target[funct].$dirty = true;
         proxy[proxyFunct].$dirty = true;
-        return target[funct].apply(target, arguments);
+
+        /*!
+         * Instead of returning the target object we must return the proxy, this
+         * is so that we do not break the functional programming chaining of
+         * proxy function calls. Unfortunately, this also means that the results
+         * of the target function are not captured. Ideally, it would be nice
+         * to return the value of the target command if the target object
+         * itself is not returned.
+         */
+        target[funct].apply(target, arguments);
+        return proxy;
       };
       target[funct].$dirty = false;
       proxy[proxyFunct].$dirty = false;
@@ -858,6 +868,25 @@
       text.attr('data-last-vertical-offset', Math.abs(offset));
     };
     staggerText.bind(this)(text, move);
+  };
+
+  // based on: http://bl.ocks.org/ezyang/4236639
+  d4.helpers.rotateText = function(transform) {
+    return function(node) {
+      node.each(function() {
+        var t = d3.transform(d3.functor(transform).apply(this, arguments));
+        node.attr('alignment-baseline', 'central');
+        node.style('dominant-baseline', 'central');
+        if (t.rotate <= 90 && t.rotate >= -90) {
+          node.attr('text-anchor', 'begin');
+          node.attr('transform', t.toString());
+        } else {
+          node.attr('text-anchor', 'end');
+          t.rotate = (t.rotate > 0 ? -1 : 1) * (180 - Math.abs(t.rotate));
+          node.attr('transform', t.toString());
+        }
+      });
+    };
   };
 
   d4.helpers.staggerTextHorizontally = function(text, direction) {
@@ -2684,7 +2713,6 @@ the direction of the lines.
 
     var obj = {
       accessors: {
-        axis: axis,
         stagger: true,
         subtitle: undefined,
         title: undefined,
@@ -2697,7 +2725,7 @@ the direction of the lines.
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
         var group = this.featuresGroup.append('g').attr('class', 'x axis ' + name)
-          .call(scope.axis());
+          .call(axis);
         alignAxis.bind(this)(aligned, group);
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
@@ -2770,14 +2798,51 @@ the direction of the lines.
    *
    * @name yAxis
   */
+  /*!
+   * FIXME: There is a lot of similarity between the x and y axis features, it would be
+   * great to combine these two.
+   */
   d4.feature('yAxis', function(name) {
     var axis = d3.svg.axis()
     .orient('left')
     .tickSize(0);
 
+    var textRect = function(text, klasses) {
+      var rect = d4.helpers.textSize(text, klasses);
+      rect.text = text;
+      return rect;
+    };
+
+    var positionText = function(obj, aligned, klass) {
+      if (obj.text) {
+        var axis = this.svg.selectAll('.y.axis');
+        var axisBB = axis.node().getBBox();
+        var textHeight = obj.height * 0.8;
+        var text = axis.append('text')
+          .text(obj.text)
+          .attr('class', '' + klass);
+
+        if (aligned.toLowerCase() === 'left') {
+          text.call(d4.helpers.rotateText('rotate(' + 90 + ')translate(0,'+ (Math.abs(axisBB.x) + textHeight)+')'));
+        } else {
+          text.call(d4.helpers.rotateText('rotate(' + 90 + ')translate(0,'+ (Math.abs(axisBB.x) - (axisBB.width + textHeight))+')'));
+        }
+      }
+    };
+
+    var alignAxis = function(align, axis) {
+      switch (true) {
+        case align.toLowerCase() === 'left':
+          axis.attr('transform', 'translate(0,0)');
+          break;
+        case align.toLowerCase() === 'right':
+          axis.attr('transform', 'translate(' + this.width + ', 0)');
+          break;
+      }
+    };
+
     var obj = {
       accessors: {
-        axis: axis,
         stagger: true,
         subtitle: undefined,
         title: undefined,
@@ -2785,18 +2850,28 @@ the direction of the lines.
       },
       render: function(scope) {
         scope.scale(this.y);
-        var x = d4.functor(scope.accessors.x).bind(this)();
-        var y = d4.functor(scope.accessors.y).bind(this)();
-        this.featuresGroup.append('g').attr('class', 'y axis ' + name)
-          .attr('transform', 'translate(' + x + ',' + y + ')')
-          .call(scope.axis())
-          .selectAll('.tick text')
-          .call(d4.helpers.wrapText, this.margin.left);
+        var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
+        var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
+        var aligned = d4.functor(scope.accessors.align).bind(this)();
+        var group = this.featuresGroup.append('g').attr('class', 'y axis ' + name)
+          .call(axis);
+        group.selectAll('.tick text')
+        .call(d4.helpers.wrapText, this.margin[aligned]);
+        alignAxis.bind(this)(aligned, group);
+
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
           this.svg.selectAll('.y.axis .tick text').call(d4.helpers.staggerTextHorizontally, -1);
         }
+        if(aligned === 'left') {
+          positionText.bind(this)(title, aligned, 'title');
+          positionText.bind(this)(subtitle, aligned, 'subtitle');
+        } else {
+          positionText.bind(this)(subtitle, aligned, 'subtitle');
+          positionText.bind(this)(title, aligned, 'title');
+        }
+
       }
     };
     d4.createAccessorProxy(obj, axis);
