@@ -44,6 +44,9 @@ $(document).ready(function(){
 
   var chart = d4.charts.groupedColumn()
   .marginLeft(0)
+  .marginTop(0)
+  .marginBottom(50)
+  .marginRight(60)
   .width($('#example').width())
   .x(function(x){
     x.key('year');
@@ -63,15 +66,17 @@ $(document).ready(function(){
     axis.tickPadding(5);
 
     axis.title('widgets sold');
-    axis.x($('#example').width() - 60);
+    axis.align('left');
     axis.orient('right');
 
   })
   .using('xAxis', function(axis){
 
-    axis.title('years');
-    axis.subtitle('five year max');
-
+    axis
+    .title('years')
+    .subtitle('five year max')
+    .orient('top');
+    axis.align('top');
   })
   .paddingTop(50)
   .groupsOf(parsedData.data[0].values.length);

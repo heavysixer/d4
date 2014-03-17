@@ -652,7 +652,7 @@ accessors described below which modify the behavior and apperance of the axis.
       axis.orient('top');
     
       // move the axis to the top of the chart.
-      axis.y(-20);
+      axis.align('top');
     })
     
 

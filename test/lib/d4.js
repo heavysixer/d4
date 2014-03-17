@@ -1,6 +1,6 @@
 /*! d4 - v0.5.4
  *  License: MIT Expat
- *  Date: 2014-03-16
+ *  Date: 2014-03-17
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -2638,15 +2638,15 @@ the direction of the lines.
    *       axis.orient('top');
    *
    *       // move the axis to the top of the chart.
-   *       axis.y(-20);
+   *       axis.align('top');
    *     })
    *
    * @name xAxis
-  */
+   */
   d4.feature('xAxis', function(name) {
     var axis = d3.svg.axis()
-    .orient('bottom')
-    .tickSize(0);
+      .orient('bottom')
+      .tickSize(0);
 
     var textRect = function(text, klasses) {
       var rect = d4.helpers.textSize(text, klasses);
@@ -2654,51 +2654,62 @@ the direction of the lines.
       return rect;
     };
 
+    var positionText = function(obj, aligned, klass) {
+      if (obj.text) {
+        var axis = this.svg.selectAll('.x.axis');
+        var axisBB = axis.node().getBBox();
+        var textHeight = obj.height * 0.8;
+        var text = axis.append('text')
+          .text(obj.text)
+          .attr('class', '' + klass);
+
+        if (aligned.toLowerCase() === 'bottom') {
+          text.attr('transform', 'translate(0,' + (axisBB.height + textHeight) + ')');
+        } else {
+          text.attr('transform', 'translate(0,' + (axisBB.y - (textHeight/2)) + ')');
+        }
+      }
+    };
+
+    var alignAxis = function(align, axis) {
+      switch (true) {
+        case align.toLowerCase() === 'top':
+          axis.attr('transform', 'translate(0,0)');
+          break;
+        case align.toLowerCase() === 'bottom':
+          axis.attr('transform', 'translate(0,' + this.height + ')');
+          break;
+      }
+    };
+
     var obj = {
       accessors: {
-        axis : axis,
+        axis: axis,
         stagger: true,
         subtitle: undefined,
         title: undefined,
-        x: 0,
-        y: function(){
-          return this.height;
-        }
+        align: 'bottom'
       },
 
       render: function(scope) {
         scope.scale(this.x);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
-        var x = d4.functor(scope.accessors.x).bind(this)();
-
-        // FIXME: The position of the title should conform to the orientation of the ticks, e.g. top, bottom, left right;
-        var y = d4.functor(scope.accessors.y).bind(this)();
-
-        var text;
-        var group = this.featuresGroup.append('g').attr('class', 'x axis '+ name)
-          .attr('transform', 'translate(' + x + ',' + y + ')')
+        var aligned = d4.functor(scope.accessors.align).bind(this)();
+        var group = this.featuresGroup.append('g').attr('class', 'x axis ' + name)
           .call(scope.axis());
+        alignAxis.bind(this)(aligned, group);
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
           group.selectAll('.tick text').call(d4.helpers.staggerTextVertically, 1);
         }
-
-        if(title.text){
-          text = this.svg.selectAll('.x.axis');
-          text.append('text')
-          .text(title.text)
-          .attr('class', 'title')
-          .attr('transform', 'translate(0,' + (y - title.height - subtitle.height) + ')');
-        }
-
-        if(subtitle.text){
-          text = this.svg.selectAll('.x.axis');
-          text.append('text')
-          .text(subtitle.text)
-          .attr('class', 'subtitle')
-          .attr('transform', 'translate(0,' + (y - subtitle.height) + ')');
+        if(aligned === 'top') {
+          positionText.bind(this)(subtitle, aligned, 'subtitle');
+          positionText.bind(this)(title, aligned, 'title');
+        } else {
+          positionText.bind(this)(title, aligned, 'title');
+          positionText.bind(this)(subtitle, aligned, 'subtitle');
         }
       }
     };
@@ -2770,8 +2781,7 @@ the direction of the lines.
         stagger: true,
         subtitle: undefined,
         title: undefined,
-        x: 0,
-        y: 0,
+        align: 'left'
       },
       render: function(scope) {
         scope.scale(this.y);

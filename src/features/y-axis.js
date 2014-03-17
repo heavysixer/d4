@@ -60,8 +60,7 @@
         stagger: true,
         subtitle: undefined,
         title: undefined,
-        x: 0,
-        y: 0,
+        align: 'left'
       },
       render: function(scope) {
         scope.scale(this.y);
