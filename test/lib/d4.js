@@ -2385,7 +2385,7 @@
     return {
       accessors: {
         classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.y.$key];
+          return 'bar fill item'+ i + ' ' + sign(d[this.valueKey]) + ' ' + d[this.y.$key];
         },
 
         height: function(d) {
