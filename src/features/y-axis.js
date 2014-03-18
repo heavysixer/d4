@@ -99,6 +99,7 @@
         title: undefined,
         align: 'left'
       },
+      proxies: [axis],
       render: function(scope) {
         scope.scale(this.y);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
@@ -125,7 +126,7 @@
 
       }
     };
-    d4.createAccessorProxy(obj.accessors, axis);
+    //d4.createAccessorProxy(obj.accessors, axis);
     return obj;
   });
 }).call(this);

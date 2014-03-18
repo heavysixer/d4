@@ -145,11 +145,7 @@
         return innerObj[functName];
       }
       storeLastValue(wrapperObj, functName, attr);
-      if(d4.isFunction(innerObj[functName])){
-        innerObj[functName].apply(innerObj, arguments);
-      } else {
-        innerObj[functName] = attr;
-      }
+      innerObj[functName] = attr;
       return wrapperObj;
     };
     storeLastValue(wrapperObj, functName, innerObj[functName]);
@@ -284,6 +280,7 @@
         d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
       }
     });
+
     var opts = d4.merge({
       width: 400,
       height: 400,
@@ -451,8 +448,14 @@
   };
 
   var assignMixinAccessors = function(feature){
-    assignD3SelectionProxy(feature);
     createAccessorsFromObject(feature);
+  };
+
+  var assignMixinProxies = function(feature){
+    assignD3SelectionProxy(feature);
+    d4.each(feature.proxies, function(obj){
+      d4.createAccessorProxy(feature, obj);
+    });
   };
 
   var mixin = function(feature, index) {
@@ -461,9 +464,13 @@
     }
     var name = d3.keys(feature)[0];
     var overrides = extractOverrides.bind(this)(feature, name);
-    feature[name] = d4.merge(feature[name](name), overrides);
+    var baseFeature = {
+      proxies : []
+    };
+    feature[name] = d4.merge(d4.merge(baseFeature, feature[name](name)), overrides);
     d4.extend(this.features, feature);
     addToMixins(this.mixins, name, index);
+    assignMixinProxies(this.features[name]);
     assignMixinAccessors(this.features[name]);
   };
 
@@ -2722,6 +2729,7 @@ the direction of the lines.
         title: undefined,
         align: 'bottom'
       },
+      proxies: [axis],
 
       render: function(scope) {
         scope.scale(this.x);
@@ -2746,7 +2754,7 @@ the direction of the lines.
       }
     };
 
-    d4.createAccessorProxy(obj.accessors, axis);
+    //d4.createAccessorProxy(obj, axis);
     return obj;
   });
 }).call(this);
@@ -2852,6 +2860,7 @@ the direction of the lines.
         title: undefined,
         align: 'left'
       },
+      proxies: [axis],
       render: function(scope) {
         scope.scale(this.y);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
@@ -2878,7 +2887,7 @@ the direction of the lines.
 
       }
     };
-    d4.createAccessorProxy(obj.accessors, axis);
+    //d4.createAccessorProxy(obj.accessors, axis);
     return obj;
   });
 }).call(this);

@@ -94,6 +94,7 @@
         title: undefined,
         align: 'bottom'
       },
+      proxies: [axis],
 
       render: function(scope) {
         scope.scale(this.x);
@@ -118,7 +119,7 @@
       }
     };
 
-    d4.createAccessorProxy(obj.accessors, axis);
+    //d4.createAccessorProxy(obj, axis);
     return obj;
   });
 }).call(this);

@@ -15,12 +15,11 @@ describe('axis tests', function() {
     var chart = d4.charts.column();
     var axisTests = function(axis){
       d4.each(d3.keys(d3Axis), function(method){
-        expect(axis[method].$dirty).to.equal(false);
+        expect(axis[method]).to.not.be.an('undefined');
       });
       expect(axis.$orient).to.be.an('undefined');
       axis.orient('bottom');
       expect(axis.orient()).to.equal('bottom');
-      expect(axis.orient.$dirty).to.equal(true);
     };
     chart.using('xAxis', axisTests);
     chart.using('yAxis', axisTests);
