@@ -1,24 +1,21 @@
 ---
-title: Basic Grouped Column Chart
-charts:
-  - Grouped Column Chart
+title: Series and Items CSS
 concepts:
-  - Parsers
+  - Graphic Design
 ---
 
 <h5>{{title}}</h5>
 <p>
-  The grouped column chart is used to compare a series of data elements grouped
-  along the xAxis. This chart is often useful in conjunction with a stacked column
-  chart because they can use the same data series, and where the stacked column highlights
-  the sum of the data series across an axis the grouped column can be used to show the
-  relative distribution.
+  d4 provides several ways to style a chart through css classes which are added during render time.
+  This example gives two examples of how you can style the same chart but produce vastly different visuals.
 </p>
 <p>
-  This example also demonstrates one of the various data parsers available to
-  developers using d4. In this example, we use the <code>nestedGroup</code> parser
-  which makes it trivial for the developer to prepare the incoming data in a way
-  that the chart expects it.
+  The first example uses the incrementing <code class="language-css">.item</code> class. As items are
+  added to the chart a new item class will be created e.g. <code class="language-css">.item0, .item1, .item2</code>.
+</p>
+<p>
+  The second example uses the incrementing <code class="language-css">.series</code> class. As items are
+  added to the chart a new item class will be created e.g. <code class="language-css">.series0, .series1, .series2</code>.
 </p>
 <hr/>
 <script type="text/javascript" charset="utf-8" id='source_code'>
@@ -49,7 +46,7 @@ $(document).ready(function(){
     .value('unitsSold')(data);
 
   var chart = d4.charts.groupedColumn()
-  .width($('#example').width())
+  .width($('#items').width())
   .x(function(x){
     x.key('year');
   })
@@ -58,12 +55,31 @@ $(document).ready(function(){
   })
   .groupsOf(parsedData.data[0].values.length);
 
-  d3.select('#example')
+  var chart2 = d4.charts.groupedColumn()
+  .width($('#series').width())
+  .x(function(x){
+    x.key('year');
+  })
+  .y(function(y){
+    y.key('unitsSold');
+  })
+  .groupsOf(parsedData.data[0].values.length);
+
+  d3.select('#items')
   .datum(parsedData.data)
   .call(chart);
+
+  d3.select('#series')
+  .datum(parsedData.data)
+  .call(chart2);
 });
 
 </script>
-<div id="example"></div>
+<h6>Item Example</h6>
+<div id="items"></div>
+
+<h6>Series Example</h6>
+<div id="series"></div>
+
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript"></code></pre>
