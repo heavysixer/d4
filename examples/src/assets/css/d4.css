@@ -19,10 +19,15 @@ svg.d4 {
   background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-8 */
 }
+.d4 .tick text {
+    font-size: 9px;
+    fill: #999;
+    shape-rendering: crispEdges;
+}
 
 .d4 .axis .domain, .d4 .axis .tick line {
   fill: none;
-  stroke: #222;
+  stroke: #999;
   stroke-width: 1px;
   shape-rendering: crispEdges;
 }
@@ -34,9 +39,8 @@ svg.d4 {
 }
 
 .d4 .zeroLine line {
-    stroke-width:2px;
-    stroke: #222;
-    stroke-linecap: round;
+    stroke-width:1px;
+    stroke: #555;
 }
 
 /*
@@ -56,18 +60,33 @@ svg.d4 {
 }
 
 #stacked_column .d4 .series0 .bar.fill, #stacked_column .average {
-    fill: steelblue;
-    background-color: steelblue;
+    fill: #CD202C;
+    background-color: #CD202C;
 }
 
 #stacked_column .d4 .series1 .bar.fill, #stacked_column .gina {
-    fill: bisque;
-    background-color: bisque;
+    fill: #AD005B;
+    background-color: #AD005B;
 }
 
 #stacked_column .d4 .series2 .bar.fill, #stacked_column .bob {
-    fill: darkslategrey;
-    background-color: darkslategrey;
+    fill: #66307C;
+    background-color: #66307C;
+}
+
+#stacked_row .d4 .series0 .bar.fill, #stacked_row .average {
+    fill: #D4BA00;
+    background-color: #D4BA00;
+}
+
+#stacked_row .d4 .series1 .bar.fill, #stacked_row .gina {
+    fill: #A2AD00;
+    background-color: #A2AD00;
+}
+
+#stacked_row .d4 .series2 .bar.fill, #stacked_row .bob {
+    fill: #E37222;
+    background-color: #E37222;
 }
 
 #multi_scatter .d4 .grid.border rect {
