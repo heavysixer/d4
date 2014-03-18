@@ -1188,12 +1188,12 @@
     var chart = d4.baseChart();
     [{
       'lineSeries': d4.features.lineSeries
-    },{
-      'lineSeriesLabels': d4.features.lineSeriesLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
       'yAxis': d4.features.yAxis
+    }, {
+      'lineSeriesLabels': d4.features.lineSeriesLabels
     }].forEach(function(feature) {
       chart.mixin(feature);
     });
@@ -2396,9 +2396,9 @@
           }
         },
 
-        rx: 2,
+        rx: 0,
 
-        ry: 2,
+        ry: 0,
 
         width: function(d) {
           if(this.x.$scale === 'ordinal'){

@@ -1,0 +1,37 @@
+---
+title: Rounded Corners
+concepts:
+  - Basic Concepts
+---
+
+<h5>{{title}}</h5>
+<p>
+  You can round the corners of the rects for any of the column or row charts by adjusting the <code>rx</code> or <code>ry</code>
+  attributes respectively.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8" id='source_code'>
+'use strict';
+
+$(document).ready(function(){
+  var data = [
+      { y: '2010', x:-10 },
+      { y: '2011', x:20 },
+      { y: '2012', x:30 },
+      { y: '2013', x:40 },
+      { y: '2014', x:50 },
+    ];
+  var chart = d4.charts.row();
+  chart.using('bars', function(bar){
+    bar.rx(4);
+  });
+
+  d3.select('#example')
+  .datum(data)
+  .call(chart);
+});
+
+</script>
+<div id="example"></div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript"></code></pre>

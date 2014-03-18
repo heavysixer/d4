@@ -61,12 +61,12 @@
     var chart = d4.baseChart();
     [{
       'lineSeries': d4.features.lineSeries
-    },{
-      'lineSeriesLabels': d4.features.lineSeriesLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
       'yAxis': d4.features.yAxis
+    }, {
+      'lineSeriesLabels': d4.features.lineSeriesLabels
     }].forEach(function(feature) {
       chart.mixin(feature);
     });

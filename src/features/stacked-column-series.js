@@ -64,9 +64,9 @@
           }
         },
 
-        rx: 2,
+        rx: 0,
 
-        ry: 2,
+        ry: 0,
 
         width: function(d) {
           if(this.x.$scale === 'ordinal'){

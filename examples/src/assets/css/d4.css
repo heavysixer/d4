@@ -43,16 +43,16 @@ svg.d4 {
   Examples
 */
 
-#custom_css .d4 .bar.negative.fill, #waterfall  .d4 .bar.negative.fill {
-    fill: darkred;
+.d4 .bar.negative.fill, #waterfall  .d4 .bar.negative.fill {
+    fill: #CD202C;
 }
 
-#custom_css .d4 .bar.positive.fill, #waterfall .d4 .bar.positive.fill {
-    fill: steelblue;
+.d4 .bar.positive.fill, #waterfall .d4 .bar.positive.fill {
+    fill: #002960;
 }
 
 #waterfall .d4 .bar.subtotal.fill {
-    fill: lightblue;
+    fill: #0065BD;
 }
 
 #stacked_column .d4 .series0 .bar.fill, #stacked_column .average {
