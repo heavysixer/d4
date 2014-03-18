@@ -1,3 +1,6 @@
+svg.d4 {
+border: 1px solid rgb(234,234,234);
+}
 .d4 .column-label {
     /* text-anchor: middle; */
 }
@@ -62,7 +65,7 @@
     fill:none;
     stroke: #aaa;
     stroke-width: 1px;
-    stroke-dasharray :5, 5;
+    stroke-dasharray :3, 4;
     shape-rendering: crispEdges;
 }
 

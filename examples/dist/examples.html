@@ -23,26 +23,26 @@
     <script src="assets/js/main.js"></script>
   </head>
   <body>
-    <div class="container">
-
-      
+    
 <div class="header clearfix">
-    <ul class="nav nav-pills pull-right col-xs-9">
-        <li><a href="/index.html">Introduction</a></li>
-        <li><a href="/getting_started.html">Getting Started</a></li>
-        <li><a href="/docs.html">Documentation</a></li>
-        <li><a href="/examples.html">Examples</a></li>
-    </ul>
-    <div class="col-xs-3">
-      <a href="/index.html"><img src="assets/images/d4-logo.png" width="50" height="50" class='nav-logo' alt="D4 Logo"></a>
+    <div class="container">
+      <div class="pull-left">
+        <a href="/index.html"><img src="assets/images/d4-logo.png" width="30" height="30" class='nav-logo' alt="D4 Logo"></a>
+      </div>
+      <ul class="nav nav-pills">
+          <li><a href="/index.html">Introduction</a></li>
+          <li><a href="/getting_started.html">Getting Started</a></li>
+          <li><a href="/docs.html">Documentation</a></li>
+          <li><a href="/examples.html">Examples</a></li>
+          <li><a href="https://github.com/heavysixer/d4">View on Github</a></li>
+      </ul>
     </div>
 </div>
+    <div class="container" role="main">
 
-      <div class="container" role="main">
-
-        
+      
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 col-sm-12">
     <h3>Examples</h3>
     <p>
       This section demonstrates the various, charts, features and
@@ -51,50 +51,27 @@
       financial and business applications. If you have an idea
       for a more exotic breed, please do submit a pull-request!
     </p>
-
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6 col-sm-6">
     <h4>Charts</h4>
-    <p>The following section demonstrates mostly boilerplate
-      examples of the common chart. It is relatively trivial to
+
+    <p>The following list demonstrates mostly boilerplate
+      examples of the common chart types. It is relatively trivial to
       make a chart type. Most of the hard work is in writing the
       features themselves.
     </p>
 
     
     <dl>
-      <dt>Basic Concepts</dt>
-      
-        <dd><a href ="charts/column/custom-css.html">Custom CSS</a></dd>
-      
-        <dd><a href ="charts/column/custom-data-dimensions.html">Custom Data Dimensions</a></dd>
-      
-        <dd><a href ="charts/column/mixin.html">Mixing in a new feature</a></dd>
-      
-        <dd><a href ="charts/column/mixout.html">Mixing out an existing feature</a></dd>
-      
-        <dd><a href ="charts/column/shared-properties.html">Shared chart properties</a></dd>
-      
-        <dd><a href ="charts/column/staggered-labels.html">Staggered Data Labels</a></dd>
-      
-    </dl>
-    
-    <dl>
       <dt>Column Chart</dt>
       
         <dd><a href ="charts/column/basic.html">Basic Column Chart</a></dd>
       
-        <dd><a href ="charts/column/custom-css.html">Custom CSS</a></dd>
-      
-        <dd><a href ="charts/column/custom-data-dimensions.html">Custom Data Dimensions</a></dd>
-      
-        <dd><a href ="charts/column/custom-scales.html">Custom Scales</a></dd>
-      
-        <dd><a href ="charts/column/mixin.html">Mixing in a new feature</a></dd>
-      
         <dd><a href ="charts/column/mixout.html">Mixing out an existing feature</a></dd>
       
         <dd><a href ="charts/column/shared-properties.html">Shared chart properties</a></dd>
-      
-        <dd><a href ="charts/column/staggered-labels.html">Staggered Data Labels</a></dd>
       
     </dl>
     
@@ -106,37 +83,11 @@
     </dl>
     
     <dl>
-      <dt>Intermediate Concepts</dt>
-      
-        <dd><a href ="charts/column/custom-scales.html">Custom Scales</a></dd>
-      
-        <dd><a href ="charts/grouped-column/basic.html">Basic Grouped Column Chart</a></dd>
-      
-        <dd><a href ="charts/scatter/tooltips.html">Tooltips for data series</a></dd>
-      
-        <dd><a href ="charts/stacked-column/basic.html">Basic Stacked Column</a></dd>
-      
-        <dd><a href ="charts/stacked-column/stacked-row.html">Basic Stacked Row</a></dd>
-      
-    </dl>
-    
-    <dl>
       <dt>Line Chart</dt>
       
         <dd><a href ="charts/line/basic.html">Basic Line Chart</a></dd>
       
         <dd><a href ="charts/line/line-and-dot.html">Line and dot series</a></dd>
-      
-    </dl>
-    
-    <dl>
-      <dt>Parsers</dt>
-      
-        <dd><a href ="charts/grouped-column/basic.html">Basic Grouped Column Chart</a></dd>
-      
-        <dd><a href ="charts/stacked-column/basic.html">Basic Stacked Column</a></dd>
-      
-        <dd><a href ="charts/stacked-column/stacked-row.html">Basic Stacked Row</a></dd>
       
     </dl>
     
@@ -153,8 +104,6 @@
         <dd><a href ="charts/scatter/basic.html">Basic Scatter Plot</a></dd>
       
         <dd><a href ="charts/scatter/multi-series.html">Multi-series Scatterplot</a></dd>
-      
-        <dd><a href ="charts/scatter/tooltips.html">Tooltips for data series</a></dd>
       
     </dl>
     
@@ -175,21 +124,93 @@
     <dl>
       <dt>Waterfall Chart</dt>
       
-        <dd><a href ="charts/waterfall/basic.html">Basic Waterfall Chart</a></dd>
-      
         <dd><a href ="charts/waterfall/horizontal.html">Horizontal Waterfall Chart</a></dd>
+      
+        <dd><a href ="charts/waterfall/basic.html">Vertical Waterfall Chart</a></dd>
       
     </dl>
     
   </div>
+
+  <div class="col-md-6 col-sm-6">
+    <div class="row">
+      <div class="col-md-12 col-sm-12">
+        <h4>Features</h4>
+        <p>A feature of a chart is a visual component, which helps convey meaning
+          in the data.Charts are made up of features whether it be an xAxis, or
+          a series of columns, or a contiguous line. The following list
+          demonstrates some of the capabilities of these features, and how you
+          might apply them in your own charts.
+        </p>
+
+        
+        <dl>
+          <dt>Axis</dt>
+          
+            <dd><a href ="charts/features/axis.html">Axis Feature</a></dd>
+          
+            <dd><a href ="charts/column/staggered-labels.html">Staggered Data Labels</a></dd>
+          
+        </dl>
+        
+        <dl>
+          <dt>Column Labels</dt>
+          
+            <dd><a href ="charts/column/staggered-labels.html">Staggered Data Labels</a></dd>
+          
+        </dl>
+        
+
+        <h4>Concepts</h4>
+        <p>d4 has a series of reoccurring concepts which once understood will make using
+          the library much easier. The following list demonstrates the core concepts of d4.
+        </p>
+
+        
+        <dl>
+          <dt>Parsers</dt>
+          
+            <dd><a href ="charts/stacked-column/stacked-row.html">Basic Stacked Row</a></dd>
+          
+        </dl>
+        
+        <dl>
+          <dt>Basic Concepts</dt>
+          
+            <dd><a href ="charts/column/custom-css.html">Custom CSS</a></dd>
+          
+            <dd><a href ="charts/column/custom-data-dimensions.html">Custom Data Dimensions</a></dd>
+          
+            <dd><a href ="charts/column/mixin.html">Mixing in a new feature</a></dd>
+          
+            <dd><a href ="charts/column/mixout.html">Mixing out an existing feature</a></dd>
+          
+            <dd><a href ="charts/column/shared-properties.html">Shared chart properties</a></dd>
+          
+        </dl>
+        
+        <dl>
+          <dt>Intermediate Concepts</dt>
+          
+            <dd><a href ="charts/column/custom-scales.html">Custom Scales</a></dd>
+          
+            <dd><a href ="charts/scatter/tooltips.html">Tooltips for data series</a></dd>
+          
+        </dl>
+        
+      </div>
+    </div>
+  </div>
 </div>
 
 
-      </div>
-      <div class="footer">
-          <p>&copy; Mark Daggett 2014</p>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <p>&copy; Mark Daggett 2014</p>
       </div>
     </div>
+
 
     <script src="assets/js/vendor.js"></script>
 

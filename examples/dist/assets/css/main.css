@@ -17,6 +17,10 @@ body {
     margin-bottom:10px;
 }
 
+#example {
+    min-height: 100px;
+}
+
 
 table {
 max-width: 100%;
@@ -117,6 +121,7 @@ background-color: #ebcccc
 /* Custom page header */
 .header {
     border-bottom: 1px solid #e5e5e5;
+    margin-bottom:20px;
 }
 
 

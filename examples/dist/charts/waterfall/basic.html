@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Basic Waterfall Chart | d4 Examples</title>
+    <title>Vertical Waterfall Chart | d4 Examples</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
@@ -23,26 +23,26 @@
     <script src="../../assets/js/main.js"></script>
   </head>
   <body>
-    <div class="container">
-
-      
+    
 <div class="header clearfix">
-    <ul class="nav nav-pills pull-right col-xs-9">
-        <li><a href="/index.html">Introduction</a></li>
-        <li><a href="/getting_started.html">Getting Started</a></li>
-        <li><a href="/docs.html">Documentation</a></li>
-        <li><a href="/examples.html">Examples</a></li>
-    </ul>
-    <div class="col-xs-3">
-      <a href="/index.html"><img src="../../assets/images/d4-logo.png" width="50" height="50" class='nav-logo' alt="D4 Logo"></a>
+    <div class="container">
+      <div class="pull-left">
+        <a href="/index.html"><img src="../../assets/images/d4-logo.png" width="30" height="30" class='nav-logo' alt="D4 Logo"></a>
+      </div>
+      <ul class="nav nav-pills">
+          <li><a href="/index.html">Introduction</a></li>
+          <li><a href="/getting_started.html">Getting Started</a></li>
+          <li><a href="/docs.html">Documentation</a></li>
+          <li><a href="/examples.html">Examples</a></li>
+          <li><a href="https://github.com/heavysixer/d4">View on Github</a></li>
+      </ul>
     </div>
 </div>
+    <div class="container" role="main">
 
-      <div class="container" role="main">
+      
 
-        
-
-<h5>Basic Waterfall Chart</h5>
+<h5>Vertical Waterfall Chart</h5>
 <p>
   The waterfall chart visually tallies the cumulative result of negative and
   positive values over a data series. In addition to specifying the normal
@@ -115,11 +115,13 @@ $(document).ready(function(){
 <pre><code id="code" class="language-javascript"></code></pre>
 
 
-      </div>
-      <div class="footer">
-          <p>&copy; Mark Daggett 2014</p>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <p>&copy; Mark Daggett 2014</p>
       </div>
     </div>
+
 
     <script src="../../assets/js/vendor.js"></script>
 

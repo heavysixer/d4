@@ -23,34 +23,30 @@
     <script src="assets/js/main.js"></script>
   </head>
   <body>
-    <div class="container">
-
-      
+    
 <div class="header clearfix">
-    <ul class="nav nav-pills pull-right col-xs-9">
-        <li><a href="/index.html">Introduction</a></li>
-        <li><a href="/getting_started.html">Getting Started</a></li>
-        <li><a href="/docs.html">Documentation</a></li>
-        <li><a href="/examples.html">Examples</a></li>
-    </ul>
-    <div class="col-xs-3">
-      <a href="/index.html"><img src="assets/images/d4-logo.png" width="50" height="50" class='nav-logo' alt="D4 Logo"></a>
+    <div class="container">
+      <div class="pull-left">
+        <a href="/index.html"><img src="assets/images/d4-logo.png" width="30" height="30" class='nav-logo' alt="D4 Logo"></a>
+      </div>
+      <ul class="nav nav-pills">
+          <li><a href="/index.html">Introduction</a></li>
+          <li><a href="/getting_started.html">Getting Started</a></li>
+          <li><a href="/docs.html">Documentation</a></li>
+          <li><a href="/examples.html">Examples</a></li>
+          <li><a href="https://github.com/heavysixer/d4">View on Github</a></li>
+      </ul>
     </div>
 </div>
+    <div class="container" role="main">
 
-      <div class="container" role="main">
-
-        
+      
 <div class='content'>
     <div class="col-md-12">
       <div class="alert alert-info">Documentation is in flux, many sections of d4 remain to be covered.</div>
-      <h1 id="d4-0-5-4">d4 -0.5.4</h1>
+      <h1 id="d4-0-5-5">d4 -0.5.5</h1>
 <h6 id="-base-js-0-"><a href="#base-js">base.js</a></h6>
 <ul>
-<li><a href="#chart"><code>chart</code></a></li>
-<li><a href="#feature"><code>feature</code></a></li>
-<li><a href="#builder"><code>builder</code></a></li>
-<li><a href="#parser"><code>parser</code></a></li>
 <li><a href="#basechart"><code>baseChart</code></a></li>
 <li><a href="#builder"><code>builder</code></a></li>
 <li><a href="#features"><code>features</code></a></li>
@@ -58,86 +54,59 @@
 <li><a href="#mixout"><code>mixout</code></a></li>
 <li><a href="#axes"><code>axes</code></a></li>
 <li><a href="#using"><code>using</code></a></li>
+<li><a href="#builder"><code>builder</code></a></li>
+<li><a href="#chart"><code>chart</code></a></li>
+<li><a href="#createaccessorproxy"><code>createAccessorProxy</code></a></li>
+<li><a href="#feature"><code>feature</code></a></li>
 <li><a href="#functor"><code>functor</code></a></li>
+<li><a href="#parser"><code>parser</code></a></li>
 </ul>
-<h6 id="-scales-js-12-"><a href="#scales-js">scales.js</a></h6>
+<h6 id="-scales-js-13-"><a href="#scales-js">scales.js</a></h6>
 <ul>
-<li><a href="#">``</a></li>
-<li><a href="#">``</a></li>
+<li><a href="#linearscalefornesteddata"><code>linearScaleForNestedData</code></a></li>
+<li><a href="#ordinalscalefornesteddata"><code>ordinalScaleForNestedData</code></a></li>
 </ul>
-<h6 id="-column-js-14-"><a href="#column-js">column.js</a></h6>
+<h6 id="-column-js-16-"><a href="#column-js">column.js</a></h6>
 <ul>
-<li><a href="#">``</a></li>
+<li><a href="#column"><code>column</code></a></li>
 </ul>
-<h6 id="-grouped-column-js-15-"><a href="#grouped-column-js">grouped-column.js</a></h6>
+<h6 id="-grouped-column-js-18-"><a href="#grouped-column-js">grouped-column.js</a></h6>
 <ul>
-<li><a href="#">``</a></li>
+<li><a href="#groupedcolumn"><code>groupedColumn</code></a></li>
 </ul>
-<h6 id="-line-js-16-"><a href="#line-js">line.js</a></h6>
-<ul>
-<li><a href="#">``</a></li>
-</ul>
-<h6 id="-row-js-17-"><a href="#row-js">row.js</a></h6>
+<h6 id="-line-js-20-"><a href="#line-js">line.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-waterfall-connectors-js-18-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
+<h6 id="-row-js-22-"><a href="#row-js">row.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-nested-group-js-19-"><a href="#nested-group-js">nested-group.js</a></h6>
+<h6 id="-nested-group-js-23-"><a href="#nested-group-js">nested-group.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-nested-stack-js-20-"><a href="#nested-stack-js">nested-stack.js</a></h6>
+<h6 id="-nested-stack-js-24-"><a href="#nested-stack-js">nested-stack.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-waterfall-js-21-"><a href="#waterfall-js">waterfall.js</a></h6>
+<h6 id="-waterfall-js-25-"><a href="#waterfall-js">waterfall.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
+</ul>
+<h6 id="-waterfall-connectors-js-26-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
+<ul>
+<li><a href="#">``</a></li>
+</ul>
+<h6 id="-x-axis-js-27-"><a href="#x-axis-js">x-axis.js</a></h6>
+<ul>
+<li><a href="#xaxis"><code>xAxis</code></a></li>
+</ul>
+<h6 id="-y-axis-js-29-"><a href="#y-axis-js">y-axis.js</a></h6>
+<ul>
+<li><a href="#yaxis"><code>yAxis</code></a></li>
 </ul>
 <h2 id="base-js">base.js</h2>
-<h3 id="chart">chart</h3>
-<p><a href="#chart">#</a>
-<a href="#base-js">Ⓣ</a></p>
-<p>This function allows you to register a reusable chart with d4.</p>
-<h4 id="arguments">Arguments</h4>
-<ol>
-<li><code>name</code><em>(String) -- accessor name for chart.</em></li>
-<li><code>funct</code><em>(Function) -- function which will instantiate the chart.</em></li>
-</ol>
-<hr>
-<h3 id="feature">feature</h3>
-<p><a href="#feature">#</a>
-<a href="#base-js">Ⓣ</a></p>
-<p>This function allows you to register a reusable chart feature with d4.</p>
-<h4 id="arguments">Arguments</h4>
-<ol>
-<li><code>name</code><em>(String) -- accessor name for chart feature.</em></li>
-<li><code>funct</code><em>(Function) -- function which will instantiate the chart feature.</em></li>
-</ol>
-<hr>
-<h3 id="builder">builder</h3>
-<p><a href="#builder">#</a>
-<a href="#base-js">Ⓣ</a></p>
-<p>This function allows you to register a reusable chart builder with d4.</p>
-<h4 id="arguments">Arguments</h4>
-<ol>
-<li><code>name</code><em>(String) -- accessor name for chart builder.</em></li>
-<li><code>funct</code><em>(Function) -- function which will instantiate the chart builder.</em></li>
-</ol>
-<hr>
-<h3 id="parser">parser</h3>
-<p><a href="#parser">#</a>
-<a href="#base-js">Ⓣ</a></p>
-<p>This function allows you to register a reusable data parser with d4.</p>
-<h4 id="arguments">Arguments</h4>
-<ol>
-<li><code>name</code><em>(String) -- accessor name for data parser.</em></li>
-<li><code>funct</code><em>(Function) -- function which will instantiate the data parser.</em></li>
-</ol>
-<hr>
 <h3 id="basechart">baseChart</h3>
 <p><a href="#basechart">#</a>
 <a href="#base-js">Ⓣ</a></p>
@@ -250,6 +219,60 @@
 <li><code>funct</code><em>(Function) -- function which will perform the modifcation.</em></li>
 </ol>
 <hr>
+<h3 id="builder">builder</h3>
+<p><a href="#builder">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>This function allows you to register a reusable chart builder with d4.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code><em>(String) -- accessor name for chart builder.</em></li>
+<li><code>funct</code><em>(Function) -- function which will instantiate the chart builder.</em></li>
+</ol>
+<hr>
+<h3 id="chart">chart</h3>
+<p><a href="#chart">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>This function allows you to register a reusable chart with d4.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code><em>(String) -- accessor name for chart.</em></li>
+<li><code>funct</code><em>(Function) -- function which will instantiate the chart.</em></li>
+</ol>
+<hr>
+<h3 id="createaccessorproxy">createAccessorProxy</h3>
+<p><a href="#createaccessorproxy">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>This function allows create proxy accessor to other objects. This is most<br>useful when you need a feature to transparently control a component of a<br>d3 object. Consider the example of the yAxis feature. It allows you to control<br>a d3 axis object. To the user the d4 axis feature and the d3 axis object are<br>one in the same, and they will expect that they can interact with an d4 axis<br>feature in the same way they could with a d3 axis object. Therefore before<br>the feature is created we first use this function to create a transparent<br>proxy that links the two.</p>
+<h5 id="examples">Examples</h5>
+<pre><code>   d4.feature(&#39;yAxis&#39;, function(name) {
+       var axis = d3.svg.axis();
+       var obj = { accessors : {} };
+       d4.createAccessorProxy(obj, axis);
+       return obj;
+  });
+
+  // Then when using the feature you can transparently access the axis properties
+  chart.using(&#39;yAxis&#39;, function(axis){
+      // =&gt; 0
+      axis.ticks();
+  });</code></pre>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>proxy</code><em>(Object) -- The proxy object, which masks the target.</em></li>
+<li><code>target</code><em>(Object) -- The target objet, which is masked by the proxy</em></li>
+<li><code>prefix</code><em>(String) -- Optional prefix to add to the method names, which helps avoid naming collisions on the proxy.</em></li>
+</ol>
+<hr>
+<h3 id="feature">feature</h3>
+<p><a href="#feature">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>This function allows you to register a reusable chart feature with d4.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code><em>(String) -- accessor name for chart feature.</em></li>
+<li><code>funct</code><em>(Function) -- function which will instantiate the chart feature.</em></li>
+</ol>
+<hr>
 <h3 id="functor">functor</h3>
 <p><a href="#functor">#</a>
 <a href="#base-js">Ⓣ</a></p>
@@ -262,9 +285,19 @@
 <li><code>funct</code><em>(Varies) -- An function or other variable to be wrapped in a function</em></li>
 </ol>
 <hr>
+<h3 id="parser">parser</h3>
+<p><a href="#parser">#</a>
+<a href="#base-js">Ⓣ</a></p>
+<p>This function allows you to register a reusable data parser with d4.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code><em>(String) -- accessor name for data parser.</em></li>
+<li><code>funct</code><em>(Function) -- function which will instantiate the data parser.</em></li>
+</ol>
+<hr>
 <h2 id="scales-js">scales.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
+<h3 id="linearscalefornesteddata">linearScaleForNestedData</h3>
+<p><a href="#linearscalefornesteddata">#</a>
 <a href="#scales-js">Ⓣ</a></p>
 <p>Creates a linear scale for a dimension of a given chart.</p>
 <h4 id="arguments">Arguments</h4>
@@ -274,8 +307,8 @@
 <li><code>string</code><em>(string) -represnting a dimension e.g. `x`,`y`.</em></li>
 </ol>
 <hr>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
+<h3 id="ordinalscalefornesteddata">ordinalScaleForNestedData</h3>
+<p><a href="#ordinalscalefornesteddata">#</a>
 <a href="#scales-js">Ⓣ</a></p>
 <p>Creates an ordinal scale for a dimension of a given chart.</p>
 <h4 id="arguments">Arguments</h4>
@@ -286,12 +319,17 @@
 </ol>
 <hr>
 <h2 id="column-js">column.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
+<h3 id="column">column</h3>
+<p><a href="#column">#</a>
 <a href="#column-js">Ⓣ</a></p>
 <p>The column chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br>linear values for the <code>y</code> and ordinal values on the <code>x</code>. The basic column chart<br>has four default features:</p>
-<p><strong>bars</strong> - series bars<br><strong>barLabels</strong> - data labels above the bars<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
-<h5 id="example-usage">Example Usage</h5>
+<ul>
+<li><strong>bars</strong> - series bars</li>
+<li><strong>barLabels</strong> - data labels above the bars</li>
+<li><strong>xAxis</strong> - the axis for the x dimension</li>
+<li><strong>yAxis</strong> - the axis for the y dimension</li>
+</ul>
+<h6 id="example-usage">Example Usage</h6>
 <pre><code>var data = [
     { x: &#39;2010&#39;, y:-10 },
     { x: &#39;2011&#39;, y:20 },
@@ -324,12 +362,18 @@ d3.select(&#39;#example&#39;)
 .call(chart);</code></pre>
 <hr>
 <h2 id="grouped-column-js">grouped-column.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
+<h3 id="groupedcolumn">groupedColumn</h3>
+<p><a href="#groupedcolumn">#</a>
 <a href="#grouped-column-js">Ⓣ</a></p>
 <p>The grouped column chart is used to compare a series of data elements grouped<br>along the xAxis. This chart is often useful in conjunction with a stacked column<br>chart because they can use the same data series, and where the stacked column highlights<br>the sum of the data series across an axis the grouped column can be used to show the<br>relative distribution.</p>
-<p><strong>bars</strong> - series bars<br><strong>barLabels</strong> - data labels above the bars<br><strong>groupsOf</strong> - an integer representing the number of columns in each group<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
-<h5 id="example-usage">Example Usage</h5>
+<ul>
+<li><strong>bars</strong> - series bars</li>
+<li><strong>barLabels</strong> - data labels above the bars</li>
+<li><strong>groupsOf</strong> - an integer representing the number of columns in each group</li>
+<li><strong>xAxis</strong> - the axis for the x dimension</li>
+<li><strong>yAxis</strong> - the axis for the y dimension</li>
+</ul>
+<h6 id="example-usage">Example Usage</h6>
 <pre><code>var data = [
   { year: &#39;2010&#39;, unitsSold:-100, salesman : &#39;Bob&#39; },
   { year: &#39;2011&#39;, unitsSold:200, salesman : &#39;Bob&#39; },
@@ -429,72 +473,66 @@ d3.select(&#39;#example&#39;)
   .datum(data)
   .call(chart);</code></pre>
 <hr>
-<h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
-<a href="#waterfall-connectors-js">Ⓣ</a></p>
-<p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
-<p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
-<h5 id="accessors">Accessors</h5>
-<p><code>x</code> - Used in placement of the connector lines.<br><code>y</code> - Used in placement of the connector lines.<br><code>span</code> - calculates the length of the connector line<br><code>classes</code> - applies the class to the connector lines.</p>
-<hr>
 <h2 id="nested-group-js">nested-group.js</h2>
 <h3 id="-"> </h3>
 <p><a href="#">#</a>
 <a href="#nested-group-js">Ⓣ</a></p>
 <p>The nested group parser is useful for grouped column charts where multiple<br>data items need to appear relative to the axis value, for example grouped<br>column charts or multi-series line charts.</p>
-<pre><code>_____________________
-|           _        |
-|   _ _    | |_      |
-|  | | |   | | |     |
-----------------------</code></pre>
+<pre><code>  _____________________
+  |           _        |
+  |   _ _    | |_      |
+  |  | | |   | | |     |
+  ----------------------</code></pre>
 <p>This module makes use of the d3&#39;s &quot;nest&quot; data structure layout</p>
 <p><a href="https://github.com/mbostock/d3/wiki/Arrays#-nest"><a href="https://github.com/mbostock/d3/wiki/Arrays\#-nest">https://github.com/mbostock/d3/wiki/Arrays\#-nest</a></a></p>
-<h4 id="approach">Approach</h4>
+<h5 id="approach">Approach</h5>
 <p>Just like D3, this parser uses a chaining declaritiave style to build up<br>the necessary prerequistes to create the waterfall data. Here is a simple<br>example. Given a data item structure like this: {&quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 }</p>
-<pre><code>var parser = d4.parsers.nestedGroup()
-    .x(&#39;category&#39;)
-    .y(&#39;value&#39;)
-    .value(&#39;value&#39;);
+<pre><code> var parser = d4.parsers.nestedGroup()
+     .x(&#39;category&#39;)
+     .y(&#39;value&#39;)
+     .value(&#39;value&#39;);
 
-var groupedColumnData = parser(data);</code></pre>
+ var groupedColumnData = parser(data);</code></pre>
 <p>Keep reading for more information on these various accessor functions.</p>
-<h4 id="accessor-methods">Accessor Methods</h4>
+<h5 id="accessor-methods">Accessor Methods</h5>
 <p><code>x</code> - A function which returns a key to access the x values in the data array<br><code>y</code> - A function which returns a key to access the y values in the data array<br><code>value</code> - A function which returns a key to access the values in the data array.<br><code>data</code> - An array of objects with their dimensions specified like this:</p>
-<pre><code>var data = [
-{&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 },
-{&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category Two&quot;, &quot;value&quot; : 55 },
-{&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category Three&quot;, &quot;value&quot; : -10 },
-{&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category Four&quot;, &quot;value&quot; : 5 }]</code></pre>
+<pre><code>  var data = [
+  {&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 },
+  {&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category Two&quot;, &quot;value&quot; : 55 },
+  {&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category Three&quot;, &quot;value&quot; : -10 },
+  {&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category Four&quot;, &quot;value&quot; : 5 }]</code></pre>
 <hr>
 <h2 id="nested-stack-js">nested-stack.js</h2>
 <h3 id="-"> </h3>
 <p><a href="#">#</a>
 <a href="#nested-stack-js">Ⓣ</a></p>
 <p>The nested stack parser is useful for charts which take a data series<br>and wants to sort them across a dimension and then display the results.<br>The most common usecase would be a stacked column chart like this:</p>
-<pre><code>_____________________
-|    _               |
-|   | |   _          |
-|   |-|  | |   _     |
-|   |-|  |-|  |-|    |
-|   | |  |-|  |-|    |
-----------------------</code></pre>
+<pre><code>  _____________________
+  |    _               |
+  |   | |   _          |
+  |   |-|  | |   _     |
+  |   |-|  |-|  |-|    |
+  |   | |  |-|  |-|    |
+  ----------------------</code></pre>
 <p>This module makes use of the d3&#39;s &quot;nest&quot; data structure, and &quot;stack&quot; layout</p>
-<p><a href="https://github.com/mbostock/d3/wiki/Arrays#-nest"><a href="https://github.com/mbostock/d3/wiki/Arrays\#-nest">https://github.com/mbostock/d3/wiki/Arrays\#-nest</a></a><br><a href="https://github.com/mbostock/d3/wiki/Stack-Layout"><a href="https://github.com/mbostock/d3/wiki/Stack-Layout">https://github.com/mbostock/d3/wiki/Stack-Layout</a></a></p>
-<h4 id="approach">Approach</h4>
+<ul>
+<li><a href="https://github.com/mbostock/d3/wiki/Arrays#-nest"><a href="https://github.com/mbostock/d3/wiki/Arrays\#-nest">https://github.com/mbostock/d3/wiki/Arrays\#-nest</a></a></li>
+<li><a href="https://github.com/mbostock/d3/wiki/Stack-Layout"><a href="https://github.com/mbostock/d3/wiki/Stack-Layout">https://github.com/mbostock/d3/wiki/Stack-Layout</a></a></li>
+</ul>
+<h5 id="approach">Approach</h5>
 <p>Just like D3, this parser uses a chaining declaritiave style to build up<br>the necessary prerequistes to create the stacked data. Here is a simple<br>example:</p>
-<pre><code>    var parser = d4.parsers.nestedStack()
-        .x(function() {
-          return &#39;title&#39;;
-        })
-        .y(function(){
-          return &#39;group&#39;;
-        })
-        .value(function() {
-          return &#39;values&#39;;
-        });
+<pre><code> var parser = d4.parsers.nestedStack()
+     .x(function() {
+       return &#39;title&#39;;
+     })
+     .y(function(){
+       return &#39;group&#39;;
+     })
+     .value(function() {
+       return &#39;values&#39;;
+     });
 
-    var stackedData = parser(data);</code></pre>
+ var stackedData = parser(data);</code></pre>
 <p>Keep reading for more information on these various accessor functions.</p>
 <h5 id="benefits">Benefits</h5>
 <ul>
@@ -506,101 +544,86 @@ var groupedColumnData = parser(data);</code></pre>
 </ul>
 <h5 id="accessor-methods">Accessor Methods</h5>
 <p><code>x</code> : - function which returns a key to access the x values in the data array<br><code>y</code> : - function which returns a key to access the y values in the data array<br><code>value</code> : - function which returns a key to access the values in the data array.<br><code>data</code> : array - An array of objects with their dimensions specified like this:</p>
-<pre><code>var data = [{ &quot;title&quot;: &quot;3 Years&quot;, &quot;group&quot; : &quot;one&quot;, &quot;value&quot;: 30 },
-            { &quot;title&quot;: &quot;3 Years&quot;, &quot;group&quot; : &quot;two&quot;, &quot;value&quot;: 20 },
-            { &quot;title&quot;: &quot;3 Years&quot;, &quot;group&quot; : &quot;three&quot;, &quot;value&quot;: 10 },
-            { &quot;title&quot;: &quot;5 Years&quot;, &quot;group&quot; : &quot;one&quot;,  &quot;value&quot;: 3 },
-            { &quot;title&quot;: &quot;5 Years&quot;, &quot;group&quot; : &quot;two&quot;, &quot;value&quot;: 2 },
-            { &quot;title&quot;: &quot;5 Years&quot;, &quot;group&quot; : &quot;three&quot;, &quot;value&quot;: 1 }]</code></pre>
+<pre><code> var data = [{ &quot;title&quot;: &quot;3 Years&quot;, &quot;group&quot; : &quot;one&quot;, &quot;value&quot;: 30 },
+             { &quot;title&quot;: &quot;3 Years&quot;, &quot;group&quot; : &quot;two&quot;, &quot;value&quot;: 20 },
+             { &quot;title&quot;: &quot;3 Years&quot;, &quot;group&quot; : &quot;three&quot;, &quot;value&quot;: 10 },
+             { &quot;title&quot;: &quot;5 Years&quot;, &quot;group&quot; : &quot;one&quot;,  &quot;value&quot;: 3 },
+             { &quot;title&quot;: &quot;5 Years&quot;, &quot;group&quot; : &quot;two&quot;, &quot;value&quot;: 2 },
+             { &quot;title&quot;: &quot;5 Years&quot;, &quot;group&quot; : &quot;three&quot;, &quot;value&quot;: 1 }]</code></pre>
 <h5 id="example-usage">Example Usage</h5>
 <p>Given the example data and dimension variables above you can use this module<br>in the following way:</p>
-<pre><code>var parser = d4.parsers.nestedStack()
-.x(function() {
-  return &#39;title&#39;;
-})
-.y(function(){
-  return &#39;group&#39;;
-})
-.value(function() {
-  return &#39;value&#39;;
-})
-.call(data);</code></pre>
+<pre><code> var parser = d4.parsers.nestedStack()
+ .x(function() {
+   return &#39;title&#39;;
+ })
+ .y(function(){
+   return &#39;group&#39;;
+ })
+ .value(function() {
+   return &#39;value&#39;;
+ })
+ .call(data);</code></pre>
 <p>The <code>parser</code> variable will now be an object containing the following structure:</p>
-<pre><code>{
-  data: Array
-  value: {
-    key: string,
-    values: Array
-  },
-  x: {
-    key: string,
-    values: Array
-  },
-  y: {
-    key: string,
-    values: Array
-  }
-}</code></pre>
+<pre><code> {
+   data: Array
+   value: {
+     key: string,
+     values: Array
+   },
+   x: {
+     key: string,
+     values: Array
+   },
+   y: {
+     key: string,
+     values: Array
+   }
+ }</code></pre>
 <hr>
 <h2 id="waterfall-js">waterfall.js</h2>
 <h3 id="-"> </h3>
 <p><a href="#">#</a>
 <a href="#waterfall-js">Ⓣ</a></p>
 <p>The waterfall parser is useful for waterfall charts where data items need to account<br>for the position of earlier values:</p>
-<pre><code>_____________________
-|   _        _______ |
-|  |_|___   | |  | | |
-|      |_|__|_|  | | |
-|                |_| |
-----------------------
+<pre><code> _____________________
+ |   _        _______ |
+ |  |_|___   | |  | | |
+ |      |_|__|_|  | | |
+ |                |_| |
+ ----------------------</code></pre>
+<p>This module makes use of the d3&#39;s &quot;nest&quot; data structure, and &quot;stack&quot; layout<br><a href="https://github.com/mbostock/d3/wiki/Arrays#-nest"><a href="https://github.com/mbostock/d3/wiki/Arrays\#-nest">https://github.com/mbostock/d3/wiki/Arrays\#-nest</a></a><br><a href="https://github.com/mbostock/d3/wiki/Stack-Layout"><a href="https://github.com/mbostock/d3/wiki/Stack-Layout">https://github.com/mbostock/d3/wiki/Stack-Layout</a></a></p>
+<h5 id="approach-">Approach:</h5>
+<p>Just like D3, this parser uses a chaining declaritiave style to build up<br>the necessary prerequistes to create the waterfall data. Here is a simple<br>example. Given a data item structure like this: {&quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 }</p>
+<pre><code> var parser = d4.parsers.waterfall()
+     .x(function() {
+       return &#39;category&#39;;
+     })
+     .y(function(){
+       return &#39;value&#39;;
+     })
+     .value(function() {
+       return &#39;value&#39;;
+     });
 
-This module makes use of the d3&#39;s &quot;nest&quot; data structure, and &quot;stack&quot; layout
-[https://github.com/mbostock/d3/wiki/Arrays#-nest][22]
-[https://github.com/mbostock/d3/wiki/Stack-Layout][23]
-
-
-Approach:
-Just like D3, this parser uses a chaining declaritiave style to build up
-the necessary prerequistes to create the waterfall data. Here is a simple
-example. Given a data item structure like this: {&quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 }
-
-var parser = d4.parsers.waterfall()
-    .x(function() {
-      return &#39;category&#39;;
-    })
-    .y(function(){
-      return &#39;value&#39;;
-    })
-    .value(function() {
-      return &#39;value&#39;;
-    });
-
-var waterfallData = parser(data);
-
-Keep reading for more information on these various accessor functions.
-
-Benefits:</code></pre>
+ var waterfallData = parser(data);</code></pre>
+<p>Keep reading for more information on these various accessor functions.</p>
+<h5 id="benefits-">Benefits:</h5>
 <p>Supports horizontal or vertical waterfalls<br>Supports totaling series using a special &quot;e&quot; value in a data item.</p>
-<pre><code>Limitations:</code></pre>
+<h5 id="limitations-">Limitations:</h5>
 <p>Does not support stacked waterfalls.</p>
-<pre><code>Accessor Methods:</code></pre>
-<p>x : - function which returns a key to access the x values in the data array<br>y : - function which returns a key to access the y values in the data array<br>value : - function which returns a key to access the values in the data array.<br>data : array - An array of objects with their dimensions specified<br>like this:</p>
-<pre><code>  var data = [
-  {&quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 },
-  {&quot;category&quot; : &quot;Category Two&quot;, &quot;value&quot; : 55 },
-  {&quot;category&quot; : &quot;Category Three&quot;, &quot;value&quot; : -10 },
-  {&quot;category&quot; : &quot;Category Four&quot;, &quot;value&quot; : 5 },
-  {&quot;category&quot; : &quot;Category Five&quot;, &quot;value&quot; : &quot;e&quot; }]
-
-SPECIAL NOTE:
-Waterfalls charts typically have the ability to display subtotals at any point.
-In order to use this feature simply set the value of your subtotal column to &quot;e.&quot;
-
-Example Usage:
-Given the example data and dimension variables above you can use this module
-in the following way:
-
-var parser = d4.parsers.nestedStack()
+<h5 id="accessor-methods-">Accessor Methods:</h5>
+<p><code>x</code> : - function which returns a key to access the x values in the data array<br><code>y</code> : - function which returns a key to access the y values in the data array<br><code>value</code> : - function which returns a key to access the values in the data array.<br><code>data</code> : array - An array of objects with their dimensions specified<br>like this:</p>
+<pre><code> var data = [
+ {&quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 },
+ {&quot;category&quot; : &quot;Category Two&quot;, &quot;value&quot; : 55 },
+ {&quot;category&quot; : &quot;Category Three&quot;, &quot;value&quot; : -10 },
+ {&quot;category&quot; : &quot;Category Four&quot;, &quot;value&quot; : 5 },
+ {&quot;category&quot; : &quot;Category Five&quot;, &quot;value&quot; : &quot;e&quot; }]</code></pre>
+<h5 id="special-note-">SPECIAL NOTE:</h5>
+<p>Waterfalls charts typically have the ability to display subtotals at any point.<br>In order to use this feature simply set the value of your subtotal column to &quot;e.&quot;</p>
+<h5 id="example-usage-">Example Usage:</h5>
+<p>Given the example data and dimension variables above you can use this module<br>in the following way:</p>
+<pre><code>var parser = d4.parsers.nestedStack()
 .dimensions(dimensions)
 .call(data);
 
@@ -619,21 +642,95 @@ The `parser` variable will now be an object containing the following structure:
     key: string,
     values: Array
   }
-}
+}</code></pre>
+<p>Taking these attributes one-by-one:  </p>
+<ul>
+<li>data - is an array of items stacked by D3  </li>
+<li>value - an object with a key representing the value accessor and an array of values  </li>
+<li>x - an object with a key representing the x accessor and an array of values  </li>
+<li>y - an object with a key representing the y accessor and an array of values</li>
+</ul>
+<hr>
+<h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
+<a href="#waterfall-connectors-js">Ⓣ</a></p>
+<p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
+<p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>x</code> - Used in placement of the connector lines.<br><code>y</code> - Used in placement of the connector lines.<br><code>span</code> - calculates the length of the connector line<br><code>classes</code> - applies the class to the connector lines.</p>
+<hr>
+<h2 id="x-axis-js">x-axis.js</h2>
+<h3 id="xaxis">xAxis</h3>
+<p><a href="#xaxis">#</a>
+<a href="#x-axis-js">Ⓣ</a></p>
+<p>This feature creates an xAxis for use within d4. There are a variety of<br>accessors described below which modify the behavior and apperance of the axis.</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>axis</code> - The d3 axis object itself.<br><code>innerTickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize</a></a><br><code>orient</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#orient"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#orient">https://github.com/mbostock/d3/wiki/SVG-Axes\#orient</a></a><br><code>outerTickSize</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize</a></a><br><code>scale</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#scale"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#scale">https://github.com/mbostock/d3/wiki/SVG-Axes\#scale</a></a><br><code>stagger</code> - (true | false) determines if the axis should stagger overlapping text (true by default)<br><code>tickFormat</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat</a></a><br><code>tickPadding</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding</a></a><br><code>tickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize</a></a><br><code>tickSubdivide</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide</a></a><br><code>tickValues</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues</a></a><br><code>ticks</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#ticks"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks">https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks</a></a></p>
+<pre><code>var chart = d4.charts.groupedColumn()
+.using(&#39;yAxis&#39;, function(axis){
 
-Taking these attributes one-by-one:</code></pre>
-<p>data - is an array of items stacked by D3<br>value - an object with a key representing the value accessor and an array of values<br>x - an object with a key representing the x accessor and an array of values<br>y - an object with a key representing the y accessor and an array of values</p>
+  // adjust the number of tick marks based on the height of the chart
+  axis.ticks($(&#39;#example&#39;).height()/20);
+
+  // set the inner and outer tick sizes
+  axis.tickSize(10,5);
+
+  // adjust the tick padding
+  axis.tickPadding(5);
+
+})
+.using(&#39;xAxis&#39;, function(axis){
+
+  // position the tickmarks on the top of the axis line
+  axis.orient(&#39;top&#39;);
+
+  // move the axis to the top of the chart.
+  axis.align(&#39;top&#39;);
+})</code></pre>
+<hr>
+<h2 id="y-axis-js">y-axis.js</h2>
+<h3 id="yaxis">yAxis</h3>
+<p><a href="#yaxis">#</a>
+<a href="#y-axis-js">Ⓣ</a></p>
+<p>This feature creates an xAxis for use within d4. There are a variety of<br>accessors described below which modify the behavior and apperance of the axis.</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>axis</code> - The d3 axis object itself.<br><code>innerTickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize</a></a><br><code>orient</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#orient"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#orient">https://github.com/mbostock/d3/wiki/SVG-Axes\#orient</a></a><br><code>outerTickSize</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize</a></a><br><code>scale</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#scale"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#scale">https://github.com/mbostock/d3/wiki/SVG-Axes\#scale</a></a><br><code>stagger</code> - (true | false) determines if the axis should stagger overlapping text (true by default)<br><code>tickFormat</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat</a></a><br><code>tickPadding</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding</a></a><br><code>tickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize</a></a><br><code>tickSubdivide</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide</a></a><br><code>tickValues</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues</a></a><br><code>ticks</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#ticks"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks">https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks</a></a></p>
+<h5 id="examples">Examples</h5>
+<pre><code>var chart = d4.charts.groupedColumn()
+.using(&#39;yAxis&#39;, function(axis){
+
+  // adjust the number of tick marks based on the height of the chart
+  axis.ticks($(&#39;#example&#39;).height()/20);
+
+  // set the inner and outer tick sizes
+  axis.tickSize(10,5);
+
+  // adjust the tick padding
+  axis.tickPadding(5);
+
+})
+.using(&#39;xAxis&#39;, function(axis){
+
+  // position the tickmarks on the top of the axis line
+  axis.orient(&#39;top&#39;);
+
+  // move the axis to the top of the chart.
+  axis.y(-20);
+})</code></pre>
 <hr>
 
     </div>
 </div>
 
 
-      </div>
-      <div class="footer">
-          <p>&copy; Mark Daggett 2014</p>
+    </div>
+    <div class="footer">
+      <div class="container">
+        <p>&copy; Mark Daggett 2014</p>
       </div>
     </div>
+
 
     <script src="assets/js/vendor.js"></script>
 
