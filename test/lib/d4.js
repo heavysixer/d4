@@ -1,6 +1,6 @@
 /*! d4 - v0.5.4
  *  License: MIT Expat
- *  Date: 2014-03-17
+ *  Date: 2014-03-18
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -145,7 +145,11 @@
         return innerObj[functName];
       }
       storeLastValue(wrapperObj, functName, attr);
-      innerObj[functName] = attr;
+      if(d4.isFunction(innerObj[functName])){
+        innerObj[functName].apply(innerObj, arguments);
+      } else {
+        innerObj[functName] = attr;
+      }
       return wrapperObj;
     };
     storeLastValue(wrapperObj, functName, innerObj[functName]);
@@ -2742,7 +2746,7 @@ the direction of the lines.
       }
     };
 
-    d4.createAccessorProxy(obj, axis);
+    d4.createAccessorProxy(obj.accessors, axis);
     return obj;
   });
 }).call(this);
@@ -2874,7 +2878,7 @@ the direction of the lines.
 
       }
     };
-    d4.createAccessorProxy(obj, axis);
+    d4.createAccessorProxy(obj.accessors, axis);
     return obj;
   });
 }).call(this);

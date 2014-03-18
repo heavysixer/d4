@@ -44,15 +44,16 @@ $(document).ready(function(){
 
   var chart = d4.charts.groupedColumn()
   .marginLeft(0)
-  .marginTop(0)
-  .marginBottom(50)
+  .marginTop(20)
+  .marginBottom(0)
   .marginRight(80)
   .width($('#example').width())
   .x(function(x){
     x.key('year');
   })
   .y(function(y){
-    y.key('unitsSold');
+    y.key('unitsSold')
+    .max(800);
   })
   .using('yAxis', function(axis){
 
@@ -72,10 +73,10 @@ $(document).ready(function(){
 
   })
   .using('xAxis', function(axis){
-
-    axis
-    .title('years')
-    .subtitle('five year max');
+    axis.title('years')
+    .subtitle('five year max')
+    .orient('top')
+    .align('top');
   })
   .paddingTop(50)
   .groupsOf(parsedData.data[0].values.length);

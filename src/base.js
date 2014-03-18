@@ -141,7 +141,11 @@
         return innerObj[functName];
       }
       storeLastValue(wrapperObj, functName, attr);
-      innerObj[functName] = attr;
+      if(d4.isFunction(innerObj[functName])){
+        innerObj[functName].apply(innerObj, arguments);
+      } else {
+        innerObj[functName] = attr;
+      }
       return wrapperObj;
     };
     storeLastValue(wrapperObj, functName, innerObj[functName]);
