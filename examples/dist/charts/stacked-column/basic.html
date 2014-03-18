@@ -127,25 +127,29 @@ $(document).ready(function(){
 
 </script>
 <div id="stacked_column">
+  <div class="appendBottom">
   <span class="label average">Average</span>
   <span class="label gina">Gina</span>
   <span class="label bob">Bob</span>
+  </div>
   <div id="example"></div>
 </div>
 <h6>CSS Code</h6>
 <pre><code class="language-css">
-  #stacked_column .d4 .series0 .bar.fill, #stacked_column .average {
-      fill: steelblue;
-      background-color: steelblue;
-  };
-  #stacked_column .d4 .series1 .bar.fill, #stacked_column .gina {
-      fill: bisque;
-      background-color: bisque;
-  };
-  #stacked_column .d4 .series2 .bar.fill, #stacked_column .bob {
-      fill: darkslategrey;
-      background-color: darkslategrey;
-  };
+#stacked_column .d4 .series0 .bar.fill, #stacked_column .average {
+    fill: #CD202C;
+    background-color: #CD202C;
+}
+
+#stacked_column .d4 .series1 .bar.fill, #stacked_column .gina {
+    fill: #AD005B;
+    background-color: #AD005B;
+}
+
+#stacked_column .d4 .series2 .bar.fill, #stacked_column .bob {
+    fill: #66307C;
+    background-color: #66307C;
+}
 </code></pre>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript"></code></pre>

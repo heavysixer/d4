@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rounded Corners | d4 Examples</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/prism.css">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/d4.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../assets/js/main.js"></script>
+  </head>
+  <body>
+    
+<div class="header clearfix">
+    <div class="container">
+      <div class="pull-left">
+        <a href="/index.html"><img src="../../assets/images/d4-logo.png" width="30" height="30" class='nav-logo' alt="D4 Logo"></a>
+      </div>
+      <ul class="nav nav-pills">
+          <li><a href="/index.html">Introduction</a></li>
+          <li><a href="/getting_started.html">Getting Started</a></li>
+          <li><a href="/docs.html">Documentation</a></li>
+          <li><a href="/examples.html">Examples</a></li>
+          <li><a href="https://github.com/heavysixer/d4">View on Github</a></li>
+      </ul>
+    </div>
+</div>
+    <div class="container" role="main">
+
+      
+
+<h5>Rounded Corners</h5>
+<p>
+  You can round the corners of the rects for any of the column or row charts by adjusting the <code>rx</code> or <code>ry</code>
+  attributes respectively.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8" id='source_code'>
+'use strict';
+
+$(document).ready(function(){
+  var data = [
+      { y: '2010', x:-10 },
+      { y: '2011', x:20 },
+      { y: '2012', x:30 },
+      { y: '2013', x:40 },
+      { y: '2014', x:50 },
+    ];
+  var chart = d4.charts.row();
+  chart.using('bars', function(bar){
+    bar.rx(4);
+  });
+
+  d3.select('#example')
+  .datum(data)
+  .call(chart);
+});
+
+</script>
+<div id="example"></div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript"></code></pre>
+
+
+    </div>
+    <div class="footer">
+      <div class="container">
+        <p>&copy; Mark Daggett 2014</p>
+      </div>
+    </div>
+
+
+    <script src="../../assets/js/vendor.js"></script>
+
+  </body>
+</html>

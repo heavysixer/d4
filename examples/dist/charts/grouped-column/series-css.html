@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Series and Items CSS | d4 Examples</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/prism.css">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/d4.css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../../assets/js/jquery.js"></script>
+    <script src="../../assets/js/main.js"></script>
+  </head>
+  <body>
+    
+<div class="header clearfix">
+    <div class="container">
+      <div class="pull-left">
+        <a href="/index.html"><img src="../../assets/images/d4-logo.png" width="30" height="30" class='nav-logo' alt="D4 Logo"></a>
+      </div>
+      <ul class="nav nav-pills">
+          <li><a href="/index.html">Introduction</a></li>
+          <li><a href="/getting_started.html">Getting Started</a></li>
+          <li><a href="/docs.html">Documentation</a></li>
+          <li><a href="/examples.html">Examples</a></li>
+          <li><a href="https://github.com/heavysixer/d4">View on Github</a></li>
+      </ul>
+    </div>
+</div>
+    <div class="container" role="main">
+
+      
+
+<h5>Series and Items CSS</h5>
+<p>
+  d4 provides several ways to style a chart through css classes which are added during render time.
+  This example gives two examples of how you can style the same chart but produce vastly different visuals.
+</p>
+<p>
+  The first example uses the incrementing <code class="language-css">.item</code> class. As items are
+  added to the chart a new item class will be created e.g. <code class="language-css">.item0, .item1, .item2</code>.
+</p>
+<p>
+  The second example uses the incrementing <code class="language-css">.series</code> class. As items are
+  added to the chart a new item class will be created e.g. <code class="language-css">.series0, .series1, .series2</code>.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8" id='source_code'>
+'use strict';
+
+$(document).ready(function(){
+  var data = [
+      { year: '2010', unitsSold:-100, salesman : 'Bob' },
+      { year: '2011', unitsSold:200, salesman : 'Bob' },
+      { year: '2012', unitsSold:300, salesman : 'Bob' },
+      { year: '2013', unitsSold:400, salesman : 'Bob' },
+      { year: '2014', unitsSold:500, salesman : 'Bob' },
+      { year: '2010', unitsSold:100, salesman : 'Gina' },
+      { year: '2011', unitsSold:100, salesman : 'Gina' },
+      { year: '2012', unitsSold:-100, salesman : 'Gina' },
+      { year: '2013', unitsSold:500, salesman : 'Gina' },
+      { year: '2014', unitsSold:600, salesman : 'Gina' },
+      { year: '2010', unitsSold:400, salesman : 'Average' },
+      { year: '2011', unitsSold:0, salesman : 'Average' },
+      { year: '2012', unitsSold:400, salesman : 'Average' },
+      { year: '2013', unitsSold:400, salesman : 'Average' },
+      { year: '2014', unitsSold:400, salesman : 'Average' }
+    ];
+
+  var parsedData = d4.parsers.nestedGroup()
+    .x('year')
+    .y('unitsSold')
+    .value('unitsSold')(data);
+
+  var chart = d4.charts.groupedColumn()
+  .width($('#items').width())
+  .x(function(x){
+    x.key('year');
+  })
+  .y(function(y){
+    y.key('unitsSold');
+  })
+  .groupsOf(parsedData.data[0].values.length);
+
+  var chart2 = d4.charts.groupedColumn()
+  .width($('#series').width())
+  .x(function(x){
+    x.key('year');
+  })
+  .y(function(y){
+    y.key('unitsSold');
+  })
+  .groupsOf(parsedData.data[0].values.length);
+
+  d3.select('#items')
+  .datum(parsedData.data)
+  .call(chart);
+
+  d3.select('#series')
+  .datum(parsedData.data)
+  .call(chart2);
+});
+
+</script>
+<h6>Item Example</h6>
+<div id="items"></div>
+
+<h6>Series Example</h6>
+<div id="series"></div>
+
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript"></code></pre>
+
+    </div>
+    <div class="footer">
+      <div class="container">
+        <p>&copy; Mark Daggett 2014</p>
+      </div>
+    </div>
+
+
+    <script src="../../assets/js/vendor.js"></script>
+
+  </body>
+</html>
