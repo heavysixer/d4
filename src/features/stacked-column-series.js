@@ -52,6 +52,30 @@
 
     return {
       accessors: {
+        classes: function(d,i) {
+          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.y.$key];
+        },
+
+        height: function(d) {
+          if(this.y.$scale === 'ordinal'){
+            return useDiscreteSize.bind(this)('y');
+          } else {
+            return useContinuousSize.bind(this)('y', d);
+          }
+        },
+
+        rx: 2,
+
+        ry: 2,
+
+        width: function(d) {
+          if(this.x.$scale === 'ordinal'){
+            return useDiscreteSize.bind(this)('x');
+          } else {
+            return useContinuousSize.bind(this)('x', d);
+          }
+        },
+
         x: function(d) {
           if(this.x.$scale === 'ordinal'){
             return useDiscretePosition.bind(this)('x', d);
@@ -66,28 +90,9 @@
           } else {
             return useContinuousPosition.bind(this)('y', d);
           }
-        },
-
-        width: function(d) {
-          if(this.x.$scale === 'ordinal'){
-            return useDiscreteSize.bind(this)('x');
-          } else {
-            return useContinuousSize.bind(this)('x', d);
-          }
-        },
-
-        height: function(d) {
-          if(this.y.$scale === 'ordinal'){
-            return useDiscreteSize.bind(this)('y');
-          } else {
-            return useContinuousSize.bind(this)('y', d);
-          }
-        },
-
-        classes: function(d,i) {
-          return 'bar fill item'+ i + ' ' + sign(d.y) + ' ' + d[this.y.$key];
         }
       },
+
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('.group')
@@ -105,7 +110,9 @@
         rect.enter().append('rect')
           .attr('class', scope.accessors.classes.bind(this))
           .attr('x', scope.accessors.x.bind(this))
+          .attr('rx', d4.functor(scope.accessors.rx).bind(this)())
           .attr('y', scope.accessors.y.bind(this))
+          .attr('ry', d4.functor(scope.accessors.ry).bind(this)())
           .attr('width', scope.accessors.width.bind(this))
           .attr('height', scope.accessors.height.bind(this));
         return rect;

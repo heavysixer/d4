@@ -21,6 +21,12 @@ body {
     min-height: 100px;
 }
 
+.prependTop {
+    margin-top:10px;
+}
+.appendBottom {
+    margin-bottom:10px;
+}
 
 table {
 max-width: 100%;
