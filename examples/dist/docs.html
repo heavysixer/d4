@@ -43,7 +43,12 @@
       
 <div class='content'>
     <div class="col-md-12">
-      <div class="alert alert-info">Documentation is in flux, many sections of d4 remain to be covered.</div>
+      <div class="alert alert-info">
+        <strong>Howdy</strong>, this documentation is auto-generated using the comments from the source
+        code. It is still very much in flux, and subject to change. If you merely
+        want to know how to use d4, try the examples section. It is full of
+        real-word <a href="/examples.html">examples</a> on how to use d4.
+      </div>
       <h1 id="d4-0-5-6">d4 -0.5.6</h1>
 <h6 id="-base-js-0-"><a href="#base-js">base.js</a></h6>
 <ul>
@@ -61,50 +66,50 @@
 <li><a href="#functor"><code>functor</code></a></li>
 <li><a href="#parser"><code>parser</code></a></li>
 </ul>
-<h6 id="-scales-js-13-"><a href="#scales-js">scales.js</a></h6>
+<h6 id="-column-js-13-"><a href="#column-js">column.js</a></h6>
+<ul>
+<li><a href="#column"><code>column</code></a></li>
+</ul>
+<h6 id="-grouped-column-js-15-"><a href="#grouped-column-js">grouped-column.js</a></h6>
+<ul>
+<li><a href="#groupedcolumn"><code>groupedColumn</code></a></li>
+</ul>
+<h6 id="-line-js-17-"><a href="#line-js">line.js</a></h6>
+<ul>
+<li><a href="#line"><code>line</code></a></li>
+</ul>
+<h6 id="-row-js-19-"><a href="#row-js">row.js</a></h6>
+<ul>
+<li><a href="#row"><code>row</code></a></li>
+</ul>
+<h6 id="-scales-js-21-"><a href="#scales-js">scales.js</a></h6>
 <ul>
 <li><a href="#linearscalefornesteddata"><code>linearScaleForNestedData</code></a></li>
 <li><a href="#ordinalscalefornesteddata"><code>ordinalScaleForNestedData</code></a></li>
 </ul>
-<h6 id="-column-js-16-"><a href="#column-js">column.js</a></h6>
+<h6 id="-waterfall-connectors-js-24-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
 <ul>
-<li><a href="#column"><code>column</code></a></li>
+<li><a href="#waterfallconnectors"><code>waterfallConnectors</code></a></li>
 </ul>
-<h6 id="-grouped-column-js-18-"><a href="#grouped-column-js">grouped-column.js</a></h6>
-<ul>
-<li><a href="#groupedcolumn"><code>groupedColumn</code></a></li>
-</ul>
-<h6 id="-line-js-20-"><a href="#line-js">line.js</a></h6>
-<ul>
-<li><a href="#">``</a></li>
-</ul>
-<h6 id="-row-js-22-"><a href="#row-js">row.js</a></h6>
-<ul>
-<li><a href="#">``</a></li>
-</ul>
-<h6 id="-waterfall-connectors-js-23-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
-<ul>
-<li><a href="#">``</a></li>
-</ul>
-<h6 id="-x-axis-js-24-"><a href="#x-axis-js">x-axis.js</a></h6>
+<h6 id="-x-axis-js-26-"><a href="#x-axis-js">x-axis.js</a></h6>
 <ul>
 <li><a href="#xaxis"><code>xAxis</code></a></li>
 </ul>
-<h6 id="-y-axis-js-26-"><a href="#y-axis-js">y-axis.js</a></h6>
+<h6 id="-y-axis-js-28-"><a href="#y-axis-js">y-axis.js</a></h6>
 <ul>
 <li><a href="#yaxis"><code>yAxis</code></a></li>
 </ul>
-<h6 id="-nested-group-js-28-"><a href="#nested-group-js">nested-group.js</a></h6>
+<h6 id="-nested-group-js-30-"><a href="#nested-group-js">nested-group.js</a></h6>
 <ul>
-<li><a href="#">``</a></li>
+<li><a href="#nestedgroup"><code>nestedGroup</code></a></li>
 </ul>
-<h6 id="-nested-stack-js-29-"><a href="#nested-stack-js">nested-stack.js</a></h6>
+<h6 id="-nested-stack-js-32-"><a href="#nested-stack-js">nested-stack.js</a></h6>
 <ul>
-<li><a href="#">``</a></li>
+<li><a href="#nestedstack"><code>nestedStack</code></a></li>
 </ul>
-<h6 id="-waterfall-js-30-"><a href="#waterfall-js">waterfall.js</a></h6>
+<h6 id="-waterfall-js-34-"><a href="#waterfall-js">waterfall.js</a></h6>
 <ul>
-<li><a href="#">``</a></li>
+<li><a href="#waterfall"><code>waterfall</code></a></li>
 </ul>
 <h2 id="base-js">base.js</h2>
 <h3 id="basechart">baseChart</h3>
@@ -295,41 +300,14 @@
 <li><code>funct</code><em>(Function) -- function which will instantiate the data parser.</em></li>
 </ol>
 <hr>
-<h2 id="scales-js">scales.js</h2>
-<h3 id="linearscalefornesteddata">linearScaleForNestedData</h3>
-<p><a href="#linearscalefornesteddata">#</a>
-<a href="#scales-js">Ⓣ</a></p>
-<p>Creates a linear scale for a dimension of a given chart.</p>
-<h4 id="arguments">Arguments</h4>
-<ol>
-<li><code>d4</code><em>(Object) -chart object</em></li>
-<li><code>data</code><em>(Array) -array</em></li>
-<li><code>string</code><em>(string) -represnting a dimension e.g. `x`,`y`.</em></li>
-</ol>
-<hr>
-<h3 id="ordinalscalefornesteddata">ordinalScaleForNestedData</h3>
-<p><a href="#ordinalscalefornesteddata">#</a>
-<a href="#scales-js">Ⓣ</a></p>
-<p>Creates an ordinal scale for a dimension of a given chart.</p>
-<h4 id="arguments">Arguments</h4>
-<ol>
-<li><code>d4</code><em>(Object) -chart object</em></li>
-<li><code>data</code><em>(Array) -array</em></li>
-<li><code>string</code><em>(string) -represnting a dimension e.g. `x`,`y`.</em></li>
-</ol>
-<hr>
 <h2 id="column-js">column.js</h2>
 <h3 id="column">column</h3>
 <p><a href="#column">#</a>
 <a href="#column-js">Ⓣ</a></p>
 <p>The column chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br>linear values for the <code>y</code> and ordinal values on the <code>x</code>. The basic column chart<br>has four default features:</p>
-<ul>
-<li><strong>bars</strong> - series bars</li>
-<li><strong>barLabels</strong> - data labels above the bars</li>
-<li><strong>xAxis</strong> - the axis for the x dimension</li>
-<li><strong>yAxis</strong> - the axis for the y dimension</li>
-</ul>
-<h6 id="example-usage">Example Usage</h6>
+<h5 id="accessors">Accessors</h5>
+<p><code>bars</code> - series bars<br><code>barLabels</code> - data labels above the bars<br><code>xAxis</code> - the axis for the x dimension<br><code>yAxis</code> - the axis for the y dimension</p>
+<h5 id="example-usage">Example Usage</h5>
 <pre><code>var data = [
     { x: &#39;2010&#39;, y:-10 },
     { x: &#39;2011&#39;, y:20 },
@@ -366,14 +344,9 @@ d3.select(&#39;#example&#39;)
 <p><a href="#groupedcolumn">#</a>
 <a href="#grouped-column-js">Ⓣ</a></p>
 <p>The grouped column chart is used to compare a series of data elements grouped<br>along the xAxis. This chart is often useful in conjunction with a stacked column<br>chart because they can use the same data series, and where the stacked column highlights<br>the sum of the data series across an axis the grouped column can be used to show the<br>relative distribution.</p>
-<ul>
-<li><strong>bars</strong> - series bars</li>
-<li><strong>barLabels</strong> - data labels above the bars</li>
-<li><strong>groupsOf</strong> - an integer representing the number of columns in each group</li>
-<li><strong>xAxis</strong> - the axis for the x dimension</li>
-<li><strong>yAxis</strong> - the axis for the y dimension</li>
-</ul>
-<h6 id="example-usage">Example Usage</h6>
+<h5 id="accessors">Accessors</h5>
+<p><code>bars</code> - series bars<br><code>barLabels</code> - data labels above the bars<br><code>groupsOf</code> - an integer representing the number of columns in each group<br><code>xAxis</code> - the axis for the x dimension<br><code>yAxis</code> - the axis for the y dimension</p>
+<h5 id="example-usage">Example Usage</h5>
 <pre><code>var data = [
   { year: &#39;2010&#39;, unitsSold:-100, salesman : &#39;Bob&#39; },
   { year: &#39;2011&#39;, unitsSold:200, salesman : &#39;Bob&#39; },
@@ -408,74 +381,99 @@ d3.select(&#39;#example&#39;)
 .call(chart);</code></pre>
 <hr>
 <h2 id="line-js">line.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
+<h3 id="line">line</h3>
+<p><a href="#line">#</a>
 <a href="#line-js">Ⓣ</a></p>
 <p>The line series chart is used to compare a series of data elements grouped<br>along the xAxis.</p>
-<p><strong>lineSeries</strong> - series lines<br><strong>lineSeriesLabels</strong> - data labels beside the lines<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>lineSeries</code> - series lines<br><code>lineSeriesLabels</code> - data labels beside the lines<br><code>xAxis</code> - the axis for the x dimension<br><code>yAxis</code> - the axis for the y dimension</p>
 <h5 id="example-usage">Example Usage</h5>
-<pre><code>var data = [
-  { year: &#39;2010&#39;, unitsSold:-100, salesman : &#39;Bob&#39; },
-  { year: &#39;2011&#39;, unitsSold:200, salesman : &#39;Bob&#39; },
-  { year: &#39;2012&#39;, unitsSold:300, salesman : &#39;Bob&#39; },
-  { year: &#39;2013&#39;, unitsSold:400, salesman : &#39;Bob&#39; },
-  { year: &#39;2014&#39;, unitsSold:500, salesman : &#39;Bob&#39; },
-  { year: &#39;2010&#39;, unitsSold:100, salesman : &#39;Gina&#39; },
-  { year: &#39;2011&#39;, unitsSold:100, salesman : &#39;Gina&#39; },
-  { year: &#39;2012&#39;, unitsSold:-100, salesman : &#39;Gina&#39; },
-  { year: &#39;2013&#39;, unitsSold:500, salesman : &#39;Gina&#39; },
-  { year: &#39;2014&#39;, unitsSold:600, salesman : &#39;Gina&#39; },
-  { year: &#39;2010&#39;, unitsSold:400, salesman : &#39;Average&#39; },
-  { year: &#39;2011&#39;, unitsSold:0, salesman : &#39;Average&#39; },
-  { year: &#39;2012&#39;, unitsSold:400, salesman : &#39;Average&#39; },
-  { year: &#39;2013&#39;, unitsSold:400, salesman : &#39;Average&#39; },
-  { year: &#39;2014&#39;, unitsSold:400, salesman : &#39;Average&#39; }
-];
-var parsedData = d4.parsers.nestedGroup()
-  .x(function(){
-    return &#39;year&#39;;
-  })
-  .nestKey(function(){
-    return &#39;salesman&#39;;
-  })
-  .y(function(){
-    return &#39;unitsSold&#39;;
-  })
-  .value(function(){
-    return &#39;unitsSold&#39;;
-  })(data);
+<pre><code> var data = [
+   { year: &#39;2010&#39;, unitsSold:-100, salesman : &#39;Bob&#39; },
+   { year: &#39;2011&#39;, unitsSold:200, salesman : &#39;Bob&#39; },
+   { year: &#39;2012&#39;, unitsSold:300, salesman : &#39;Bob&#39; },
+   { year: &#39;2013&#39;, unitsSold:400, salesman : &#39;Bob&#39; },
+   { year: &#39;2014&#39;, unitsSold:500, salesman : &#39;Bob&#39; },
+   { year: &#39;2010&#39;, unitsSold:100, salesman : &#39;Gina&#39; },
+   { year: &#39;2011&#39;, unitsSold:100, salesman : &#39;Gina&#39; },
+   { year: &#39;2012&#39;, unitsSold:-100, salesman : &#39;Gina&#39; },
+   { year: &#39;2013&#39;, unitsSold:500, salesman : &#39;Gina&#39; },
+   { year: &#39;2014&#39;, unitsSold:600, salesman : &#39;Gina&#39; },
+   { year: &#39;2010&#39;, unitsSold:400, salesman : &#39;Average&#39; },
+   { year: &#39;2011&#39;, unitsSold:0, salesman : &#39;Average&#39; },
+   { year: &#39;2012&#39;, unitsSold:400, salesman : &#39;Average&#39; },
+   { year: &#39;2013&#39;, unitsSold:400, salesman : &#39;Average&#39; },
+   { year: &#39;2014&#39;, unitsSold:400, salesman : &#39;Average&#39; }
+ ];
+ var parsedData = d4.parsers.nestedGroup()
+   .x(function(){
+     return &#39;year&#39;;
+   })
+   .nestKey(function(){
+     return &#39;salesman&#39;;
+   })
+   .y(function(){
+     return &#39;unitsSold&#39;;
+   })
+   .value(function(){
+     return &#39;unitsSold&#39;;
+   })(data);
 
-var chart = d4.charts.line()
-.width($(&#39;#example&#39;).width())
-.x.$key(&#39;year&#39;)
-.y.$key(&#39;unitsSold&#39;);
+ var chart = d4.charts.line()
+ .width($(&#39;#example&#39;).width())
+ .x.$key(&#39;year&#39;)
+ .y.$key(&#39;unitsSold&#39;);
 
-d3.select(&#39;#example&#39;)
-.datum(parsedData.data)
-.call(chart);</code></pre>
+ d3.select(&#39;#example&#39;)
+ .datum(parsedData.data)
+ .call(chart);</code></pre>
 <hr>
 <h2 id="row-js">row.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
+<h3 id="row">row</h3>
+<p><a href="#row">#</a>
 <a href="#row-js">Ⓣ</a></p>
 <p>The row chart has two axes (<code>x</code> and <code>y</code>). By default the column chart expects<br>linear scale values for the <code>x</code> and ordinal scale values on the <code>y</code>. The basic column chart<br>has four default features:</p>
-<p><strong>bars</strong> - series bars<br><strong>rowLabels</strong> - data labels to the right of the bars<br><strong>xAxis</strong> - the axis for the x dimension<br><strong>yAxis</strong> - the axis for the y dimension</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>bars</code> - series bars<br><code>rowLabels</code> - data labels to the right of the bars<br><code>xAxis</code> - the axis for the x dimension<br><code>yAxis</code> - the axis for the y dimension</p>
 <h5 id="example-usage">Example Usage</h5>
-<pre><code>var data = [
-      { y: &#39;2010&#39;, x:-10 },
-      { y: &#39;2011&#39;, x:20 },
-      { y: &#39;2012&#39;, x:30 },
-      { y: &#39;2013&#39;, x:40 },
-      { y: &#39;2014&#39;, x:50 },
-    ];
-  var chart = d4.charts.row();
-  d3.select(&#39;#example&#39;)
-  .datum(data)
-  .call(chart);</code></pre>
+<pre><code> var data = [
+       { y: &#39;2010&#39;, x:-10 },
+       { y: &#39;2011&#39;, x:20 },
+       { y: &#39;2012&#39;, x:30 },
+       { y: &#39;2013&#39;, x:40 },
+       { y: &#39;2014&#39;, x:50 },
+     ];
+   var chart = d4.charts.row();
+   d3.select(&#39;#example&#39;)
+   .datum(data)
+   .call(chart);</code></pre>
+<hr>
+<h2 id="scales-js">scales.js</h2>
+<h3 id="linearscalefornesteddata">linearScaleForNestedData</h3>
+<p><a href="#linearscalefornesteddata">#</a>
+<a href="#scales-js">Ⓣ</a></p>
+<p>Creates a linear scale for a dimension of a given chart.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>d4</code><em>(Object) -chart object</em></li>
+<li><code>data</code><em>(Array) -array</em></li>
+<li><code>string</code><em>(string) -represnting a dimension e.g. `x`,`y`.</em></li>
+</ol>
+<hr>
+<h3 id="ordinalscalefornesteddata">ordinalScaleForNestedData</h3>
+<p><a href="#ordinalscalefornesteddata">#</a>
+<a href="#scales-js">Ⓣ</a></p>
+<p>Creates an ordinal scale for a dimension of a given chart.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>d4</code><em>(Object) -chart object</em></li>
+<li><code>data</code><em>(Array) -array</em></li>
+<li><code>string</code><em>(string) -represnting a dimension e.g. `x`,`y`.</em></li>
+</ol>
 <hr>
 <h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
+<h3 id="waterfallconnectors">waterfallConnectors</h3>
+<p><a href="#waterfallconnectors">#</a>
 <a href="#waterfall-connectors-js">Ⓣ</a></p>
 <p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
 <p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
@@ -542,8 +540,8 @@ d3.select(&#39;#example&#39;)
 })</code></pre>
 <hr>
 <h2 id="nested-group-js">nested-group.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
+<h3 id="nestedgroup">nestedGroup</h3>
+<p><a href="#nestedgroup">#</a>
 <a href="#nested-group-js">Ⓣ</a></p>
 <p>The nested group parser is useful for grouped column charts where multiple<br>data items need to appear relative to the axis value, for example grouped<br>column charts or multi-series line charts.</p>
 <pre><code>  _____________________
@@ -571,8 +569,8 @@ d3.select(&#39;#example&#39;)
   {&quot;year&quot; : &quot;2010&quot;, &quot;category&quot; : &quot;Category Four&quot;, &quot;value&quot; : 5 }]</code></pre>
 <hr>
 <h2 id="nested-stack-js">nested-stack.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
+<h3 id="nestedstack">nestedStack</h3>
+<p><a href="#nestedstack">#</a>
 <a href="#nested-stack-js">Ⓣ</a></p>
 <p>The nested stack parser is useful for charts which take a data series<br>and wants to sort them across a dimension and then display the results.<br>The most common usecase would be a stacked column chart like this:</p>
 <pre><code>  _____________________
@@ -649,8 +647,8 @@ d3.select(&#39;#example&#39;)
  }</code></pre>
 <hr>
 <h2 id="waterfall-js">waterfall.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
+<h3 id="waterfall">waterfall</h3>
+<p><a href="#waterfall">#</a>
 <a href="#waterfall-js">Ⓣ</a></p>
 <p>The waterfall parser is useful for waterfall charts where data items need to account<br>for the position of earlier values:</p>
 <pre><code> _____________________
@@ -679,7 +677,7 @@ d3.select(&#39;#example&#39;)
 <p>Supports horizontal or vertical waterfalls<br>Supports totaling series using a special &quot;e&quot; value in a data item.</p>
 <h5 id="limitations-">Limitations:</h5>
 <p>Does not support stacked waterfalls.</p>
-<h5 id="accessor-methods-">Accessor Methods:</h5>
+<h5 id="accessors-">Accessors:</h5>
 <p><code>x</code> : - function which returns a key to access the x values in the data array<br><code>y</code> : - function which returns a key to access the y values in the data array<br><code>value</code> : - function which returns a key to access the values in the data array.<br><code>data</code> : array - An array of objects with their dimensions specified<br>like this:</p>
 <pre><code> var data = [
  {&quot;category&quot; : &quot;Category One&quot;, &quot;value&quot; : 23 },
@@ -711,13 +709,6 @@ The `parser` variable will now be an object containing the following structure:
     values: Array
   }
 }</code></pre>
-<p>Taking these attributes one-by-one:  </p>
-<ul>
-<li>data - is an array of items stacked by D3  </li>
-<li>value - an object with a key representing the value accessor and an array of values  </li>
-<li>x - an object with a key representing the x accessor and an array of values  </li>
-<li>y - an object with a key representing the y accessor and an array of values</li>
-</ul>
 <hr>
 
     </div>

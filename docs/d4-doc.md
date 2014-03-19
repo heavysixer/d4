@@ -16,26 +16,26 @@
 * [`functor`][11]
 * [`parser`][12]
 
-###### [scales.js][13]
+###### [column.js][13]
 
-* [`linearScaleForNestedData`][14]
-* [`ordinalScaleForNestedData`][15]
+* [`column`][14]
 
-###### [column.js][16]
+###### [grouped-column.js][15]
 
-* [`column`][17]
+* [`groupedColumn`][16]
 
-###### [grouped-column.js][18]
+###### [line.js][17]
 
-* [`groupedColumn`][19]
+* [`line`][18]
 
-###### [line.js][20]
+###### [row.js][19]
 
-* [`line`][21]
+* [`row`][20]
 
-###### [row.js][22]
+###### [scales.js][21]
 
-* [`row`][23]
+* [`linearScaleForNestedData`][22]
+* [`ordinalScaleForNestedData`][23]
 
 ###### [waterfall-connectors.js][24]
 
@@ -347,44 +347,12 @@ This function allows you to register a reusable data parser with d4\.
 
 ---
 
-## scales.js
-
-### linearScaleForNestedData
-
-[\#][14]
-[Ⓣ][13]
-
-Creates a linear scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
----
-
-### ordinalScaleForNestedData
-
-[\#][15]
-[Ⓣ][13]
-
-Creates an ordinal scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
----
-
 ## column.js
 
 ### column
 
-[\#][17]
-[Ⓣ][16]
+[\#][14]
+[Ⓣ][13]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -441,8 +409,8 @@ The default format may not be desired and so we'll override it:
 
 ### groupedColumn
 
-[\#][19]
-[Ⓣ][18]
+[\#][16]
+[Ⓣ][15]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -500,8 +468,8 @@ relative distribution.
 
 ### line
 
-[\#][21]
-[Ⓣ][20]
+[\#][18]
+[Ⓣ][17]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -562,8 +530,8 @@ along the xAxis.
 
 ### row
 
-[\#][23]
-[Ⓣ][22]
+[\#][20]
+[Ⓣ][19]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -590,6 +558,38 @@ has four default features:
        .datum(data)
        .call(chart);
     
+
+---
+
+## scales.js
+
+### linearScaleForNestedData
+
+[\#][22]
+[Ⓣ][21]
+
+Creates a linear scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
+
+---
+
+### ordinalScaleForNestedData
+
+[\#][23]
+[Ⓣ][21]
+
+Creates an ordinal scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
 
 ---
 
@@ -999,17 +999,17 @@ in the following way:
 [10]: #feature
 [11]: #functor
 [12]: #parser
-[13]: #scales-js
-[14]: #linearscalefornesteddata
-[15]: #ordinalscalefornesteddata
-[16]: #column-js
-[17]: #column
-[18]: #grouped-column-js
-[19]: #groupedcolumn
-[20]: #line-js
-[21]: #line
-[22]: #row-js
-[23]: #row
+[13]: #column-js
+[14]: #column
+[15]: #grouped-column-js
+[16]: #groupedcolumn
+[17]: #line-js
+[18]: #line
+[19]: #row-js
+[20]: #row
+[21]: #scales-js
+[22]: #linearscalefornesteddata
+[23]: #ordinalscalefornesteddata
 [24]: #waterfall-connectors-js
 [25]: #waterfallconnectors
 [26]: #x-axis-js

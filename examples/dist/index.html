@@ -48,7 +48,7 @@
 to quickly build data-driven charts with little knowledge of the internals of D3.</p>
 <h3 id="quick-start">Quick Start</h3>
 <hr>
-<p>Either download d4 directly from the github repository or install it using a package manager like bower.</p>
+<p>Either download d4 directly from the <a href="https://github.com/heavysixer/d4">github</a> repository or install it using a package manager like bower.</p>
 <pre><code>$ bower install d4</code></pre>
 <p>Once you have a local copy of d4 simply include it <strong>after</strong> d3 in your source file.</p>
 <pre><code class="language-html">&lt;!DOCTYPE html&gt;
@@ -121,14 +121,14 @@ the page. Therefore, a charting library should not change the data object. It ca
 transformations.</p>
 <h4 id="context-over-configuration">Context over configuration</h4>
 <p>There is a software design concept called &quot;convention over configuration,&quot; which states that software should specify a collection of opinionated defaults for the developer. The goal of this approach is to lessen the number of obvious choices a developer must make before they are able to use the software. Instead, configuration should be saved for instances where the defaults do not apply. d4 extends this concept a bit and suggests that configuration should also be highly contextual to the object the developer needs changed. Instead of making choices in some abstract config file, developers instead use a highly declarative API to make changes directly to the object they want augment.</p>
-<h3 id="terminology">Terminology</h3>
+<h4 id="terminology">Terminology</h4>
 <hr>
 <p>d4 uses specific terms to describe the components of a chart.</p>
 <p><strong>Chart</strong> - The data rendered by d3 into a graphical representation.</p>
 <p><strong>Feature</strong> - A visual component of a chart, which helps convey meaning in the data.</p>
 <p><strong>Dimension</strong> - A segment of the data described by the chart.</p>
 <p><strong>Parser</strong> - A parser prepares the data for a chart.</p>
-<h3 id="base-charts">Base Charts</h3>
+<h4 id="base-charts">Base Charts</h4>
 <ul>
 <li>Area Chart (Coming Soon)</li>
 <li>Column Chart</li>
@@ -163,10 +163,6 @@ transformations.</p>
 <p>The inspiration of D4&#39;s modular and declarative structure came from
 <a href="http://bost.ocks.org/mike/chart/">Mike Bostock&#39;s</a> article on writing reusable
 charts in d3.</p>
-<h4 id="roadmap">Roadmap</h4>
-<ul>
-<li>Allow for multiple charts within the same SVG element</li>
-</ul>
 <h4 id="other-projects-using-d4">Other Projects using d4</h4>
 <p><a href="https://github.com/gouravtiwari/d4-rails">d4-rails</a></p>
 
