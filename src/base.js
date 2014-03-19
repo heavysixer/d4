@@ -344,8 +344,6 @@
   };
 
   var scaffoldChart = function(selection, data) {
-    this.width = this.width - this.margin.left - this.margin.right;
-    this.height = this.height - this.margin.top - this.margin.bottom;
     this.svg = d3.select(selection).selectAll('svg').data([data]);
     this.featuresGroup = this.svg.enter().append('svg')
     .append('g')
@@ -396,10 +394,23 @@
     return needsParsing ? applyDefaultParser(opts, data) : data;
   };
 
+  /*!
+   * We want to ensure that the visual dimensions are set the first time. This
+   * prevents the chart from shrinking if it were to be redrawn more than once.
+   */
+  var calculateDimensions = function() {
+    if(!this._calculated) {
+      this.width  = this.width - this.margin.left - this.margin.right;
+      this.height = this.height - this.margin.top - this.margin.bottom;
+      this._calculated = true;
+    }
+  };
+
   var applyScaffold = function(opts) {
     return function(selection) {
       selection.each(function(data) {
         data = prepareData(opts, data);
+        calculateDimensions.bind(opts, this)();
         scaffoldChart.bind(opts, this)(data);
         build(opts, data);
       });
