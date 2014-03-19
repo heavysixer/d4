@@ -6,7 +6,7 @@ to quickly build data-driven charts with little knowledge of the internals of D3
 ### Quick Start
 * * *
 
-Either download d4 directly from the github repository or install it using a package manager like bower.
+Either download d4 directly from the [github](https://github.com/heavysixer/d4) repository or install it using a package manager like bower.
 
     $ bower install d4
 
@@ -102,7 +102,7 @@ transformations.
 
 There is a software design concept called "convention over configuration," which states that software should specify a collection of opinionated defaults for the developer. The goal of this approach is to lessen the number of obvious choices a developer must make before they are able to use the software. Instead, configuration should be saved for instances where the defaults do not apply. d4 extends this concept a bit and suggests that configuration should also be highly contextual to the object the developer needs changed. Instead of making choices in some abstract config file, developers instead use a highly declarative API to make changes directly to the object they want augment.
 
-### Terminology
+#### Terminology
 * * *
 
 d4 uses specific terms to describe the components of a chart.
@@ -115,7 +115,7 @@ __Dimension__ - A segment of the data described by the chart.
 
 __Parser__ - A parser prepares the data for a chart.
 
-###Base Charts
+####Base Charts
 
 * Area Chart (Coming Soon)
 * Column Chart
@@ -151,9 +151,6 @@ __Parser__ - A parser prepares the data for a chart.
 The inspiration of D4's modular and declarative structure came from
 [Mike Bostock's](http://bost.ocks.org/mike/chart/) article on writing reusable
 charts in d3.
-
-#### Roadmap
-* Allow for multiple charts within the same SVG element
 
 #### Other Projects using d4
 [d4-rails](https://github.com/gouravtiwari/d4-rails)

@@ -47,7 +47,7 @@ module.exports = function(grunt) {
     },
     watch: {
       assemble: {
-        files: ['<%= app.src %>/{assets,content,data,templates}/**/*.{md,hbs,yml,css}', '<%= app.src %>/../../docs/**/*.{md,hbs,yml}', '<%= app.src %>/../../README.md'],
+        files: ['<%= app.src %>/{assets,content,data,templates}/**/*.{md,hbs,yml,css}', '<%= app.src %>/../../docs/**/*.{md,hbs,yml}', '<%= app.src %>/../../README.md', '<%= app.src %>/../docs/d4-doc.md'],
         tasks: ['copy:styles', 'mox:build', 'assemble']
       },
       livereload: {

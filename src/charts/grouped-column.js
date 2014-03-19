@@ -12,6 +12,7 @@
   * the sum of the data series across an axis the grouped column can be used to show the
   * relative distribution.
   *
+  *###### Accessors
   * * **bars** - series bars
   * * **barLabels** - data labels above the bars
   * * **groupsOf** - an integer representing the number of columns in each group

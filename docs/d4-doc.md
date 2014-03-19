@@ -448,6 +448,8 @@ chart because they can use the same data series, and where the stacked column hi
 the sum of the data series across an axis the grouped column can be used to show the  
 relative distribution.
 
+###### Accessors
+
 * **bars** - series bars
 * **barLabels** - data labels above the bars
 * **groupsOf** - an integer representing the number of columns in each group

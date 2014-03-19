@@ -220,7 +220,7 @@ describe('d4.base', function() {
     describe('when defining a config object', function() {
       it('should allow you to specify public accessors functions', function() {
         var chart = d4.baseChart({ builder : this.builder, config : {
-          accessors: ['z']
+          accessors: { z: 'z' }
         }});
         expect(chart.z).to.not.be.an('undefined');
         expect(chart.accessors).to.include('z');
