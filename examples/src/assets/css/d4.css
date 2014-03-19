@@ -44,8 +44,102 @@ svg.d4 {
 }
 
 /*
-  Examples
+  Specific Examples
 */
+#items .item0.fill {
+    fill: #CD202C;
+}
+
+#items .item1.fill {
+    fill: #D4BA00;
+}
+
+#items .item2.fill {
+    fill: #A2AD00;
+}
+
+#items .item3.fill {
+    fill: #E37222;
+}
+
+#series .series0 .fill {
+    fill: #CD202C;
+}
+
+#series .series1 .fill {
+    fill: #D4BA00;
+}
+
+#series .series2 .fill {
+    fill: #A2AD00;
+}
+
+#series .series3 .fill {
+    fill: #E37222;
+}
+#series .series4 .fill {
+    fill: #AD005B;
+}
+
+#series-item .series0 .item0.fill {
+    fill: #CD202C;
+}
+
+#series-item .series0 .item1.fill {
+    fill: #D95760;
+}
+
+#series-item .series0 .item2.fill {
+    fill: #E68F95;
+}
+
+#series-item .series1 .item0.fill {
+    fill: #D4BA00;
+}
+
+#series-item .series1 .item1.fill {
+    fill: #DECB3F;
+}
+
+#series-item .series1 .item2.fill {
+    fill: #E9DC7F;
+}
+
+#series-item .series2 .item0.fill {
+    fill: #A2AD00;
+}
+
+#series-item .series2 .item1.fill {
+    fill: #B9C13F;
+}
+
+#series-item .series2 .item2.fill {
+    fill: #D0D67F;
+}
+
+#series-item .series3 .item0.fill {
+    fill: #E37222;
+}
+
+#series-item .series3 .item1.fill {
+    fill: #EA9559;
+}
+
+#series-item .series3 .item2.fill {
+    fill: #F1B890;
+}
+
+#series-item .series4 .item0.fill {
+    fill: #AD005B;
+}
+
+#series-item .series4 .item1.fill {
+    fill: #C13F84;
+}
+
+#series-item .series4 .item2.fill {
+    fill: #D67FAD;
+}
 
 .d4 .bar.negative.fill, #waterfall  .d4 .bar.negative.fill {
     fill: #CD202C;
