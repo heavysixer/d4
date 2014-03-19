@@ -48,10 +48,15 @@ $(document).ready(function(){
     .y('unitsSold')
     .value('unitsSold')(data);
 
-  var chart = d4.charts.groupedColumn()
+  var chart = d4.charts.groupedColumn();
+  chart
   .width($('#example').width())
   .x(function(x){
     x.key('year');
+
+    // Just for fun lets reduce the outer padding of the column chart.
+    // This also shows how d4 transparently passes the appropriate calls to d3.
+    x.rangeRoundBands([0, chart.width() - chart.marginLeft() - chart.marginRight()], 0.2, 0.1);
   })
   .y(function(y){
     y.key('unitsSold');
