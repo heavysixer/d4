@@ -43,10 +43,12 @@ $(document).ready(function(){
     .value('unitsSold')(data);
 
   var chart = d4.charts.groupedColumn()
-  .marginLeft(0)
-  .marginTop(20)
-  .marginBottom(0)
-  .marginRight(80)
+  .margin({
+    left: 20,
+    top: 50,
+    bottom: 20,
+    right: 80
+  })
   .width($('#example').width())
   .x(function(x){
     x.key('year');
@@ -78,7 +80,6 @@ $(document).ready(function(){
     .orient('top')
     .align('top');
   })
-  .paddingTop(50)
   .groupsOf(parsedData.data[0].values.length);
 
   d3.select('#example')
