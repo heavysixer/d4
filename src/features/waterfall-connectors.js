@@ -6,21 +6,22 @@
    */
 
 /*
-Waterfall connectors are orthogonal series connectors which visually join
-column series together by spanning the top or bottom of adjacent columns.
-
-When using this feature in charts other than waterfall, be aware that the
-mixin expects an accessor property for `orientation`, which it uses to render
-the direction of the lines.
-
-##### Accessors
-
-`x` - Used in placement of the connector lines.
-`y` - Used in placement of the connector lines.
-`span` - calculates the length of the connector line
-`classes` - applies the class to the connector lines.
-
-*/
+ * Waterfall connectors are orthogonal series connectors which visually join
+ * column series together by spanning the top or bottom of adjacent columns.
+ *
+ * When using this feature in charts other than waterfall, be aware that the
+ * mixin expects an accessor property for `orientation`, which it uses to render
+ * the direction of the lines.
+ *
+ *##### Accessors
+ *
+ * `x` - Used in placement of the connector lines.
+ * `y` - Used in placement of the connector lines.
+ * `span` - calculates the length of the connector line
+ * `classes` - applies the class to the connector lines.
+ *
+ * @name waterfallConnectors
+ */
   d4.feature('waterfallConnectors', function(name) {
     return {
       accessors: {

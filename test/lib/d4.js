@@ -971,12 +971,14 @@
   * linear values for the `y` and ordinal values on the `x`. The basic column chart
   * has four default features:
   *
-  * * **bars** - series bars
-  * * **barLabels** - data labels above the bars
-  * * **xAxis** - the axis for the x dimension
-  * * **yAxis** - the axis for the y dimension
+  *##### Accessors
   *
-  *###### Example Usage
+  * `bars` - series bars
+  * `barLabels` - data labels above the bars
+  * `xAxis` - the axis for the x dimension
+  * `yAxis` - the axis for the y dimension
+  *
+  *##### Example Usage
   *
   *     var data = [
   *         { x: '2010', y:-10 },
@@ -1045,14 +1047,15 @@
   * the sum of the data series across an axis the grouped column can be used to show the
   * relative distribution.
   *
-  *###### Accessors
-  * * **bars** - series bars
-  * * **barLabels** - data labels above the bars
-  * * **groupsOf** - an integer representing the number of columns in each group
-  * * **xAxis** - the axis for the x dimension
-  * * **yAxis** - the axis for the y dimension
+  *##### Accessors
   *
-  *###### Example Usage
+  * `bars` - series bars
+  * `barLabels` - data labels above the bars
+  * `groupsOf` - an integer representing the number of columns in each group
+  * `xAxis` - the axis for the x dimension
+  * `yAxis` - the axis for the y dimension
+  *
+  *##### Example Usage
   *
   *     var data = [
   *       { year: '2010', unitsSold:-100, salesman : 'Bob' },
@@ -1134,57 +1137,60 @@
   'use strict';
 
   /*
-  The line series chart is used to compare a series of data elements grouped
-  along the xAxis.
-
-   * **lineSeries** - series lines
-   * **lineSeriesLabels** - data labels beside the lines
-   * **xAxis** - the axis for the x dimension
-   * **yAxis** - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-      { year: '2010', unitsSold:-100, salesman : 'Bob' },
-      { year: '2011', unitsSold:200, salesman : 'Bob' },
-      { year: '2012', unitsSold:300, salesman : 'Bob' },
-      { year: '2013', unitsSold:400, salesman : 'Bob' },
-      { year: '2014', unitsSold:500, salesman : 'Bob' },
-      { year: '2010', unitsSold:100, salesman : 'Gina' },
-      { year: '2011', unitsSold:100, salesman : 'Gina' },
-      { year: '2012', unitsSold:-100, salesman : 'Gina' },
-      { year: '2013', unitsSold:500, salesman : 'Gina' },
-      { year: '2014', unitsSold:600, salesman : 'Gina' },
-      { year: '2010', unitsSold:400, salesman : 'Average' },
-      { year: '2011', unitsSold:0, salesman : 'Average' },
-      { year: '2012', unitsSold:400, salesman : 'Average' },
-      { year: '2013', unitsSold:400, salesman : 'Average' },
-      { year: '2014', unitsSold:400, salesman : 'Average' }
-    ];
-    var parsedData = d4.parsers.nestedGroup()
-      .x(function(){
-        return 'year';
-      })
-      .nestKey(function(){
-        return 'salesman';
-      })
-      .y(function(){
-        return 'unitsSold';
-      })
-      .value(function(){
-        return 'unitsSold';
-      })(data);
-
-    var chart = d4.charts.line()
-    .width($('#example').width())
-    .x.$key('year')
-    .y.$key('unitsSold');
-
-    d3.select('#example')
-    .datum(parsedData.data)
-    .call(chart);
-
-  */
+   * The line series chart is used to compare a series of data elements grouped
+   * along the xAxis.
+   *
+   *##### Accessors
+   *
+   * `lineSeries` - series lines
+   * `lineSeriesLabels` - data labels beside the lines
+   * `xAxis` - the axis for the x dimension
+   * `yAxis` - the axis for the y dimension
+   *
+   *##### Example Usage
+   *
+   *      var data = [
+   *        { year: '2010', unitsSold:-100, salesman : 'Bob' },
+   *        { year: '2011', unitsSold:200, salesman : 'Bob' },
+   *        { year: '2012', unitsSold:300, salesman : 'Bob' },
+   *        { year: '2013', unitsSold:400, salesman : 'Bob' },
+   *        { year: '2014', unitsSold:500, salesman : 'Bob' },
+   *        { year: '2010', unitsSold:100, salesman : 'Gina' },
+   *        { year: '2011', unitsSold:100, salesman : 'Gina' },
+   *        { year: '2012', unitsSold:-100, salesman : 'Gina' },
+   *        { year: '2013', unitsSold:500, salesman : 'Gina' },
+   *        { year: '2014', unitsSold:600, salesman : 'Gina' },
+   *        { year: '2010', unitsSold:400, salesman : 'Average' },
+   *        { year: '2011', unitsSold:0, salesman : 'Average' },
+   *        { year: '2012', unitsSold:400, salesman : 'Average' },
+   *        { year: '2013', unitsSold:400, salesman : 'Average' },
+   *        { year: '2014', unitsSold:400, salesman : 'Average' }
+   *      ];
+   *      var parsedData = d4.parsers.nestedGroup()
+   *        .x(function(){
+   *          return 'year';
+   *        })
+   *        .nestKey(function(){
+   *          return 'salesman';
+   *        })
+   *        .y(function(){
+   *          return 'unitsSold';
+   *        })
+   *        .value(function(){
+   *          return 'unitsSold';
+   *        })(data);
+   *
+   *      var chart = d4.charts.line()
+   *      .width($('#example').width())
+   *      .x.$key('year')
+   *      .y.$key('unitsSold');
+   *
+   *      d3.select('#example')
+   *      .datum(parsedData.data)
+   *      .call(chart);
+   *
+   * @name line
+   */
   d4.chart('line', function line() {
     var chart = d4.baseChart();
     [{
@@ -1208,31 +1214,33 @@
    */
   'use strict';
 
-  /*
-   The row chart has two axes (`x` and `y`). By default the column chart expects
-   linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart
-   has four default features:
-
-   * **bars** - series bars
-   * **rowLabels** - data labels to the right of the bars
-   * **xAxis** - the axis for the x dimension
-   * **yAxis** - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-          { y: '2010', x:-10 },
-          { y: '2011', x:20 },
-          { y: '2012', x:30 },
-          { y: '2013', x:40 },
-          { y: '2014', x:50 },
-        ];
-      var chart = d4.charts.row();
-      d3.select('#example')
-      .datum(data)
-      .call(chart);
-
-
+ /*
+  * The row chart has two axes (`x` and `y`). By default the column chart expects
+  * linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart
+  * has four default features:
+  *
+  *##### Accessors
+  *
+  * `bars` - series bars
+  * `rowLabels` - data labels to the right of the bars
+  * `xAxis` - the axis for the x dimension
+  * `yAxis` - the axis for the y dimension
+  *
+  *##### Example Usage
+  *
+  *      var data = [
+  *            { y: '2010', x:-10 },
+  *            { y: '2011', x:20 },
+  *            { y: '2012', x:30 },
+  *            { y: '2013', x:40 },
+  *            { y: '2014', x:50 },
+  *          ];
+  *        var chart = d4.charts.row();
+  *        d3.select('#example')
+  *        .datum(data)
+  *        .call(chart);
+  *
+  * @name row
   */
   d4.chart('row', function row() {
     var chart = d4.baseChart({
@@ -2536,21 +2544,22 @@
    */
 
 /*
-Waterfall connectors are orthogonal series connectors which visually join
-column series together by spanning the top or bottom of adjacent columns.
-
-When using this feature in charts other than waterfall, be aware that the
-mixin expects an accessor property for `orientation`, which it uses to render
-the direction of the lines.
-
-##### Accessors
-
-`x` - Used in placement of the connector lines.
-`y` - Used in placement of the connector lines.
-`span` - calculates the length of the connector line
-`classes` - applies the class to the connector lines.
-
-*/
+ * Waterfall connectors are orthogonal series connectors which visually join
+ * column series together by spanning the top or bottom of adjacent columns.
+ *
+ * When using this feature in charts other than waterfall, be aware that the
+ * mixin expects an accessor property for `orientation`, which it uses to render
+ * the direction of the lines.
+ *
+ *##### Accessors
+ *
+ * `x` - Used in placement of the connector lines.
+ * `y` - Used in placement of the connector lines.
+ * `span` - calculates the length of the connector line
+ * `classes` - applies the class to the connector lines.
+ *
+ * @name waterfallConnectors
+ */
   d4.feature('waterfallConnectors', function(name) {
     return {
       accessors: {
@@ -2653,6 +2662,7 @@ the direction of the lines.
    * accessors described below which modify the behavior and apperance of the axis.
    *
    *##### Accessors
+   *
    * `axis` - The d3 axis object itself.
    * `innerTickSize` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize
    * `orient` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#orient
@@ -2921,6 +2931,7 @@ the direction of the lines.
   * https://github.com/mbostock/d3/wiki/Arrays#-nest
   *
   *##### Approach
+  *
   * Just like D3, this parser uses a chaining declaritiave style to build up
   * the necessary prerequistes to create the waterfall data. Here is a simple
   * example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
@@ -2935,6 +2946,7 @@ the direction of the lines.
   * Keep reading for more information on these various accessor functions.
   *
   *##### Accessor Methods
+  *
   * `x` - A function which returns a key to access the x values in the data array
   * `y` - A function which returns a key to access the y values in the data array
   * `value` - A function which returns a key to access the values in the data array.
@@ -2946,6 +2958,7 @@ the direction of the lines.
   *       {"year" : "2010", "category" : "Category Three", "value" : -10 },
   *       {"year" : "2010", "category" : "Category Four", "value" : 5 }]
   *
+  * @name nestedGroup
   **/
   d4.parser('nestedGroup', function nestedGroup() {
 
@@ -3123,6 +3136,7 @@ the direction of the lines.
   *        }
   *      }
   *
+  * @name nestedStack
   **/
   d4.parser('nestedStack', function nestedStack() {
 
@@ -3268,9 +3282,11 @@ the direction of the lines.
     * Supports totaling series using a special "e" value in a data item.
     *
     *##### Limitations:
+    *
     * Does not support stacked waterfalls.
     *
-    *##### Accessor Methods:
+    *##### Accessors:
+    *
     * `x` : - function which returns a key to access the x values in the data array
     * `y` : - function which returns a key to access the y values in the data array
     * `value` : - function which returns a key to access the values in the data array.
@@ -3285,10 +3301,12 @@ the direction of the lines.
     *      {"category" : "Category Five", "value" : "e" }]
     *
     *##### SPECIAL NOTE:
+    *
     * Waterfalls charts typically have the ability to display subtotals at any point.
     * In order to use this feature simply set the value of your subtotal column to "e."
     *
     *##### Example Usage:
+    *
     * Given the example data and dimension variables above you can use this module
     * in the following way:
     *
@@ -3313,11 +3331,7 @@ the direction of the lines.
     *       }
     *     }
     *
-    * Taking these attributes one-by-one:
-    * + data - is an array of items stacked by D3
-    * + value - an object with a key representing the value accessor and an array of values
-    * + x - an object with a key representing the x accessor and an array of values
-    * + y - an object with a key representing the y accessor and an array of values
+    * @name waterfall
     **/
   d4.parser('waterfall', function waterfall() {
 

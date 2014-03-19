@@ -10,6 +10,7 @@
    * accessors described below which modify the behavior and apperance of the axis.
    *
    *##### Accessors
+   *
    * `axis` - The d3 axis object itself.
    * `innerTickSize` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize
    * `orient` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#orient

@@ -10,12 +10,14 @@
   * linear values for the `y` and ordinal values on the `x`. The basic column chart
   * has four default features:
   *
-  * * **bars** - series bars
-  * * **barLabels** - data labels above the bars
-  * * **xAxis** - the axis for the x dimension
-  * * **yAxis** - the axis for the y dimension
+  *##### Accessors
   *
-  *###### Example Usage
+  * `bars` - series bars
+  * `barLabels` - data labels above the bars
+  * `xAxis` - the axis for the x dimension
+  * `yAxis` - the axis for the y dimension
+  *
+  *##### Example Usage
   *
   *     var data = [
   *         { x: '2010', y:-10 },

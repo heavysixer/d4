@@ -44,9 +44,11 @@
     * Supports totaling series using a special "e" value in a data item.
     *
     *##### Limitations:
+    *
     * Does not support stacked waterfalls.
     *
-    *##### Accessor Methods:
+    *##### Accessors:
+    *
     * `x` : - function which returns a key to access the x values in the data array
     * `y` : - function which returns a key to access the y values in the data array
     * `value` : - function which returns a key to access the values in the data array.
@@ -61,10 +63,12 @@
     *      {"category" : "Category Five", "value" : "e" }]
     *
     *##### SPECIAL NOTE:
+    *
     * Waterfalls charts typically have the ability to display subtotals at any point.
     * In order to use this feature simply set the value of your subtotal column to "e."
     *
     *##### Example Usage:
+    *
     * Given the example data and dimension variables above you can use this module
     * in the following way:
     *
@@ -89,11 +93,7 @@
     *       }
     *     }
     *
-    * Taking these attributes one-by-one:
-    * + data - is an array of items stacked by D3
-    * + value - an object with a key representing the value accessor and an array of values
-    * + x - an object with a key representing the x accessor and an array of values
-    * + y - an object with a key representing the y accessor and an array of values
+    * @name waterfall
     **/
   d4.parser('waterfall', function waterfall() {
 

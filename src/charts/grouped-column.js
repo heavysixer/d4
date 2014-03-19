@@ -12,14 +12,15 @@
   * the sum of the data series across an axis the grouped column can be used to show the
   * relative distribution.
   *
-  *###### Accessors
-  * * **bars** - series bars
-  * * **barLabels** - data labels above the bars
-  * * **groupsOf** - an integer representing the number of columns in each group
-  * * **xAxis** - the axis for the x dimension
-  * * **yAxis** - the axis for the y dimension
+  *##### Accessors
   *
-  *###### Example Usage
+  * `bars` - series bars
+  * `barLabels` - data labels above the bars
+  * `groupsOf` - an integer representing the number of columns in each group
+  * `xAxis` - the axis for the x dimension
+  * `yAxis` - the axis for the y dimension
+  *
+  *##### Example Usage
   *
   *     var data = [
   *       { year: '2010', unitsSold:-100, salesman : 'Bob' },

@@ -97,6 +97,7 @@
   *        }
   *      }
   *
+  * @name nestedStack
   **/
   d4.parser('nestedStack', function nestedStack() {
 

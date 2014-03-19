@@ -19,6 +19,7 @@
   * https://github.com/mbostock/d3/wiki/Arrays#-nest
   *
   *##### Approach
+  *
   * Just like D3, this parser uses a chaining declaritiave style to build up
   * the necessary prerequistes to create the waterfall data. Here is a simple
   * example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
@@ -33,6 +34,7 @@
   * Keep reading for more information on these various accessor functions.
   *
   *##### Accessor Methods
+  *
   * `x` - A function which returns a key to access the x values in the data array
   * `y` - A function which returns a key to access the y values in the data array
   * `value` - A function which returns a key to access the values in the data array.
@@ -44,6 +46,7 @@
   *       {"year" : "2010", "category" : "Category Three", "value" : -10 },
   *       {"year" : "2010", "category" : "Category Four", "value" : 5 }]
   *
+  * @name nestedGroup
   **/
   d4.parser('nestedGroup', function nestedGroup() {
 
