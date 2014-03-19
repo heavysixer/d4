@@ -44,16 +44,29 @@
 
 <h5>Series and Items CSS</h5>
 <p>
-  d4 provides several ways to style a chart through css classes which are added during render time.
-  This example gives two examples of how you can style the same chart but produce vastly different visuals.
+  d4 aims to make styling the charts using CSS as robust as possible. Towards that
+  end, d4 adds several generated CSS classes to various elements of the chart
+  as it renders. This page gives several examples of how you can radically alter
+  the visual intent of the chart by utilizing the various classes available to you.
+  The important take away here is that controlling the series colors changes the
+  <em>story</em> your charts are telling. You will want to choose the correct
+  visual representation of your series data to support the point you are trying
+  to make.
 </p>
 <p>
-  The first example uses the incrementing <code class="language-css">.item</code> class. As items are
-  added to the chart a new item class will be created e.g. <code class="language-css">.item0, .item1, .item2</code>.
+  The first example uses the auto-incrementing <code class="language-css">.item</code>
+  class. As items are added to the chart a new item class will be added to the
+  new series item e.g. <code class="language-css">.item0, .item1, .item2</code>.
+</p>
+
+<p>
+  The second example uses the auto-incrementing <code class="language-css">.series</code> class.
+  As series are added to the chart a new series class will be created e.g.
+  <code class="language-css">.series0, .series1, .series2</code>.
 </p>
 <p>
-  The second example uses the incrementing <code class="language-css">.series</code> class. As items are
-  added to the chart a new item class will be created e.g. <code class="language-css">.series0, .series1, .series2</code>.
+  The third example combines the auto-incrementing <code class="language-css">.series</code>
+  and <code class="language-css">.item</code> classes together.
 </p>
 <hr/>
 <script type="text/javascript" charset="utf-8" id='source_code'>
@@ -93,23 +106,18 @@ $(document).ready(function(){
   })
   .groupsOf(parsedData.data[0].values.length);
 
-  var chart2 = d4.charts.groupedColumn()
-  .width($('#series').width())
-  .x(function(x){
-    x.key('year');
-  })
-  .y(function(y){
-    y.key('unitsSold');
-  })
-  .groupsOf(parsedData.data[0].values.length);
-
   d3.select('#items')
   .datum(parsedData.data)
   .call(chart);
 
   d3.select('#series')
   .datum(parsedData.data)
-  .call(chart2);
+  .call(chart);
+
+  d3.select('#series-item')
+  .datum(parsedData.data)
+  .call(chart);
+
 });
 
 </script>
@@ -118,6 +126,9 @@ $(document).ready(function(){
 
 <h6>Series Example</h6>
 <div id="series"></div>
+
+<h6>Series &amp; Item Example</h6>
+<div id="series-item"></div>
 
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript"></code></pre>

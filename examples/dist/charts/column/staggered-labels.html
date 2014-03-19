@@ -68,17 +68,17 @@ $(document).ready(function(){
       { x: '2014', y:300 },
     ];
   var margin = {
-      top: 20,
-      right: 40,
-      bottom: 20,
-      left: 50
+      top: 40,
+      right: 60,
+      bottom: 40,
+      left: 60
     };
 
   var chart1 = d4.charts.column();
   chart1
     .margin(margin)
-    .height(140)
-    .width(300);
+    .height(160)
+    .width(260);
 
   d3.select('#example1')
     .datum(data)
@@ -97,8 +97,8 @@ $(document).ready(function(){
     .using('yAxis', function(yAxis){
       yAxis.stagger(false);
     })
-    .height(140)
-    .width(300);
+    .height(160)
+    .width(260);
 
   d3.select('#example2')
     .datum(data)

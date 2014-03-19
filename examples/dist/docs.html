@@ -82,29 +82,29 @@
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-waterfall-connectors-js-23-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
+<h6 id="-nested-group-js-23-"><a href="#nested-group-js">nested-group.js</a></h6>
 <ul>
 <li><a href="#">``</a></li>
 </ul>
-<h6 id="-x-axis-js-24-"><a href="#x-axis-js">x-axis.js</a></h6>
+<h6 id="-nested-stack-js-24-"><a href="#nested-stack-js">nested-stack.js</a></h6>
+<ul>
+<li><a href="#">``</a></li>
+</ul>
+<h6 id="-waterfall-js-25-"><a href="#waterfall-js">waterfall.js</a></h6>
+<ul>
+<li><a href="#">``</a></li>
+</ul>
+<h6 id="-waterfall-connectors-js-26-"><a href="#waterfall-connectors-js">waterfall-connectors.js</a></h6>
+<ul>
+<li><a href="#">``</a></li>
+</ul>
+<h6 id="-x-axis-js-27-"><a href="#x-axis-js">x-axis.js</a></h6>
 <ul>
 <li><a href="#xaxis"><code>xAxis</code></a></li>
 </ul>
-<h6 id="-y-axis-js-26-"><a href="#y-axis-js">y-axis.js</a></h6>
+<h6 id="-y-axis-js-29-"><a href="#y-axis-js">y-axis.js</a></h6>
 <ul>
 <li><a href="#yaxis"><code>yAxis</code></a></li>
-</ul>
-<h6 id="-nested-group-js-28-"><a href="#nested-group-js">nested-group.js</a></h6>
-<ul>
-<li><a href="#">``</a></li>
-</ul>
-<h6 id="-nested-stack-js-29-"><a href="#nested-stack-js">nested-stack.js</a></h6>
-<ul>
-<li><a href="#">``</a></li>
-</ul>
-<h6 id="-waterfall-js-30-"><a href="#waterfall-js">waterfall.js</a></h6>
-<ul>
-<li><a href="#">``</a></li>
 </ul>
 <h2 id="base-js">base.js</h2>
 <h3 id="basechart">baseChart</h3>
@@ -473,74 +473,6 @@ d3.select(&#39;#example&#39;)
   .datum(data)
   .call(chart);</code></pre>
 <hr>
-<h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
-<h3 id="-"> </h3>
-<p><a href="#">#</a>
-<a href="#waterfall-connectors-js">Ⓣ</a></p>
-<p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
-<p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
-<h5 id="accessors">Accessors</h5>
-<p><code>x</code> - Used in placement of the connector lines.<br><code>y</code> - Used in placement of the connector lines.<br><code>span</code> - calculates the length of the connector line<br><code>classes</code> - applies the class to the connector lines.</p>
-<hr>
-<h2 id="x-axis-js">x-axis.js</h2>
-<h3 id="xaxis">xAxis</h3>
-<p><a href="#xaxis">#</a>
-<a href="#x-axis-js">Ⓣ</a></p>
-<p>This feature creates an xAxis for use within d4. There are a variety of<br>accessors described below which modify the behavior and apperance of the axis.</p>
-<h5 id="accessors">Accessors</h5>
-<p><code>axis</code> - The d3 axis object itself.<br><code>innerTickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize</a></a><br><code>orient</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#orient"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#orient">https://github.com/mbostock/d3/wiki/SVG-Axes\#orient</a></a><br><code>outerTickSize</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize</a></a><br><code>scale</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#scale"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#scale">https://github.com/mbostock/d3/wiki/SVG-Axes\#scale</a></a><br><code>stagger</code> - (true | false) determines if the axis should stagger overlapping text (true by default)<br><code>tickFormat</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat</a></a><br><code>tickPadding</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding</a></a><br><code>tickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize</a></a><br><code>tickSubdivide</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide</a></a><br><code>tickValues</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues</a></a><br><code>ticks</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#ticks"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks">https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks</a></a></p>
-<pre><code>var chart = d4.charts.groupedColumn()
-.using(&#39;yAxis&#39;, function(axis){
-
-  // adjust the number of tick marks based on the height of the chart
-  axis.ticks($(&#39;#example&#39;).height()/20);
-
-  // set the inner and outer tick sizes
-  axis.tickSize(10,5);
-
-  // adjust the tick padding
-  axis.tickPadding(5);
-
-})
-.using(&#39;xAxis&#39;, function(axis){
-
-  // position the tickmarks on the top of the axis line
-  axis.orient(&#39;top&#39;);
-
-  // move the axis to the top of the chart.
-  axis.align(&#39;top&#39;);
-})</code></pre>
-<hr>
-<h2 id="y-axis-js">y-axis.js</h2>
-<h3 id="yaxis">yAxis</h3>
-<p><a href="#yaxis">#</a>
-<a href="#y-axis-js">Ⓣ</a></p>
-<p>This feature creates an xAxis for use within d4. There are a variety of<br>accessors described below which modify the behavior and apperance of the axis.</p>
-<h5 id="accessors">Accessors</h5>
-<p><code>axis</code> - The d3 axis object itself.<br><code>innerTickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize</a></a><br><code>orient</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#orient"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#orient">https://github.com/mbostock/d3/wiki/SVG-Axes\#orient</a></a><br><code>outerTickSize</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize</a></a><br><code>scale</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#scale"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#scale">https://github.com/mbostock/d3/wiki/SVG-Axes\#scale</a></a><br><code>stagger</code> - (true | false) determines if the axis should stagger overlapping text (true by default)<br><code>tickFormat</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat</a></a><br><code>tickPadding</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding</a></a><br><code>tickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize</a></a><br><code>tickSubdivide</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide</a></a><br><code>tickValues</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues</a></a><br><code>ticks</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#ticks"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks">https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks</a></a></p>
-<h5 id="examples">Examples</h5>
-<pre><code>var chart = d4.charts.groupedColumn()
-.using(&#39;yAxis&#39;, function(axis){
-
-  // adjust the number of tick marks based on the height of the chart
-  axis.ticks($(&#39;#example&#39;).height()/20);
-
-  // set the inner and outer tick sizes
-  axis.tickSize(10,5);
-
-  // adjust the tick padding
-  axis.tickPadding(5);
-
-})
-.using(&#39;xAxis&#39;, function(axis){
-
-  // position the tickmarks on the top of the axis line
-  axis.orient(&#39;top&#39;);
-
-  // move the axis to the top of the chart.
-  axis.y(-20);
-})</code></pre>
-<hr>
 <h2 id="nested-group-js">nested-group.js</h2>
 <h3 id="-"> </h3>
 <p><a href="#">#</a>
@@ -718,6 +650,74 @@ The `parser` variable will now be an object containing the following structure:
 <li>x - an object with a key representing the x accessor and an array of values  </li>
 <li>y - an object with a key representing the y accessor and an array of values</li>
 </ul>
+<hr>
+<h2 id="waterfall-connectors-js">waterfall-connectors.js</h2>
+<h3 id="-"> </h3>
+<p><a href="#">#</a>
+<a href="#waterfall-connectors-js">Ⓣ</a></p>
+<p>Waterfall connectors are orthogonal series connectors which visually join<br>column series together by spanning the top or bottom of adjacent columns.</p>
+<p>When using this feature in charts other than waterfall, be aware that the<br>mixin expects an accessor property for <code>orientation</code>, which it uses to render<br>the direction of the lines.</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>x</code> - Used in placement of the connector lines.<br><code>y</code> - Used in placement of the connector lines.<br><code>span</code> - calculates the length of the connector line<br><code>classes</code> - applies the class to the connector lines.</p>
+<hr>
+<h2 id="x-axis-js">x-axis.js</h2>
+<h3 id="xaxis">xAxis</h3>
+<p><a href="#xaxis">#</a>
+<a href="#x-axis-js">Ⓣ</a></p>
+<p>This feature creates an xAxis for use within d4. There are a variety of<br>accessors described below which modify the behavior and apperance of the axis.</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>axis</code> - The d3 axis object itself.<br><code>innerTickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize</a></a><br><code>orient</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#orient"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#orient">https://github.com/mbostock/d3/wiki/SVG-Axes\#orient</a></a><br><code>outerTickSize</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize</a></a><br><code>scale</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#scale"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#scale">https://github.com/mbostock/d3/wiki/SVG-Axes\#scale</a></a><br><code>stagger</code> - (true | false) determines if the axis should stagger overlapping text (true by default)<br><code>tickFormat</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat</a></a><br><code>tickPadding</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding</a></a><br><code>tickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize</a></a><br><code>tickSubdivide</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide</a></a><br><code>tickValues</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues</a></a><br><code>ticks</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#ticks"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks">https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks</a></a></p>
+<pre><code>var chart = d4.charts.groupedColumn()
+.using(&#39;yAxis&#39;, function(axis){
+
+  // adjust the number of tick marks based on the height of the chart
+  axis.ticks($(&#39;#example&#39;).height()/20);
+
+  // set the inner and outer tick sizes
+  axis.tickSize(10,5);
+
+  // adjust the tick padding
+  axis.tickPadding(5);
+
+})
+.using(&#39;xAxis&#39;, function(axis){
+
+  // position the tickmarks on the top of the axis line
+  axis.orient(&#39;top&#39;);
+
+  // move the axis to the top of the chart.
+  axis.align(&#39;top&#39;);
+})</code></pre>
+<hr>
+<h2 id="y-axis-js">y-axis.js</h2>
+<h3 id="yaxis">yAxis</h3>
+<p><a href="#yaxis">#</a>
+<a href="#y-axis-js">Ⓣ</a></p>
+<p>This feature creates an xAxis for use within d4. There are a variety of<br>accessors described below which modify the behavior and apperance of the axis.</p>
+<h5 id="accessors">Accessors</h5>
+<p><code>axis</code> - The d3 axis object itself.<br><code>innerTickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize</a></a><br><code>orient</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#orient"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#orient">https://github.com/mbostock/d3/wiki/SVG-Axes\#orient</a></a><br><code>outerTickSize</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize</a></a><br><code>scale</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#scale"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#scale">https://github.com/mbostock/d3/wiki/SVG-Axes\#scale</a></a><br><code>stagger</code> - (true | false) determines if the axis should stagger overlapping text (true by default)<br><code>tickFormat</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat</a></a><br><code>tickPadding</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding</a></a><br><code>tickSize</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize</a></a><br><code>tickSubdivide</code>- see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide</a></a><br><code>tickValues</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues">https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues</a></a><br><code>ticks</code> - see: <a href="https://github.com/mbostock/d3/wiki/SVG-Axes#ticks"><a href="https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks">https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks</a></a></p>
+<h5 id="examples">Examples</h5>
+<pre><code>var chart = d4.charts.groupedColumn()
+.using(&#39;yAxis&#39;, function(axis){
+
+  // adjust the number of tick marks based on the height of the chart
+  axis.ticks($(&#39;#example&#39;).height()/20);
+
+  // set the inner and outer tick sizes
+  axis.tickSize(10,5);
+
+  // adjust the tick padding
+  axis.tickPadding(5);
+
+})
+.using(&#39;xAxis&#39;, function(axis){
+
+  // position the tickmarks on the top of the axis line
+  axis.orient(&#39;top&#39;);
+
+  // move the axis to the top of the chart.
+  axis.y(-20);
+})</code></pre>
 <hr>
 
     </div>
