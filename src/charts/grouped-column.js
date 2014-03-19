@@ -71,8 +71,9 @@
 
     var chart = d4.baseChart({
       config: {
-        accessors: ['groupsOf'],
-        groupsOf: 1
+        accessors: {
+          groupsOf: 1
+        }
       }
     });
     [{

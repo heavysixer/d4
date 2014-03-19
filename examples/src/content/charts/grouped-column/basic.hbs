@@ -57,6 +57,7 @@ $(document).ready(function(){
     y.key('unitsSold');
   })
   .groupsOf(parsedData.data[0].values.length);
+  console.log(chart.axes());
 
   d3.select('#example')
   .datum(parsedData.data)

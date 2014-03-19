@@ -293,7 +293,7 @@
 
     linkAxes(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder || builder);
-    opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(config.accessors || []);
+    opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(d3.keys(config.accessors) || []);
     return opts;
   };
 
