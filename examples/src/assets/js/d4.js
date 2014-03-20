@@ -1,6 +1,6 @@
 /*! d4 - v0.5.6
  *  License: MIT Expat
- *  Date: 2014-03-19
+ *  Date: 2014-03-20
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -290,7 +290,7 @@
       margin: {
         top: 20,
         right: 20,
-        bottom: 20,
+        bottom: 40,
         left: 40
       },
     }, config);
