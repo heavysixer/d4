@@ -46,6 +46,13 @@ svg.d4 {
 /*
   Specific Examples
 */
+#scatter .d4 .series0 {
+    fill: #CD202C;
+    fill-opacity: 0.6;
+    stroke: #CD202C;
+    stroke-width: 1px;
+}
+
 #items .item0.fill {
     fill: #CD202C;
 }
