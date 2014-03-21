@@ -16,26 +16,26 @@
 * [`functor`][11]
 * [`parser`][12]
 
-###### [column.js][13]
+###### [scales.js][13]
 
-* [`column`][14]
+* [`linearScaleForNestedData`][14]
+* [`ordinalScaleForNestedData`][15]
 
-###### [grouped-column.js][15]
+###### [column.js][16]
 
-* [`groupedColumn`][16]
+* [`column`][17]
 
-###### [line.js][17]
+###### [line.js][18]
 
-* [`line`][18]
+* [`line`][19]
 
-###### [row.js][19]
+###### [grouped-column.js][20]
 
-* [`row`][20]
+* [`groupedColumn`][21]
 
-###### [scales.js][21]
+###### [row.js][22]
 
-* [`linearScaleForNestedData`][22]
-* [`ordinalScaleForNestedData`][23]
+* [`row`][23]
 
 ###### [waterfall-connectors.js][24]
 
@@ -347,12 +347,44 @@ This function allows you to register a reusable data parser with d4\.
 
 ---
 
+## scales.js
+
+### linearScaleForNestedData
+
+[\#][14]
+[Ⓣ][13]
+
+Creates a linear scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
+
+---
+
+### ordinalScaleForNestedData
+
+[\#][15]
+[Ⓣ][13]
+
+Creates an ordinal scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
+
+---
+
 ## column.js
 
 ### column
 
-[\#][14]
-[Ⓣ][13]
+[\#][17]
+[Ⓣ][16]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -405,71 +437,12 @@ The default format may not be desired and so we'll override it:
 
 ---
 
-## grouped-column.js
-
-### groupedColumn
-
-[\#][16]
-[Ⓣ][15]
-
-The grouped column chart is used to compare a series of data elements grouped  
-along the xAxis. This chart is often useful in conjunction with a stacked column  
-chart because they can use the same data series, and where the stacked column highlights  
-the sum of the data series across an axis the grouped column can be used to show the  
-relative distribution.
-
-##### Accessors
-
-`bars` - series bars  
-`barLabels` - data labels above the bars  
-`groupsOf` - an integer representing the number of columns in each group  
-`xAxis` - the axis for the x dimension  
-`yAxis` - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-      { year: '2010', unitsSold:-100, salesman : 'Bob' },
-      { year: '2011', unitsSold:200, salesman : 'Bob' },
-      { year: '2012', unitsSold:300, salesman : 'Bob' },
-      { year: '2013', unitsSold:400, salesman : 'Bob' },
-      { year: '2014', unitsSold:500, salesman : 'Bob' },
-      { year: '2010', unitsSold:100, salesman : 'Gina' },
-      { year: '2011', unitsSold:100, salesman : 'Gina' },
-      { year: '2012', unitsSold:-100, salesman : 'Gina' },
-      { year: '2013', unitsSold:500, salesman : 'Gina' },
-      { year: '2014', unitsSold:600, salesman : 'Gina' },
-      { year: '2010', unitsSold:400, salesman : 'Average' },
-      { year: '2011', unitsSold:0, salesman : 'Average' },
-      { year: '2012', unitsSold:400, salesman : 'Average' },
-      { year: '2013', unitsSold:400, salesman : 'Average' },
-      { year: '2014', unitsSold:400, salesman : 'Average' }
-    ];
-    
-    var parsedData = d4.parsers.nestedGroup()
-      .x('year')
-      .y('unitsSold')
-      .value('unitsSold')(data);
-    
-    var chart = d4.charts.groupedColumn()
-    .width($('#example').width())
-    .x.$key('year')
-    .y.$key('unitsSold')
-    .groupsOf(parsedData.data[0].values.length);
-    
-    d3.select('#example')
-    .datum(parsedData.data)
-    .call(chart);
-    
-
----
-
 ## line.js
 
 ### line
 
-[\#][18]
-[Ⓣ][17]
+[\#][19]
+[Ⓣ][18]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -526,12 +499,71 @@ along the xAxis.
 
 ---
 
+## grouped-column.js
+
+### groupedColumn
+
+[\#][21]
+[Ⓣ][20]
+
+The grouped column chart is used to compare a series of data elements grouped  
+along the xAxis. This chart is often useful in conjunction with a stacked column  
+chart because they can use the same data series, and where the stacked column highlights  
+the sum of the data series across an axis the grouped column can be used to show the  
+relative distribution.
+
+##### Accessors
+
+`bars` - series bars  
+`barLabels` - data labels above the bars  
+`groupsOf` - an integer representing the number of columns in each group  
+`xAxis` - the axis for the x dimension  
+`yAxis` - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+      { year: '2010', unitsSold:-100, salesman : 'Bob' },
+      { year: '2011', unitsSold:200, salesman : 'Bob' },
+      { year: '2012', unitsSold:300, salesman : 'Bob' },
+      { year: '2013', unitsSold:400, salesman : 'Bob' },
+      { year: '2014', unitsSold:500, salesman : 'Bob' },
+      { year: '2010', unitsSold:100, salesman : 'Gina' },
+      { year: '2011', unitsSold:100, salesman : 'Gina' },
+      { year: '2012', unitsSold:-100, salesman : 'Gina' },
+      { year: '2013', unitsSold:500, salesman : 'Gina' },
+      { year: '2014', unitsSold:600, salesman : 'Gina' },
+      { year: '2010', unitsSold:400, salesman : 'Average' },
+      { year: '2011', unitsSold:0, salesman : 'Average' },
+      { year: '2012', unitsSold:400, salesman : 'Average' },
+      { year: '2013', unitsSold:400, salesman : 'Average' },
+      { year: '2014', unitsSold:400, salesman : 'Average' }
+    ];
+    
+    var parsedData = d4.parsers.nestedGroup()
+      .x('year')
+      .y('unitsSold')
+      .value('unitsSold')(data);
+    
+    var chart = d4.charts.groupedColumn()
+    .width($('#example').width())
+    .x.$key('year')
+    .y.$key('unitsSold')
+    .groupsOf(parsedData.data[0].values.length);
+    
+    d3.select('#example')
+    .datum(parsedData.data)
+    .call(chart);
+    
+
+---
+
 ## row.js
 
 ### row
 
-[\#][20]
-[Ⓣ][19]
+[\#][23]
+[Ⓣ][22]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -558,38 +590,6 @@ has four default features:
        .datum(data)
        .call(chart);
     
-
----
-
-## scales.js
-
-### linearScaleForNestedData
-
-[\#][22]
-[Ⓣ][21]
-
-Creates a linear scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
----
-
-### ordinalScaleForNestedData
-
-[\#][23]
-[Ⓣ][21]
-
-Creates an ordinal scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
 
 ---
 
@@ -999,17 +999,17 @@ in the following way:
 [10]: #feature
 [11]: #functor
 [12]: #parser
-[13]: #column-js
-[14]: #column
-[15]: #grouped-column-js
-[16]: #groupedcolumn
-[17]: #line-js
-[18]: #line
-[19]: #row-js
-[20]: #row
-[21]: #scales-js
-[22]: #linearscalefornesteddata
-[23]: #ordinalscalefornesteddata
+[13]: #scales-js
+[14]: #linearscalefornesteddata
+[15]: #ordinalscalefornesteddata
+[16]: #column-js
+[17]: #column
+[18]: #line-js
+[19]: #line
+[20]: #grouped-column-js
+[21]: #groupedcolumn
+[22]: #row-js
+[23]: #row
 [24]: #waterfall-connectors-js
 [25]: #waterfallconnectors
 [26]: #x-axis-js

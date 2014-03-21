@@ -58,9 +58,7 @@ $(document).ready(function(){
       y.key('unitsSold');
     })
     .using('lineSeries', function(line) {
-      line.interpolate(function() {
-        return 'linear';
-      });
+      line.interpolate('linear');
     })
     .mixin({
       'dotSeries': d4.features.dotSeries

@@ -6,6 +6,8 @@
 
   'use strict';
   d4.feature('lineSeries', function(name) {
+    var line = d3.svg.line();
+    line.interpolate('basis');
     return {
       accessors: {
         x: function(d) {
@@ -16,18 +18,14 @@
           return this.y(d[this.y.$key]);
         },
 
-        interpolate: function() {
-          return 'basis';
-        },
-
         classes: function(d, n) {
           return 'line stroke series' + n;
         }
       },
+      proxies: [line],
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var line = d3.svg.line()
-          .interpolate(scope.accessors.interpolate.bind(this)())
+        line
           .x(scope.accessors.x.bind(this))
           .y(scope.accessors.y.bind(this));
 
