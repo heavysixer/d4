@@ -31,7 +31,7 @@ $(document).ready(function(){
   var chart = d4.charts.scatterPlot()
   .width($('#example').width())
   .x(function(x){
-    x.min(-10)
+    x.min(-10);
     x.key('age');
   })
   .y(function(y){

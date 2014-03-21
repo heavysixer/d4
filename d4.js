@@ -1302,6 +1302,45 @@
     return builder;
   };
 
+  /*
+   * The scatter plot has three axes (`x`, `y` and `z`). By default the scatter
+   * plot expects linear scale values for all axes. The basic scatter plot chart
+   * has these default features:
+   *
+   *##### Accessors
+   *
+   * `circles` - series of circles
+   * `xAxis` - the axis for the x dimension
+   * `yAxis` - the axis for the y dimension
+   *
+   *##### Example Usage
+   *
+   *      var data = [
+   *        { age: 12, unitsSold: 0,    month: 1 },
+   *        { age: 22, unitsSold: 200,  month: 2 },
+   *        { age: 42, unitsSold: 300,  month: 3 },
+   *        { age: 32, unitsSold: 400,  month: 4 },
+   *        { age: 2 , unitsSold: 400,  month: 2 }
+   *      ];
+   *
+   *      var chart = d4.charts.scatterPlot()
+   *      .x(function(x){
+   *        x.min(-10)
+   *        x.key('age');
+   *      })
+   *      .y(function(y){
+   *        y.key('month');
+   *      })
+   *      .z(function(z){
+   *        z.key('unitsSold');
+   *      });
+   *
+   *      d3.select('#example')
+   *      .datum(data)
+   *      .call(chart);
+   *
+   * @name scatterPlot
+   */
   d4.chart('scatterPlot', function scatterPlot() {
     var chart = d4.baseChart({
       builder: scatterPlotBuilder,
@@ -1336,6 +1375,65 @@
    */
   'use strict';
 
+ /*
+  * The stacked column chart has two axes (`x` and `y`). By default the stacked
+  * column expects continious scale for the `y` axis and a discrete scale for
+  * the `x` axis. The stacked column has the following default features:
+  *
+  *##### Accessors
+  *
+  * `bars` - series of rects
+  * `barLabels` - individual data values inside the stacked rect
+  * `connectors` - visual lines that connect the various stacked columns together
+  * `columnTotals` - column labels which total the values of each stack.
+  * `xAxis` - the axis for the x dimension
+  * `yAxis` - the axis for the y dimension
+  *
+  *##### Example Usage
+  *
+  *      var data = [
+  *          { year: '2010', unitsSold: 200, salesman : 'Bob' },
+  *          { year: '2011', unitsSold: 200, salesman : 'Bob' },
+  *          { year: '2012', unitsSold: 300, salesman : 'Bob' },
+  *          { year: '2013', unitsSold: -400, salesman : 'Bob' },
+  *          { year: '2014', unitsSold: -500, salesman : 'Bob' },
+  *          { year: '2010', unitsSold: 100, salesman : 'Gina' },
+  *          { year: '2011', unitsSold: 100, salesman : 'Gina' },
+  *          { year: '2012', unitsSold: 200, salesman : 'Gina' },
+  *          { year: '2013', unitsSold: -500, salesman : 'Gina' },
+  *          { year: '2014', unitsSold: -600, salesman : 'Gina' },
+  *          { year: '2010', unitsSold: 400, salesman : 'Average' },
+  *          { year: '2011', unitsSold: 100, salesman : 'Average' },
+  *          { year: '2012', unitsSold: 400, salesman : 'Average' },
+  *          { year: '2013', unitsSold: -400, salesman : 'Average' },
+  *          { year: '2014', unitsSold: -400, salesman : 'Average' }
+  *        ];
+  *
+  *      var parsedData = d4.parsers.nestedStack()
+  *        .x(function(){
+  *          return 'year';
+  *        })
+  *        .y(function(){
+  *          return 'salesman';
+  *        })
+  *        .value(function(){
+  *          return 'unitsSold';
+  *        })(data);
+  *
+  *      var chart = d4.charts.stackedColumn()
+  *      .x(function(x){
+  *        x.key('year');
+  *      })
+  *      .y(function(y){
+  *        y.key('unitsSold');
+  *      })
+  *
+  *      d3.select('#example')
+  *      .datum(parsedData.data)
+  *      .call(chart);
+  *
+  * @name stackedColumn
+  */
   d4.chart('stackedColumn', function stackedColumn() {
     var columnLabelsOverrides = function() {
       var extractValues = function(data) {
@@ -1421,7 +1519,66 @@
    * global d4: false
    */
   'use strict';
-
+ /*
+  * The stacked row chart has two axes (`x` and `y`). By default the stacked
+  * row expects continious scale for the `x` axis and a discrete scale for
+  * the `y` axis. The stacked row has the following default features:
+  *
+  *##### Accessors
+  *
+  * `bars` - series of rects
+  * `barLabels` - individual data values inside the stacked rect
+  * `connectors` - visual lines that connect the various stacked columns together
+  * `columnTotals` - column labels which total the values of each stack.
+  * `xAxis` - the axis for the x dimension
+  * `yAxis` - the axis for the y dimension
+  *
+  *##### Example Usage
+  *
+  *      var data = [
+  *            { year: '2010', unitsSold: 200, salesman : 'Bob' },
+  *            { year: '2011', unitsSold: 200, salesman : 'Bob' },
+  *            { year: '2012', unitsSold: 300, salesman : 'Bob' },
+  *            { year: '2013', unitsSold: -400, salesman : 'Bob' },
+  *            { year: '2014', unitsSold: -500, salesman : 'Bob' },
+  *            { year: '2010', unitsSold: 100, salesman : 'Gina' },
+  *            { year: '2011', unitsSold: 100, salesman : 'Gina' },
+  *            { year: '2012', unitsSold: 200, salesman : 'Gina' },
+  *            { year: '2013', unitsSold: -500, salesman : 'Gina' },
+  *            { year: '2014', unitsSold: -600, salesman : 'Gina' },
+  *            { year: '2010', unitsSold: 400, salesman : 'Average' },
+  *            { year: '2011', unitsSold: 200, salesman : 'Average' },
+  *            { year: '2012', unitsSold: 400, salesman : 'Average' },
+  *            { year: '2013', unitsSold: -400, salesman : 'Average' },
+  *            { year: '2014', unitsSold: -400, salesman : 'Average' }
+  *          ];
+  *
+  *        var parsedData = d4.parsers.nestedStack()
+  *          .x(function(){
+  *            return 'year';
+  *          })
+  *          .y(function(){
+  *            return 'salesman';
+  *          })
+  *          .value(function(){
+  *            return 'unitsSold';
+  *          })(data);
+  *
+  *        var chart = d4.charts.stackedRow()
+  *        .x(function(x){
+  *          x.key('unitsSold');
+  *        })
+  *        .valueKey('unitsSold')
+  *        .y(function(y){
+  *          y.key('year');
+  *        });
+  *
+  *       d3.select('#example')
+  *       .datum(parsedData.data)
+  *       .call(chart);
+  *
+  * @name stackedRow
+  */
   d4.chart('stackedRow', function stackedRow() {
     var columnLabelsOverrides = function() {
       var extractValues = function(data) {

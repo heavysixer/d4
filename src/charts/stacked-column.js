@@ -5,6 +5,65 @@
    */
   'use strict';
 
+ /*
+  * The stacked column chart has two axes (`x` and `y`). By default the stacked
+  * column expects continious scale for the `y` axis and a discrete scale for
+  * the `x` axis. The stacked column has the following default features:
+  *
+  *##### Accessors
+  *
+  * `bars` - series of rects
+  * `barLabels` - individual data values inside the stacked rect
+  * `connectors` - visual lines that connect the various stacked columns together
+  * `columnTotals` - column labels which total the values of each stack.
+  * `xAxis` - the axis for the x dimension
+  * `yAxis` - the axis for the y dimension
+  *
+  *##### Example Usage
+  *
+  *      var data = [
+  *          { year: '2010', unitsSold: 200, salesman : 'Bob' },
+  *          { year: '2011', unitsSold: 200, salesman : 'Bob' },
+  *          { year: '2012', unitsSold: 300, salesman : 'Bob' },
+  *          { year: '2013', unitsSold: -400, salesman : 'Bob' },
+  *          { year: '2014', unitsSold: -500, salesman : 'Bob' },
+  *          { year: '2010', unitsSold: 100, salesman : 'Gina' },
+  *          { year: '2011', unitsSold: 100, salesman : 'Gina' },
+  *          { year: '2012', unitsSold: 200, salesman : 'Gina' },
+  *          { year: '2013', unitsSold: -500, salesman : 'Gina' },
+  *          { year: '2014', unitsSold: -600, salesman : 'Gina' },
+  *          { year: '2010', unitsSold: 400, salesman : 'Average' },
+  *          { year: '2011', unitsSold: 100, salesman : 'Average' },
+  *          { year: '2012', unitsSold: 400, salesman : 'Average' },
+  *          { year: '2013', unitsSold: -400, salesman : 'Average' },
+  *          { year: '2014', unitsSold: -400, salesman : 'Average' }
+  *        ];
+  *
+  *      var parsedData = d4.parsers.nestedStack()
+  *        .x(function(){
+  *          return 'year';
+  *        })
+  *        .y(function(){
+  *          return 'salesman';
+  *        })
+  *        .value(function(){
+  *          return 'unitsSold';
+  *        })(data);
+  *
+  *      var chart = d4.charts.stackedColumn()
+  *      .x(function(x){
+  *        x.key('year');
+  *      })
+  *      .y(function(y){
+  *        y.key('unitsSold');
+  *      })
+  *
+  *      d3.select('#example')
+  *      .datum(parsedData.data)
+  *      .call(chart);
+  *
+  * @name stackedColumn
+  */
   d4.chart('stackedColumn', function stackedColumn() {
     var columnLabelsOverrides = function() {
       var extractValues = function(data) {

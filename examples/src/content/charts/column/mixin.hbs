@@ -43,12 +43,12 @@ $(document).ready(function(){
     zeroLine
     // accessor attributes can be supplied as a variable
     .x1(0)
-    .x2(this.width)
-
     // or a function
     .y1(function(){
       return this.y(0);
     })
+    // you can access the margin attributes in multiple ways.
+    .x2(this.width - chart.marginLeft() - chart.margin().right)
     .y2(function(){
       return this.y(0);
     });
