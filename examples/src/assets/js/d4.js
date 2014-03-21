@@ -1814,6 +1814,63 @@
     return builder;
   };
 
+  /*
+   * The waterfall chart visually tallies the cumulative result of negative and
+   * positive values over a data series. In addition to specifying the normal
+   * positive and negative values d4's also lets you designate a column as a subtotal
+   * column by passing in an "e" as the value key, which may be a familiar convention
+   * if you have used think-cell.
+   *
+   * The waterfall chart has two axes (`x` and `y`). By default the stacked
+   * column expects continious scale for the `y` axis and a discrete scale for
+   * the `x` axis. This will render the waterfall chart vertically. However,
+   * if you swap the scale types then the waterfall will render horizontally.
+   *
+   *##### Accessors
+   *
+   * `bars` - series of rects
+   * `connectors` - visual lines that connect the various stacked columns together
+   * `columnLabels` - column labels which total the values of each rect.
+   * `xAxis` - the axis for the x dimension
+   * `yAxis` - the axis for the y dimension
+   *
+   *##### Example Usage
+   *
+   *      var data = [
+   *          { 'category': 'Job',       'value': 27  },
+   *          { 'category': 'Groceries', 'value': -3  },
+   *          { 'category': 'Allowance', 'value': 22  },
+   *          { 'category': 'Subtotal',  'value': 'e' },
+   *          { 'category': 'Videos',    'value': -22 },
+   *          { 'category': 'Coffee',    'value': -4  },
+   *          { 'category': 'Total',     'value': 'e' }
+   *        ];
+   *        var parsedData = d4.parsers.waterfall()
+   *          .x(function() {
+   *            return 'category';
+   *          })
+   *          .y(function() {
+   *            return 'value';
+   *          })
+   *          .nestKey(function() {
+   *            return 'category';
+   *          })(data);
+   *
+   *        var chart = d4.charts.waterfall()
+   *          .width($('#example').width())
+   *          .x(function(x){
+   *            x.key('category');
+   *          })
+   *          .y(function(y){
+   *            y.key('value');
+   *          });
+   *
+   *        d3.select('#example')
+   *          .datum(parsedData.data)
+   *          .call(chart);
+   *
+   * @name waterfall
+   */
   d4.chart('waterfall', function waterfallChart() {
     var chart = d4.baseChart({ builder: waterfallChartBuilder });
     [{
