@@ -1,6 +1,6 @@
 /*! d4 - v0.5.6
  *  License: MIT Expat
- *  Date: 2014-03-20
+ *  Date: 2014-03-21
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -1844,10 +1844,10 @@
         dots.enter().append('circle');
         dots.exit().remove();
         dots
-          .attr('class', scope.accessors.classes.bind(this))
-          .attr('r', scope.accessors.r.bind(this))
-          .attr('cx', scope.accessors.cx.bind(this))
-          .attr('cy', scope.accessors.cy.bind(this));
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+          .attr('r', d4.functor(scope.accessors.r).bind(this))
+          .attr('cx', d4.functor(scope.accessors.cx).bind(this))
+          .attr('cy', d4.functor(scope.accessors.cy).bind(this));
         return dots;
       }
     };
@@ -2091,11 +2091,11 @@
         this.featuresGroup.append('g').attr('class', name);
         var referenceLine = this.svg.select('.' + name)
           .append('line')
-          .attr('class', scope.accessors.classes.bind(this))
-          .attr('x1', scope.accessors.x1.bind(this))
-          .attr('x2', scope.accessors.x2.bind(this))
-          .attr('y1', scope.accessors.y1.bind(this))
-          .attr('y2', scope.accessors.y2.bind(this));
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+          .attr('x1', d4.functor(scope.accessors.x1).bind(this))
+          .attr('x2', d4.functor(scope.accessors.x2).bind(this))
+          .attr('y1', d4.functor(scope.accessors.y1).bind(this))
+          .attr('y2', d4.functor(scope.accessors.y2).bind(this));
         return referenceLine;
       }
     };

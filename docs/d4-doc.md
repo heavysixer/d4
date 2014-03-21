@@ -25,13 +25,13 @@
 
 * [`column`][17]
 
-###### [line.js][18]
+###### [grouped-column.js][18]
 
-* [`line`][19]
+* [`groupedColumn`][19]
 
-###### [grouped-column.js][20]
+###### [line.js][20]
 
-* [`groupedColumn`][21]
+* [`line`][21]
 
 ###### [row.js][22]
 
@@ -437,12 +437,71 @@ The default format may not be desired and so we'll override it:
 
 ---
 
+## grouped-column.js
+
+### groupedColumn
+
+[\#][19]
+[Ⓣ][18]
+
+The grouped column chart is used to compare a series of data elements grouped  
+along the xAxis. This chart is often useful in conjunction with a stacked column  
+chart because they can use the same data series, and where the stacked column highlights  
+the sum of the data series across an axis the grouped column can be used to show the  
+relative distribution.
+
+##### Accessors
+
+`bars` - series bars  
+`barLabels` - data labels above the bars  
+`groupsOf` - an integer representing the number of columns in each group  
+`xAxis` - the axis for the x dimension  
+`yAxis` - the axis for the y dimension
+
+##### Example Usage
+
+    var data = [
+      { year: '2010', unitsSold:-100, salesman : 'Bob' },
+      { year: '2011', unitsSold:200, salesman : 'Bob' },
+      { year: '2012', unitsSold:300, salesman : 'Bob' },
+      { year: '2013', unitsSold:400, salesman : 'Bob' },
+      { year: '2014', unitsSold:500, salesman : 'Bob' },
+      { year: '2010', unitsSold:100, salesman : 'Gina' },
+      { year: '2011', unitsSold:100, salesman : 'Gina' },
+      { year: '2012', unitsSold:-100, salesman : 'Gina' },
+      { year: '2013', unitsSold:500, salesman : 'Gina' },
+      { year: '2014', unitsSold:600, salesman : 'Gina' },
+      { year: '2010', unitsSold:400, salesman : 'Average' },
+      { year: '2011', unitsSold:0, salesman : 'Average' },
+      { year: '2012', unitsSold:400, salesman : 'Average' },
+      { year: '2013', unitsSold:400, salesman : 'Average' },
+      { year: '2014', unitsSold:400, salesman : 'Average' }
+    ];
+    
+    var parsedData = d4.parsers.nestedGroup()
+      .x('year')
+      .y('unitsSold')
+      .value('unitsSold')(data);
+    
+    var chart = d4.charts.groupedColumn()
+    .width($('#example').width())
+    .x.$key('year')
+    .y.$key('unitsSold')
+    .groupsOf(parsedData.data[0].values.length);
+    
+    d3.select('#example')
+    .datum(parsedData.data)
+    .call(chart);
+    
+
+---
+
 ## line.js
 
 ### line
 
-[\#][19]
-[Ⓣ][18]
+[\#][21]
+[Ⓣ][20]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -495,65 +554,6 @@ along the xAxis.
      d3.select('#example')
      .datum(parsedData.data)
      .call(chart);
-    
-
----
-
-## grouped-column.js
-
-### groupedColumn
-
-[\#][21]
-[Ⓣ][20]
-
-The grouped column chart is used to compare a series of data elements grouped  
-along the xAxis. This chart is often useful in conjunction with a stacked column  
-chart because they can use the same data series, and where the stacked column highlights  
-the sum of the data series across an axis the grouped column can be used to show the  
-relative distribution.
-
-##### Accessors
-
-`bars` - series bars  
-`barLabels` - data labels above the bars  
-`groupsOf` - an integer representing the number of columns in each group  
-`xAxis` - the axis for the x dimension  
-`yAxis` - the axis for the y dimension
-
-##### Example Usage
-
-    var data = [
-      { year: '2010', unitsSold:-100, salesman : 'Bob' },
-      { year: '2011', unitsSold:200, salesman : 'Bob' },
-      { year: '2012', unitsSold:300, salesman : 'Bob' },
-      { year: '2013', unitsSold:400, salesman : 'Bob' },
-      { year: '2014', unitsSold:500, salesman : 'Bob' },
-      { year: '2010', unitsSold:100, salesman : 'Gina' },
-      { year: '2011', unitsSold:100, salesman : 'Gina' },
-      { year: '2012', unitsSold:-100, salesman : 'Gina' },
-      { year: '2013', unitsSold:500, salesman : 'Gina' },
-      { year: '2014', unitsSold:600, salesman : 'Gina' },
-      { year: '2010', unitsSold:400, salesman : 'Average' },
-      { year: '2011', unitsSold:0, salesman : 'Average' },
-      { year: '2012', unitsSold:400, salesman : 'Average' },
-      { year: '2013', unitsSold:400, salesman : 'Average' },
-      { year: '2014', unitsSold:400, salesman : 'Average' }
-    ];
-    
-    var parsedData = d4.parsers.nestedGroup()
-      .x('year')
-      .y('unitsSold')
-      .value('unitsSold')(data);
-    
-    var chart = d4.charts.groupedColumn()
-    .width($('#example').width())
-    .x.$key('year')
-    .y.$key('unitsSold')
-    .groupsOf(parsedData.data[0].values.length);
-    
-    d3.select('#example')
-    .datum(parsedData.data)
-    .call(chart);
     
 
 ---
@@ -1004,10 +1004,10 @@ in the following way:
 [15]: #ordinalscalefornesteddata
 [16]: #column-js
 [17]: #column
-[18]: #line-js
-[19]: #line
-[20]: #grouped-column-js
-[21]: #groupedcolumn
+[18]: #grouped-column-js
+[19]: #groupedcolumn
+[20]: #line-js
+[21]: #line
 [22]: #row-js
 [23]: #row
 [24]: #waterfall-connectors-js

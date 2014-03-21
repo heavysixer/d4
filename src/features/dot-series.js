@@ -41,10 +41,10 @@
         dots.enter().append('circle');
         dots.exit().remove();
         dots
-          .attr('class', scope.accessors.classes.bind(this))
-          .attr('r', scope.accessors.r.bind(this))
-          .attr('cx', scope.accessors.cx.bind(this))
-          .attr('cy', scope.accessors.cy.bind(this));
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+          .attr('r', d4.functor(scope.accessors.r).bind(this))
+          .attr('cx', d4.functor(scope.accessors.cx).bind(this))
+          .attr('cy', d4.functor(scope.accessors.cy).bind(this));
         return dots;
       }
     };
