@@ -33,5 +33,9 @@
     "sinon": "~1.8.1",
     "sinon-chai": "~2.5.0",
     "chai-spies": "~0.5.1"
+  },
+  "dependencies": {
+    "grunt-env": "~0.4.1",
+    "grunt-contrib-clean": "~0.5.0"
   }
 }

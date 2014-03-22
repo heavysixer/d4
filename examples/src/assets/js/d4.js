@@ -1357,6 +1357,8 @@
     });
     [{
       'circles': d4.features.dotSeries
+    },{
+      'circleLabels': d4.features.stackedColumnLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
@@ -2436,9 +2438,6 @@
 
   'use strict';
   d4.feature('stackedColumnLabels', function(name) {
-    var sign = function(val) {
-      return val > 0 ? 'positive' : 'negative';
-    };
 
     // FIXME: We should not need to sniff this out.
     var dataInColumns = function(d) {
@@ -2521,7 +2520,7 @@
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
-            return 'series' + i + ' ' + sign(d.y) + ' ' + this.x.$key;
+            return 'series' + i + ' ' + this.x.$key;
           }.bind(this));
 
         var text = group.selectAll('text')

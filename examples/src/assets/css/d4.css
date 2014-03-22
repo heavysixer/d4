@@ -46,7 +46,7 @@ svg.d4 {
 /*
   Specific Examples
 */
-#scatter .d4 .series0 {
+#scatter .d4 circle.series0 {
     fill: #CD202C;
     fill-opacity: 0.6;
     stroke: #CD202C;

@@ -78,6 +78,8 @@
     });
     [{
       'circles': d4.features.dotSeries
+    },{
+      'circleLabels': d4.features.stackedColumnLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
