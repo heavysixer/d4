@@ -1,6 +1,6 @@
 ## D4
 
-D4 is a friendly DSL charting library for D3. The goal of D4 is to allow developers
+D4 is a friendly DSL charting DSL for D3. The goal of D4 is to allow developers
 to quickly build data-driven charts with little knowledge of the internals of D3.
 
 ### Quick Start
@@ -145,7 +145,6 @@ __Parser__ - A parser prepares the data for a chart.
 * Waterfall Column Connectors
 * X Axis
 * Y Axis
-
 
 #### Inspiration
 The inspiration of D4's modular and declarative structure came from
