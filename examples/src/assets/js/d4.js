@@ -2008,10 +2008,10 @@
         label.enter().append('text');
         label.exit().remove();
         label.attr('class', 'column-label')
-          .text(scope.accessors.text.bind(this))
+          .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', anchorText.bind(this))
-          .attr('x', scope.accessors.x.bind(this))
-          .attr('y', scope.accessors.y.bind(this));
+          .attr('x', d4.functor(scope.accessors.x).bind(this))
+          .attr('y', d4.functor(scope.accessors.y).bind(this));
         return label;
       }
     };
@@ -2091,8 +2091,8 @@
       render: function(scope) {
         var xAxis = d3.svg.axis().scale(this.x);
         var yAxis = d3.svg.axis().scale(this.y);
-        var formattedXAxis = scope.accessors.formatXAxis.bind(this)(xAxis);
-        var formattedYAxis = scope.accessors.formatYAxis.bind(this)(yAxis);
+        var formattedXAxis = d4.functor(scope.accessors.formatXAxis).bind(this)(xAxis);
+        var formattedYAxis = d4.functor(scope.accessors.formatYAxis).bind(this)(yAxis);
 
         this.featuresGroup.append('g').attr('class', 'grid border '+ name)
           .attr('transform', 'translate(0,0)')
@@ -2171,11 +2171,11 @@
             return d.values;
           }.bind(this));
         rect.enter().append('rect')
-          .attr('class', scope.accessors.classes.bind(this))
-          .attr('x', scope.accessors.x.bind(this))
-          .attr('y', scope.accessors.y.bind(this))
-          .attr('width', scope.accessors.width.bind(this))
-          .attr('height', scope.accessors.height.bind(this));
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+          .attr('x', d4.functor(scope.accessors.x).bind(this))
+          .attr('y', d4.functor(scope.accessors.y).bind(this))
+          .attr('width', d4.functor(scope.accessors.width).bind(this))
+          .attr('height', d4.functor(scope.accessors.height).bind(this));
         return rect;
       }
     };
@@ -2214,13 +2214,13 @@
         label.enter().append('text');
         label.exit().remove();
         label.attr('class', 'lineSeriesLabel')
-          .text(scope.accessors.text.bind(this))
-          .attr('x', scope.accessors.x.bind(this))
-          .attr('y', scope.accessors.y.bind(this))
+          .text(d4.functor(scope.accessors.text).bind(this))
+          .attr('x', d4.functor(scope.accessors.x).bind(this))
+          .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('data-key', function(d){
             return d.key;
           })
-          .attr('class', scope.accessors.classes.bind(this));
+          .attr('class', d4.functor(scope.accessors.classes).bind(this));
         return label;
       }
     };
@@ -2254,8 +2254,8 @@
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         line
-          .x(scope.accessors.x.bind(this))
-          .y(scope.accessors.y.bind(this));
+          .x(d4.functor(scope.accessors.x).bind(this))
+          .y(d4.functor(scope.accessors.y).bind(this));
 
         var group = this.svg.select('.' + name).selectAll('.group')
           .data(data);
@@ -2264,7 +2264,7 @@
           .attr('data-key', function(d) {
             return d.key;
           })
-          .attr('class', scope.accessors.classes.bind(this))
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .append('path')
           .attr('d', function(d) {
             return line(d.values);
@@ -2396,31 +2396,31 @@
         lines.enter().append('line');
         lines.exit().remove();
         lines
-        .attr('class', scope.accessors.classes.bind(this))
+        .attr('class', d4.functor(scope.accessors.classes).bind(this))
         .attr('stroke-dasharray','5, 5')
         .attr('x1', function(d, i, n) {
           return processPoint.bind(this)(d, i, n, data, function(){
-            return scope.accessors.x1.bind(this)(d);
+            return d4.functor(scope.accessors.x1).bind(this)(d);
           });
         }.bind(this))
 
         .attr('y1', function(d, i, n) {
-          var offset = (this.y.$scale === 'ordinal') ? scope.accessors.size.bind(this)(d) : 0;
+          var offset = (this.y.$scale === 'ordinal') ? d4.functor(scope.accessors.size).bind(this)(d) : 0;
           return processPoint.bind(this)(d, i, n, data, function(){
-            return scope.accessors.y1.bind(this)(d) + offset;
+            return d4.functor(scope.accessors.y1).bind(this)(d) + offset;
           });
         }.bind(this))
 
         .attr('x2', function(d, i, n) {
           var offset = (this.x.$scale === 'ordinal') ? scope.accessors.size.bind(this)(d) : 0;
           return processPoint.bind(this)(d, i, n, data, function(){
-            return scope.accessors.x1.bind(this)(data[n].values[i-1]) + offset;
+            return d4.functor(scope.accessors.x1).bind(this)(data[n].values[i-1]) + offset;
           });
         }.bind(this))
 
         .attr('y2', function(d, i, n) {
           return processPoint.bind(this)(d, i, n, data, function(){
-            return scope.accessors.y1.bind(this)(data[n].values[i-1]);
+            return d4.functor(scope.accessors.y1).bind(this)(data[n].values[i-1]);
           });
         }.bind(this));
 
@@ -2529,11 +2529,11 @@
           }.bind(this));
         text.exit().remove();
         text.enter().append('text')
-          .text(scope.accessors.text.bind(this))
+          .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', anchorText.bind(this))
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
-          .attr('y', scope.accessors.y.bind(this))
-          .attr('x', scope.accessors.x.bind(this));
+          .attr('y', d4.functor(scope.accessors.y).bind(this))
+          .attr('x', d4.functor(scope.accessors.x).bind(this));
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
@@ -2729,18 +2729,18 @@
         var trendLine = this.svg.select('.' + name)
           .append('line')
           .attr('class', 'line')
-          .attr('x1', scope.accessors.x1.bind(this))
-          .attr('x2', scope.accessors.x2.bind(this))
-          .attr('y1', scope.accessors.y1.bind(this))
-          .attr('y2', scope.accessors.y2.bind(this))
+          .attr('x1', d4.functor(scope.accessors.x1).bind(this))
+          .attr('x2', d4.functor(scope.accessors.x2).bind(this))
+          .attr('y1', d4.functor(scope.accessors.y1).bind(this))
+          .attr('y2', d4.functor(scope.accessors.y2).bind(this))
           .attr('marker-end', 'url(#' + name + '-start)');
 
         this.svg.select('.' + name)
           .append('text')
           .attr('class', 'trendLine-label')
-          .text(scope.accessors.text.bind(this))
-          .attr('x', scope.accessors.textX.bind(this))
-          .attr('y', scope.accessors.textY.bind(this));
+          .text(d4.functor(scope.accessors.text).bind(this))
+          .attr('x', d4.functor(scope.accessors.textX).bind(this))
+          .attr('y', d4.functor(scope.accessors.textY).bind(this));
         return trendLine;
       }
     };
@@ -2818,19 +2818,19 @@
         lines.enter().append('line');
         lines.exit().remove();
         lines
-        .attr('class', scope.accessors.classes.bind(this))
+        .attr('class', d4.functor(scope.accessors.classes).bind(this))
         .attr('x1', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return scope.accessors.x.bind(this)(data[i - 1].values[0]);
+          return d4.functor(scope.accessors.x).bind(this)(data[i - 1].values[0]);
         }.bind(this))
 
         .attr('y1', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return scope.accessors.y.bind(this)(data[i - 1].values[0]);
+          return d4.functor(scope.accessors.y).bind(this)(data[i - 1].values[0]);
         }.bind(this))
 
         .attr('x2', function(d, i) {
@@ -2838,9 +2838,9 @@
             return 0;
           }
           if(this.x.$scale === 'ordinal') {
-            return scope.accessors.x.bind(this)(d) + scope.accessors.span.bind(this)();
+            return d4.functor(scope.accessors.x).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)();
           } else {
-            return scope.accessors.x.bind(this)(data[i - 1].values[0]);
+            return d4.functor(scope.accessors.x).bind(this)(data[i - 1].values[0]);
           }
         }.bind(this))
 
@@ -2849,9 +2849,9 @@
             return 0;
           }
           if(this.x.$scale === 'ordinal') {
-            return scope.accessors.y.bind(this)(data[i - 1].values[0]);
+            return d4.functor(scope.accessors.y).bind(this)(data[i - 1].values[0]);
           }else {
-            return scope.accessors.y.bind(this)(d) + scope.accessors.span.bind(this)(d);
+            return d4.functor(scope.accessors.y).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)(d);
           }
         }.bind(this));
 

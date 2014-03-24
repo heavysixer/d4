@@ -76,31 +76,31 @@
         lines.enter().append('line');
         lines.exit().remove();
         lines
-        .attr('class', scope.accessors.classes.bind(this))
+        .attr('class', d4.functor(scope.accessors.classes).bind(this))
         .attr('stroke-dasharray','5, 5')
         .attr('x1', function(d, i, n) {
           return processPoint.bind(this)(d, i, n, data, function(){
-            return scope.accessors.x1.bind(this)(d);
+            return d4.functor(scope.accessors.x1).bind(this)(d);
           });
         }.bind(this))
 
         .attr('y1', function(d, i, n) {
-          var offset = (this.y.$scale === 'ordinal') ? scope.accessors.size.bind(this)(d) : 0;
+          var offset = (this.y.$scale === 'ordinal') ? d4.functor(scope.accessors.size).bind(this)(d) : 0;
           return processPoint.bind(this)(d, i, n, data, function(){
-            return scope.accessors.y1.bind(this)(d) + offset;
+            return d4.functor(scope.accessors.y1).bind(this)(d) + offset;
           });
         }.bind(this))
 
         .attr('x2', function(d, i, n) {
           var offset = (this.x.$scale === 'ordinal') ? scope.accessors.size.bind(this)(d) : 0;
           return processPoint.bind(this)(d, i, n, data, function(){
-            return scope.accessors.x1.bind(this)(data[n].values[i-1]) + offset;
+            return d4.functor(scope.accessors.x1).bind(this)(data[n].values[i-1]) + offset;
           });
         }.bind(this))
 
         .attr('y2', function(d, i, n) {
           return processPoint.bind(this)(d, i, n, data, function(){
-            return scope.accessors.y1.bind(this)(data[n].values[i-1]);
+            return d4.functor(scope.accessors.y1).bind(this)(data[n].values[i-1]);
           });
         }.bind(this));
 

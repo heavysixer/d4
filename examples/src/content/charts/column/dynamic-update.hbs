@@ -13,6 +13,7 @@ concepts:
 'use strict';
 
 $(document).ready(function(){
+
   // This approach is borrowed from:
   // http://mbostock.github.io/d3/tutorial/bar-2.html
   var t = 1297110663;
@@ -23,11 +24,14 @@ $(document).ready(function(){
       y: v = ~~Math.max(10, Math.min(90, v + 10 * (Math.random() - 0.5)))
     };
   };
-  var data = d3.range(20).map(next); // starting dataset
+  var data = d3.range(20).map(next);
 
   var chart = d4.charts.column();
   chart
   .width($('#example').width())
+  .y(function(axis){
+    axis.max(95);
+  })
   .x(function(axis){
     axis.scale('linear')
     .domain([0, data.length])

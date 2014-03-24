@@ -19,8 +19,8 @@
       render: function(scope) {
         var xAxis = d3.svg.axis().scale(this.x);
         var yAxis = d3.svg.axis().scale(this.y);
-        var formattedXAxis = scope.accessors.formatXAxis.bind(this)(xAxis);
-        var formattedYAxis = scope.accessors.formatYAxis.bind(this)(yAxis);
+        var formattedXAxis = d4.functor(scope.accessors.formatXAxis).bind(this)(xAxis);
+        var formattedYAxis = d4.functor(scope.accessors.formatYAxis).bind(this)(yAxis);
 
         this.featuresGroup.append('g').attr('class', 'grid border '+ name)
           .attr('transform', 'translate(0,0)')

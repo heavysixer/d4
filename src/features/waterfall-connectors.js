@@ -69,19 +69,19 @@
         lines.enter().append('line');
         lines.exit().remove();
         lines
-        .attr('class', scope.accessors.classes.bind(this))
+        .attr('class', d4.functor(scope.accessors.classes).bind(this))
         .attr('x1', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return scope.accessors.x.bind(this)(data[i - 1].values[0]);
+          return d4.functor(scope.accessors.x).bind(this)(data[i - 1].values[0]);
         }.bind(this))
 
         .attr('y1', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return scope.accessors.y.bind(this)(data[i - 1].values[0]);
+          return d4.functor(scope.accessors.y).bind(this)(data[i - 1].values[0]);
         }.bind(this))
 
         .attr('x2', function(d, i) {
@@ -89,9 +89,9 @@
             return 0;
           }
           if(this.x.$scale === 'ordinal') {
-            return scope.accessors.x.bind(this)(d) + scope.accessors.span.bind(this)();
+            return d4.functor(scope.accessors.x).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)();
           } else {
-            return scope.accessors.x.bind(this)(data[i - 1].values[0]);
+            return d4.functor(scope.accessors.x).bind(this)(data[i - 1].values[0]);
           }
         }.bind(this))
 
@@ -100,9 +100,9 @@
             return 0;
           }
           if(this.x.$scale === 'ordinal') {
-            return scope.accessors.y.bind(this)(data[i - 1].values[0]);
+            return d4.functor(scope.accessors.y).bind(this)(data[i - 1].values[0]);
           }else {
-            return scope.accessors.y.bind(this)(d) + scope.accessors.span.bind(this)(d);
+            return d4.functor(scope.accessors.y).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)(d);
           }
         }.bind(this));
 

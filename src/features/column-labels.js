@@ -39,10 +39,10 @@
         label.enter().append('text');
         label.exit().remove();
         label.attr('class', 'column-label')
-          .text(scope.accessors.text.bind(this))
+          .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', anchorText.bind(this))
-          .attr('x', scope.accessors.x.bind(this))
-          .attr('y', scope.accessors.y.bind(this));
+          .attr('x', d4.functor(scope.accessors.x).bind(this))
+          .attr('y', d4.functor(scope.accessors.y).bind(this));
         return label;
       }
     };

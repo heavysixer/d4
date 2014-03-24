@@ -54,18 +54,18 @@
         var trendLine = this.svg.select('.' + name)
           .append('line')
           .attr('class', 'line')
-          .attr('x1', scope.accessors.x1.bind(this))
-          .attr('x2', scope.accessors.x2.bind(this))
-          .attr('y1', scope.accessors.y1.bind(this))
-          .attr('y2', scope.accessors.y2.bind(this))
+          .attr('x1', d4.functor(scope.accessors.x1).bind(this))
+          .attr('x2', d4.functor(scope.accessors.x2).bind(this))
+          .attr('y1', d4.functor(scope.accessors.y1).bind(this))
+          .attr('y2', d4.functor(scope.accessors.y2).bind(this))
           .attr('marker-end', 'url(#' + name + '-start)');
 
         this.svg.select('.' + name)
           .append('text')
           .attr('class', 'trendLine-label')
-          .text(scope.accessors.text.bind(this))
-          .attr('x', scope.accessors.textX.bind(this))
-          .attr('y', scope.accessors.textY.bind(this));
+          .text(d4.functor(scope.accessors.text).bind(this))
+          .attr('x', d4.functor(scope.accessors.textX).bind(this))
+          .attr('y', d4.functor(scope.accessors.textY).bind(this));
         return trendLine;
       }
     };

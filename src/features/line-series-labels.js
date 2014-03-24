@@ -30,13 +30,13 @@
         label.enter().append('text');
         label.exit().remove();
         label.attr('class', 'lineSeriesLabel')
-          .text(scope.accessors.text.bind(this))
-          .attr('x', scope.accessors.x.bind(this))
-          .attr('y', scope.accessors.y.bind(this))
+          .text(d4.functor(scope.accessors.text).bind(this))
+          .attr('x', d4.functor(scope.accessors.x).bind(this))
+          .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('data-key', function(d){
             return d.key;
           })
-          .attr('class', scope.accessors.classes.bind(this));
+          .attr('class', d4.functor(scope.accessors.classes).bind(this));
         return label;
       }
     };

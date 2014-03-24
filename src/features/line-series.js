@@ -26,8 +26,8 @@
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         line
-          .x(scope.accessors.x.bind(this))
-          .y(scope.accessors.y.bind(this));
+          .x(d4.functor(scope.accessors.x).bind(this))
+          .y(d4.functor(scope.accessors.y).bind(this));
 
         var group = this.svg.select('.' + name).selectAll('.group')
           .data(data);
@@ -36,7 +36,7 @@
           .attr('data-key', function(d) {
             return d.key;
           })
-          .attr('class', scope.accessors.classes.bind(this))
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .append('path')
           .attr('d', function(d) {
             return line(d.values);
