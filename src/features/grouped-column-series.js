@@ -37,7 +37,7 @@
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var group = this.svg.select('.' + name).selectAll('.group')
+        var group = this.svg.select('.' + name).selectAll('g')
           .data(data);
         group.enter().append('g');
         group.exit().remove();

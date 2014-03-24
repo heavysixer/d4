@@ -29,7 +29,7 @@
           .x(d4.functor(scope.accessors.x).bind(this))
           .y(d4.functor(scope.accessors.y).bind(this));
 
-        var group = this.svg.select('.' + name).selectAll('.group')
+        var group = this.svg.select('.' + name).selectAll('g')
           .data(data);
         group.exit().remove();
         group.enter().append('g')

@@ -2045,7 +2045,7 @@
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var group = this.svg.select('.' + name).selectAll('.group')
+        var group = this.svg.select('.' + name).selectAll('g')
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
@@ -2158,7 +2158,7 @@
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var group = this.svg.select('.' + name).selectAll('.group')
+        var group = this.svg.select('.' + name).selectAll('g')
           .data(data);
         group.enter().append('g');
         group.exit().remove();
@@ -2257,7 +2257,7 @@
           .x(d4.functor(scope.accessors.x).bind(this))
           .y(d4.functor(scope.accessors.y).bind(this));
 
-        var group = this.svg.select('.' + name).selectAll('.group')
+        var group = this.svg.select('.' + name).selectAll('g')
           .data(data);
         group.exit().remove();
         group.enter().append('g')
@@ -2381,7 +2381,7 @@
 
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var group = this.svg.select('.' + name).selectAll('.group')
+        var group = this.svg.select('.' + name).selectAll('g')
           .data(data)
           .enter().append('g')
           .attr('class', function(d,i) {
