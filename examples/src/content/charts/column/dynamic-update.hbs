@@ -1,0 +1,69 @@
+---
+title: Dynamically updating data
+concepts:
+  - Basic Concepts
+---
+<h5>{{title}}</h5>
+<p>
+  The following example demonstrates how you might dynamically update a chart
+  when the underlying data object changes.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8" id='source_code'>
+'use strict';
+
+$(document).ready(function(){
+  // This approach is borrowed from:
+  // http://mbostock.github.io/d3/tutorial/bar-2.html
+  var t = 1297110663;
+  var v = 70;
+  var next = function() {
+    return {
+      x: ++t,
+      y: v = ~~Math.max(10, Math.min(90, v + 10 * (Math.random() - 0.5)))
+    };
+  };
+  var data = d3.range(20).map(next); // starting dataset
+
+  var chart = d4.charts.column();
+  chart
+  .width($('#example').width())
+  .x(function(axis){
+    axis.scale('linear')
+    .domain([0, data.length])
+    .range([0, chart.width() * 0.75]);
+  })
+  .using('barLabels', function(labels){
+    labels
+    .x(function(d, i, n) {
+      return this.x(n) +
+      ((chart.width() / data.length) * 0.60)/2;
+    });
+  })
+  .using('bars', function(bars){
+    bars
+    .x(function(d, i, n) {
+      return this.x(n);
+    })
+    .width((chart.width() / data.length) * 0.60);
+  });
+
+  //setInterval(function() {
+  //  data.shift();
+  //  data.push(next());
+  //  redraw();
+  //}, 1500);
+
+  var redraw = function(){
+    d3.select('#example')
+    .datum(data)
+    .call(chart);
+  };
+  redraw();
+
+});
+
+</script>
+<div id="example"></div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript"></code></pre>

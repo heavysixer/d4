@@ -1,6 +1,6 @@
 /*! d4 - v0.5.6
  *  License: MIT Expat
- *  Date: 2014-03-21
+ *  Date: 2014-03-24
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -212,7 +212,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -577,7 +577,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      */
@@ -615,7 +615,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -2660,13 +2660,13 @@
           }.bind(this));
 
         rect.enter().append('rect')
-          .attr('class', scope.accessors.classes.bind(this))
-          .attr('x', scope.accessors.x.bind(this))
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+          .attr('x', d4.functor(scope.accessors.x).bind(this))
           .attr('rx', d4.functor(scope.accessors.rx).bind(this)())
-          .attr('y', scope.accessors.y.bind(this))
+          .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('ry', d4.functor(scope.accessors.ry).bind(this)())
-          .attr('width', scope.accessors.width.bind(this))
-          .attr('height', scope.accessors.height.bind(this));
+          .attr('width', d4.functor(scope.accessors.width).bind(this))
+          .attr('height', d4.functor(scope.accessors.height).bind(this));
         return rect;
       }
     };
