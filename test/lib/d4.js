@@ -2517,11 +2517,14 @@
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data)
-          .enter().append('g')
+          .data(data, function(d){
+            return d.key;
+          });
+        group.enter().append('g')
           .attr('class', function(d, i) {
             return 'series' + i + ' ' + this.x.$key;
           }.bind(this));
+        group.exit().remove();
 
         var text = group.selectAll('text')
           .data(function(d) {
@@ -2650,10 +2653,12 @@
 
         // create data join with the series data
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data);
+          .data(data, function(d){
+            return d.key;
+          });
 
         group.enter().append('g')
-          .attr('class', function(d,i) {
+          .attr('class', function(d, i) {
             return 'series'+ i + ' ' +  this.y.$key;
           }.bind(this));
         group.exit().remove();
