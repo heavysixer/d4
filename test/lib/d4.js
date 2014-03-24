@@ -2982,8 +2982,6 @@
         }
       }
     };
-
-    //d4.createAccessorProxy(obj, axis);
     return obj;
   });
 }).call(this);
@@ -3116,7 +3114,6 @@
 
       }
     };
-    //d4.createAccessorProxy(obj.accessors, axis);
     return obj;
   });
 }).call(this);

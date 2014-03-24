@@ -48,7 +48,7 @@ module.exports = function(grunt) {
     watch: {
       assemble: {
         files: ['<%= app.src %>/{assets,content,data,templates}/**/*.{md,hbs,yml,css}', '<%= app.src %>/../../docs/**/*.{md,hbs,yml}', '<%= app.src %>/../../README.md', '<%= app.src %>/../docs/d4-doc.md', '<%= app.src %>/../d4.css'],
-        tasks: ['copy:styles', 'mox:build', 'assemble']
+        tasks: ['copy:styles', 'assemble']
       },
       livereload: {
         options: {
@@ -227,7 +227,6 @@ module.exports = function(grunt) {
 
     grunt.task.run([
       'clean:server',
-      'mox:build',
       'assemble',
       'concurrent:server',
       'connect:livereload',

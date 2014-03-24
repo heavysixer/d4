@@ -119,8 +119,6 @@
         }
       }
     };
-
-    //d4.createAccessorProxy(obj, axis);
     return obj;
   });
 }).call(this);
