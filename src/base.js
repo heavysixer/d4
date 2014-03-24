@@ -353,7 +353,7 @@
     .attr('width', this.width + this.margin.left + this.margin.right)
     .attr('height', this.height + this.margin.top + this.margin.bottom)
     .attr('class', 'd4');
-    this.svg.append('defs');
+    this.svg.selectAll('defs').data([0]).enter().append('defs');
   };
 
   /*!

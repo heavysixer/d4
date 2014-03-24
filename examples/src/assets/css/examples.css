@@ -251,3 +251,10 @@ svg.d4 {
 #line_and_dot .d4 .series2 path {
     stroke: steelblue;
 }
+
+#dynamic_updates .d4 rect {
+    fill: steelblue;
+    stroke: white;
+}
+
+

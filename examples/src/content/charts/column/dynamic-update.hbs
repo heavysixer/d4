@@ -1,7 +1,7 @@
 ---
 title: Dynamically updating data
 concepts:
-  - Basic Concepts
+  - Intermediate Concepts
 ---
 <h5>{{title}}</h5>
 <p>
@@ -14,7 +14,7 @@ concepts:
 
 $(document).ready(function(){
 
-  // This approach is borrowed from:
+  // This sample code more or less recreates this native d3 example:
   // http://mbostock.github.io/d3/tutorial/bar-2.html
   var t = 1297110663;
   var v = 70;
@@ -29,34 +29,56 @@ $(document).ready(function(){
   var chart = d4.charts.column();
   chart
   .width($('#example').width())
+  .mixout('xAxis')
+  .mixout('yAxis')
   .y(function(axis){
-    axis.max(95);
+    axis
+    .domain([0,100])
+    .rangeRound([0, chart.height()]);
   })
   .x(function(axis){
-    axis.scale('linear')
+    axis
+    .scale('linear')
     .domain([0, data.length])
     .range([0, chart.width() * 0.75]);
   })
   .using('barLabels', function(labels){
     labels
     .x(function(d, i, n) {
+
+      /*
+      Mike Bostock's example uses `i` as the value to increment the offset with.
+      However, in d4 the stackedColumnSeries feature assumes you are dealing with
+      multiple series. For this reason `i` will always return zero because we only
+      have one series. In order to get a value which we can increment off of we
+      must use the `n` variable.
+      */
       return this.x(n) +
-      ((chart.width() / data.length) * 0.60)/2;
+      (Math.floor((chart.width() / data.length) * 0.60))/2;
     });
   })
   .using('bars', function(bars){
     bars
     .x(function(d, i, n) {
-      return this.x(n);
+
+      /*
+      We floor the value and subtract 0.5 to ensure the rect's border is
+      crisp and not anti-aliased. This is done to match Mike's original
+      demo.
+      */
+      return Math.floor(this.x(n)) - 0.5;
     })
-    .width((chart.width() / data.length) * 0.60);
+    .y(function(d){
+      return this.y(d[this.y.$key]) - 0.5;
+    })
+    .width(Math.floor((chart.width() / data.length) * 0.60));
   });
 
-  //setInterval(function() {
-  //  data.shift();
-  //  data.push(next());
-  //  redraw();
-  //}, 1500);
+  setInterval(function() {
+    data.shift();
+    data.push(next());
+    redraw();
+  }, 1500);
 
   var redraw = function(){
     d3.select('#example')
@@ -68,6 +90,8 @@ $(document).ready(function(){
 });
 
 </script>
-<div id="example"></div>
+<div id="dynamic_updates">
+  <div id="example"></div>
+</div>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript"></code></pre>

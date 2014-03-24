@@ -357,7 +357,7 @@
     .attr('width', this.width + this.margin.left + this.margin.right)
     .attr('height', this.height + this.margin.top + this.margin.bottom)
     .attr('class', 'd4');
-    this.svg.append('defs');
+    this.svg.selectAll('defs').data([0]).enter().append('defs');
   };
 
   /*!
@@ -2516,7 +2516,7 @@
 
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var group = this.svg.select('.' + name).selectAll('.group')
+        var group = this.svg.select('.' + name).selectAll('g')
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
@@ -2647,17 +2647,21 @@
 
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var group = this.svg.select('.' + name).selectAll('.group')
-          .data(data)
-          .enter().append('g')
+
+        // create data join with the series data
+        var group = this.svg.select('.' + name).selectAll('g')
+          .data(data);
+
+        group.enter().append('g')
           .attr('class', function(d,i) {
             return 'series'+ i + ' ' +  this.y.$key;
           }.bind(this));
+        group.exit().remove();
 
         var rect = group.selectAll('rect')
-          .data(function(d) {
-            return d.values;
-          }.bind(this));
+        .data(function(d) {
+          return d.values;
+        });
 
         rect.enter().append('rect')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
@@ -2667,6 +2671,8 @@
           .attr('ry', d4.functor(scope.accessors.ry).bind(this)())
           .attr('width', d4.functor(scope.accessors.width).bind(this))
           .attr('height', d4.functor(scope.accessors.height).bind(this));
+
+        rect.exit().remove();
         return rect;
       }
     };
