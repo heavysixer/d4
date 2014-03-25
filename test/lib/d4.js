@@ -1116,7 +1116,7 @@
     [{
       'bars': d4.features.groupedColumnSeries
     }, {
-      'columnLabels': d4.features.stackedColumnLabels,
+      'barLabels': d4.features.stackedColumnLabels,
       'overrides': columnLabelOverrides
     }, {
       'xAxis': d4.features.xAxis
@@ -2004,7 +2004,10 @@
       },
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
-        var label = this.svg.select('.'+name).selectAll('.'+name).data(data);
+        var label = this.svg.select('.'+name).selectAll('.'+name)
+        .data(data, function(d, i){
+          return d.key + i;
+        });
         label.enter().append('text');
         label.exit().remove();
         label.attr('class', 'column-label')
@@ -2159,7 +2162,9 @@
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data);
+        .data(data, function(d, i){
+          return d.key + i;
+        });
         group.enter().append('g');
         group.exit().remove();
         group.attr('class', function(d, i) {
