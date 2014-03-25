@@ -98,8 +98,8 @@
 
         // create data join with the series data
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d){
-            return d.key;
+          .data(data, function(d, i){
+            return d.key + i;
           });
 
         group.enter().append('g')

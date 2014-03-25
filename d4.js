@@ -2517,8 +2517,8 @@
       render: function(scope, data) {
         this.featuresGroup.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d){
-            return d.key;
+          .data(data, function(d, i){
+            return d.key + i;
           });
         group.enter().append('g')
           .attr('class', function(d, i) {
@@ -2653,8 +2653,8 @@
 
         // create data join with the series data
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d){
-            return d.key;
+          .data(data, function(d, i){
+            return d.key + i;
           });
 
         group.enter().append('g')
