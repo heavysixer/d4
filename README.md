@@ -6,7 +6,7 @@ to quickly build data-driven charts with little knowledge of the internals of D3
 ### Quick Start
 * * *
 
-Either download d4 directly from the [github](https://github.com/heavysixer/d4) repository or install it using a package manager like bower.
+For the bleeding edge version of d4 download it directly from the [github](https://github.com/heavysixer/d4) repository. If you prefer a more stable release you can install the latest released tag using a package manager like bower.
 
     $ bower install d4
 
