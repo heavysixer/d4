@@ -1929,24 +1929,24 @@
       render: function(scope) {
         var defs = this.svg.select('defs');
 
-        defs.append('marker')
+        defs.selectAll('marker').data([0,0]).enter().append('marker')
           .attr('id', name + '-end')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
-          .attr('markerWidth', scope.accessors.tipSize.bind(this))
-          .attr('markerHeight', scope.accessors.tipSize.bind(this))
+          .attr('markerWidth', d4.functor(scope.accessors.tipSize).bind(this))
+          .attr('markerHeight', d4.functor(scope.accessors.tipSize).bind(this))
           .attr('orient', 'auto')
           .append('path')
-          .attr('d', 'M 0 0 L 10 5 L 0 10 z');
+          .attr('d', 'M 0 0 L 10 5 L 0 10 z')
 
-        defs.append('marker')
+          .append('marker')
           .attr('id', name + '-start')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
-          .attr('markerWidth', -scope.accessors.tipSize.bind(this)())
-          .attr('markerHeight', scope.accessors.tipSize.bind(this))
+          .attr('markerWidth', -d4.functor(scope.accessors.tipSize).bind(this)())
+          .attr('markerHeight', d4.functor(scope.accessors.tipSize).bind(this))
           .attr('orient', 'auto')
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
@@ -1954,11 +1954,11 @@
         this.featuresGroup.append('g').attr('class', name);
         var arrow = this.svg.select('.' + name)
           .append('line')
-          .attr('class', scope.accessors.classes.bind(this))
-          .attr('x1', scope.accessors.x1.bind(this))
-          .attr('x2', scope.accessors.x2.bind(this))
-          .attr('y1', scope.accessors.y1.bind(this))
-          .attr('y2', scope.accessors.y2.bind(this))
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+          .attr('x1', d4.functor(scope.accessors.x1).bind(this))
+          .attr('x2', d4.functor(scope.accessors.x2).bind(this))
+          .attr('y1', d4.functor(scope.accessors.y1).bind(this))
+          .attr('y2', d4.functor(scope.accessors.y2).bind(this))
           .attr('marker-end', 'url(#' + name + '-end)');
 
         return arrow;

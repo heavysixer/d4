@@ -257,4 +257,11 @@ svg.d4 {
     stroke: white;
 }
 
-
+#arrow marker path {
+    fill: darkred;
+    stroke: darkred;
+}
+#arrow .arrow line {
+    stroke: darkred;
+    stroke-width: 5px;
+}
