@@ -1,6 +1,6 @@
 /*! d4 - v0.5.8
  *  License: MIT Expat
- *  Date: 2014-03-24
+ *  Date: 2014-03-25
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -2006,7 +2006,7 @@
         this.featuresGroup.append('g').attr('class', name);
         var label = this.svg.select('.'+name).selectAll('.'+name)
         .data(data, function(d, i){
-          return d.key + i;
+          return '' + d.key + i;
         });
         label.enter().append('text');
         label.exit().remove();
