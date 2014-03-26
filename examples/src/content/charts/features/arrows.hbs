@@ -1,5 +1,5 @@
 ---
-title: Arrows
+title: Arrow Feature
 features:
   - Arrows
 ---
@@ -18,7 +18,7 @@ features:
 
 $(document).ready(function(){
   var data = [
-      { year: '2010', unitsSold:-100, salesman : 'Bob' },
+      { year: '2010', unitsSold:100, salesman : 'Bob' },
       { year: '2011', unitsSold:200, salesman : 'Bob' },
       { year: '2012', unitsSold:300, salesman : 'Bob' },
       { year: '2013', unitsSold:400, salesman : 'Bob' },
@@ -59,9 +59,9 @@ $(document).ready(function(){
   .using('arrow', function(arrow){
     arrow
     .tipSize(5)
-    .x1(0)
+    .x1(100)
     .x2(286)
-    .y1(0)
+    .y1(100)
     .y2(293);
   })
   .groupsOf(parsedData.data[0].values.length);
