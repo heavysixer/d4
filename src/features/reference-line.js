@@ -30,6 +30,8 @@
       render: function(scope) {
         this.featuresGroup.append('g').attr('class', name);
         var referenceLine = this.svg.select('.' + name)
+          .selectAll('line').data([0])
+          .enter()
           .append('line')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
