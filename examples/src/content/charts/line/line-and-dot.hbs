@@ -50,7 +50,7 @@ $(document).ready(function(){
   })(data);
 
   var chart = d4.charts.line()
-    .width($('#example').width())
+    .outerWidth($('#example').width())
     .x(function(x){
       x.key('year');
     })

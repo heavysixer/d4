@@ -47,8 +47,9 @@ $(document).ready(function(){
     .y1(function(){
       return this.y(0);
     })
-    // you can access the margin attributes in multiple ways.
-    .x2(this.width - chart.marginLeft() - chart.margin().right)
+    // note you could simply use `chart.width` here but I wanted to show you
+    // that you can access the margin attributes in multiple ways.
+    .x2(chart.outerWidth() - chart.marginLeft() - chart.margin().right)
     .y2(function(){
       return this.y(0);
     });

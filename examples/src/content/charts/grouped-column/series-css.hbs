@@ -59,7 +59,7 @@ $(document).ready(function(){
     .value('unitsSold')(data);
 
   var chart = d4.charts.groupedColumn()
-  .width($('#items').width())
+  .outerWidth($('#items').width())
   .x(function(x){
     x.key('year');
   })

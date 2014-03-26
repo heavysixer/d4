@@ -58,7 +58,7 @@ $(document).ready(function(){
     })(data);
 
   var chart = d4.charts.stackedColumn()
-  .width($('#example').width())
+  .outerWidth($('#example').width())
   .x(function(x){
     x.key('year');
   })

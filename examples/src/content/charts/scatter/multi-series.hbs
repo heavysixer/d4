@@ -34,7 +34,7 @@ $(document).ready(function(){
     .value('unitsSold')(data);
 
   var chart = d4.charts.scatterPlot()
-  .width($('#example').width())
+  .outerWidth($('#example').width())
   .mixin({'grid' : d4.features.grid},0)
   .x(function(x){
     x.min(-250)

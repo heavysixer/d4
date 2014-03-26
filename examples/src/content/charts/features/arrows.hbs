@@ -42,12 +42,12 @@ $(document).ready(function(){
 
   var chart = d4.charts.groupedColumn()
   .margin({
-    left: 20,
-    top: 50,
+    left: 40,
+    top:20,
     bottom: 20,
-    right: 80
+    right: 40
   })
-  .width($('#example').width())
+  .outerWidth($('#example').width())
   .x(function(x){
     x.key('year');
   })

@@ -50,7 +50,7 @@ $(document).ready(function(){
 
   var chart = d4.charts.groupedColumn();
   chart
-  .width($('#example').width())
+  .outerWidth($('#example').width())
   .x(function(x){
     x.key('year');
 

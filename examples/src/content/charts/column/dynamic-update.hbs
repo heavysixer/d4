@@ -28,8 +28,7 @@ $(document).ready(function(){
 
   var chart = d4.charts.column();
   chart
-  .width($('#example').width())
-  .mixout('xAxis')
+  .outerWidth($('#example').width())
   .mixout('yAxis')
   .y(function(axis){
     axis

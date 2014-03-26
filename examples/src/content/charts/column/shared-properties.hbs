@@ -30,7 +30,7 @@ $(document).ready(function(){
   var chart1 = d4.charts.column();
 
   chart1
-  .width($('#example1').width())
+  .outerWidth($('#example1').width())
   .y(function(y){
     y.min(min);
     y.max(max);
@@ -38,7 +38,7 @@ $(document).ready(function(){
 
   var chart2 = d4.charts.column();
   chart2
-  .width($('#example2').width())
+  .outerWidth($('#example2').width())
   .y(function(y){
     y.min(min);
     y.max(max);
