@@ -1,81 +1,84 @@
-# d4 -0.5.8
+# d4 -0.5.9
 
 ###### [base.js][0]
 
 * [`baseChart`][1]
-* [`builder`][2]
-* [`features`][3]
-* [`mixin`][4]
-* [`mixout`][5]
-* [`axes`][6]
-* [`using`][7]
-* [`builder`][2]
-* [`chart`][8]
-* [`createAccessorProxy`][9]
-* [`feature`][10]
-* [`functor`][11]
-* [`parser`][12]
+* [`axes`][2]
+* [`builder`][3]
+* [`features`][4]
+* [`mixin`][5]
+* [`mixout`][6]
+* [`outerHeight`][7]
+* [`outerWidth`][8]
+* [`using`][9]
+* [`aliasMethodChain`][10]
+* [`builder`][3]
+* [`chart`][11]
+* [`createAccessorProxy`][12]
+* [`feature`][13]
+* [`functor`][14]
+* [`parser`][15]
 
-###### [scales.js][13]
+###### [scales.js][16]
 
-* [`linearScaleForNestedData`][14]
-* [`ordinalScaleForNestedData`][15]
+* [`linearScaleForNestedData`][17]
+* [`ordinalScaleForNestedData`][18]
 
-###### [waterfall-connectors.js][16]
+###### [column.js][19]
 
-* [`waterfallConnectors`][17]
+* [`column`][20]
 
-###### [x-axis.js][18]
+###### [grouped-column.js][21]
 
-* [`xAxis`][19]
+* [`groupedColumn`][22]
 
-###### [y-axis.js][20]
+###### [line.js][23]
 
-* [`yAxis`][21]
+* [`line`][24]
 
-###### [column.js][22]
+###### [row.js][25]
 
-* [`column`][23]
+* [`row`][26]
 
-###### [grouped-column.js][24]
+###### [scatter.js][27]
 
-* [`groupedColumn`][25]
+* [`scatterPlot`][28]
 
-###### [line.js][26]
+###### [stacked-column.js][29]
 
-* [`line`][27]
+* [`stackedColumn`][30]
 
-###### [row.js][28]
+###### [stacked-row.js][31]
 
-* [`row`][29]
+* [`stackedRow`][32]
 
-###### [scatter.js][30]
+###### [waterfall.js][33]
 
-* [`scatterPlot`][31]
+* [`waterfall`][34]
 
-###### [stacked-column.js][32]
+###### [waterfall-connectors.js][35]
 
-* [`stackedColumn`][33]
+* [`waterfallConnectors`][36]
 
-###### [stacked-row.js][34]
+###### [x-axis.js][37]
 
-* [`stackedRow`][35]
+* [`xAxis`][38]
 
-###### [waterfall.js][36]
+###### [y-axis.js][39]
 
-* [`waterfall`][37]
+* [`yAxis`][40]
 
-###### [nested-group.js][38]
+###### [nested-group.js][41]
 
-* [`nestedGroup`][39]
+* [`nestedGroup`][42]
 
-###### [nested-stack.js][40]
+###### [nested-stack.js][43]
 
-* [`nestedStack`][41]
+* [`nestedStack`][44]
 
-###### [waterfall.js][36]
+###### [waterfall.js][33]
 
-* [`waterfall`][37]
+* [`waterfall`][34]
 
 ## base.js
 
@@ -110,9 +113,23 @@ new chart factory.
 
 ---
 
-### builder
+### axes
 
 [\#][2]
+[Ⓣ][0]
+
+This function returns the internal axes object as a parameter to the  
+supplied function.
+
+#### Arguments
+
+1. `funct`_(Function) -- function which will perform the modifcation._
+
+---
+
+### builder
+
+[\#][3]
 [Ⓣ][0]
 
 Specifies an object, which d4 uses to initialize the chart with. By default  
@@ -140,7 +157,7 @@ override the existing builder provided by a chart and use your own.
 
 ### features
 
-[\#][3]
+[\#][4]
 [Ⓣ][0]
 
 To see what features are currently mixed into your chart you can use  
@@ -161,7 +178,7 @@ this method. This function cannot be chained.
 
 ### mixin
 
-[\#][4]
+[\#][5]
 [Ⓣ][0]
 
 Specifies a feature to be mixed into a given chart.  
@@ -185,7 +202,7 @@ value which is a function that when invoked returns a d4 feature object.
 
 ### mixout
 
-[\#][5]
+[\#][6]
 [Ⓣ][0]
 
 Specifies an existing feature of a chart to be removed (mixed out).
@@ -207,23 +224,35 @@ Specifies an existing feature of a chart to be removed (mixed out).
 
 ---
 
-### axes
+### outerHeight
 
-[\#][6]
+[\#][7]
 [Ⓣ][0]
 
-This function returns the internal axes object as a parameter to the  
-supplied function.
+Returns or sets the outerHeight of the chart.
 
 #### Arguments
 
-1. `funct`_(Function) -- function which will perform the modifcation._
+1. `height`_(Number) -_
+
+---
+
+### outerWidth
+
+[\#][8]
+[Ⓣ][0]
+
+Returns or sets the outerWidth of the chart.
+
+#### Arguments
+
+1. `width`_(Number) -_
 
 ---
 
 ### using
 
-[\#][7]
+[\#][9]
 [Ⓣ][0]
 
 The heart of the d4 API is the `using` function, which allows you to  
@@ -247,9 +276,29 @@ contextually modify attributes of the chart or one of its features.
 
 ---
 
+### aliasMethodChain
+
+[\#][10]
+[Ⓣ][0]
+
+This function allows you chain together a undetermined number of function  
+calls in a specific order of execution. This is helpful if you want to  
+allow an existing function to be modified before or after it is called,  
+while appearing to remain a single call.
+
+##### Examples
+
+#### Arguments
+
+1. `funct`_(Function) -- the function which is to be placed in the chain_
+2. `extension`_(Object) -- an object with one or both keys named:_
+3. `thisObj`_(Object) -- an optional this reference to use as the apply scope._
+
+---
+
 ### builder
 
-[\#][2]
+[\#][3]
 [Ⓣ][0]
 
 This function allows you to register a reusable chart builder with d4\.
@@ -263,7 +312,7 @@ This function allows you to register a reusable chart builder with d4\.
 
 ### chart
 
-[\#][8]
+[\#][11]
 [Ⓣ][0]
 
 This function allows you to register a reusable chart with d4\.
@@ -277,7 +326,7 @@ This function allows you to register a reusable chart with d4\.
 
 ### createAccessorProxy
 
-[\#][9]
+[\#][12]
 [Ⓣ][0]
 
 This function allows create proxy accessor to other objects. This is most  
@@ -315,7 +364,7 @@ proxy that links the two.
 
 ### feature
 
-[\#][10]
+[\#][13]
 [Ⓣ][0]
 
 This function allows you to register a reusable chart feature with d4\.
@@ -329,7 +378,7 @@ This function allows you to register a reusable chart feature with d4\.
 
 ### functor
 
-[\#][11]
+[\#][14]
 [Ⓣ][0]
 
 Based on D3's own functor function.
@@ -351,7 +400,7 @@ Based on D3's own functor function.
 
 ### parser
 
-[\#][12]
+[\#][15]
 [Ⓣ][0]
 
 This function allows you to register a reusable data parser with d4\.
@@ -367,8 +416,8 @@ This function allows you to register a reusable data parser with d4\.
 
 ### linearScaleForNestedData
 
-[\#][14]
-[Ⓣ][13]
+[\#][17]
+[Ⓣ][16]
 
 Creates a linear scale for a dimension of a given chart.
 
@@ -382,8 +431,8 @@ Creates a linear scale for a dimension of a given chart.
 
 ### ordinalScaleForNestedData
 
-[\#][15]
-[Ⓣ][13]
+[\#][18]
+[Ⓣ][16]
 
 Creates an ordinal scale for a dimension of a given chart.
 
@@ -395,137 +444,12 @@ Creates an ordinal scale for a dimension of a given chart.
 
 ---
 
-## waterfall-connectors.js
-
-### waterfallConnectors
-
-[\#][17]
-[Ⓣ][16]
-
-Waterfall connectors are orthogonal series connectors which visually join  
-column series together by spanning the top or bottom of adjacent columns.
-
-When using this feature in charts other than waterfall, be aware that the  
-mixin expects an accessor property for `orientation`, which it uses to render  
-the direction of the lines.
-
-##### Accessors
-
-`x` - Used in placement of the connector lines.  
-`y` - Used in placement of the connector lines.  
-`span` - calculates the length of the connector line  
-`classes` - applies the class to the connector lines.
-
----
-
-## x-axis.js
-
-### xAxis
-
-[\#][19]
-[Ⓣ][18]
-
-This feature creates an xAxis for use within d4\. There are a variety of  
-accessors described below which modify the behavior and apperance of the axis.
-
-##### Accessors
-
-`axis` - The d3 axis object itself.  
-`innerTickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize][42]  
-`orient` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#orient][43]  
-`outerTickSize`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize][44]  
-`scale` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#scale][45]  
-`stagger` - (true | false) determines if the axis should stagger overlapping text (true by default)  
-`tickFormat` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat][46]  
-`tickPadding` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding][47]  
-`tickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize][48]  
-`tickSubdivide`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide][49]  
-`tickValues` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues][50]  
-`ticks` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks][51]
-
-    var chart = d4.charts.groupedColumn()
-    .using('yAxis', function(axis){
-    
-      // adjust the number of tick marks based on the height of the chart
-      axis.ticks($('#example').height()/20);
-    
-      // set the inner and outer tick sizes
-      axis.tickSize(10,5);
-    
-      // adjust the tick padding
-      axis.tickPadding(5);
-    
-    })
-    .using('xAxis', function(axis){
-    
-      // position the tickmarks on the top of the axis line
-      axis.orient('top');
-    
-      // move the axis to the top of the chart.
-      axis.align('top');
-    })
-    
-
----
-
-## y-axis.js
-
-### yAxis
-
-[\#][21]
-[Ⓣ][20]
-
-This feature creates an xAxis for use within d4\. There are a variety of  
-accessors described below which modify the behavior and apperance of the axis.
-
-##### Accessors
-
-`axis` - The d3 axis object itself.  
-`innerTickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize][42]  
-`orient` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#orient][43]  
-`outerTickSize`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize][44]  
-`scale` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#scale][45]  
-`stagger` - (true | false) determines if the axis should stagger overlapping text (true by default)  
-`tickFormat` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat][46]  
-`tickPadding` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding][47]  
-`tickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize][48]  
-`tickSubdivide`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide][49]  
-`tickValues` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues][50]  
-`ticks` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks][51]
-
-##### Examples
-
-    var chart = d4.charts.groupedColumn()
-    .using('yAxis', function(axis){
-    
-      // adjust the number of tick marks based on the height of the chart
-      axis.ticks($('#example').height()/20);
-    
-      // set the inner and outer tick sizes
-      axis.tickSize(10,5);
-    
-      // adjust the tick padding
-      axis.tickPadding(5);
-    
-    })
-    .using('xAxis', function(axis){
-    
-      // position the tickmarks on the top of the axis line
-      axis.orient('top');
-    
-      // move the axis to the top of the chart.
-      axis.y(-20);
-    })
-    
-
----
-
 ## column.js
 
 ### column
 
-[\#][23]
-[Ⓣ][22]
+[\#][20]
+[Ⓣ][19]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -582,8 +506,8 @@ The default format may not be desired and so we'll override it:
 
 ### groupedColumn
 
-[\#][25]
-[Ⓣ][24]
+[\#][22]
+[Ⓣ][21]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -641,8 +565,8 @@ relative distribution.
 
 ### line
 
-[\#][27]
-[Ⓣ][26]
+[\#][24]
+[Ⓣ][23]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -703,8 +627,8 @@ along the xAxis.
 
 ### row
 
-[\#][29]
-[Ⓣ][28]
+[\#][26]
+[Ⓣ][25]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -738,8 +662,8 @@ has four default features:
 
 ### scatterPlot
 
-[\#][31]
-[Ⓣ][30]
+[\#][28]
+[Ⓣ][27]
 
 The scatter plot has three axes (`x`, `y` and `z`). By default the scatter  
 plot expects linear scale values for all axes. The basic scatter plot chart  
@@ -784,8 +708,8 @@ has these default features:
 
 ### stackedColumn
 
-[\#][33]
-[Ⓣ][32]
+[\#][30]
+[Ⓣ][29]
 
 The stacked column chart has two axes (`x` and `y`). By default the stacked  
 column expects continious scale for the `y` axis and a discrete scale for  
@@ -850,8 +774,8 @@ the `x` axis. The stacked column has the following default features:
 
 ### stackedRow
 
-[\#][35]
-[Ⓣ][34]
+[\#][32]
+[Ⓣ][31]
 
 The stacked row chart has two axes (`x` and `y`). By default the stacked  
 row expects continious scale for the `x` axis and a discrete scale for  
@@ -917,8 +841,8 @@ the `y` axis. The stacked row has the following default features:
 
 ### waterfall
 
-[\#][37]
-[Ⓣ][36]
+[\#][34]
+[Ⓣ][33]
 
 The waterfall chart visually tallies the cumulative result of negative and  
 positive values over a data series. In addition to specifying the normal  
@@ -977,12 +901,137 @@ if you swap the scale types then the waterfall will render horizontally.
 
 ---
 
+## waterfall-connectors.js
+
+### waterfallConnectors
+
+[\#][36]
+[Ⓣ][35]
+
+Waterfall connectors are orthogonal series connectors which visually join  
+column series together by spanning the top or bottom of adjacent columns.
+
+When using this feature in charts other than waterfall, be aware that the  
+mixin expects an accessor property for `orientation`, which it uses to render  
+the direction of the lines.
+
+##### Accessors
+
+`x` - Used in placement of the connector lines.  
+`y` - Used in placement of the connector lines.  
+`span` - calculates the length of the connector line  
+`classes` - applies the class to the connector lines.
+
+---
+
+## x-axis.js
+
+### xAxis
+
+[\#][38]
+[Ⓣ][37]
+
+This feature creates an xAxis for use within d4\. There are a variety of  
+accessors described below which modify the behavior and apperance of the axis.
+
+##### Accessors
+
+`axis` - The d3 axis object itself.  
+`innerTickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize][45]  
+`orient` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#orient][46]  
+`outerTickSize`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize][47]  
+`scale` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#scale][48]  
+`stagger` - (true | false) determines if the axis should stagger overlapping text (true by default)  
+`tickFormat` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat][49]  
+`tickPadding` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding][50]  
+`tickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize][51]  
+`tickSubdivide`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide][52]  
+`tickValues` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues][53]  
+`ticks` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks][54]
+
+    var chart = d4.charts.groupedColumn()
+    .using('yAxis', function(axis){
+    
+      // adjust the number of tick marks based on the height of the chart
+      axis.ticks($('#example').height()/20);
+    
+      // set the inner and outer tick sizes
+      axis.tickSize(10,5);
+    
+      // adjust the tick padding
+      axis.tickPadding(5);
+    
+    })
+    .using('xAxis', function(axis){
+    
+      // position the tickmarks on the top of the axis line
+      axis.orient('top');
+    
+      // move the axis to the top of the chart.
+      axis.align('top');
+    })
+    
+
+---
+
+## y-axis.js
+
+### yAxis
+
+[\#][40]
+[Ⓣ][39]
+
+This feature creates an xAxis for use within d4\. There are a variety of  
+accessors described below which modify the behavior and apperance of the axis.
+
+##### Accessors
+
+`axis` - The d3 axis object itself.  
+`innerTickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize][45]  
+`orient` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#orient][46]  
+`outerTickSize`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize][47]  
+`scale` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#scale][48]  
+`stagger` - (true | false) determines if the axis should stagger overlapping text (true by default)  
+`tickFormat` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat][49]  
+`tickPadding` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding][50]  
+`tickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize][51]  
+`tickSubdivide`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide][52]  
+`tickValues` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues][53]  
+`ticks` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks][54]
+
+##### Examples
+
+    var chart = d4.charts.groupedColumn()
+    .using('yAxis', function(axis){
+    
+      // adjust the number of tick marks based on the height of the chart
+      axis.ticks($('#example').height()/20);
+    
+      // set the inner and outer tick sizes
+      axis.tickSize(10,5);
+    
+      // adjust the tick padding
+      axis.tickPadding(5);
+    
+    })
+    .using('xAxis', function(axis){
+    
+      // position the tickmarks on the top of the axis line
+      axis.orient('top');
+    
+      // move the axis to the top of the chart.
+      axis.y(-20);
+    })
+    
+
+---
+
 ## nested-group.js
 
 ### nestedGroup
 
-[\#][39]
-[Ⓣ][38]
+[\#][42]
+[Ⓣ][41]
 
 The nested group parser is useful for grouped column charts where multiple  
 data items need to appear relative to the axis value, for example grouped  
@@ -997,7 +1046,7 @@ column charts or multi-series line charts.
 
 This module makes use of the d3's "nest" data structure layout
 
-[https://github.com/mbostock/d3/wiki/Arrays\#-nest][52]
+[https://github.com/mbostock/d3/wiki/Arrays\#-nest][55]
 
 ##### Approach
 
@@ -1035,8 +1084,8 @@ Keep reading for more information on these various accessor functions.
 
 ### nestedStack
 
-[\#][41]
-[Ⓣ][40]
+[\#][44]
+[Ⓣ][43]
 
 The nested stack parser is useful for charts which take a data series  
 and wants to sort them across a dimension and then display the results.  
@@ -1053,8 +1102,8 @@ The most common usecase would be a stacked column chart like this:
 
 This module makes use of the d3's "nest" data structure, and "stack" layout
 
-* [https://github.com/mbostock/d3/wiki/Arrays\#-nest][52]
-* [https://github.com/mbostock/d3/wiki/Stack-Layout][53]
+* [https://github.com/mbostock/d3/wiki/Arrays\#-nest][55]
+* [https://github.com/mbostock/d3/wiki/Stack-Layout][56]
 
 ##### Approach
 
@@ -1144,8 +1193,8 @@ The `parser` variable will now be an object containing the following structure:
 
 ### waterfall
 
-[\#][37]
-[Ⓣ][36]
+[\#][34]
+[Ⓣ][33]
 
 The waterfall parser is useful for waterfall charts where data items need to account  
 for the position of earlier values:
@@ -1159,8 +1208,8 @@ for the position of earlier values:
     
 
 This module makes use of the d3's "nest" data structure, and "stack" layout  
-[https://github.com/mbostock/d3/wiki/Arrays\#-nest][52]  
-[https://github.com/mbostock/d3/wiki/Stack-Layout][53]
+[https://github.com/mbostock/d3/wiki/Arrays\#-nest][55]  
+[https://github.com/mbostock/d3/wiki/Stack-Layout][56]
 
 ##### Approach:
 
@@ -1247,55 +1296,58 @@ in the following way:
 
 [0]: #base-js
 [1]: #basechart
-[2]: #builder
-[3]: #features
-[4]: #mixin
-[5]: #mixout
-[6]: #axes
-[7]: #using
-[8]: #chart
-[9]: #createaccessorproxy
-[10]: #feature
-[11]: #functor
-[12]: #parser
-[13]: #scales-js
-[14]: #linearscalefornesteddata
-[15]: #ordinalscalefornesteddata
-[16]: #waterfall-connectors-js
-[17]: #waterfallconnectors
-[18]: #x-axis-js
-[19]: #xaxis
-[20]: #y-axis-js
-[21]: #yaxis
-[22]: #column-js
-[23]: #column
-[24]: #grouped-column-js
-[25]: #groupedcolumn
-[26]: #line-js
-[27]: #line
-[28]: #row-js
-[29]: #row
-[30]: #scatter-js
-[31]: #scatterplot
-[32]: #stacked-column-js
-[33]: #stackedcolumn
-[34]: #stacked-row-js
-[35]: #stackedrow
-[36]: #waterfall-js
-[37]: #waterfall
-[38]: #nested-group-js
-[39]: #nestedgroup
-[40]: #nested-stack-js
-[41]: #nestedstack
-[42]: https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize
-[43]: https://github.com/mbostock/d3/wiki/SVG-Axes#orient
-[44]: https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize
-[45]: https://github.com/mbostock/d3/wiki/SVG-Axes#scale
-[46]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat
-[47]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding
-[48]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize
-[49]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide
-[50]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues
-[51]: https://github.com/mbostock/d3/wiki/SVG-Axes#ticks
-[52]: https://github.com/mbostock/d3/wiki/Arrays#-nest
-[53]: https://github.com/mbostock/d3/wiki/Stack-Layout
+[2]: #axes
+[3]: #builder
+[4]: #features
+[5]: #mixin
+[6]: #mixout
+[7]: #outerheight
+[8]: #outerwidth
+[9]: #using
+[10]: #aliasmethodchain
+[11]: #chart
+[12]: #createaccessorproxy
+[13]: #feature
+[14]: #functor
+[15]: #parser
+[16]: #scales-js
+[17]: #linearscalefornesteddata
+[18]: #ordinalscalefornesteddata
+[19]: #column-js
+[20]: #column
+[21]: #grouped-column-js
+[22]: #groupedcolumn
+[23]: #line-js
+[24]: #line
+[25]: #row-js
+[26]: #row
+[27]: #scatter-js
+[28]: #scatterplot
+[29]: #stacked-column-js
+[30]: #stackedcolumn
+[31]: #stacked-row-js
+[32]: #stackedrow
+[33]: #waterfall-js
+[34]: #waterfall
+[35]: #waterfall-connectors-js
+[36]: #waterfallconnectors
+[37]: #x-axis-js
+[38]: #xaxis
+[39]: #y-axis-js
+[40]: #yaxis
+[41]: #nested-group-js
+[42]: #nestedgroup
+[43]: #nested-stack-js
+[44]: #nestedstack
+[45]: https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize
+[46]: https://github.com/mbostock/d3/wiki/SVG-Axes#orient
+[47]: https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize
+[48]: https://github.com/mbostock/d3/wiki/SVG-Axes#scale
+[49]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat
+[50]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding
+[51]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize
+[52]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide
+[53]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues
+[54]: https://github.com/mbostock/d3/wiki/SVG-Axes#ticks
+[55]: https://github.com/mbostock/d3/wiki/Arrays#-nest
+[56]: https://github.com/mbostock/d3/wiki/Stack-Layout
