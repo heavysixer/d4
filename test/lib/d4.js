@@ -1,6 +1,6 @@
 /*! d4 - v0.5.8
  *  License: MIT Expat
- *  Date: 2014-03-25
+ *  Date: 2014-03-26
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -398,23 +398,10 @@
     return needsParsing ? applyDefaultParser(opts, data) : data;
   };
 
-  /*!
-   * We want to ensure that the visual dimensions are set the first time. This
-   * prevents the chart from shrinking if it were to be redrawn more than once.
-   */
-  var calculateDimensions = function() {
-    if(!this._calculated) {
-      this.width  = this.width - this.margin.left - this.margin.right;
-      this.height = this.height - this.margin.top - this.margin.bottom;
-      this._calculated = true;
-    }
-  };
-
   var applyScaffold = function(opts) {
     return function(selection) {
       selection.each(function(data) {
         data = prepareData(opts, data);
-        calculateDimensions.bind(opts, this)();
         scaffoldChart.bind(opts, this)(data);
         build(opts, data);
       });
@@ -543,6 +530,19 @@
     createAccessorsFromAxes(chart, opts);
 
     /**
+     * This function returns the internal axes object as a parameter to the
+     * supplied function.
+     * @param {Function} funct - function which will perform the modifcation.
+     */
+    chart.axes = function(funct) {
+      if (!arguments.length) {
+        return opts.axes;
+      }
+      funct(opts.axes);
+      return chart;
+    };
+
+    /**
      * Specifies an object, which d4 uses to initialize the chart with. By default
      * d4 expects charts to return a builder object, which will be used to
      * configure defaults for the chart. Typically this means determining the
@@ -626,16 +626,21 @@
     };
 
     /**
-     * This function returns the internal axes object as a parameter to the
-     * supplied function.
-     * @param {Function} funct - function which will perform the modifcation.
+     * Returns the outerHeight of the chart with or without margin.
+     *
+     * @param {Boolean} includeMargin
      */
-    chart.axes = function(funct) {
-      if (!arguments.length) {
-        return opts.axes;
-      }
-      funct(opts.axes);
-      return chart;
+    chart.outerHeight = function(includeMargin) {
+      return (!!includeMargin) ? opts.height + opts.margin.top + opts.margin.bottom : opts.height;
+    };
+
+    /**
+     * Returns the outerWidth of the chart with or without margin.
+     *
+     * @param {Boolean} includeMargin
+     */
+    chart.outerWidth = function(includeMargin) {
+      return (!!includeMargin) ? opts.width + opts.margin.left + opts.margin.right : opts.width;
     };
 
     /**
@@ -661,6 +666,38 @@
     };
 
     return chart;
+  };
+
+  /**
+   * This function allows you chain together a undetermined number of function
+   * calls in a specific order of execution. This is helpful if you want to
+   * allow an existing function to be modified before or after it is called,
+   * while appearing to remain a single call.
+   *
+   *##### Examples
+   *
+   * @param {Function} funct - the function which is to be placed in the chain
+   * @param {Object} extension - an object with one or both keys named:
+   * `prepend` or `append`. The `pre` key will execute before funct is called and
+   * `post` will obviously be executed after.
+   * @param {Object} thisObj - an optional this reference to use as the apply scope.
+   *
+  */
+  d4.aliasMethodChain = function(funct, extension, thisObj) {
+    if(typeof extension === 'undefined'){
+      err('d4.aliasMethodChain() expects an extension object with either a `prepend()` or `append()` function.');
+    }
+    return function() {
+      var result;
+      if(typeof extension.prepend !== 'undefined'){
+        extension.prepend.apply(thisObj || this, arguments);
+      }
+      result = funct.apply(thisObj || this, arguments);
+      if(typeof extension.append !== 'undefined'){
+        extension.append.apply(thisObj || this, arguments);
+      }
+      return result;
+    };
   };
 
   /**

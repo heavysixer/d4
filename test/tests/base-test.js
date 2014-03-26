@@ -185,7 +185,6 @@ describe('d4.base', function() {
           d4.baseChart({ builder : badBuilder });
         }).to.throw(Error, '[d4] The supplied builder does not have a link function');
       });
-
     });
 
     describe('when using accessors', function() {
@@ -256,6 +255,84 @@ describe('d4.base', function() {
           expect(chart[accessor]).to.not.be.an('undefined');
         });
       });
+    });
+  });
+
+  describe('#outerWidth()', function(){
+    it('should calculate the width with or without margin', function(){
+      var chart = d4.charts.column();
+      chart.margin({ top: 10, bottom: 10, left : 10, right: 10 });
+      chart.width(500);
+      expect(chart.outerWidth()).to.equal(500);
+      expect(chart.outerWidth(true)).to.equal(520);
+    });
+  });
+
+  describe('#outerHeight()', function(){
+    it('should calculate the height with or without margin', function(){
+      var chart = d4.charts.column();
+      chart.margin({ top: 10, bottom: 10, left : 10, right: 10 });
+      chart.height(500);
+      expect(chart.outerHeight()).to.equal(500);
+      expect(chart.outerHeight(true)).to.equal(520);
+    });
+  });
+
+  describe('#aliasMethodChain()', function(){
+    it('should require at least a prepend() or append() function', function(){
+      var sum = function(a,b){
+        return a+b;
+      };
+      expect(function(){
+        d4.aliasMethodChain(sum);
+      }).to.throw(Error,  '[d4] d4.aliasMethodChain() expects an extension object with either a `prepend()` or `append()` function.');
+    });
+
+    it('should allow a function to precede or follow the call of the aliased function', function(){
+      var obj = {
+        foo : 0,
+        sum : function() {
+          var total = 0;
+          var args = Array.prototype.slice.call(arguments);
+          d4.each(args, function(a){
+            total += a;
+          });
+          return total;
+        }
+      };
+      expect(obj.sum(1,2,3)).to.equal(6);
+      var checkArgs = function(){
+          var boundArgs = Array.prototype.slice.call(arguments);
+          expect(boundArgs[0]).to.equal(1);
+        };
+      obj.sum = d4.aliasMethodChain(obj.sum, {
+        prepend: checkArgs,
+        append: checkArgs
+      });
+      expect(obj.sum(1,2,3)).to.equal(6);
+
+    });
+
+    it('should allow for an optional this object to be supplied to scope the apply call', function(){
+      var o = {
+        total: 0,
+        sum: function(a,b){
+          this.total += a+b;
+        }
+      };
+      var obj = { total: 100 };
+      o.sum(1,2);
+      expect(o.total).to.equal(3);
+      var checkArgs = function(){
+        var boundArgs = Array.prototype.slice.call(arguments);
+        expect(boundArgs[0]).to.equal(1);
+        o.sum = d4.aliasMethodChain(o.sum, {
+          prepend: checkArgs,
+          append: checkArgs
+        },obj);
+        o.sum(1,2);
+        expect(o.total).to.equal(103);
+      };
     });
   });
 
