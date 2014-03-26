@@ -262,9 +262,9 @@ describe('d4.base', function() {
     it('should calculate the width with or without margin', function(){
       var chart = d4.charts.column();
       chart.margin({ top: 10, bottom: 10, left : 10, right: 10 });
-      chart.width(500);
-      expect(chart.outerWidth()).to.equal(500);
-      expect(chart.outerWidth(true)).to.equal(520);
+      chart.outerWidth(520);
+      expect(chart.outerWidth()).to.equal(520);
+      expect(chart.width()).to.equal(500);
     });
   });
 
@@ -272,9 +272,9 @@ describe('d4.base', function() {
     it('should calculate the height with or without margin', function(){
       var chart = d4.charts.column();
       chart.margin({ top: 10, bottom: 10, left : 10, right: 10 });
-      chart.height(500);
-      expect(chart.outerHeight()).to.equal(500);
-      expect(chart.outerHeight(true)).to.equal(520);
+      chart.outerHeight(520);
+      expect(chart.outerHeight()).to.equal(520);
+      expect(chart.height()).to.equal(500);
     });
   });
 

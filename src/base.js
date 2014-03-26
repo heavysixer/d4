@@ -514,7 +514,7 @@
    *
    * @param {Object} options - object which contains an optional config and /or
    * builder property
-   * @returns a reference to the chart object
+   * @returns chart instance
    */
   d4.baseChart = function(options) {
     var opts = assignDefaults(options && options.config || {}, options && options.builder || undefined);
@@ -529,6 +529,7 @@
      * This function returns the internal axes object as a parameter to the
      * supplied function.
      * @param {Function} funct - function which will perform the modifcation.
+     * @returns chart instance
      */
     chart.axes = function(funct) {
       if (!arguments.length) {
@@ -556,6 +557,7 @@
      *     };
      *
      * @param {Function} funct - function which returns a builder object.
+     * @returns chart instance
      */
     chart.builder = function(funct) {
       opts.builder = validateBuilder(funct.bind(opts)());
@@ -576,6 +578,7 @@
      *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
+     * @returns An array of features.
      */
     chart.features = function() {
       return opts.mixins;
@@ -595,6 +598,7 @@
      *
      * @param {Object} feature - an object describing the feature to mix in.
      * @param {Integer} index - an optional number to specify the insertion layer.
+     * @returns chart instance
      */
     chart.mixin = function(feature, index) {
       mixin.bind(opts)(feature, index);
@@ -615,6 +619,7 @@
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
+     * @returns chart instance
      */
     chart.mixout = function(feature, index) {
       mixout.bind(opts)(feature, index);
@@ -622,21 +627,30 @@
     };
 
     /**
-     * Returns the outerHeight of the chart with or without margin.
+     * Returns or sets the outerHeight of the chart.
      *
-     * @param {Boolean} includeMargin
+     * @param {Number} height
+     * @returns chart instance
      */
-    chart.outerHeight = function(includeMargin) {
-      return (!!includeMargin) ? opts.height + opts.margin.top + opts.margin.bottom : opts.height;
+    chart.outerHeight = function(height) {
+      if (!arguments.length) {
+        return opts.height + opts.margin.top + opts.margin.bottom;
+      }
+      chart.height(height - opts.margin.top - opts.margin.bottom);
+      return chart;
     };
 
     /**
-     * Returns the outerWidth of the chart with or without margin.
+     * Returns or sets the outerWidth of the chart.
      *
-     * @param {Boolean} includeMargin
+     * @param {Number} width
      */
-    chart.outerWidth = function(includeMargin) {
-      return (!!includeMargin) ? opts.width + opts.margin.left + opts.margin.right : opts.width;
+    chart.outerWidth = function(width) {
+      if (!arguments.length) {
+        return opts.width + opts.margin.left + opts.margin.right;
+      }
+      chart.width(width - opts.margin.left - opts.margin.right);
+      return chart;
     };
 
     /**
@@ -677,6 +691,7 @@
    * `prepend` or `append`. The `pre` key will execute before funct is called and
    * `post` will obviously be executed after.
    * @param {Object} thisObj - an optional this reference to use as the apply scope.
+   * @returns result from the function call.
    *
   */
   d4.aliasMethodChain = function(funct, extension, thisObj) {
@@ -817,6 +832,7 @@
    * > values to functions.
    *
    * @param {Varies} funct - An function or other variable to be wrapped in a function
+   * @returns function
    */
   d4.functor = function(funct) {
     return d4.isFunction(funct) ? funct : function() {

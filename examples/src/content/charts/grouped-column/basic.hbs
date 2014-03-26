@@ -49,11 +49,6 @@ $(document).ready(function(){
     .value('unitsSold')(data);
 
   var chart = d4.charts.groupedColumn();
-  chart.width(500)
-  console.log(chart.$width);
-  console.log(chart.width());
-  console.log(chart.width());
-  console.log(chart.width());
   chart
   .width($('#example').width())
   .x(function(x){
