@@ -93,6 +93,8 @@
    * `cx` - placement on the chart's x axis
    * `cy` - placement on the chart's y axis
    * `r` - radius of the circle
+   *
+   * @name circleSeries
    */
   d4.feature('circleSeries', function(name) {
     var rectObj = {
@@ -158,6 +160,8 @@
    * `cy` - placement on the chart's y axis
    * `rx` - radius of the ellipse on the x axis
    * `ry` - radius of the ellipse on the y axis
+   *
+   * @name ellipseSeries
    */
   d4.feature('ellipseSeries', function(name) {
     var rectObj = {
@@ -227,6 +231,8 @@
    * `width` - width of the rect
    * `x` - placement on the chart's x axis
    * `y` - placement on the chart's y axis
+   *
+   * @name rectSeries
    */
   d4.feature('rectSeries', function(name) {
     var rectObj = {
