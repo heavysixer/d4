@@ -32,7 +32,7 @@
       render: function(scope) {
         var defs = this.svg.select('defs');
 
-        defs.selectAll('marker').data([0,0]).enter().append('marker')
+        defs.selectAll('marker#' + name + '-end').data([0]).enter().append('marker')
           .attr('id', name + '-end')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
@@ -41,8 +41,9 @@
           .attr('markerHeight', d4.functor(scope.accessors.tipSize).bind(this))
           .attr('orient', 'auto')
           .append('path')
-          .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+          .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
+        defs.selectAll('marker#' + name + '-start').data([0]).enter()
           .append('marker')
           .attr('id', name + '-start')
           .attr('viewBox', '0 0 10 10')

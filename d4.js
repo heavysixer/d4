@@ -1,6 +1,6 @@
 /*! d4 - v0.5.9
  *  License: MIT Expat
- *  Date: 2014-03-26
+ *  Date: 2014-03-27
  */
 /*!
   Functions "each", "extend", and "isFunction" based on Underscore.js 1.5.2
@@ -212,7 +212,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -579,7 +579,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @returns An array of features.
@@ -619,7 +619,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -1982,7 +1982,7 @@
       render: function(scope) {
         var defs = this.svg.select('defs');
 
-        defs.selectAll('marker').data([0,0]).enter().append('marker')
+        defs.selectAll('marker#' + name + '-end').data([0]).enter().append('marker')
           .attr('id', name + '-end')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
@@ -1991,8 +1991,9 @@
           .attr('markerHeight', d4.functor(scope.accessors.tipSize).bind(this))
           .attr('orient', 'auto')
           .append('path')
-          .attr('d', 'M 0 0 L 10 5 L 0 10 z')
+          .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
+        defs.selectAll('marker#' + name + '-start').data([0]).enter()
           .append('marker')
           .attr('id', name + '-start')
           .attr('viewBox', '0 0 10 10')
