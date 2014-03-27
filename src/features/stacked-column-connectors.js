@@ -1,10 +1,5 @@
 (function() {
   /*!
-   * global d3: false
-   * global d4: false
-   */
-
-  /*!
     Column connectors helpful when displaying a stacked column chart.
     A connector will not connect positve and negative columns. This is because
     in a stacked column a negative column may move many series below its previous

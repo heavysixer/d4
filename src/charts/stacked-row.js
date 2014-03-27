@@ -1,8 +1,4 @@
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
  /*
   * The stacked row chart has two axes (`x` and `y`). By default the stacked

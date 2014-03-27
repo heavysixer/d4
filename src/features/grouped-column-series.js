@@ -1,8 +1,4 @@
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
   d4.feature('groupedColumnSeries', function(name) {
     var sign = function(val) {

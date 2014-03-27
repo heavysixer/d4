@@ -9,11 +9,6 @@
   Underscore may be freely distributed under the MIT license.
 */
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
 
   var root = this;
@@ -874,11 +869,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
   d4.helpers = {};
 
@@ -1013,10 +1003,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
 
  /*
@@ -1087,10 +1073,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
 
  /*
@@ -1183,10 +1165,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
 
   /*
@@ -1261,10 +1239,6 @@
   });
 }).call(this);
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
 
  /*
@@ -1331,10 +1305,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
 
   var scatterPlotBuilder = function() {
@@ -1424,10 +1394,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
 
  /*
@@ -1569,10 +1535,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
  /*
   * The stacked row chart has two axes (`x` and `y`). By default the stacked
@@ -1730,10 +1692,6 @@
   });
 }).call(this);
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
 
   var columnSeriesOverrides = function waterfall() {
@@ -1949,10 +1907,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
   d4.feature('arrow', function(name) {
     return {
@@ -2023,11 +1977,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
   d4.feature('columnLabels',function(name) {
     var padding = 5;
@@ -2076,11 +2025,6 @@
   });
 }).call(this);
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
   d4.feature('dotSeries', function(name) {
     return {
@@ -2129,10 +2073,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
   d4.feature('grid', function(name) {
 
@@ -2178,10 +2118,6 @@
   });
 }).call(this);
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
   d4.feature('groupedColumnSeries', function(name) {
     var sign = function(val) {
@@ -2243,11 +2179,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
   d4.feature('lineSeriesLabels', function(name) {
     return {
@@ -2287,11 +2218,6 @@
   });
 }).call(this);
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
   d4.feature('lineSeries', function(name) {
     var line = d3.svg.line();
@@ -2335,11 +2261,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
   d4.feature('referenceLine', function(name) {
     return {
@@ -2381,11 +2302,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   /*!
     Column connectors helpful when displaying a stacked column chart.
     A connector will not connect positve and negative columns. This is because
@@ -2493,11 +2409,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
   d4.feature('stackedColumnLabels', function(name) {
 
@@ -2616,11 +2527,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
   d4.feature('stackedColumnSeries', function(name) {
     var sign = function(val){
@@ -2747,11 +2653,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
   d4.feature('trendLine', function(name) {
     return {
@@ -2822,28 +2723,24 @@
 
 (function() {
   'use strict';
-  /*!
-   * global d3: false
-   * global d4: false
-   */
 
-/*
- * Waterfall connectors are orthogonal series connectors which visually join
- * column series together by spanning the top or bottom of adjacent columns.
- *
- * When using this feature in charts other than waterfall, be aware that the
- * mixin expects an accessor property for `orientation`, which it uses to render
- * the direction of the lines.
- *
- *##### Accessors
- *
- * `x` - Used in placement of the connector lines.
- * `y` - Used in placement of the connector lines.
- * `span` - calculates the length of the connector line
- * `classes` - applies the class to the connector lines.
- *
- * @name waterfallConnectors
- */
+  /*
+   * Waterfall connectors are orthogonal series connectors which visually join
+   * column series together by spanning the top or bottom of adjacent columns.
+   *
+   * When using this feature in charts other than waterfall, be aware that the
+   * mixin expects an accessor property for `orientation`, which it uses to render
+   * the direction of the lines.
+   *
+   *##### Accessors
+   *
+   * `x` - Used in placement of the connector lines.
+   * `y` - Used in placement of the connector lines.
+   * `span` - calculates the length of the connector line
+   * `classes` - applies the class to the connector lines.
+   *
+   * @name waterfallConnectors
+   */
   d4.feature('waterfallConnectors', function(name) {
     return {
       accessors: {
@@ -2935,11 +2832,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
 
   /* This feature creates an xAxis for use within d4. There are a variety of
@@ -3060,11 +2952,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
 
   /* This feature creates an xAxis for use within d4. There are a variety of
@@ -3732,10 +3619,6 @@
 }).call(this);
 
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
   'use strict';
 
   var extractValues = function(data, key) {

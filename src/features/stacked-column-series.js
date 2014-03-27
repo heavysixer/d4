@@ -1,9 +1,4 @@
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
   d4.feature('stackedColumnSeries', function(name) {
     var sign = function(val){

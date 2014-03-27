@@ -1,9 +1,4 @@
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
 
   /* This feature creates an xAxis for use within d4. There are a variety of

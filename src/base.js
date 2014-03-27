@@ -5,11 +5,6 @@
   Underscore may be freely distributed under the MIT license.
 */
 (function() {
-  /*!
-   * global d3: false
-   * global d4: false
-   */
-
   'use strict';
 
   var root = this;
