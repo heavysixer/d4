@@ -34,7 +34,7 @@
       render: function(scope) {
         var defs = this.svg.select('defs');
 
-        defs.append('marker')
+        defs.selectAll('marker#' + name + '-start').data([0]).enter().append('marker')
           .attr('id', name + '-start')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
@@ -46,7 +46,8 @@
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
         this.featuresGroup.append('g').attr('class', name);
-        var trendLine = this.svg.select('.' + name)
+        var trendLine = this.svg.select('.' + name).selectAll('line').data([0])
+          .enter()
           .append('line')
           .attr('class', 'line')
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
@@ -55,12 +56,13 @@
           .attr('y2', d4.functor(scope.accessors.y2).bind(this))
           .attr('marker-end', 'url(#' + name + '-start)');
 
-        this.svg.select('.' + name)
-          .append('text')
-          .attr('class', 'trendLine-label')
-          .text(d4.functor(scope.accessors.text).bind(this))
-          .attr('x', d4.functor(scope.accessors.textX).bind(this))
-          .attr('y', d4.functor(scope.accessors.textY).bind(this));
+        this.svg.select('.' + name).selectAll('text').data([0])
+        .enter()
+        .append('text')
+        .attr('class', 'trendLine-label')
+        .text(d4.functor(scope.accessors.text).bind(this))
+        .attr('x', d4.functor(scope.accessors.textX).bind(this))
+        .attr('y', d4.functor(scope.accessors.textY).bind(this));
         return trendLine;
       }
     };
