@@ -103,13 +103,11 @@
     return this;
   };
 
-  /*!
-    In an effort to make the API more succient we store the last known proplerty
-  of an accessor with the same name but prepended with a $ character. This allows
-  the developer to do something like this:
-      chart.width(500)
-      chart.$width //500
-  */
+  // In an effort to make the API more succient we store the last known
+  // proplerty of an accessor with the same name but prepended with a $
+  // character. This allows the developer to do something like this:
+  //     chart.width(500)
+  //     chart.$width //500
   var storeLastValue = function(obj, functName, attr) {
     if(d4.isNotFunction(attr)){
       var prop = '$' + functName;
@@ -117,15 +115,6 @@
     }
   };
 
-  /*!
-    FIXME: d4 wraps the inner property object `opts` in a series of class
-  functions. For example: `chart.width(300)` will set the internal
-  `opts.width` property to 300. Additionally chart.width() will return 300.
-  However, this behavior creates ambiguity in API because it is unclear to the
-  developer which accessors require functions and which can simply supply
-  values. Ideally the API should support something like this:
-  chart.width(300) or chart.width(function(){ return 300; })
-  */
   var accessorForObject = function(wrapperObj, innerObj, functName, prefix) {
     var wrapperFunct = functName;
     if(typeof prefix !== 'undefined') {
@@ -148,13 +137,12 @@
     });
   };
 
-  /*!
-   * In order to have a uniform API, objects with accessors, need to have wrapper
-   * functions created for them so that users may access them in the declarative
-   * nature we promote. This function will take an object, which contains an
-   * accessors key and create the wrapper function for each accessor item.
-   * This function is used internally by the feature mixin and axes objects.
-   */
+  // In order to have a uniform API, objects with accessors, need to have
+  // wrapper functions created for them so that users may access them in the
+  // declarative nature we promote. This function will take an object, which
+  // contains an accessors key and create the wrapper function for each
+  // accessor item. This function is used internally by the feature mixin and
+  // axes objects.
   var createAccessorsFromObject = function(obj){
     var accessors = obj.accessors;
     if (accessors) {
@@ -292,14 +280,12 @@
     return opts;
   };
 
-  /*!
-    d3 allows events to be bound to selections using the `#on()` function. We
-    want to allow the developer to bind to these events transparently. However,
-    we are not actually dealing with the d3 selection itself and so we need to
-    create this proxy which passes any custom events on to the correct selection.
-    For more information see the #selection.on documentation for d3:
-    https://github.com/mbostock/d3/wiki/Selections#wiki-animation--interaction
-  */
+  // d3 allows events to be bound to selections using the `#on()` function. We
+  // want to allow the developer to bind to these events transparently. However,
+  // we are not actually dealing with the d3 selection itself and so we need to
+  // create this proxy which passes any custom events on to the correct
+  // selection. For more information see the #selection.on documentation for d3:
+  // https://github.com/mbostock/d3/wiki/Selections#wiki-animation--interaction
   var addEventsProxy = function(feature, selection){
     if(selection){
       each(d3.keys(feature._proxiedFunctions), function(key){
@@ -351,15 +337,14 @@
     this.svg.selectAll('defs').data([0]).enter().append('defs');
   };
 
-  /*!
-    Normally d4 series elements inside the data array to be in a specific
-  format, which is designed to support charts which require multiple data
-  series. However, some charts can easily be used to display only a single data
-  series in which case the default structure is overly verbose. In these cases
-  d4 accepts the simplified objects in the array payload and silently
-  parses them using the d4.nestedGroup parser. It will configure the parser's
-  dimensions based on the configuration applied to the chart object itself.
-  */
+  // Normally d4 series elements inside the data array to be in a specific
+  // format, which is designed to support charts which require multiple data
+  // series. However, some charts can easily be used to display only a single
+  // data series in which case the default structure is overly verbose. In
+  // these cases d4 accepts the simplified objects in the array payload and
+  // silently parses them using the d4.nestedGroup parser. It will configure
+  // the parser's dimensions based on the configuration applied to the chart
+  // object itself.
   var applyDefaultParser = function(opts, data) {
     var parsed = d4.parsers.nestedGroup()
     .x(opts.x.$key)
@@ -739,14 +724,8 @@
         target[funct].$dirty = true;
         proxy[proxyFunct].$dirty = true;
 
-        /*!
-         * Instead of returning the target object we must return the proxy, this
-         * is so that we do not break the functional programming chaining of
-         * proxy function calls. Unfortunately, this also means that the results
-         * of the target function are not captured. Ideally, it would be nice
-         * to return the value of the target command if the target object
-         * itself is not returned.
-         */
+        // target function is executed but proxy is returned so as not to break
+        // the chaining.
         target[funct].apply(target, arguments);
         return proxy;
       };

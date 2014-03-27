@@ -1,11 +1,13 @@
 (function() {
-  /*!
-    Column connectors helpful when displaying a stacked column chart.
-    A connector will not connect positve and negative columns. This is because
-    in a stacked column a negative column may move many series below its previous
-    location. This creates a messy collection of crisscrossing lines.
-  */
   'use strict';
+  /*
+   * Column connectors helpful when displaying a stacked column chart.
+   * A connector will not connect positve and negative columns. This is because
+   * in a stacked column a negative column may move many series below its previous
+   * location. This creates a messy collection of crisscrossing lines.
+   *
+   * @name stackedColumnConnectors
+   */
   d4.feature('stackedColumnConnectors', function(name) {
     var sign = function(num) {
       return (num) ? (num < 0) ? -1 : 1 : 0;

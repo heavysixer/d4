@@ -44,10 +44,6 @@
    *
    * @name yAxis
   */
-  /*!
-   * FIXME: There is a lot of similarity between the x and y axis features, it would be
-   * great to combine these two.
-   */
   d4.feature('yAxis', function(name) {
     var axis = d3.svg.axis()
     .orient('left')
