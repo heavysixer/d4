@@ -129,7 +129,7 @@ __Parser__ - A parser prepares the data for a chart.
 * Stacked Row Chart
 * Waterfall Chart
 
-#### Chart Features (Mix-ins)
+#### Chart Features (Mixins)
 
 * Arrows
 * Column Labels
@@ -139,8 +139,10 @@ __Parser__ - A parser prepares the data for a chart.
 * Line Series
 * Line Series Labels
 * Reference Lines
-* Stacked Column Labels
-* Stacked Column Series
+* Stacked Labels
+* Stacked Circle Series
+* Stacked Ellipse Series
+* Stacked Rect Series
 * Trend Line
 * Waterfall Column Connectors
 * X Axis

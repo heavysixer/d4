@@ -77,7 +77,7 @@
     [{
       'bars': d4.features.groupedColumnSeries
     }, {
-      'barLabels': d4.features.stackedColumnLabels,
+      'barLabels': d4.features.stackedLabels,
       'overrides': columnLabelOverrides
     }, {
       'xAxis': d4.features.xAxis

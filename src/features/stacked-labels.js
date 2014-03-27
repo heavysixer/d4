@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  d4.feature('stackedColumnLabels', function(name) {
+  d4.feature('stackedLabels', function(name) {
 
     // FIXME: We should not need to sniff this out.
     var dataInColumns = function(d) {

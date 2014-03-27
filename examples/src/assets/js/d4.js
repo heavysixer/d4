@@ -1027,7 +1027,7 @@
     [{
       'bars': d4.features.rectSeries
     }, {
-      'barLabels': d4.features.stackedColumnLabels
+      'barLabels': d4.features.stackedLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
@@ -1118,7 +1118,7 @@
     [{
       'bars': d4.features.groupedColumnSeries
     }, {
-      'barLabels': d4.features.stackedColumnLabels,
+      'barLabels': d4.features.stackedLabels,
       'overrides': columnLabelOverrides
     }, {
       'xAxis': d4.features.xAxis
@@ -1259,7 +1259,7 @@
     [{
       'bars': d4.features.rectSeries
     }, {
-      'barLabels': d4.features.stackedColumnLabels
+      'barLabels': d4.features.stackedLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
@@ -1348,7 +1348,7 @@
     [{
       'circles': d4.features.dotSeries
     },{
-      'circleLabels': d4.features.stackedColumnLabels
+      'circleLabels': d4.features.stackedLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
@@ -1484,7 +1484,7 @@
     [{
       'bars': d4.features.rectSeries
     }, {
-      'barLabels': d4.features.stackedColumnLabels
+      'barLabels': d4.features.stackedLabels
     }, {
       'connectors': d4.features.stackedColumnConnectors
     }, {
@@ -1642,7 +1642,7 @@
     [{
       'bars': d4.features.rectSeries
     }, {
-      'barLabels': d4.features.stackedColumnLabels
+      'barLabels': d4.features.stackedLabels
     }, {
       'connectors': d4.features.stackedColumnConnectors
     }, {
@@ -1859,7 +1859,7 @@
     }, {
       'connectors': d4.features.waterfallConnectors
     }, {
-      'columnLabels': d4.features.stackedColumnLabels,
+      'columnLabels': d4.features.stackedLabels,
       'overrides': columnLabelOverrides
     }, {
       'xAxis': d4.features.xAxis
@@ -2377,7 +2377,7 @@
 
 (function() {
   'use strict';
-  d4.feature('stackedColumnLabels', function(name) {
+  d4.feature('stackedLabels', function(name) {
 
     // FIXME: We should not need to sniff this out.
     var dataInColumns = function(d) {

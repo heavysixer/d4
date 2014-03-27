@@ -199,7 +199,7 @@
     }, {
       'connectors': d4.features.waterfallConnectors
     }, {
-      'columnLabels': d4.features.stackedColumnLabels,
+      'columnLabels': d4.features.stackedLabels,
       'overrides': columnLabelOverrides
     }, {
       'xAxis': d4.features.xAxis

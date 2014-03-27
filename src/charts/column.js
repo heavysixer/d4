@@ -56,7 +56,7 @@
     [{
       'bars': d4.features.rectSeries
     }, {
-      'barLabels': d4.features.stackedColumnLabels
+      'barLabels': d4.features.stackedLabels
     }, {
       'xAxis': d4.features.xAxis
     }, {
