@@ -19,6 +19,24 @@
     return builder;
   };
 
+  var circleOverrides  = function() {
+    return {
+      accessors: {
+        cx: function(d) {
+          return this.x(d[this.x.$key]);
+        },
+
+        cy: function(d) {
+          return this.y(d[this.y.$key]);
+        },
+
+        r: function(d) {
+          return this.z(d[this.z.$key]);
+        }
+      }
+    };
+  };
+
   /*
    * The scatter plot has three axes (`x`, `y` and `z`). By default the scatter
    * plot expects linear scale values for all axes. The basic scatter plot chart
@@ -73,7 +91,8 @@
       }
     });
     [{
-      'circles': d4.features.dotSeries
+      'circles': d4.features.circleSeries,
+      'overrides' : circleOverrides
     },{
       'circleLabels': d4.features.stackedLabels
     }, {

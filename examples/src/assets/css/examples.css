@@ -148,44 +148,44 @@ svg.d4 {
     fill: #D67FAD;
 }
 
-.d4 .bar.negative.fill, #waterfall  .d4 .bar.negative.fill {
+.d4 .negative.fill, #waterfall  .d4 .negative.fill {
     fill: #CD202C;
 }
 
-.d4 .bar.positive.fill, #waterfall .d4 .bar.positive.fill {
+.d4 .positive.fill, #waterfall .d4 .positive.fill {
     fill: #002960;
 }
 
-#waterfall .d4 .bar.subtotal.fill {
+#waterfall .d4 .subtotal.fill {
     fill: #0065BD;
 }
 
-#stacked_column .d4 .series0 .bar.fill, #stacked_column .average {
+#stacked_column .d4 .series0 .fill, #stacked_column .average {
     fill: #CD202C;
     background-color: #CD202C;
 }
 
-#stacked_column .d4 .series1 .bar.fill, #stacked_column .gina {
+#stacked_column .d4 .series1 .fill, #stacked_column .gina {
     fill: #AD005B;
     background-color: #AD005B;
 }
 
-#stacked_column .d4 .series2 .bar.fill, #stacked_column .bob {
+#stacked_column .d4 .series2 .fill, #stacked_column .bob {
     fill: #66307C;
     background-color: #66307C;
 }
 
-#stacked_row .d4 .series0 .bar.fill, #stacked_row .average {
+#stacked_row .d4 .series0 .fill, #stacked_row .average {
     fill: #D4BA00;
     background-color: #D4BA00;
 }
 
-#stacked_row .d4 .series1 .bar.fill, #stacked_row .gina {
+#stacked_row .d4 .series1 .fill, #stacked_row .gina {
     fill: #A2AD00;
     background-color: #A2AD00;
 }
 
-#stacked_row .d4 .series2 .bar.fill, #stacked_row .bob {
+#stacked_row .d4 .series2 .fill, #stacked_row .bob {
     fill: #E37222;
     background-color: #E37222;
 }
@@ -205,21 +205,21 @@ svg.d4 {
     shape-rendering: crispEdges;
 }
 
-#multi_scatter .d4 .series0 {
-    fill: bisque;
+#multi_scatter .d4 .series0, #multi_scatter .d4 .series0 circle {
+    fill: darkred;
     fill-opacity: 0.6;
-    stroke: bisque;
+    stroke: darkred;
     stroke-width: 1px;
 }
 
-#multi_scatter .d4 .series1 {
+#multi_scatter .d4 .series1, #multi_scatter .d4 .series1 circle {
     fill: darkslategrey;
     fill-opacity: 0.6;
     stroke: darkslategrey;
     stroke-width: 2px;
 }
 
-#line_and_dot .d4 .series0 .dot {
+#line_and_dot .d4 .series0 circle {
     fill: darkred;
     fill-opacity: 0.6;
     stroke: darkred;
@@ -230,7 +230,7 @@ svg.d4 {
     stroke: darkred;
 }
 
-#line_and_dot .d4 .series1 .dot {
+#line_and_dot .d4 .series1 circle {
     fill: darkslategrey;
     fill-opacity: 0.6;
     stroke: darkslategrey;
@@ -241,7 +241,7 @@ svg.d4 {
     stroke: darkslategrey;
 }
 
-#line_and_dot .d4 .series2 .dot {
+#line_and_dot .d4 .series2 circle {
     fill: steelblue;
     fill-opacity: 0.6;
     stroke: steelblue;
