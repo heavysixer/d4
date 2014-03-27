@@ -674,39 +674,6 @@
   };
 
   /**
-   * This function allows you chain together a undetermined number of function
-   * calls in a specific order of execution. This is helpful if you want to
-   * allow an existing function to be modified before or after it is called,
-   * while appearing to remain a single call.
-   *
-   *##### Examples
-   *
-   * @param {Function} funct - the function which is to be placed in the chain
-   * @param {Object} extension - an object with one or both keys named:
-   * `prepend` or `append`. The `pre` key will execute before funct is called and
-   * `post` will obviously be executed after.
-   * @param {Object} thisObj - an optional this reference to use as the apply scope.
-   * @returns result from the function call.
-   *
-  */
-  d4.aliasMethodChain = function(funct, extension, thisObj) {
-    if(typeof extension === 'undefined'){
-      err('d4.aliasMethodChain() expects an extension object with either a `prepend()` or `append()` function.');
-    }
-    return function() {
-      var result;
-      if(typeof extension.prepend !== 'undefined'){
-        extension.prepend.apply(thisObj || this, arguments);
-      }
-      result = funct.apply(thisObj || this, arguments);
-      if(typeof extension.append !== 'undefined'){
-        extension.append.apply(thisObj || this, arguments);
-      }
-      return result;
-    };
-  };
-
-  /**
    * This function allows you to register a reusable chart builder with d4.
    * @param {String} name - accessor name for chart builder.
    * @param {Function} funct - function which will instantiate the chart builder.

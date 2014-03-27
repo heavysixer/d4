@@ -50,7 +50,7 @@
       }
     });
     [{
-      'bars': d4.features.stackedColumnSeries
+      'bars': d4.features.rectSeries
     }, {
       'barLabels': d4.features.stackedColumnLabels
     }, {

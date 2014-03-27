@@ -678,39 +678,6 @@
   };
 
   /**
-   * This function allows you chain together a undetermined number of function
-   * calls in a specific order of execution. This is helpful if you want to
-   * allow an existing function to be modified before or after it is called,
-   * while appearing to remain a single call.
-   *
-   *##### Examples
-   *
-   * @param {Function} funct - the function which is to be placed in the chain
-   * @param {Object} extension - an object with one or both keys named:
-   * `prepend` or `append`. The `pre` key will execute before funct is called and
-   * `post` will obviously be executed after.
-   * @param {Object} thisObj - an optional this reference to use as the apply scope.
-   * @returns result from the function call.
-   *
-  */
-  d4.aliasMethodChain = function(funct, extension, thisObj) {
-    if(typeof extension === 'undefined'){
-      err('d4.aliasMethodChain() expects an extension object with either a `prepend()` or `append()` function.');
-    }
-    return function() {
-      var result;
-      if(typeof extension.prepend !== 'undefined'){
-        extension.prepend.apply(thisObj || this, arguments);
-      }
-      result = funct.apply(thisObj || this, arguments);
-      if(typeof extension.append !== 'undefined'){
-        extension.append.apply(thisObj || this, arguments);
-      }
-      return result;
-    };
-  };
-
-  /**
    * This function allows you to register a reusable chart builder with d4.
    * @param {String} name - accessor name for chart builder.
    * @param {Function} funct - function which will instantiate the chart builder.
@@ -1058,7 +1025,7 @@
   d4.chart('column', function column() {
     var chart = d4.baseChart();
     [{
-      'bars': d4.features.stackedColumnSeries
+      'bars': d4.features.rectSeries
     }, {
       'barLabels': d4.features.stackedColumnLabels
     }, {
@@ -1290,7 +1257,7 @@
       }
     });
     [{
-      'bars': d4.features.stackedColumnSeries
+      'bars': d4.features.rectSeries
     }, {
       'barLabels': d4.features.stackedColumnLabels
     }, {
@@ -1515,7 +1482,7 @@
 
     var chart = d4.baseChart();
     [{
-      'bars': d4.features.stackedColumnSeries
+      'bars': d4.features.rectSeries
     }, {
       'barLabels': d4.features.stackedColumnLabels
     }, {
@@ -1673,7 +1640,7 @@
       }
     });
     [{
-      'bars': d4.features.stackedColumnSeries
+      'bars': d4.features.rectSeries
     }, {
       'barLabels': d4.features.stackedColumnLabels
     }, {
@@ -1887,7 +1854,7 @@
   d4.chart('waterfall', function waterfallChart() {
     var chart = d4.baseChart({ builder: waterfallChartBuilder });
     [{
-      'bars': d4.features.stackedColumnSeries,
+      'bars': d4.features.rectSeries,
       'overrides': columnSeriesOverrides
     }, {
       'connectors': d4.features.waterfallConnectors
@@ -2528,57 +2495,95 @@
 
 (function() {
   'use strict';
-  d4.feature('stackedColumnSeries', function(name) {
-    var sign = function(val){
-      return (val > 0) ? 'positive' : 'negative';
-    };
+  var sign = function(val){
+    return (val > 0) ? 'positive' : 'negative';
+  };
 
-    var useDiscretePosition = function(dimension, d){
-      var axis = this[dimension];
-      return axis(d[axis.$key]);
-    };
+  var useDiscretePosition = function(dimension, d){
+    var axis = this[dimension];
+    return axis(d[axis.$key]);
+  };
 
-    var useDiscreteSize = function(dimension) {
-      var axis = this[dimension];
-      return axis.rangeBand();
-    };
+  var useDiscreteSize = function(dimension) {
+    var axis = this[dimension];
+    return axis.rangeBand();
+  };
 
-    var useContinuousSize = function(dimension, d) {
-      var axis = this[dimension];
-      if(typeof d.y0 !== 'undefined'){
-        return Math.abs(axis(d.y0) - axis(d.y0 + d.y));
-      }else {
-        return Math.abs(axis(d[axis.$key]) - axis(0));
-      }
-    };
+  var useContinuousSize = function(dimension, d) {
+    var axis = this[dimension];
+    if(typeof d.y0 !== 'undefined'){
+      return Math.abs(axis(d.y0) - axis(d.y0 + d.y));
+    }else {
+      return Math.abs(axis(d[axis.$key]) - axis(0));
+    }
+  };
 
-    var useContinuousPosition = function(dimension, d) {
-      var axis = this[dimension];
-      var val;
-      if(typeof d.y0 !== 'undefined'){
-        if(dimension === 'y') {
-          val = d.y0 + d.y;
-          return  val < 0 ? axis(d.y0) : axis(val);
-        } else {
-          val = (d.y0 + d.y) - Math.max(0, d.y);
-          return axis(val);
-        }
+  var useContinuousPosition = function(dimension, d) {
+    var axis = this[dimension];
+    var val;
+    if(typeof d.y0 !== 'undefined'){
+      if(dimension === 'y') {
+        val = d.y0 + d.y;
+        return  val < 0 ? axis(d.y0) : axis(val);
       } else {
-        if(dimension === 'y') {
-          return d[axis.$key] < 0 ? axis(0) : axis(d[axis.$key]);
-        } else {
-          val = d[axis.$key] - Math.max(0, d[axis.$key]);
-          return axis(val);
-        }
+        val = (d.y0 + d.y) - Math.max(0, d.y);
+        return axis(val);
       }
-    };
+    } else {
+      if(dimension === 'y') {
+        return d[axis.$key] < 0 ? axis(0) : axis(d[axis.$key]);
+      } else {
+        val = d[axis.$key] - Math.max(0, d[axis.$key]);
+        return axis(val);
+      }
+    }
+  };
 
+  var baseShapeFeature = function(name, shapeType, renderShapeAttributes) {
     return {
       accessors: {
         classes: function(d,i) {
           return 'bar fill item'+ i + ' ' + sign(d[this.valueKey]) + ' ' + d[this.y.$key];
-        },
+        }
+      },
 
+      render: function(scope, data) {
+        this.featuresGroup.append('g').attr('class', name);
+
+        // create data join with the series data
+        var group = this.svg.select('.' + name).selectAll('g')
+          .data(data, function(d, i){
+            return d.key + i;
+          });
+
+        group.enter().append('g')
+          .attr('class', function(d, i) {
+            return 'series'+ i + ' ' +  this.y.$key;
+          }.bind(this));
+        group.exit().remove();
+
+        var shape = group.selectAll(shapeType)
+        .data(function(d) {
+          return d.values;
+        });
+
+        shape.enter().append(shapeType)
+          .attr('class', d4.functor(scope.accessors.classes).bind(this));
+        renderShapeAttributes.bind(this)(scope, shape);
+
+        shape.exit().remove();
+        return shape;
+      }
+    };
+  };
+
+ /**
+  * This feature is useful for displaying charts which need a series of rects.
+  * This feature can be used to display a sequential or stacked series of rects.
+  */
+  d4.feature('rectSeries', function(name) {
+    var rectObj =  {
+      accessors: {
         height: function(d) {
           if(this.y.$scale === 'ordinal'){
             return useDiscreteSize.bind(this)('y');
@@ -2614,42 +2619,21 @@
             return useContinuousPosition.bind(this)('y', d);
           }
         }
-      },
-
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
-
-        // create data join with the series data
-        var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d, i){
-            return d.key + i;
-          });
-
-        group.enter().append('g')
-          .attr('class', function(d, i) {
-            return 'series'+ i + ' ' +  this.y.$key;
-          }.bind(this));
-        group.exit().remove();
-
-        var rect = group.selectAll('rect')
-        .data(function(d) {
-          return d.values;
-        });
-
-        rect.enter().append('rect')
-          .attr('class', d4.functor(scope.accessors.classes).bind(this))
-          .attr('x', d4.functor(scope.accessors.x).bind(this))
-          .attr('rx', d4.functor(scope.accessors.rx).bind(this)())
-          .attr('y', d4.functor(scope.accessors.y).bind(this))
-          .attr('ry', d4.functor(scope.accessors.ry).bind(this)())
-          .attr('width', d4.functor(scope.accessors.width).bind(this))
-          .attr('height', d4.functor(scope.accessors.height).bind(this));
-
-        rect.exit().remove();
-        return rect;
       }
     };
+    var renderShape = function(scope, selection) {
+      selection
+      .attr('x', d4.functor(scope.accessors.x).bind(this))
+      .attr('y', d4.functor(scope.accessors.y).bind(this))
+      .attr('ry', d4.functor(scope.accessors.ry).bind(this))
+      .attr('rx', d4.functor(scope.accessors.rx).bind(this))
+      .attr('width', d4.functor(scope.accessors.width).bind(this))
+      .attr('height', d4.functor(scope.accessors.height).bind(this));
+    };
+    var baseObj = baseShapeFeature.bind(this)(name, 'rect', renderShape);
+    return d4.merge(baseObj, rectObj);
   });
+
 }).call(this);
 
 (function() {

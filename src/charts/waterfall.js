@@ -194,7 +194,7 @@
   d4.chart('waterfall', function waterfallChart() {
     var chart = d4.baseChart({ builder: waterfallChartBuilder });
     [{
-      'bars': d4.features.stackedColumnSeries,
+      'bars': d4.features.rectSeries,
       'overrides': columnSeriesOverrides
     }, {
       'connectors': d4.features.waterfallConnectors
