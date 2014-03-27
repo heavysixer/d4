@@ -1,6 +1,6 @@
 {
   "name": "d4",
-  "version": "0.5.9",
+  "version": "0.6.0",
   "description": "A friendly reusable chart DSL for D3",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
     "svg"
   ],
   "author": {
-    "name": "D4 Team",
+    "name": "Mark Daggett, D4 Team",
     "uri": "https://github.com/heavysixer/d4/blob/master/AUTHORS.txt"
   },
   "scripts": {

@@ -65,6 +65,7 @@ module.exports = function(grunt) {
         banner: '/*! <%= meta.pkg.name %> - v<%= meta.pkg.version %>\n' +
           ' *  License: <%= meta.pkg.license %>\n' +
           ' *  Date: <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+          ' *  Copyright: <%= meta.pkg.author.name %>\n' +
           ' */\n'
       },
       test: {
