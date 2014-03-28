@@ -16,7 +16,7 @@
 
   var useContinuousSize = function(dimension, d) {
     var axis = this[dimension];
-    if (typeof d.y0 !== 'undefined') {
+    if (d4.isDefined(d.y0)) {
       return Math.abs(axis(d.y0) - axis(d.y0 + d.y));
     } else {
       return Math.abs(axis(d[axis.$key]) - axis(0));
@@ -26,7 +26,7 @@
   var useContinuousPosition = function(dimension, d) {
     var axis = this[dimension];
     var val;
-    if (typeof d.y0 !== 'undefined') {
+    if (d4.isDefined(d.y0)) {
       if (dimension === 'y') {
         val = d.y0 + d.y;
         return val < 0 ? axis(d.y0) : axis(val);

@@ -325,6 +325,26 @@ describe('d4.base', function() {
     });
   });
 
+  describe('#isDefined()', function(){
+    it('should determine if a value is undefined or not', function(){
+      expect(d4.isDefined(undefined)).to.equal(false);
+      expect(d4.isDefined(false)).to.equal(true);
+      expect(d4.isDefined(true)).to.equal(true);
+      expect(d4.isDefined()).to.equal(false);
+      expect(d4.isDefined('undefined')).to.equal(true);
+    });
+  });
+
+  describe('#isUndefined()', function(){
+    it('should determine if a value is undefined or not', function(){
+      expect(d4.isUndefined(undefined)).to.equal(true);
+      expect(d4.isUndefined(false)).to.equal(false);
+      expect(d4.isUndefined(true)).to.equal(false);
+      expect(d4.isUndefined()).to.equal(true);
+      expect(d4.isUndefined('undefined')).to.equal(false);
+    });
+  });
+
   describe('#extend()', function() {
     it('should extend one object with the properties of another', function() {
       var a = {

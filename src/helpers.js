@@ -91,7 +91,7 @@
       x: 0,
       y: 0
     };
-    if (typeof text !== 'undefined') {
+    if (d4.isDefined(text)) {
       var container = d3.select('body').append('svg').attr('class', '' + klasses);
       container.append('text')
         .attr('x', -5000)

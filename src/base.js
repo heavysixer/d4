@@ -64,10 +64,10 @@
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  var readOnlyProp = function(obj, prop, functName, value){
+  var readOnlyProp = function(obj, prop, functName, value) {
     Object.defineProperty(obj, prop, {
       configurable: true,
-      get: function(){
+      get: function() {
         return d4.functor(value)();
       },
       set: function() {
@@ -80,7 +80,7 @@
     var parts = Array.prototype.slice.call(arguments);
     var message = parts.shift();
     var regexp;
-    each(parts, function(str, i){
+    each(parts, function(str, i) {
       regexp = new RegExp('\\{' + i + '\\}', 'gi');
       message = message.replace(regexp, str);
     });
@@ -109,7 +109,7 @@
   //     chart.width(500)
   //     chart.$width //500
   var storeLastValue = function(obj, functName, attr) {
-    if(d4.isNotFunction(attr)){
+    if (d4.isNotFunction(attr)) {
       var prop = '$' + functName;
       readOnlyProp(obj, prop, functName, attr);
     }
@@ -117,7 +117,7 @@
 
   var accessorForObject = function(wrapperObj, innerObj, functName, prefix) {
     var wrapperFunct = functName;
-    if(typeof prefix !== 'undefined') {
+    if (d4.isDefined(prefix)) {
       wrapperFunct = prefix + capitalize(functName);
     }
     wrapperObj[wrapperFunct] = function(attr) {
@@ -131,7 +131,7 @@
     storeLastValue(wrapperObj, functName, innerObj[functName]);
   };
 
-  var createAccessorsFromArray = function(wrapperObj, innerObj, accessors, prefix){
+  var createAccessorsFromArray = function(wrapperObj, innerObj, accessors, prefix) {
     each(accessors, function(functName) {
       accessorForObject(wrapperObj, innerObj, functName, prefix);
     });
@@ -143,7 +143,7 @@
   // contains an accessors key and create the wrapper function for each
   // accessor item. This function is used internally by the feature mixin and
   // axes objects.
-  var createAccessorsFromObject = function(obj){
+  var createAccessorsFromObject = function(obj) {
     var accessors = obj.accessors;
     if (accessors) {
       createAccessorsFromArray(obj, obj.accessors, d3.keys(accessors));
@@ -156,15 +156,15 @@
         usingAxis.bind(opts)(key, funct);
         return chart;
       };
-      each(d3.keys(opts.axes[key].accessors), function(prop){
+      each(d3.keys(opts.axes[key].accessors), function(prop) {
         chart[key][prop] = opts.axes[key][prop];
       });
     });
   };
 
-  var validateScale = function(kind){
+  var validateScale = function(kind) {
     var supportedScales = d3.keys(d3.scale);
-    if(supportedScales.indexOf(kind) < 0){
+    if (supportedScales.indexOf(kind) < 0) {
       err('The scale type: "{0}" is unrecognized. D4 only supports these scale types: {1}', kind, supportedScales.join(', '));
     }
   };
@@ -201,7 +201,7 @@
     // Create a transparent proxy for functions needed by the d3 scale.
     d4.createAccessorProxy(dimension, scale);
 
-    dimension.scale = function(val){
+    dimension.scale = function(val) {
       if (!arguments.length) {
         return dimension.accessors.scale;
       }
@@ -211,44 +211,48 @@
     };
   };
 
-  var createAxisScale = function(dimension, opts, axis){
+  var createAxisScale = function(dimension, opts, axis) {
     validateScale(axis.accessors.scale);
     var scale = d3.scale[axis.accessors.scale]();
     createAccessorsFromObject(axis);
     opts[dimension] = scale;
 
-    createAxisScaleAccessor(scale, opts.axes[dimension], function(){
+    createAxisScaleAccessor(scale, opts.axes[dimension], function() {
       createAxisScale(dimension, opts, axis);
     });
 
     // Danger Zone (TM): This is setting read-only function properties on a d3 scale instance. This may not be totally wise.
-    each(d3.keys(opts.axes[dimension].accessors), function(key){
+    each(d3.keys(opts.axes[dimension].accessors), function(key) {
       readOnlyProp(opts[dimension], '$' + key, opts.axes[dimension][key], opts.axes[dimension][key]);
     });
   };
 
-  var addAxis = function(dimension, opts, axis){
+  var addAxis = function(dimension, opts, axis) {
     opts.axes[dimension] = {
-      accessors : d4.extend({
-        key : dimension,
-        min : undefined,
-        max : undefined
+      accessors: d4.extend({
+        key: dimension,
+        min: undefined,
+        max: undefined
       }, axis)
     };
     createAxisScale(dimension, opts, opts.axes[dimension]);
   };
 
   var linkAxes = function(opts) {
-    each(d3.keys(opts.axes), function(dimension){
+    each(d3.keys(opts.axes), function(dimension) {
       addAxis(dimension, opts, opts.axes[dimension]);
     });
 
-    if(typeof(opts.axes.x) === 'undefined') {
-      addAxis('x', opts, { scale : 'ordinal' });
+    if (d4.isUndefined(opts.axes.x)) {
+      addAxis('x', opts, {
+        scale: 'ordinal'
+      });
     }
 
-    if(typeof(opts.axes.y) === 'undefined') {
-      addAxis('y', opts, { scale : 'linear' });
+    if (d4.isUndefined(opts.axes.y)) {
+      addAxis('y', opts, {
+        scale: 'linear'
+      });
     }
   };
 
@@ -286,10 +290,10 @@
   // create this proxy which passes any custom events on to the correct
   // selection. For more information see the #selection.on documentation for d3:
   // https://github.com/mbostock/d3/wiki/Selections#wiki-animation--interaction
-  var addEventsProxy = function(feature, selection){
-    if(selection){
-      each(d3.keys(feature._proxiedFunctions), function(key){
-        each(feature._proxiedFunctions[key], function(proxiedArgs){
+  var addEventsProxy = function(feature, selection) {
+    if (selection) {
+      each(d3.keys(feature._proxiedFunctions), function(key) {
+        each(feature._proxiedFunctions[key], function(proxiedArgs) {
           selection[key].apply(selection, proxiedArgs);
         });
       });
@@ -298,9 +302,9 @@
 
   var prepareDataForFeature = function(opts, name, data) {
     var feature = opts.features[name];
-    if(d4.isFunction(feature.prepare)){
+    if (d4.isFunction(feature.prepare)) {
       data = feature.prepare.bind(opts)(data);
-      if(typeof data === 'undefined') {
+      if (d4.isUndefined(data)) {
         err('"feature.prepare()" must return a data array. However, the prepare function for the "{0}" feature did not', name);
       }
     }
@@ -328,13 +332,13 @@
   var scaffoldChart = function(selection, data) {
     this.svg = d3.select(selection).selectAll('svg').data([data]);
     this.featuresGroup = this.svg.enter().append('svg')
-    .append('g')
+      .append('g')
       .attr('class', 'featuresGroup')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
     this.svg
-    .attr('width', this.width + this.margin.left + this.margin.right)
-    .attr('height', this.height + this.margin.top + this.margin.bottom)
-    .attr('class', 'd4');
+      .attr('width', this.width + this.margin.left + this.margin.right)
+      .attr('height', this.height + this.margin.top + this.margin.bottom)
+      .attr('class', 'd4');
     this.svg.selectAll('defs').data([0]).enter().append('defs');
   };
 
@@ -348,26 +352,27 @@
   // object itself.
   var applyDefaultParser = function(opts, data) {
     var parsed = d4.parsers.nestedGroup()
-    .x(opts.x.$key)
-    .y(opts.y.$key)
-    .nestKey(opts.x.$key)
-    .value(opts.valueKey)(data);
+      .x(opts.x.$key)
+      .y(opts.y.$key)
+      .nestKey(opts.x.$key)
+      .value(opts.valueKey)(data);
     return parsed.data;
   };
 
   var prepareData = function(opts, data) {
-    if(typeof opts.valueKey === 'undefined'){
+    if (d4.isUndefined(opts.valueKey)) {
       opts.valueKey = opts.y.$key;
     }
 
-    var needsParsing = false, keys, item;
-    if(data.length > 0){
+    var needsParsing = false,
+      keys, item;
+    if (data.length > 0) {
       item = data[0];
-      if(d4.isArray(item)) {
+      if (d4.isArray(item)) {
         needsParsing = true;
       } else {
         keys = d3.keys(item);
-        if(keys.indexOf('key') + keys.indexOf('values') <= 0) {
+        if (keys.indexOf('key') + keys.indexOf('values') <= 0) {
           needsParsing = true;
         }
       }
@@ -393,8 +398,8 @@
     }
   };
 
-  var addToMixins = function(mixins, name, index){
-    if (typeof index !== 'undefined') {
+  var addToMixins = function(mixins, name, index) {
+    if (d4.isDefined(index)) {
       index = Math.max(Math.min(index, mixins.length), 0);
       mixins.splice(index, 0, name);
     } else {
@@ -402,22 +407,22 @@
     }
   };
 
-  var assignD3SelectionProxy = function(feature){
+  var assignD3SelectionProxy = function(feature) {
     feature._proxiedFunctions = {
-      on : []
+      on: []
     };
-    feature.on = function(){
+    feature.on = function() {
       feature._proxiedFunctions.on.push(Array.prototype.slice.call(arguments));
     };
   };
 
-  var assignMixinAccessors = function(feature){
+  var assignMixinAccessors = function(feature) {
     createAccessorsFromObject(feature);
   };
 
-  var assignMixinProxies = function(feature){
+  var assignMixinProxies = function(feature) {
     assignD3SelectionProxy(feature);
-    d4.each(feature.proxies, function(obj){
+    d4.each(feature.proxies, function(obj) {
       d4.createAccessorProxy(feature, obj);
     });
   };
@@ -429,7 +434,7 @@
     var name = d3.keys(feature)[0];
     var overrides = extractOverrides.bind(this)(feature, name);
     var baseFeature = {
-      proxies : []
+      proxies: []
     };
     feature[name] = d4.merge(d4.merge(baseFeature, feature[name](name)), overrides);
     d4.extend(this.features, feature);
@@ -440,11 +445,11 @@
 
   var mixout = function(features) {
     var arr = [];
-    if (typeof features === 'undefined') {
+    if (d4.isUndefined(features)) {
       err('A string or array of names is required in order to mixout a chart feature.');
     }
     arr.push(features);
-    d4.each(d4.flatten(arr), function(name){
+    d4.each(d4.flatten(arr), function(name) {
       delete this.features[name];
       this.mixins = this.mixins.filter(function(val) {
         return val !== name;
@@ -688,7 +693,7 @@
    * @param {String} name - accessor name for chart builder.
    * @param {Function} funct - function which will instantiate the chart builder.
    * @returns a reference to the chart builder
-  */
+   */
   d4.builder = function(name, funct) {
     d4.builders[name] = funct;
     return d4.builders[name];
@@ -699,7 +704,7 @@
    * @param {String} name - accessor name for chart.
    * @param {Function} funct - function which will instantiate the chart.
    * @returns a reference to the chart function
-  */
+   */
   d4.chart = function(name, funct) {
     d4.charts[name] = funct;
     return d4.charts[name];
@@ -733,16 +738,16 @@
    * @param {Object} proxy - The proxy object, which masks the target.
    * @param {Object} target - The target objet, which is masked by the proxy
    * @param {String} prefix - Optional prefix to add to the method names, which helps avoid naming collisions on the proxy.
-  */
+   */
   d4.createAccessorProxy = function(proxy, target, prefix) {
 
-    each(d3.keys(target), function(funct){
+    each(d3.keys(target), function(funct) {
       var proxyFunct = funct;
-      if(typeof prefix !== 'undefined') {
+      if (d4.isDefined(prefix)) {
         proxyFunct = prefix + capitalize(funct);
       }
 
-      proxy[proxyFunct] = function(){
+      proxy[proxyFunct] = function() {
         if (!arguments.length) {
           return target[funct]();
         }
@@ -767,7 +772,7 @@
             source[prop].constructor === Object) {
             obj[prop] = obj[prop] || {};
             d4.extend(obj[prop], source[prop]);
-          } else if(d4.isArray(source[prop])) {
+          } else if (d4.isArray(source[prop])) {
             obj[prop] = source[prop].slice();
           } else {
             obj[prop] = source[prop];
@@ -783,7 +788,7 @@
    * @param {String} name - accessor name for chart feature.
    * @param {Function} funct - function which will instantiate the chart feature.
    * @returns a reference to the chart feature
-  */
+   */
   d4.feature = function(name, funct) {
     d4.features[name] = funct;
     return d4.features[name];
@@ -793,7 +798,7 @@
    * Helper method to flatten a multi-dimensional array into a single array.
    * @param {Array} arr - array to be flattened.
    * @returns flattened array.
-  */
+   */
   d4.flatten = function(arr) {
     var result = arr.reduce(function(a, b) {
       a = d4.isArray(a) ? a : [a];
@@ -834,6 +839,14 @@
     return !d4.isFunction(obj);
   };
 
+  d4.isUndefined = function(value) {
+    return typeof value === 'undefined';
+  };
+
+  d4.isDefined = function(value) {
+    return !d4.isUndefined(value);
+  };
+
   d4.merge = function(options, overrides) {
     return d4.extend(d4.extend({}, options), overrides);
   };
@@ -843,7 +856,7 @@
    * @param {String} name - accessor name for data parser.
    * @param {Function} funct - function which will instantiate the data parser.
    * @returns a reference to the data parser
-  */
+   */
   d4.parser = function(name, funct) {
     d4.parsers[name] = funct;
     return d4.parsers[name];

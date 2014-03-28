@@ -4,7 +4,7 @@
 
     // FIXME: We should not need to sniff this out.
     var dataInColumns = function(d) {
-      if (typeof d.y0 !== 'undefined') {
+      if (d4.isDefined(d.y0)) {
         return true;
       }
       if (this.y.$scale !== 'ordinal') {
@@ -32,7 +32,7 @@
         offset *= -1;
         padding *= -1;
       }
-      if (typeof d.y0 !== 'undefined') {
+      if (d4.isDefined(d.y0)) {
         val = d.y0 + d.y;
         return (val <= 0 ? axis(d.y0) : axis(val)) + offset;
       } else {
@@ -59,7 +59,7 @@
         },
 
         text: function(d) {
-          if (typeof d.y0 !== 'undefined') {
+          if (d4.isDefined(d.y0)) {
             if (this.x.$scale === 'ordinal') {
               if (Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
                 return d3.format('').call(this, d[this.valueKey]);
