@@ -1,0 +1,44 @@
+---
+title: Margins & Chart Size
+concepts:
+  - Basic Concepts
+---
+<h5>{{title}}</h5>
+<p>
+  d4 measures the height and width of a chart in two ways. Understanding how
+  and when these measurements are applied will better help you understand how to
+  properly size your chart.
+</p>
+<p>
+  First d4 treats <code>height()</code> and <code>width()</code> as the chart
+  area only, which means it excludes the margins. That means that when you set
+  the height and width of a chart, the actual DOM element may be larger because
+  it will include the margin too. Here is an example:
+<hr/>
+<script type="text/javascript" charset="utf-8" id='source_code'>
+'use strict';
+
+$(document).ready(function(){
+  var $e = $('#outer');
+  $e.css({width: 400, height: 100});
+  var w = $e.width();
+  var h = $e.height();
+
+  var outer = d4.charts.column()
+  .outerHeight(h)
+  .outerWidth(w)
+  .x(function(x){
+    x.scale('linear')
+  })
+  var inner = outer.clone();
+
+  d3.select('#outer')
+  .datum([ { x: w, y:h } ])
+  .call(outer);
+});
+
+</script>
+<h6>Setting outerHeight or outerWidth</h6>
+<div id="outer"></div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript"></code></pre>
