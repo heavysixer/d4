@@ -192,30 +192,26 @@
    * @name waterfall
    */
   d4.chart('waterfall', function waterfallChart() {
-    var chart = d4.baseChart({
+    return d4.baseChart({
       builder: waterfallChartBuilder
-    });
-    [{
-      'name': 'bars',
-      'feature': d4.features.rectSeries,
-      'overrides': columnSeriesOverrides
-    }, {
-      'name': 'connectors',
-      'feature': d4.features.waterfallConnectors
-    }, {
-      'name': 'columnLabels',
-      'feature': d4.features.stackedLabels,
-      'overrides': columnLabelOverrides
-    }, {
-      'name': 'xAxis',
-      'feature': d4.features.xAxis
-    }, {
-      'name': 'yAxis',
-      'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-
-    return chart;
+    })
+      .mixin([{
+        'name': 'bars',
+        'feature': d4.features.rectSeries,
+        'overrides': columnSeriesOverrides
+      }, {
+        'name': 'connectors',
+        'feature': d4.features.waterfallConnectors
+      }, {
+        'name': 'columnLabels',
+        'feature': d4.features.stackedLabels,
+        'overrides': columnLabelOverrides
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);

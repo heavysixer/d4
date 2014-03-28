@@ -57,8 +57,7 @@
    * @name line
    */
   d4.chart('line', function line() {
-    var chart = d4.baseChart();
-    [{
+    return d4.baseChart().mixin([{
       'name': 'lineSeries',
       'feature': d4.features.lineSeries
     }, {
@@ -70,9 +69,6 @@
     }, {
       'name': 'lineSeriesLabels',
       'feature': d4.features.lineSeriesLabels
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    }]);
   });
 }).call(this);

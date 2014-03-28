@@ -52,7 +52,8 @@
    * @name column
    */
   d4.chart('column', function column() {
-    var chart = d4.baseChart();
+    return d4.baseChart()
+    .mixin(
     [{
       'name': 'bars',
       'feature': d4.features.rectSeries
@@ -65,9 +66,6 @@
     }, {
       'name': 'yAxis',
       'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    }]);
   });
 }).call(this);

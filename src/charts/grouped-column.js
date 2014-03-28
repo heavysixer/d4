@@ -67,29 +67,27 @@
       };
     };
 
-    var chart = d4.baseChart({
+    return d4.baseChart({
       config: {
         accessors: {
           groupsOf: 1
         }
       }
-    });
-    [{
-      'name': 'bars',
-      'feature': d4.features.groupedColumnSeries
-    }, {
-      'name': 'barLabels',
-      'feature': d4.features.stackedLabels,
-      'overrides': columnLabelOverrides
-    }, {
-      'name': 'xAxis',
-      'feature': d4.features.xAxis
-    }, {
-      'name': 'yAxis',
-      'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    })
+    .mixin(
+      [{
+        'name': 'bars',
+        'feature': d4.features.groupedColumnSeries
+      }, {
+        'name': 'barLabels',
+        'feature': d4.features.stackedLabels,
+        'overrides': columnLabelOverrides
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);

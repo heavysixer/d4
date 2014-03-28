@@ -56,7 +56,7 @@ var data = [
 // Create a column chart without a yAxis, but with a grid in the background.
 var columnChart = d4.charts.column()
 .mixout('yAxis')
-.mixin('grid', d4.features.grid, 0)
+.mixin({ 'name' : 'grid', 'feature' : d4.features.grid, 'index' : 0 })
 
 d3.select('someDomElement')
   .datum(data)

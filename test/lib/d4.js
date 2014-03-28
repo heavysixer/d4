@@ -1063,7 +1063,8 @@
    * @name column
    */
   d4.chart('column', function column() {
-    var chart = d4.baseChart();
+    return d4.baseChart()
+    .mixin(
     [{
       'name': 'bars',
       'feature': d4.features.rectSeries
@@ -1076,10 +1077,7 @@
     }, {
       'name': 'yAxis',
       'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    }]);
   });
 }).call(this);
 
@@ -1152,30 +1150,28 @@
       };
     };
 
-    var chart = d4.baseChart({
+    return d4.baseChart({
       config: {
         accessors: {
           groupsOf: 1
         }
       }
-    });
-    [{
-      'name': 'bars',
-      'feature': d4.features.groupedColumnSeries
-    }, {
-      'name': 'barLabels',
-      'feature': d4.features.stackedLabels,
-      'overrides': columnLabelOverrides
-    }, {
-      'name': 'xAxis',
-      'feature': d4.features.xAxis
-    }, {
-      'name': 'yAxis',
-      'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    })
+    .mixin(
+      [{
+        'name': 'bars',
+        'feature': d4.features.groupedColumnSeries
+      }, {
+        'name': 'barLabels',
+        'feature': d4.features.stackedLabels,
+        'overrides': columnLabelOverrides
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);
 
@@ -1238,8 +1234,7 @@
    * @name line
    */
   d4.chart('line', function line() {
-    var chart = d4.baseChart();
-    [{
+    return d4.baseChart().mixin([{
       'name': 'lineSeries',
       'feature': d4.features.lineSeries
     }, {
@@ -1251,10 +1246,7 @@
     }, {
       'name': 'lineSeriesLabels',
       'feature': d4.features.lineSeriesLabels
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    }]);
   });
 }).call(this);
 
@@ -1290,7 +1282,7 @@
    * @name row
    */
   d4.chart('row', function row() {
-    var chart = d4.baseChart({
+    return d4.baseChart({
       config: {
         margin: {
           top: 20,
@@ -1308,23 +1300,20 @@
           }
         }
       }
-    });
-    [{
-      'name': 'bars',
-      'feature': d4.features.rectSeries
-    }, {
-      'name': 'barLabels',
-      'feature': d4.features.stackedLabels
-    }, {
-      'name': 'xAxis',
-      'feature': d4.features.xAxis
-    }, {
-      'name': 'yAxis',
-      'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    })
+      .mixin([{
+        'name': 'bars',
+        'feature': d4.features.rectSeries
+      }, {
+        'name': 'barLabels',
+        'feature': d4.features.stackedLabels
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);
 
@@ -1407,7 +1396,7 @@
    * @name scatterPlot
    */
   d4.chart('scatterPlot', function scatterPlot() {
-    var chart = d4.baseChart({
+    return d4.baseChart({
       builder: scatterPlotBuilder,
       config: {
         axes: {
@@ -1419,8 +1408,8 @@
           }
         }
       }
-    });
-    [{
+    })
+    .mixin([{
       'name': 'circles',
       'feature': d4.features.circleSeries,
       'overrides': circleOverrides
@@ -1433,10 +1422,7 @@
     }, {
       'name': 'yAxis',
       'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    }]);
   });
 }).call(this);
 
@@ -1560,95 +1546,92 @@
       };
     };
 
-    var chart = d4.baseChart();
-    [{
-      'name': 'bars',
-      'feature': d4.features.rectSeries
-    }, {
-      'name': 'barLabels',
-      'feature': d4.features.stackedLabels
-    }, {
-      'name': 'connectors',
-      'feature': d4.features.stackedColumnConnectors
-    }, {
-      'name': 'columnTotals',
-      'feature': d4.features.columnLabels,
-      'overrides': columnLabelsOverrides
-    }, {
-      'name': 'xAxis',
-      'feature': d4.features.xAxis
-    }, {
-      'name': 'yAxis',
-      'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    return d4.baseChart()
+      .mixin([{
+        'name': 'bars',
+        'feature': d4.features.rectSeries
+      }, {
+        'name': 'barLabels',
+        'feature': d4.features.stackedLabels
+      }, {
+        'name': 'connectors',
+        'feature': d4.features.stackedColumnConnectors
+      }, {
+        'name': 'columnTotals',
+        'feature': d4.features.columnLabels,
+        'overrides': columnLabelsOverrides
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);
 
 (function() {
   'use strict';
- /*
-  * The stacked row chart has two axes (`x` and `y`). By default the stacked
-  * row expects continious scale for the `x` axis and a discrete scale for
-  * the `y` axis. The stacked row has the following default features:
-  *
-  *##### Accessors
-  *
-  * `bars` - series of rects
-  * `barLabels` - individual data values inside the stacked rect
-  * `connectors` - visual lines that connect the various stacked columns together
-  * `columnTotals` - column labels which total the values of each stack.
-  * `xAxis` - the axis for the x dimension
-  * `yAxis` - the axis for the y dimension
-  *
-  *##### Example Usage
-  *
-  *      var data = [
-  *            { year: '2010', unitsSold: 200, salesman : 'Bob' },
-  *            { year: '2011', unitsSold: 200, salesman : 'Bob' },
-  *            { year: '2012', unitsSold: 300, salesman : 'Bob' },
-  *            { year: '2013', unitsSold: -400, salesman : 'Bob' },
-  *            { year: '2014', unitsSold: -500, salesman : 'Bob' },
-  *            { year: '2010', unitsSold: 100, salesman : 'Gina' },
-  *            { year: '2011', unitsSold: 100, salesman : 'Gina' },
-  *            { year: '2012', unitsSold: 200, salesman : 'Gina' },
-  *            { year: '2013', unitsSold: -500, salesman : 'Gina' },
-  *            { year: '2014', unitsSold: -600, salesman : 'Gina' },
-  *            { year: '2010', unitsSold: 400, salesman : 'Average' },
-  *            { year: '2011', unitsSold: 200, salesman : 'Average' },
-  *            { year: '2012', unitsSold: 400, salesman : 'Average' },
-  *            { year: '2013', unitsSold: -400, salesman : 'Average' },
-  *            { year: '2014', unitsSold: -400, salesman : 'Average' }
-  *          ];
-  *
-  *        var parsedData = d4.parsers.nestedStack()
-  *          .x(function(){
-  *            return 'year';
-  *          })
-  *          .y(function(){
-  *            return 'salesman';
-  *          })
-  *          .value(function(){
-  *            return 'unitsSold';
-  *          })(data);
-  *
-  *        var chart = d4.charts.stackedRow()
-  *        .x(function(x){
-  *          x.key('unitsSold');
-  *        })
-  *        .valueKey('unitsSold')
-  *        .y(function(y){
-  *          y.key('year');
-  *        });
-  *
-  *       d3.select('#example')
-  *       .datum(parsedData.data)
-  *       .call(chart);
-  *
-  * @name stackedRow
-  */
+  /*
+   * The stacked row chart has two axes (`x` and `y`). By default the stacked
+   * row expects continious scale for the `x` axis and a discrete scale for
+   * the `y` axis. The stacked row has the following default features:
+   *
+   *##### Accessors
+   *
+   * `bars` - series of rects
+   * `barLabels` - individual data values inside the stacked rect
+   * `connectors` - visual lines that connect the various stacked columns together
+   * `columnTotals` - column labels which total the values of each stack.
+   * `xAxis` - the axis for the x dimension
+   * `yAxis` - the axis for the y dimension
+   *
+   *##### Example Usage
+   *
+   *      var data = [
+   *            { year: '2010', unitsSold: 200, salesman : 'Bob' },
+   *            { year: '2011', unitsSold: 200, salesman : 'Bob' },
+   *            { year: '2012', unitsSold: 300, salesman : 'Bob' },
+   *            { year: '2013', unitsSold: -400, salesman : 'Bob' },
+   *            { year: '2014', unitsSold: -500, salesman : 'Bob' },
+   *            { year: '2010', unitsSold: 100, salesman : 'Gina' },
+   *            { year: '2011', unitsSold: 100, salesman : 'Gina' },
+   *            { year: '2012', unitsSold: 200, salesman : 'Gina' },
+   *            { year: '2013', unitsSold: -500, salesman : 'Gina' },
+   *            { year: '2014', unitsSold: -600, salesman : 'Gina' },
+   *            { year: '2010', unitsSold: 400, salesman : 'Average' },
+   *            { year: '2011', unitsSold: 200, salesman : 'Average' },
+   *            { year: '2012', unitsSold: 400, salesman : 'Average' },
+   *            { year: '2013', unitsSold: -400, salesman : 'Average' },
+   *            { year: '2014', unitsSold: -400, salesman : 'Average' }
+   *          ];
+   *
+   *        var parsedData = d4.parsers.nestedStack()
+   *          .x(function(){
+   *            return 'year';
+   *          })
+   *          .y(function(){
+   *            return 'salesman';
+   *          })
+   *          .value(function(){
+   *            return 'unitsSold';
+   *          })(data);
+   *
+   *        var chart = d4.charts.stackedRow()
+   *        .x(function(x){
+   *          x.key('unitsSold');
+   *        })
+   *        .valueKey('unitsSold')
+   *        .y(function(y){
+   *          y.key('year');
+   *        });
+   *
+   *       d3.select('#example')
+   *       .datum(parsedData.data)
+   *       .call(chart);
+   *
+   * @name stackedRow
+   */
   d4.chart('stackedRow', function stackedRow() {
     var columnLabelsOverrides = function() {
       var extractValues = function(data) {
@@ -1667,20 +1650,20 @@
             return d[this.y.$key];
           }.bind(this))
 
-          .rollup(function(leaves) {
-            var text = d3.sum(leaves, function(d) {
-              return d[this.valueKey];
-            }.bind(this));
+        .rollup(function(leaves) {
+          var text = d3.sum(leaves, function(d) {
+            return d[this.valueKey];
+          }.bind(this));
 
-            var size = d3.sum(leaves, function(d) {
-              return Math.max(0, d[this.valueKey]);
-            }.bind(this));
+          var size = d3.sum(leaves, function(d) {
+            return Math.max(0, d[this.valueKey]);
+          }.bind(this));
 
-            return {
-              text: text,
-              size: size
-            };
-          }.bind(this))
+          return {
+            text: text,
+            size: size
+          };
+        }.bind(this))
           .entries(arr);
       };
 
@@ -1695,8 +1678,8 @@
       };
 
       return {
-        accessors : {
-          x: function(d){
+        accessors: {
+          x: function(d) {
             var padding = 5;
             return this.x(d.size) + padding;
           }
@@ -1707,7 +1690,7 @@
       };
     };
 
-    var chart = d4.baseChart({
+    return d4.baseChart({
       config: {
         margin: {
           top: 20,
@@ -1724,32 +1707,30 @@
           }
         }
       }
-    });
-    [{
-      'name' : 'bars',
-      'feature' : d4.features.rectSeries
-    }, {
-      'name' : 'barLabels',
-      'feature' : d4.features.stackedLabels
-    }, {
-      'name' : 'connectors',
-      'feature' : d4.features.stackedColumnConnectors
-    }, {
-      'name' : 'columnTotals',
-      'feature' : d4.features.columnLabels,
-      'overrides': columnLabelsOverrides
-    }, {
-      'name' : 'xAxis',
-      'feature' : d4.features.xAxis
-    }, {
-      'name' : 'yAxis',
-      'feature' : d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    })
+      .mixin([{
+        'name': 'bars',
+        'feature': d4.features.rectSeries
+      }, {
+        'name': 'barLabels',
+        'feature': d4.features.stackedLabels
+      }, {
+        'name': 'connectors',
+        'feature': d4.features.stackedColumnConnectors
+      }, {
+        'name': 'columnTotals',
+        'feature': d4.features.columnLabels,
+        'overrides': columnLabelsOverrides
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);
+
 (function() {
   'use strict';
 
@@ -1944,31 +1925,27 @@
    * @name waterfall
    */
   d4.chart('waterfall', function waterfallChart() {
-    var chart = d4.baseChart({
+    return d4.baseChart({
       builder: waterfallChartBuilder
-    });
-    [{
-      'name': 'bars',
-      'feature': d4.features.rectSeries,
-      'overrides': columnSeriesOverrides
-    }, {
-      'name': 'connectors',
-      'feature': d4.features.waterfallConnectors
-    }, {
-      'name': 'columnLabels',
-      'feature': d4.features.stackedLabels,
-      'overrides': columnLabelOverrides
-    }, {
-      'name': 'xAxis',
-      'feature': d4.features.xAxis
-    }, {
-      'name': 'yAxis',
-      'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-
-    return chart;
+    })
+      .mixin([{
+        'name': 'bars',
+        'feature': d4.features.rectSeries,
+        'overrides': columnSeriesOverrides
+      }, {
+        'name': 'connectors',
+        'feature': d4.features.waterfallConnectors
+      }, {
+        'name': 'columnLabels',
+        'feature': d4.features.stackedLabels,
+        'overrides': columnLabelOverrides
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);
 

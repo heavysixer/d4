@@ -77,7 +77,7 @@
    * @name scatterPlot
    */
   d4.chart('scatterPlot', function scatterPlot() {
-    var chart = d4.baseChart({
+    return d4.baseChart({
       builder: scatterPlotBuilder,
       config: {
         axes: {
@@ -89,8 +89,8 @@
           }
         }
       }
-    });
-    [{
+    })
+    .mixin([{
       'name': 'circles',
       'feature': d4.features.circleSeries,
       'overrides': circleOverrides
@@ -103,9 +103,6 @@
     }, {
       'name': 'yAxis',
       'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    }]);
   });
 }).call(this);

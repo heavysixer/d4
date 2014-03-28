@@ -45,7 +45,7 @@ $(document).ready(function(){
       return 'unitsSold';
     })(data);
 
-    var rects = d4.charts.stackedColumn()
+  var rects = d4.charts.stackedColumn()
     .outerWidth($('#rects').width())
     .x(function(x){
       x.key('year');
@@ -53,7 +53,10 @@ $(document).ready(function(){
     .y(function(y){
       y.key('unitsSold');
     })
-    .mixin({ 'zeroLine' : d4.features.referenceLine })
+    .mixin({
+      'name' : 'zeroLine',
+      'feature' : d4.features.referenceLine
+    })
     .using('zeroLine', function(zero) {
       zero
         .x1(function() {
@@ -84,7 +87,7 @@ $(document).ready(function(){
   // data labels
   circles.mixin({
     'name' : 'circles',
-    'features' : d4.features.circleSeries,
+    'feature' : d4.features.circleSeries,
     'index': 0
   });
 
@@ -92,7 +95,7 @@ $(document).ready(function(){
   // data labels
   ellipses.mixin({
     'name' : 'ellipes',
-    'features' : d4.features.ellipseSeries,
+    'feature' : d4.features.ellipseSeries,
     'index' : 0
   });
 

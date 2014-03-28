@@ -30,7 +30,7 @@
    * @name row
    */
   d4.chart('row', function row() {
-    var chart = d4.baseChart({
+    return d4.baseChart({
       config: {
         margin: {
           top: 20,
@@ -48,22 +48,19 @@
           }
         }
       }
-    });
-    [{
-      'name': 'bars',
-      'feature': d4.features.rectSeries
-    }, {
-      'name': 'barLabels',
-      'feature': d4.features.stackedLabels
-    }, {
-      'name': 'xAxis',
-      'feature': d4.features.xAxis
-    }, {
-      'name': 'yAxis',
-      'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    })
+      .mixin([{
+        'name': 'bars',
+        'feature': d4.features.rectSeries
+      }, {
+        'name': 'barLabels',
+        'feature': d4.features.stackedLabels
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);

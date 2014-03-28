@@ -118,29 +118,26 @@
       };
     };
 
-    var chart = d4.baseChart();
-    [{
-      'name': 'bars',
-      'feature': d4.features.rectSeries
-    }, {
-      'name': 'barLabels',
-      'feature': d4.features.stackedLabels
-    }, {
-      'name': 'connectors',
-      'feature': d4.features.stackedColumnConnectors
-    }, {
-      'name': 'columnTotals',
-      'feature': d4.features.columnLabels,
-      'overrides': columnLabelsOverrides
-    }, {
-      'name': 'xAxis',
-      'feature': d4.features.xAxis
-    }, {
-      'name': 'yAxis',
-      'feature': d4.features.yAxis
-    }].forEach(function(feature) {
-      chart.mixin(feature);
-    });
-    return chart;
+    return d4.baseChart()
+      .mixin([{
+        'name': 'bars',
+        'feature': d4.features.rectSeries
+      }, {
+        'name': 'barLabels',
+        'feature': d4.features.stackedLabels
+      }, {
+        'name': 'connectors',
+        'feature': d4.features.stackedColumnConnectors
+      }, {
+        'name': 'columnTotals',
+        'feature': d4.features.columnLabels,
+        'overrides': columnLabelsOverrides
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);
