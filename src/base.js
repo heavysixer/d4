@@ -473,32 +473,7 @@
     }
   };
 
-  /**
-   * This function creates a d4 chart object. It is only used when creating a
-   * new chart factory.
-   *
-   *##### Examples
-   *
-   *      var chart = d4.baseChart({
-   *        builder: myBuilder,
-   *        config: {
-   *          axes: {
-   *            x: {
-   *              scale: 'linear'
-   *            },
-   *            y: {
-   *              scale: 'ordinal'
-   *            }
-   *          }
-   *        }
-   *      });
-   *
-   * @param {Object} options - object which contains an optional config and /or
-   * builder property
-   * @returns chart instance
-   */
-  d4.baseChart = function(options) {
-    var opts = assignDefaults(options && options.config || {}, options && options.builder || undefined);
+  var createChart = function(opts) {
     var chart = applyScaffold(opts);
     createAccessorsFromArray(chart, opts.margin, d3.keys(opts.margin), 'margin');
 
@@ -543,6 +518,23 @@
     chart.builder = function(funct) {
       opts.builder = validateBuilder(funct.bind(opts)());
       return chart;
+    };
+
+    /**
+     * This function creates a deep copy of the current chart and returns it.
+     * This is useful if you have to create several charts which have a variety
+     * of shared features but deviate from each other in a small number of ways.
+     *
+     *##### Examples
+     *
+     *      var chart = d4.charts.column();
+     *      var clone = chart.clone();
+     *
+     * @returns a copy of the current chart
+     */
+    chart.clone = function() {
+      var dupe = d4.extend({}, opts);
+      return createChart(dupe);
     };
 
     /**
@@ -660,6 +652,35 @@
   };
 
   /**
+   * This function creates a d4 chart object. It is only used when creating a
+   * new chart factory.
+   *
+   *##### Examples
+   *
+   *      var chart = d4.baseChart({
+   *        builder: myBuilder,
+   *        config: {
+   *          axes: {
+   *            x: {
+   *              scale: 'linear'
+   *            },
+   *            y: {
+   *              scale: 'ordinal'
+   *            }
+   *          }
+   *        }
+   *      });
+   *
+   * @param {Object} options - object which contains an optional config and /or
+   * builder property
+   * @returns chart instance
+   */
+  d4.baseChart = function(options) {
+    var opts = assignDefaults(options && options.config || {}, options && options.builder || undefined);
+    return createChart(opts);
+  };
+
+  /**
    * This function allows you to register a reusable chart builder with d4.
    * @param {String} name - accessor name for chart builder.
    * @param {Function} funct - function which will instantiate the chart builder.
@@ -743,6 +764,8 @@
             source[prop].constructor === Object) {
             obj[prop] = obj[prop] || {};
             d4.extend(obj[prop], source[prop]);
+          } else if(d4.isArray(source[prop])) {
+            obj[prop] = source[prop].slice();
           } else {
             obj[prop] = source[prop];
           }

@@ -198,7 +198,7 @@ module.exports = function(grunt) {
     assemble: {
       pages: {
         options: {
-          collections: [{name : 'concepts', sortorder: 'asc', sortby: 'title' }, { name: 'features', sortorder: 'asc', sortby: 'title' },{ name: 'charts', sortorder: 'asc', sortby: 'title' }],
+          collections: [{ name : 'concepts', sortorder: 'asc', sortby: 'title' }, { name: 'features', sortorder: 'asc', sortby: 'title' },{ name: 'charts', sortorder: 'asc', sortby: 'title' }],
           flatten: true,
           assets: '.tmp/assets',
           layout: '<%= app.src %>/templates/layouts/default.hbs',

@@ -1,7 +1,7 @@
 ---
-title: Stacked Shapes
-charts:
-  - Stacked Column
+title: Shape Examples
+features:
+  - Stacked Shapes
 ---
 
 <h5>{{title}}</h5>
@@ -70,70 +70,23 @@ $(document).ready(function(){
         });
     });
 
-  var circles = d4.charts.stackedColumn()
-  .outerWidth($('#circles').width())
-  .x(function(x){
-    x.key('year');
-  })
-  .y(function(y){
-    y.key('unitsSold');
-  })
+  var circles = rects.clone();
+  circles
   .mixout('bars')
 
   // remove the connectors because they really only look good when using rects.
-  .mixout('connectors')
+  .mixout('connectors');
+
+  // now make this the base for the ellipse chart.
+  var ellipses = circles.clone();
 
   // mix the circles into the back of the chart so that they don't obscure the
   // data labels
-  .mixin({ 'circles' : d4.features.circleSeries },0)
-  .mixin({ 'zeroLine' : d4.features.referenceLine })
-  .using('zeroLine', function(zero) {
-    zero
-      .x1(function() {
-        return this.x(0);
-      })
-      .x2(function() {
-        return this.width;
-      })
-      .y1(function() {
-        return this.y(0);
-      })
-      .y2(function() {
-        return this.y(0);
-      });
-  });
-
-  var ellipses = d4.charts.stackedColumn()
-  .outerWidth($('#ellipses').width())
-  .x(function(x){
-    x.key('year');
-  })
-  .y(function(y){
-    y.key('unitsSold');
-  })
-  .mixout('bars')
-  // remove the connectors because they really only look good when using rects.
-  .mixout('connectors')
+  circles.mixin({ 'circles' : d4.features.circleSeries }, 0);
 
   // mix the ellipes into the back of the chart so that they don't obscure the
   // data labels
-  .mixin({ 'ellipes' : d4.features.ellipseSeries },0)
-  .mixin({ 'zeroLine' : d4.features.referenceLine })
-  .using('zeroLine', function(zero) {
-    zero
-      .x1(function() {
-        return this.x(0);
-      })
-      .x2(function() {
-        return this.width;
-      })
-      .y1(function() {
-        return this.y(0);
-      })
-      .y2(function() {
-        return this.y(0);
-      });
-  });
+  ellipses.mixin({ 'ellipes' : d4.features.ellipseSeries },0);
 
   d3.select('#rects')
   .datum(parsedData.data)

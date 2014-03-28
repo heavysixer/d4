@@ -12,7 +12,12 @@
     return {
       accessors: {
         x: function(d) {
-          return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
+          if(this.x.$scale === 'ordinal') {
+            return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
+          } else {
+            var width = Math.abs(this.x(d[this.x.$key]) - this.x(0));
+            return this.x(d[this.x.$key]) - width/2;
+          }
         },
 
         y: function(d) {
