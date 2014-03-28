@@ -96,25 +96,25 @@
       }.bind(this));
 
       chart[dimension]
-      .domain(keys)
-      .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);
+        .domain(keys)
+        .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);
     };
 
     var setLinear = function(chart, dimension, data) {
-        var ext = d3.extent(d3.merge(data.map(function(datum) {
-          return d3.extent(datum.values, function(d) {
+      var ext = d3.extent(d3.merge(data.map(function(datum) {
+        return d3.extent(datum.values, function(d) {
 
-            // This is anti-intuative but the stack only returns y and y0 even
-            // when it applies to the x dimension;
-            return d.y + d.y0;
-          });
-        })));
-        ext[0] = Math.min(0, ext[0]);
-        chart[dimension].domain(ext);
-        chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
+          // This is anti-intuative but the stack only returns y and y0 even
+          // when it applies to the x dimension;
+          return d.y + d.y0;
+        });
+      })));
+      ext[0] = Math.min(0, ext[0]);
+      chart[dimension].domain(ext);
+      chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
         .clamp(true)
         .nice();
-      };
+    };
 
     var configureScales = function(chart, data) {
       if (chart.x.$scale === 'ordinal') {
@@ -192,19 +192,26 @@
    * @name waterfall
    */
   d4.chart('waterfall', function waterfallChart() {
-    var chart = d4.baseChart({ builder: waterfallChartBuilder });
+    var chart = d4.baseChart({
+      builder: waterfallChartBuilder
+    });
     [{
-      'bars': d4.features.rectSeries,
+      'name': 'bars',
+      'feature': d4.features.rectSeries,
       'overrides': columnSeriesOverrides
     }, {
-      'connectors': d4.features.waterfallConnectors
+      'name': 'connectors',
+      'feature': d4.features.waterfallConnectors
     }, {
-      'columnLabels': d4.features.stackedLabels,
+      'name': 'columnLabels',
+      'feature': d4.features.stackedLabels,
       'overrides': columnLabelOverrides
     }, {
-      'xAxis': d4.features.xAxis
+      'name': 'xAxis',
+      'feature': d4.features.xAxis
     }, {
-      'yAxis': d4.features.yAxis
+      'name': 'yAxis',
+      'feature': d4.features.yAxis
     }].forEach(function(feature) {
       chart.mixin(feature);
     });

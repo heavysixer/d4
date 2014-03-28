@@ -35,13 +35,15 @@ $(document).ready(function() {
       })
       .outerHeight(100)
       .outerWidth($(e).width())
-      .mixout('barLabels')
-      .mixout('yAxis')
+      .mixout(['barLabels','yAxis'])
       .y(function(axis) {
         axis
           .rangeRound([0, chart.height()]);
       })
-      .mixin({ 'zeroLine' : d4.features.referenceLine })
+      .mixin({
+        'name' : 'zeroLine',
+        'feature' : d4.features.referenceLine
+      })
       .using('zeroLine', function(zeroLine){
         zeroLine
         .x1(0)

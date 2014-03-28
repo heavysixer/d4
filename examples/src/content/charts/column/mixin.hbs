@@ -17,10 +17,20 @@ concepts:
   problem though, we'll just mix one in!
 </p>
 <p>
-  d4's mixin function expects an object where the key is a unique name to reference
-  the mixin, and the value property is a d4 feature e.g.:
+  d4's mixin function expects an object which consists of the following object
+  structure:
   <pre><code class="language-javascript">
-    myChart.mixin({ 'someName' : d4.features.someFeature })
+    myChart.mixin({
+
+      // Unique name for the feature
+      'name' : 'someName',
+
+      // Pointer to the d4 feature to be mixed in
+      'feature' : d4.features.someFeature
+
+      // Optional index which specifies a specific layer to mix the feature into
+      index: 0
+    })
   </code></pre>
   <hr/>
 </p>
@@ -38,7 +48,10 @@ $(document).ready(function(){
     ];
   var chart = d4.charts.column();
   chart
-  .mixin({ 'zeroLine' : d4.features.referenceLine })
+  .mixin({
+    'name' : 'zeroLine',
+    'feature' : d4.features.referenceLine
+  })
   .using('zeroLine', function(zeroLine){
     zeroLine
     // accessor attributes can be supplied as a variable

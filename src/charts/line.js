@@ -59,13 +59,17 @@
   d4.chart('line', function line() {
     var chart = d4.baseChart();
     [{
-      'lineSeries': d4.features.lineSeries
+      'name': 'lineSeries',
+      'feature': d4.features.lineSeries
     }, {
-      'xAxis': d4.features.xAxis
+      'name': 'xAxis',
+      'feature': d4.features.xAxis
     }, {
-      'yAxis': d4.features.yAxis
+      'name': 'yAxis',
+      'feature': d4.features.yAxis
     }, {
-      'lineSeriesLabels': d4.features.lineSeriesLabels
+      'name': 'lineSeriesLabels',
+      'feature': d4.features.lineSeriesLabels
     }].forEach(function(feature) {
       chart.mixin(feature);
     });

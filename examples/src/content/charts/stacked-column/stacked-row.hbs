@@ -68,7 +68,10 @@ $(document).ready(function(){
   .y(function(y){
     y.key('year');
   })
-  .mixin({ 'zeroLine' : d4.features.referenceLine })
+  .mixin({
+    'name' : 'zeroLine',
+    'feature' : d4.features.referenceLine
+  })
   .using('zeroLine', function(zero) {
     zero
       .x1(function() {

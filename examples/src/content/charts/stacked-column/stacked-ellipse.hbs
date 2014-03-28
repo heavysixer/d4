@@ -82,11 +82,19 @@ $(document).ready(function(){
 
   // mix the circles into the back of the chart so that they don't obscure the
   // data labels
-  circles.mixin({ 'circles' : d4.features.circleSeries }, 0);
+  circles.mixin({
+    'name' : 'circles',
+    'features' : d4.features.circleSeries,
+    'index': 0
+  });
 
   // mix the ellipes into the back of the chart so that they don't obscure the
   // data labels
-  ellipses.mixin({ 'ellipes' : d4.features.ellipseSeries },0);
+  ellipses.mixin({
+    'name' : 'ellipes',
+    'features' : d4.features.ellipseSeries,
+    'index' : 0
+  });
 
   d3.select('#rects')
   .datum(parsedData.data)

@@ -61,8 +61,10 @@ $(document).ready(function(){
       line.interpolate('linear');
     })
     .mixin({
-      'dotSeries': d4.features.circleSeries
-    },2)
+      'name' : 'dotSeries',
+      'feature' : d4.features.circleSeries,
+      'index' : 2
+    })
     .using('dotSeries', function(dot) {
       dot
       .r(function() {

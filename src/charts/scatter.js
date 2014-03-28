@@ -19,7 +19,7 @@
     return builder;
   };
 
-  var circleOverrides  = function() {
+  var circleOverrides = function() {
     return {
       accessors: {
         cx: function(d) {
@@ -91,14 +91,18 @@
       }
     });
     [{
-      'circles': d4.features.circleSeries,
-      'overrides' : circleOverrides
-    },{
-      'circleLabels': d4.features.stackedLabels
+      'name': 'circles',
+      'feature': d4.features.circleSeries,
+      'overrides': circleOverrides
     }, {
-      'xAxis': d4.features.xAxis
+      'name': 'circleLabels',
+      'feature': d4.features.stackedLabels
     }, {
-      'yAxis': d4.features.yAxis
+      'name': 'xAxis',
+      'feature': d4.features.xAxis
+    }, {
+      'name': 'yAxis',
+      'feature': d4.features.yAxis
     }].forEach(function(feature) {
       chart.mixin(feature);
     });

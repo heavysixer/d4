@@ -366,7 +366,7 @@ describe('d4.base', function() {
       var chart = d4.charts.column();
       expect(function() {
         chart.mixin();
-      }).to.throw(Error, '[d4] You need to supply an object to mixin');
+      }).to.throw(Error, '[d4] You need to supply an object or array of objects to mixin to the chart.');
     });
 
     it('should add the newly mixed in feature into the list of features', function() {
@@ -376,7 +376,8 @@ describe('d4.base', function() {
       });
       expect(chart.features()).to.not.include('grid');
       chart.mixin({
-        'grid': d4.features.grid
+        'name' : 'grid',
+        'feature' : d4.features.grid
       });
       expect(chart.features()).to.include('grid');
     });
@@ -385,8 +386,10 @@ describe('d4.base', function() {
       var chart = d4.charts.column();
       expect(chart.features()).to.not.include('grid');
       chart.mixin({
-        'grid': d4.features.grid
-      }, 0);
+        'name' : 'grid',
+        'feature' : d4.features.grid,
+        'index' : 0
+      });
       expect(chart.features()[0]).to.equal('grid');
     });
 
@@ -394,8 +397,10 @@ describe('d4.base', function() {
       var chart = d4.charts.column();
       expect(chart.features()).to.not.include('grid2');
       chart.mixin({
-        'grid2': d4.features.grid
-      }, -1);
+        'name' : 'grid2',
+        'feature' : d4.features.grid,
+        'index' : -1
+      });
       expect(chart.features()[0]).to.equal('grid2');
     });
 
@@ -403,8 +408,10 @@ describe('d4.base', function() {
       var chart = d4.charts.column();
       expect(chart.features()).to.not.include('grid3');
       chart.mixin({
-        'grid3': d4.features.grid
-      }, 1000);
+        'name' : 'grid3',
+        'feature' : d4.features.grid,
+        'index' : 1000
+      });
       expect(chart.features()[chart.features().length - 1]).to.equal('grid3');
     });
 
@@ -426,7 +433,8 @@ describe('d4.base', function() {
       };
       var chart = d4.charts.column();
       chart.mixin({
-        'grid': d4.features.grid,
+        'name' : 'grid',
+        'feature' :  d4.features.grid,
         'overrides': overrides
       });
 
@@ -464,7 +472,8 @@ describe('d4.base', function() {
 
       var chart = d4.charts.column();
       chart.mixin({
-        'lameness' : lameFeature,
+        'name' : 'lameness',
+        'feature' : lameFeature,
         'overrides' : overrides
       });
       d3.select('#chart')
@@ -481,7 +490,8 @@ describe('d4.base', function() {
       };
       var chart = d4.charts.column();
       chart.mixin({
-        'grid': d4.features.grid,
+        'name' : 'grid',
+        'feature' : d4.features.grid,
         'overrides': overrides
       });
       expect(function() {
@@ -521,7 +531,8 @@ describe('d4.base', function() {
       };
       var chart = d4.charts.column();
       chart.mixin({
-        'grid': d4.features.grid,
+        'name' : 'grid',
+        'feature' : d4.features.grid,
         'overrides': overrides
       })
         .using('grid', function(grid) {

@@ -137,18 +137,24 @@
       }
     });
     [{
-      'bars': d4.features.rectSeries
+      'name' : 'bars',
+      'feature' : d4.features.rectSeries
     }, {
-      'barLabels': d4.features.stackedLabels
+      'name' : 'barLabels',
+      'feature' : d4.features.stackedLabels
     }, {
-      'connectors': d4.features.stackedColumnConnectors
+      'name' : 'connectors',
+      'feature' : d4.features.stackedColumnConnectors
     }, {
-      'columnTotals': d4.features.columnLabels,
+      'name' : 'columnTotals',
+      'feature' : d4.features.columnLabels,
       'overrides': columnLabelsOverrides
     }, {
-      'xAxis': d4.features.xAxis
+      'name' : 'xAxis',
+      'feature' : d4.features.xAxis
     }, {
-      'yAxis': d4.features.yAxis
+      'name' : 'yAxis',
+      'feature' : d4.features.yAxis
     }].forEach(function(feature) {
       chart.mixin(feature);
     });

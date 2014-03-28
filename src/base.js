@@ -427,20 +427,23 @@
     });
   };
 
-  var mixin = function(feature, index) {
-    if (!feature) {
-      err('You need to supply an object to mixin.');
+  var mixin = function(features) {
+    if (!features) {
+      err('You need to supply an object or array of objects to mixin to the chart.');
     }
-    var name = d3.keys(feature)[0];
-    var overrides = extractOverrides.bind(this)(feature, name);
-    var baseFeature = {
-      proxies: []
-    };
-    feature[name] = d4.merge(d4.merge(baseFeature, feature[name](name)), overrides);
-    d4.extend(this.features, feature);
-    addToMixins(this.mixins, name, index);
-    assignMixinProxies(this.features[name]);
-    assignMixinAccessors(this.features[name]);
+    var mixins = d4.flatten([features]);
+    d4.each(mixins, function(mixin){
+      var name = mixin.name;
+      var overrides = extractOverrides.bind(this)(mixin, name);
+      var baseFeature = {
+        proxies: []
+      };
+      mixin[name] = d4.merge(d4.merge(baseFeature, mixin.feature(name)), overrides);
+      d4.extend(this.features, mixin);
+      addToMixins(this.mixins, name, mixin.index);
+      assignMixinProxies(this.features[name]);
+      assignMixinAccessors(this.features[name]);
+    }.bind(this));
   };
 
   var mixout = function(features) {
@@ -572,17 +575,20 @@
      *
      *##### Examples
      *
-     *      // Mix in a feature at a specific depth
-     *      chart.mixin({ 'grid': d4.features.grid }, 0)
+     *      // Mix in a single feature at a specific depth
+     *      chart.mixin({ name : 'grid', feature : d4.features.grid, index: 0 })
      *
-     *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
+     *      // Mix in multiple features at once.
+     *      chart.mixin([
+     *                   { name : 'zeroLine', feature : d4.features.referenceLine },
+     *                   { name : 'grid', feature : d4.features.grid, index: 0 }
+     *                  ])
      *
-     * @param {Object} feature - an object describing the feature to mix in.
-     * @param {Integer} index - an optional number to specify the insertion layer.
+     * @param {*} features - an object or array of objects describing the feature to mix in.
      * @returns chart instance
      */
-    chart.mixin = function(feature, index) {
-      mixin.bind(opts)(feature, index);
+    chart.mixin = function(features) {
+      mixin.bind(opts)(features);
       return chart;
     };
 

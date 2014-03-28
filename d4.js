@@ -432,20 +432,23 @@
     });
   };
 
-  var mixin = function(feature, index) {
-    if (!feature) {
-      err('You need to supply an object to mixin.');
+  var mixin = function(features) {
+    if (!features) {
+      err('You need to supply an object or array of objects to mixin to the chart.');
     }
-    var name = d3.keys(feature)[0];
-    var overrides = extractOverrides.bind(this)(feature, name);
-    var baseFeature = {
-      proxies: []
-    };
-    feature[name] = d4.merge(d4.merge(baseFeature, feature[name](name)), overrides);
-    d4.extend(this.features, feature);
-    addToMixins(this.mixins, name, index);
-    assignMixinProxies(this.features[name]);
-    assignMixinAccessors(this.features[name]);
+    var mixins = d4.flatten([features]);
+    d4.each(mixins, function(mixin){
+      var name = mixin.name;
+      var overrides = extractOverrides.bind(this)(mixin, name);
+      var baseFeature = {
+        proxies: []
+      };
+      mixin[name] = d4.merge(d4.merge(baseFeature, mixin.feature(name)), overrides);
+      d4.extend(this.features, mixin);
+      addToMixins(this.mixins, name, mixin.index);
+      assignMixinProxies(this.features[name]);
+      assignMixinAccessors(this.features[name]);
+    }.bind(this));
   };
 
   var mixout = function(features) {
@@ -577,17 +580,20 @@
      *
      *##### Examples
      *
-     *      // Mix in a feature at a specific depth
-     *      chart.mixin({ 'grid': d4.features.grid }, 0)
+     *      // Mix in a single feature at a specific depth
+     *      chart.mixin({ name : 'grid', feature : d4.features.grid, index: 0 })
      *
-     *      chart.mixin({ 'zeroLine': d4.features.referenceLine })
+     *      // Mix in multiple features at once.
+     *      chart.mixin([
+     *                   { name : 'zeroLine', feature : d4.features.referenceLine },
+     *                   { name : 'grid', feature : d4.features.grid, index: 0 }
+     *                  ])
      *
-     * @param {Object} feature - an object describing the feature to mix in.
-     * @param {Integer} index - an optional number to specify the insertion layer.
+     * @param {*} features - an object or array of objects describing the feature to mix in.
      * @returns chart instance
      */
-    chart.mixin = function(feature, index) {
-      mixin.bind(opts)(feature, index);
+    chart.mixin = function(features) {
+      mixin.bind(opts)(features);
       return chart;
     };
 
@@ -1006,66 +1012,70 @@
 (function() {
   'use strict';
 
- /*
-  * The column chart has two axes (`x` and `y`). By default the column chart expects
-  * linear values for the `y` and ordinal values on the `x`. The basic column chart
-  * has four default features:
-  *
-  *##### Accessors
-  *
-  * `bars` - series bars
-  * `barLabels` - data labels above the bars
-  * `xAxis` - the axis for the x dimension
-  * `yAxis` - the axis for the y dimension
-  *
-  *##### Example Usage
-  *
-  *     var data = [
-  *         { x: '2010', y:-10 },
-  *         { x: '2011', y:20 },
-  *         { x: '2012', y:30 },
-  *         { x: '2013', y:40 },
-  *         { x: '2014', y:50 },
-  *       ];
-  *     var chart = d4.charts.column();
-  *     d3.select('#example')
-  *     .datum(data)
-  *     .call(chart);
-  *
-  * By default d4 expects a series object, which uses the following format: `{ x : '2010', y : 10 }`.
-  * The default format may not be desired and so we'll override it:
-  *
-  *     var data = [
-  *       ['2010', -10],
-  *       ['2011', 20],
-  *       ['2012', 30],
-  *       ['2013', 40],
-  *       ['2014', 50]
-  *     ];
-  *     var chart = d4.charts.column()
-  *     .x(function(x) {
-  *          x.key(0)
-  *     })
-  *     .y(function(y){
-  *          y.key(1);
-  *     });
-  *
-  *     d3.select('#example')
-  *     .datum(data)
-  *     .call(chart);
-  *
-  * @name column
-  */
+  /*
+   * The column chart has two axes (`x` and `y`). By default the column chart expects
+   * linear values for the `y` and ordinal values on the `x`. The basic column chart
+   * has four default features:
+   *
+   *##### Accessors
+   *
+   * `bars` - series bars
+   * `barLabels` - data labels above the bars
+   * `xAxis` - the axis for the x dimension
+   * `yAxis` - the axis for the y dimension
+   *
+   *##### Example Usage
+   *
+   *     var data = [
+   *         { x: '2010', y:-10 },
+   *         { x: '2011', y:20 },
+   *         { x: '2012', y:30 },
+   *         { x: '2013', y:40 },
+   *         { x: '2014', y:50 },
+   *       ];
+   *     var chart = d4.charts.column();
+   *     d3.select('#example')
+   *     .datum(data)
+   *     .call(chart);
+   *
+   * By default d4 expects a series object, which uses the following format: `{ x : '2010', y : 10 }`.
+   * The default format may not be desired and so we'll override it:
+   *
+   *     var data = [
+   *       ['2010', -10],
+   *       ['2011', 20],
+   *       ['2012', 30],
+   *       ['2013', 40],
+   *       ['2014', 50]
+   *     ];
+   *     var chart = d4.charts.column()
+   *     .x(function(x) {
+   *          x.key(0)
+   *     })
+   *     .y(function(y){
+   *          y.key(1);
+   *     });
+   *
+   *     d3.select('#example')
+   *     .datum(data)
+   *     .call(chart);
+   *
+   * @name column
+   */
   d4.chart('column', function column() {
     var chart = d4.baseChart();
     [{
-      'bars': d4.features.rectSeries
+      'name': 'bars',
+      'feature': d4.features.rectSeries
     }, {
-      'barLabels': d4.features.stackedLabels
+      'name': 'barLabels',
+      'feature': d4.features.stackedLabels
     }, {
-      'xAxis': d4.features.xAxis
+      'name': 'xAxis',
+      'feature': d4.features.xAxis
     }, {
-      'yAxis': d4.features.yAxis
+      'name': 'yAxis',
+      'feature': d4.features.yAxis
     }].forEach(function(feature) {
       chart.mixin(feature);
     });
@@ -1076,67 +1086,67 @@
 (function() {
   'use strict';
 
- /*
-  * The grouped column chart is used to compare a series of data elements grouped
-  * along the xAxis. This chart is often useful in conjunction with a stacked column
-  * chart because they can use the same data series, and where the stacked column highlights
-  * the sum of the data series across an axis the grouped column can be used to show the
-  * relative distribution.
-  *
-  *##### Accessors
-  *
-  * `bars` - series bars
-  * `barLabels` - data labels above the bars
-  * `groupsOf` - an integer representing the number of columns in each group
-  * `xAxis` - the axis for the x dimension
-  * `yAxis` - the axis for the y dimension
-  *
-  *##### Example Usage
-  *
-  *     var data = [
-  *       { year: '2010', unitsSold:-100, salesman : 'Bob' },
-  *       { year: '2011', unitsSold:200, salesman : 'Bob' },
-  *       { year: '2012', unitsSold:300, salesman : 'Bob' },
-  *       { year: '2013', unitsSold:400, salesman : 'Bob' },
-  *       { year: '2014', unitsSold:500, salesman : 'Bob' },
-  *       { year: '2010', unitsSold:100, salesman : 'Gina' },
-  *       { year: '2011', unitsSold:100, salesman : 'Gina' },
-  *       { year: '2012', unitsSold:-100, salesman : 'Gina' },
-  *       { year: '2013', unitsSold:500, salesman : 'Gina' },
-  *       { year: '2014', unitsSold:600, salesman : 'Gina' },
-  *       { year: '2010', unitsSold:400, salesman : 'Average' },
-  *       { year: '2011', unitsSold:0, salesman : 'Average' },
-  *       { year: '2012', unitsSold:400, salesman : 'Average' },
-  *       { year: '2013', unitsSold:400, salesman : 'Average' },
-  *       { year: '2014', unitsSold:400, salesman : 'Average' }
-  *     ];
-  *
-  *     var parsedData = d4.parsers.nestedGroup()
-  *       .x('year')
-  *       .y('unitsSold')
-  *       .value('unitsSold')(data);
-  *
-  *     var chart = d4.charts.groupedColumn()
-  *     .width($('#example').width())
-  *     .x.$key('year')
-  *     .y.$key('unitsSold')
-  *     .groupsOf(parsedData.data[0].values.length);
-  *
-  *     d3.select('#example')
-  *     .datum(parsedData.data)
-  *     .call(chart);
-  *
-  * @name groupedColumn
-  */
+  /*
+   * The grouped column chart is used to compare a series of data elements grouped
+   * along the xAxis. This chart is often useful in conjunction with a stacked column
+   * chart because they can use the same data series, and where the stacked column highlights
+   * the sum of the data series across an axis the grouped column can be used to show the
+   * relative distribution.
+   *
+   *##### Accessors
+   *
+   * `bars` - series bars
+   * `barLabels` - data labels above the bars
+   * `groupsOf` - an integer representing the number of columns in each group
+   * `xAxis` - the axis for the x dimension
+   * `yAxis` - the axis for the y dimension
+   *
+   *##### Example Usage
+   *
+   *     var data = [
+   *       { year: '2010', unitsSold:-100, salesman : 'Bob' },
+   *       { year: '2011', unitsSold:200, salesman : 'Bob' },
+   *       { year: '2012', unitsSold:300, salesman : 'Bob' },
+   *       { year: '2013', unitsSold:400, salesman : 'Bob' },
+   *       { year: '2014', unitsSold:500, salesman : 'Bob' },
+   *       { year: '2010', unitsSold:100, salesman : 'Gina' },
+   *       { year: '2011', unitsSold:100, salesman : 'Gina' },
+   *       { year: '2012', unitsSold:-100, salesman : 'Gina' },
+   *       { year: '2013', unitsSold:500, salesman : 'Gina' },
+   *       { year: '2014', unitsSold:600, salesman : 'Gina' },
+   *       { year: '2010', unitsSold:400, salesman : 'Average' },
+   *       { year: '2011', unitsSold:0, salesman : 'Average' },
+   *       { year: '2012', unitsSold:400, salesman : 'Average' },
+   *       { year: '2013', unitsSold:400, salesman : 'Average' },
+   *       { year: '2014', unitsSold:400, salesman : 'Average' }
+   *     ];
+   *
+   *     var parsedData = d4.parsers.nestedGroup()
+   *       .x('year')
+   *       .y('unitsSold')
+   *       .value('unitsSold')(data);
+   *
+   *     var chart = d4.charts.groupedColumn()
+   *     .width($('#example').width())
+   *     .x.$key('year')
+   *     .y.$key('unitsSold')
+   *     .groupsOf(parsedData.data[0].values.length);
+   *
+   *     d3.select('#example')
+   *     .datum(parsedData.data)
+   *     .call(chart);
+   *
+   * @name groupedColumn
+   */
   d4.chart('groupedColumn', function groupedColumn() {
     var columnLabelOverrides = function() {
       return {
-        accessors : {
+        accessors: {
           x: function(d, i) {
             var width = this.x.rangeBand() / this.groupsOf;
             var xPos = this.x(d[this.x.$key]) + width * i;
             var gutter = width * 0.1;
-            return xPos + width/2 - gutter;
+            return xPos + width / 2 - gutter;
           }
         }
       };
@@ -1150,14 +1160,18 @@
       }
     });
     [{
-      'bars': d4.features.groupedColumnSeries
+      'name': 'bars',
+      'feature': d4.features.groupedColumnSeries
     }, {
-      'barLabels': d4.features.stackedLabels,
+      'name': 'barLabels',
+      'feature': d4.features.stackedLabels,
       'overrides': columnLabelOverrides
     }, {
-      'xAxis': d4.features.xAxis
+      'name': 'xAxis',
+      'feature': d4.features.xAxis
     }, {
-      'yAxis': d4.features.yAxis
+      'name': 'yAxis',
+      'feature': d4.features.yAxis
     }].forEach(function(feature) {
       chart.mixin(feature);
     });
@@ -1226,50 +1240,55 @@
   d4.chart('line', function line() {
     var chart = d4.baseChart();
     [{
-      'lineSeries': d4.features.lineSeries
+      'name': 'lineSeries',
+      'feature': d4.features.lineSeries
     }, {
-      'xAxis': d4.features.xAxis
+      'name': 'xAxis',
+      'feature': d4.features.xAxis
     }, {
-      'yAxis': d4.features.yAxis
+      'name': 'yAxis',
+      'feature': d4.features.yAxis
     }, {
-      'lineSeriesLabels': d4.features.lineSeriesLabels
+      'name': 'lineSeriesLabels',
+      'feature': d4.features.lineSeriesLabels
     }].forEach(function(feature) {
       chart.mixin(feature);
     });
     return chart;
   });
 }).call(this);
+
 (function() {
   'use strict';
 
- /*
-  * The row chart has two axes (`x` and `y`). By default the column chart expects
-  * linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart
-  * has four default features:
-  *
-  *##### Accessors
-  *
-  * `bars` - series bars
-  * `rowLabels` - data labels to the right of the bars
-  * `xAxis` - the axis for the x dimension
-  * `yAxis` - the axis for the y dimension
-  *
-  *##### Example Usage
-  *
-  *      var data = [
-  *            { y: '2010', x:-10 },
-  *            { y: '2011', x:20 },
-  *            { y: '2012', x:30 },
-  *            { y: '2013', x:40 },
-  *            { y: '2014', x:50 },
-  *          ];
-  *        var chart = d4.charts.row();
-  *        d3.select('#example')
-  *        .datum(data)
-  *        .call(chart);
-  *
-  * @name row
-  */
+  /*
+   * The row chart has two axes (`x` and `y`). By default the column chart expects
+   * linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart
+   * has four default features:
+   *
+   *##### Accessors
+   *
+   * `bars` - series bars
+   * `rowLabels` - data labels to the right of the bars
+   * `xAxis` - the axis for the x dimension
+   * `yAxis` - the axis for the y dimension
+   *
+   *##### Example Usage
+   *
+   *      var data = [
+   *            { y: '2010', x:-10 },
+   *            { y: '2011', x:20 },
+   *            { y: '2012', x:30 },
+   *            { y: '2013', x:40 },
+   *            { y: '2014', x:50 },
+   *          ];
+   *        var chart = d4.charts.row();
+   *        d3.select('#example')
+   *        .datum(data)
+   *        .call(chart);
+   *
+   * @name row
+   */
   d4.chart('row', function row() {
     var chart = d4.baseChart({
       config: {
@@ -1291,13 +1310,17 @@
       }
     });
     [{
-      'bars': d4.features.rectSeries
+      'name': 'bars',
+      'feature': d4.features.rectSeries
     }, {
-      'barLabels': d4.features.stackedLabels
+      'name': 'barLabels',
+      'feature': d4.features.stackedLabels
     }, {
-      'xAxis': d4.features.xAxis
+      'name': 'xAxis',
+      'feature': d4.features.xAxis
     }, {
-      'yAxis': d4.features.yAxis
+      'name': 'yAxis',
+      'feature': d4.features.yAxis
     }].forEach(function(feature) {
       chart.mixin(feature);
     });
@@ -1326,7 +1349,7 @@
     return builder;
   };
 
-  var circleOverrides  = function() {
+  var circleOverrides = function() {
     return {
       accessors: {
         cx: function(d) {
@@ -1398,14 +1421,18 @@
       }
     });
     [{
-      'circles': d4.features.circleSeries,
-      'overrides' : circleOverrides
-    },{
-      'circleLabels': d4.features.stackedLabels
+      'name': 'circles',
+      'feature': d4.features.circleSeries,
+      'overrides': circleOverrides
     }, {
-      'xAxis': d4.features.xAxis
+      'name': 'circleLabels',
+      'feature': d4.features.stackedLabels
     }, {
-      'yAxis': d4.features.yAxis
+      'name': 'xAxis',
+      'feature': d4.features.xAxis
+    }, {
+      'name': 'yAxis',
+      'feature': d4.features.yAxis
     }].forEach(function(feature) {
       chart.mixin(feature);
     });
@@ -1416,65 +1443,65 @@
 (function() {
   'use strict';
 
- /*
-  * The stacked column chart has two axes (`x` and `y`). By default the stacked
-  * column expects continious scale for the `y` axis and a discrete scale for
-  * the `x` axis. The stacked column has the following default features:
-  *
-  *##### Accessors
-  *
-  * `bars` - series of rects
-  * `barLabels` - individual data values inside the stacked rect
-  * `connectors` - visual lines that connect the various stacked columns together
-  * `columnTotals` - column labels which total the values of each stack.
-  * `xAxis` - the axis for the x dimension
-  * `yAxis` - the axis for the y dimension
-  *
-  *##### Example Usage
-  *
-  *      var data = [
-  *          { year: '2010', unitsSold: 200, salesman : 'Bob' },
-  *          { year: '2011', unitsSold: 200, salesman : 'Bob' },
-  *          { year: '2012', unitsSold: 300, salesman : 'Bob' },
-  *          { year: '2013', unitsSold: -400, salesman : 'Bob' },
-  *          { year: '2014', unitsSold: -500, salesman : 'Bob' },
-  *          { year: '2010', unitsSold: 100, salesman : 'Gina' },
-  *          { year: '2011', unitsSold: 100, salesman : 'Gina' },
-  *          { year: '2012', unitsSold: 200, salesman : 'Gina' },
-  *          { year: '2013', unitsSold: -500, salesman : 'Gina' },
-  *          { year: '2014', unitsSold: -600, salesman : 'Gina' },
-  *          { year: '2010', unitsSold: 400, salesman : 'Average' },
-  *          { year: '2011', unitsSold: 100, salesman : 'Average' },
-  *          { year: '2012', unitsSold: 400, salesman : 'Average' },
-  *          { year: '2013', unitsSold: -400, salesman : 'Average' },
-  *          { year: '2014', unitsSold: -400, salesman : 'Average' }
-  *        ];
-  *
-  *      var parsedData = d4.parsers.nestedStack()
-  *        .x(function(){
-  *          return 'year';
-  *        })
-  *        .y(function(){
-  *          return 'salesman';
-  *        })
-  *        .value(function(){
-  *          return 'unitsSold';
-  *        })(data);
-  *
-  *      var chart = d4.charts.stackedColumn()
-  *      .x(function(x){
-  *        x.key('year');
-  *      })
-  *      .y(function(y){
-  *        y.key('unitsSold');
-  *      })
-  *
-  *      d3.select('#example')
-  *      .datum(parsedData.data)
-  *      .call(chart);
-  *
-  * @name stackedColumn
-  */
+  /*
+   * The stacked column chart has two axes (`x` and `y`). By default the stacked
+   * column expects continious scale for the `y` axis and a discrete scale for
+   * the `x` axis. The stacked column has the following default features:
+   *
+   *##### Accessors
+   *
+   * `bars` - series of rects
+   * `barLabels` - individual data values inside the stacked rect
+   * `connectors` - visual lines that connect the various stacked columns together
+   * `columnTotals` - column labels which total the values of each stack.
+   * `xAxis` - the axis for the x dimension
+   * `yAxis` - the axis for the y dimension
+   *
+   *##### Example Usage
+   *
+   *      var data = [
+   *          { year: '2010', unitsSold: 200, salesman : 'Bob' },
+   *          { year: '2011', unitsSold: 200, salesman : 'Bob' },
+   *          { year: '2012', unitsSold: 300, salesman : 'Bob' },
+   *          { year: '2013', unitsSold: -400, salesman : 'Bob' },
+   *          { year: '2014', unitsSold: -500, salesman : 'Bob' },
+   *          { year: '2010', unitsSold: 100, salesman : 'Gina' },
+   *          { year: '2011', unitsSold: 100, salesman : 'Gina' },
+   *          { year: '2012', unitsSold: 200, salesman : 'Gina' },
+   *          { year: '2013', unitsSold: -500, salesman : 'Gina' },
+   *          { year: '2014', unitsSold: -600, salesman : 'Gina' },
+   *          { year: '2010', unitsSold: 400, salesman : 'Average' },
+   *          { year: '2011', unitsSold: 100, salesman : 'Average' },
+   *          { year: '2012', unitsSold: 400, salesman : 'Average' },
+   *          { year: '2013', unitsSold: -400, salesman : 'Average' },
+   *          { year: '2014', unitsSold: -400, salesman : 'Average' }
+   *        ];
+   *
+   *      var parsedData = d4.parsers.nestedStack()
+   *        .x(function(){
+   *          return 'year';
+   *        })
+   *        .y(function(){
+   *          return 'salesman';
+   *        })
+   *        .value(function(){
+   *          return 'unitsSold';
+   *        })(data);
+   *
+   *      var chart = d4.charts.stackedColumn()
+   *      .x(function(x){
+   *        x.key('year');
+   *      })
+   *      .y(function(y){
+   *        y.key('unitsSold');
+   *      })
+   *
+   *      d3.select('#example')
+   *      .datum(parsedData.data)
+   *      .call(chart);
+   *
+   * @name stackedColumn
+   */
   d4.chart('stackedColumn', function stackedColumn() {
     var columnLabelsOverrides = function() {
       var extractValues = function(data) {
@@ -1493,20 +1520,20 @@
             return d[this.x.$key];
           }.bind(this))
 
-          .rollup(function(leaves) {
-            var text = d3.sum(leaves, function(d) {
-              return d[this.valueKey];
-            }.bind(this));
+        .rollup(function(leaves) {
+          var text = d3.sum(leaves, function(d) {
+            return d[this.valueKey];
+          }.bind(this));
 
-            var size = d3.sum(leaves, function(d) {
-              return Math.max(0, d[this.valueKey]);
-            }.bind(this));
+          var size = d3.sum(leaves, function(d) {
+            return Math.max(0, d[this.valueKey]);
+          }.bind(this));
 
-            return {
-              text: text,
-              size: size
-            };
-          }.bind(this))
+          return {
+            text: text,
+            size: size
+          };
+        }.bind(this))
           .entries(arr);
       };
 
@@ -1521,8 +1548,8 @@
       };
 
       return {
-        accessors : {
-          y: function(d){
+        accessors: {
+          y: function(d) {
             var padding = 5;
             return this.y(d.size) - padding;
           }
@@ -1535,18 +1562,24 @@
 
     var chart = d4.baseChart();
     [{
-      'bars': d4.features.rectSeries
+      'name': 'bars',
+      'feature': d4.features.rectSeries
     }, {
-      'barLabels': d4.features.stackedLabels
+      'name': 'barLabels',
+      'feature': d4.features.stackedLabels
     }, {
-      'connectors': d4.features.stackedColumnConnectors
+      'name': 'connectors',
+      'feature': d4.features.stackedColumnConnectors
     }, {
-      'columnTotals': d4.features.columnLabels,
+      'name': 'columnTotals',
+      'feature': d4.features.columnLabels,
       'overrides': columnLabelsOverrides
     }, {
-      'xAxis': d4.features.xAxis
+      'name': 'xAxis',
+      'feature': d4.features.xAxis
     }, {
-      'yAxis': d4.features.yAxis
+      'name': 'yAxis',
+      'feature': d4.features.yAxis
     }].forEach(function(feature) {
       chart.mixin(feature);
     });
@@ -1693,18 +1726,24 @@
       }
     });
     [{
-      'bars': d4.features.rectSeries
+      'name' : 'bars',
+      'feature' : d4.features.rectSeries
     }, {
-      'barLabels': d4.features.stackedLabels
+      'name' : 'barLabels',
+      'feature' : d4.features.stackedLabels
     }, {
-      'connectors': d4.features.stackedColumnConnectors
+      'name' : 'connectors',
+      'feature' : d4.features.stackedColumnConnectors
     }, {
-      'columnTotals': d4.features.columnLabels,
+      'name' : 'columnTotals',
+      'feature' : d4.features.columnLabels,
       'overrides': columnLabelsOverrides
     }, {
-      'xAxis': d4.features.xAxis
+      'name' : 'xAxis',
+      'feature' : d4.features.xAxis
     }, {
-      'yAxis': d4.features.yAxis
+      'name' : 'yAxis',
+      'feature' : d4.features.yAxis
     }].forEach(function(feature) {
       chart.mixin(feature);
     });
@@ -1809,25 +1848,25 @@
       }.bind(this));
 
       chart[dimension]
-      .domain(keys)
-      .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);
+        .domain(keys)
+        .rangeRoundBands(rangeBoundsFor.bind(this)(chart, dimension), chart.xRoundBands || 0.3);
     };
 
     var setLinear = function(chart, dimension, data) {
-        var ext = d3.extent(d3.merge(data.map(function(datum) {
-          return d3.extent(datum.values, function(d) {
+      var ext = d3.extent(d3.merge(data.map(function(datum) {
+        return d3.extent(datum.values, function(d) {
 
-            // This is anti-intuative but the stack only returns y and y0 even
-            // when it applies to the x dimension;
-            return d.y + d.y0;
-          });
-        })));
-        ext[0] = Math.min(0, ext[0]);
-        chart[dimension].domain(ext);
-        chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
+          // This is anti-intuative but the stack only returns y and y0 even
+          // when it applies to the x dimension;
+          return d.y + d.y0;
+        });
+      })));
+      ext[0] = Math.min(0, ext[0]);
+      chart[dimension].domain(ext);
+      chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
         .clamp(true)
         .nice();
-      };
+    };
 
     var configureScales = function(chart, data) {
       if (chart.x.$scale === 'ordinal') {
@@ -1905,19 +1944,26 @@
    * @name waterfall
    */
   d4.chart('waterfall', function waterfallChart() {
-    var chart = d4.baseChart({ builder: waterfallChartBuilder });
+    var chart = d4.baseChart({
+      builder: waterfallChartBuilder
+    });
     [{
-      'bars': d4.features.rectSeries,
+      'name': 'bars',
+      'feature': d4.features.rectSeries,
       'overrides': columnSeriesOverrides
     }, {
-      'connectors': d4.features.waterfallConnectors
+      'name': 'connectors',
+      'feature': d4.features.waterfallConnectors
     }, {
-      'columnLabels': d4.features.stackedLabels,
+      'name': 'columnLabels',
+      'feature': d4.features.stackedLabels,
       'overrides': columnLabelOverrides
     }, {
-      'xAxis': d4.features.xAxis
+      'name': 'xAxis',
+      'feature': d4.features.xAxis
     }, {
-      'yAxis': d4.features.yAxis
+      'name': 'yAxis',
+      'feature': d4.features.yAxis
     }].forEach(function(feature) {
       chart.mixin(feature);
     });

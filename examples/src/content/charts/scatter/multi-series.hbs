@@ -35,7 +35,11 @@ $(document).ready(function(){
 
   var chart = d4.charts.scatterPlot()
   .outerWidth($('#example').width())
-  .mixin({'grid' : d4.features.grid},0)
+  .mixin({
+    'name' : 'grid',
+    'feature' : d4.features.grid,
+    'index' : 0
+  })
   .x(function(x){
     x.min(-250)
     .max(610)
