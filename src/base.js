@@ -308,9 +308,10 @@
   };
 
   var linkFeatures = function(opts, data) {
+    var parsedData, selection;
     opts.mixins.forEach(function(name) {
-      data = prepareDataForFeature(opts, name, data);
-      var selection = opts.features[name].render.bind(opts)(opts.features[name], data);
+      parsedData = prepareDataForFeature(opts, name, data);
+      selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData);
       addEventsProxy(opts.features[name], selection);
     });
   };

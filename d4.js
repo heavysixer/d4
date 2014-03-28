@@ -1,6 +1,6 @@
 /*! d4 - v0.6.0
  *  License: MIT Expat
- *  Date: 2014-03-27
+ *  Date: 2014-03-28
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -196,7 +196,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -313,9 +313,10 @@
   };
 
   var linkFeatures = function(opts, data) {
+    var parsedData, selection;
     opts.mixins.forEach(function(name) {
-      data = prepareDataForFeature(opts, name, data);
-      var selection = opts.features[name].render.bind(opts)(opts.features[name], data);
+      parsedData = prepareDataForFeature(opts, name, data);
+      selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData);
       addEventsProxy(opts.features[name], selection);
     });
   };
@@ -560,7 +561,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @returns An array of features.
@@ -600,7 +601,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -2541,6 +2542,8 @@
    * `cx` - placement on the chart's x axis
    * `cy` - placement on the chart's y axis
    * `r` - radius of the circle
+   *
+   * @name circleSeries
    */
   d4.feature('circleSeries', function(name) {
     var rectObj = {
@@ -2606,6 +2609,8 @@
    * `cy` - placement on the chart's y axis
    * `rx` - radius of the ellipse on the x axis
    * `ry` - radius of the ellipse on the y axis
+   *
+   * @name ellipseSeries
    */
   d4.feature('ellipseSeries', function(name) {
     var rectObj = {
@@ -2675,6 +2680,8 @@
    * `width` - width of the rect
    * `x` - placement on the chart's x axis
    * `y` - placement on the chart's y axis
+   *
+   * @name rectSeries
    */
   d4.feature('rectSeries', function(name) {
     var rectObj = {
@@ -2766,7 +2773,7 @@
       render: function(scope) {
         var defs = this.svg.select('defs');
 
-        defs.append('marker')
+        defs.selectAll('marker#' + name + '-start').data([0]).enter().append('marker')
           .attr('id', name + '-start')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
@@ -2778,7 +2785,8 @@
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
         this.featuresGroup.append('g').attr('class', name);
-        var trendLine = this.svg.select('.' + name)
+        var trendLine = this.svg.select('.' + name).selectAll('line').data([0])
+          .enter()
           .append('line')
           .attr('class', 'line')
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
@@ -2787,12 +2795,13 @@
           .attr('y2', d4.functor(scope.accessors.y2).bind(this))
           .attr('marker-end', 'url(#' + name + '-start)');
 
-        this.svg.select('.' + name)
-          .append('text')
-          .attr('class', 'trendLine-label')
-          .text(d4.functor(scope.accessors.text).bind(this))
-          .attr('x', d4.functor(scope.accessors.textX).bind(this))
-          .attr('y', d4.functor(scope.accessors.textY).bind(this));
+        this.svg.select('.' + name).selectAll('text').data([0])
+        .enter()
+        .append('text')
+        .attr('class', 'trendLine-label')
+        .text(d4.functor(scope.accessors.text).bind(this))
+        .attr('x', d4.functor(scope.accessors.textX).bind(this))
+        .attr('y', d4.functor(scope.accessors.textY).bind(this));
         return trendLine;
       }
     };
