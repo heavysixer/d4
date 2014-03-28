@@ -313,6 +313,18 @@ describe('d4.base', function() {
     });
   });
 
+  describe('#flatten()', function(){
+    it('should flatten a multidimensional array', function(){
+      var a = [[1,2],[3,4]];
+      expect(d4.flatten(a)).to.eql([1,2,3,4]);
+    });
+
+    it('should flatten a mixed array', function(){
+      var a = [1,2,[3,4]];
+      expect(d4.flatten(a)).to.eql([1,2,3,4]);
+    });
+  });
+
   describe('#extend()', function() {
     it('should extend one object with the properties of another', function() {
       var a = {
@@ -513,11 +525,23 @@ describe('d4.base', function() {
       expect(chart.features()).to.not.include('bars');
     });
 
+    it('should allow you to supply an array of features to mix out', function(){
+      var chart = d4.charts.column();
+      var features = ['bars', 'barLabels', 'xAxis', 'yAxis'];
+      d4.each(features, function(feature){
+        expect(chart.features()).to.include(feature);
+      });
+      chart.mixout(features);
+      d4.each(features, function(feature){
+        expect(chart.features()).to.not.include(feature);
+      });
+    });
+
     it('should require a feature name to mixout of the chart', function() {
       var chart = d4.charts.column();
       expect(function() {
         chart.mixout();
-      }).to.throw(Error, '[d4] A name is required in order to mixout a chart feature.');
+      }).to.throw(Error, '[d4] A string or array of names is required in order to mixout a chart feature.');
     });
   });
 

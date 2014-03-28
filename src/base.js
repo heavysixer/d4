@@ -438,15 +438,18 @@
     assignMixinAccessors(this.features[name]);
   };
 
-  var mixout = function(name) {
-    if (!name) {
-      err('A name is required in order to mixout a chart feature.');
+  var mixout = function(features) {
+    var arr = [];
+    if (typeof features === 'undefined') {
+      err('A string or array of names is required in order to mixout a chart feature.');
     }
-
-    delete this.features[name];
-    this.mixins = this.mixins.filter(function(val) {
-      return val !== name;
-    });
+    arr.push(features);
+    d4.each(d4.flatten(arr), function(name){
+      delete this.features[name];
+      this.mixins = this.mixins.filter(function(val) {
+        return val !== name;
+      });
+    }.bind(this));
   };
 
   var usingFeature = function(name, funct) {
@@ -784,6 +787,20 @@
   d4.feature = function(name, funct) {
     d4.features[name] = funct;
     return d4.features[name];
+  };
+
+  /**
+   * Helper method to flatten a multi-dimensional array into a single array.
+   * @param {Array} arr - array to be flattened.
+   * @returns flattened array.
+  */
+  d4.flatten = function(arr) {
+    var result = arr.reduce(function(a, b) {
+      a = d4.isArray(a) ? a : [a];
+      b = d4.isArray(b) ? b : [b];
+      return a.concat(b);
+    });
+    return d4.isArray(result) ? result : [result];
   };
 
   /**
