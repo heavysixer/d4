@@ -20,25 +20,57 @@ concepts:
 
 $(document).ready(function(){
   var $e = $('#outer');
-  $e.css({width: 400, height: 100});
+  var $e2 = $('#inner');
+  $e.css({
+    width: 400,
+    height: 100,
+    overflow: 'hidden',
+    border :'1px solid #333'
+  });
+  $e2.css({
+    width: 400,
+    height: 100,
+    overflow: 'hidden',
+    border :'1px solid #333'
+  });
   var w = $e.width();
   var h = $e.height();
 
   var outer = d4.charts.column()
-  .outerHeight(h)
-  .outerWidth(w)
-  .x(function(x){
-    x.scale('linear');
-  });
+    .x(function(x) {
+      x.scale('linear');
+    });
   var inner = outer.clone();
+  outer
+    .outerHeight(h)
+    .outerWidth(w);
+
+  inner
+    .height(h)
+    .width(w);
 
   d3.select('#outer')
-  .datum([ { x: w, y:h } ])
-  .call(outer);
-});
+    .datum([{
+      x: w,
+      y: h
+    }])
+    .call(outer);
+
+  d3.select('#inner')
+    .datum([{
+      x: w,
+      y: h
+    }])
+    .call(inner);
+
+  });
 
 </script>
-<h6>Setting outerHeight or outerWidth</h6>
-<div id="outer"></div>
+<div class='clearfix'>
+  <h6>Setting outerHeight or outerWidth reduces the chart area relative to the margins</h6>
+  <div id="outer"></div>
+  <h6>Setting width or width ignores the margins, which is why this chart is truncated</h6>
+  <div id="inner"></div>
+</div>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript"></code></pre>
