@@ -313,9 +313,10 @@
 
   var linkFeatures = function(opts, data) {
     var parsedData, selection;
+
     opts.mixins.forEach(function(name) {
       parsedData = prepareDataForFeature(opts, name, data);
-      selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData);
+      selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData, opts.featuresGroup);
       addEventsProxy(opts.features[name], selection);
     });
   };

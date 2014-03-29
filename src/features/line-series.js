@@ -18,8 +18,8 @@
         }
       },
       proxies: [line],
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         line
           .x(d4.functor(scope.accessors.x).bind(this))
           .y(d4.functor(scope.accessors.y).bind(this));

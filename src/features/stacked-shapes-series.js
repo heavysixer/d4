@@ -52,8 +52,8 @@
         }
       },
 
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
 
         // create data join with the series data
         var group = this.svg.select('.' + name).selectAll('g')

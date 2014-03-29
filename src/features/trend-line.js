@@ -31,7 +31,7 @@
           return this.x(this.height);
         }
       },
-      render: function(scope) {
+      render: function(scope, data, selection) {
         var defs = this.svg.select('defs');
 
         defs.selectAll('marker#' + name + '-start').data([0]).enter().append('marker')
@@ -45,7 +45,7 @@
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
-        this.featuresGroup.append('g').attr('class', name);
+        selection.append('g').attr('class', name);
         var trendLine = this.svg.select('.' + name).selectAll('line').data([0])
           .enter()
           .append('line')

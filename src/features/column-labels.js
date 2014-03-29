@@ -33,8 +33,8 @@
           return d3.format('').call(this, d[this.valueKey]);
         }
       },
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         var label = this.svg.select('.'+name).selectAll('.'+name)
         .data(data, function(d, i){
           return '' + d.key + i;

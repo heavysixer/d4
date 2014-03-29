@@ -91,12 +91,12 @@
         align: 'left'
       },
       proxies: [axis],
-      render: function(scope) {
+      render: function(scope, data, selection) {
         scope.scale(this.y);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = this.featuresGroup.append('g').attr('class', 'y axis ' + name)
+        var group = selection.append('g').attr('class', 'y axis ' + name)
           .call(axis);
         group.selectAll('.tick text')
         .call(d4.helpers.wrapText, this.margin[aligned]);

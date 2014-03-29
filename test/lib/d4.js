@@ -1,6 +1,6 @@
 /*! d4 - v0.7.0
  *  License: MIT Expat
- *  Date: 2014-03-28
+ *  Date: 2014-03-29
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -318,9 +318,10 @@
 
   var linkFeatures = function(opts, data) {
     var parsedData, selection;
+
     opts.mixins.forEach(function(name) {
       parsedData = prepareDataForFeature(opts, name, data);
-      selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData);
+      selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData, opts.featuresGroup);
       addEventsProxy(opts.features[name], selection);
     });
   };
@@ -1976,7 +1977,7 @@
           return 'line';
         }
       },
-      render: function(scope) {
+      render: function(scope, data, selection) {
         var defs = this.svg.select('defs');
 
         defs.selectAll('marker#' + name + '-end').data([0]).enter().append('marker')
@@ -2002,7 +2003,7 @@
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
-        this.featuresGroup.append('g').attr('class', name);
+        selection.append('g').attr('class', name);
         var arrow = this.svg.select('.' + name).selectAll('line').data([0])
           .enter()
           .append('line')
@@ -2054,8 +2055,8 @@
           return d3.format('').call(this, d[this.valueKey]);
         }
       },
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         var label = this.svg.select('.'+name).selectAll('.'+name)
         .data(data, function(d, i){
           return '' + d.key + i;
@@ -2086,13 +2087,13 @@
           return yAxis.orient('left');
         }
       },
-      render: function(scope) {
+      render: function(scope, data, selection) {
         var xAxis = d3.svg.axis().scale(this.x);
         var yAxis = d3.svg.axis().scale(this.y);
         var formattedXAxis = d4.functor(scope.accessors.formatXAxis).bind(this)(xAxis);
         var formattedYAxis = d4.functor(scope.accessors.formatYAxis).bind(this)(yAxis);
 
-        this.featuresGroup.append('g').attr('class', 'grid border '+ name)
+        selection.append('g').attr('class', 'grid border '+ name)
           .attr('transform', 'translate(0,0)')
           .append('rect')
           .attr('x', 0)
@@ -2100,14 +2101,14 @@
           .attr('width', this.width)
           .attr('height', this.height);
 
-        this.featuresGroup.append('g')
+        selection.append('g')
           .attr('class', 'x grid '+ name)
           .attr('transform', 'translate(0,' + this.height + ')')
           .call(formattedXAxis
           .tickSize(-this.height, 0, 0)
           .tickFormat(''));
 
-        this.featuresGroup.append('g')
+        selection.append('g')
           .attr('class', 'y grid '+ name)
           .attr('transform', 'translate(0,0)')
           .call(formattedYAxis
@@ -2150,8 +2151,8 @@
           return 'bar fill item' + i + ' ' + sign(d[this.y.$key]) + ' ' + d[this.y.$key];
         }
       },
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
         .data(data, function(d, i){
           return d.key + i;
@@ -2199,8 +2200,8 @@
           return 'stroke series' + n;
         }
       },
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         var label = this.svg.select('.'+name).selectAll('.'+name).data(data);
         label.enter().append('text');
         label.exit().remove();
@@ -2237,8 +2238,8 @@
         }
       },
       proxies: [line],
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         line
           .x(d4.functor(scope.accessors.x).bind(this))
           .y(d4.functor(scope.accessors.y).bind(this));
@@ -2284,8 +2285,8 @@
           return 'line';
         }
       },
-      render: function(scope) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         var referenceLine = this.svg.select('.' + name)
           .selectAll('line').data([0])
           .enter()
@@ -2359,8 +2360,8 @@
         }
       },
 
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
           .data(data)
           .enter().append('g')
@@ -2489,8 +2490,8 @@
         classes: 'column-label'
       },
 
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
           .data(data, function(d, i){
             return d.key + i;
@@ -2582,8 +2583,8 @@
         }
       },
 
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
 
         // create data join with the series data
         var group = this.svg.select('.' + name).selectAll('g')
@@ -2851,7 +2852,7 @@
           return this.x(this.height);
         }
       },
-      render: function(scope) {
+      render: function(scope, data, selection) {
         var defs = this.svg.select('defs');
 
         defs.selectAll('marker#' + name + '-start').data([0]).enter().append('marker')
@@ -2865,7 +2866,7 @@
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
-        this.featuresGroup.append('g').attr('class', name);
+        selection.append('g').attr('class', name);
         var trendLine = this.svg.select('.' + name).selectAll('line').data([0])
           .enter()
           .append('line')
@@ -2946,8 +2947,8 @@
         }
       },
 
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         var lines = this.svg.select('.' + name).selectAll('.' + name).data(function(d) {
           return d.map(function(o) {
             return o.values[0];
@@ -3093,12 +3094,12 @@
       },
       proxies: [axis],
 
-      render: function(scope) {
+      render: function(scope, data, selection) {
         scope.scale(this.x);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = this.featuresGroup.append('g').attr('class', 'x axis ' + name)
+        var group = selection.append('g').attr('class', 'x axis ' + name)
           .call(axis);
         alignAxis.bind(this)(aligned, group);
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
@@ -3212,12 +3213,12 @@
         align: 'left'
       },
       proxies: [axis],
-      render: function(scope) {
+      render: function(scope, data, selection) {
         scope.scale(this.y);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = this.featuresGroup.append('g').attr('class', 'y axis ' + name)
+        var group = selection.append('g').attr('class', 'y axis ' + name)
           .call(axis);
         group.selectAll('.tick text')
         .call(d4.helpers.wrapText, this.margin[aligned]);

@@ -55,8 +55,8 @@
         }
       },
 
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         var lines = this.svg.select('.' + name).selectAll('.' + name).data(function(d) {
           return d.map(function(o) {
             return o.values[0];

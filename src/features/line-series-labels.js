@@ -19,8 +19,8 @@
           return 'stroke series' + n;
         }
       },
-      render: function(scope, data) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         var label = this.svg.select('.'+name).selectAll('.'+name).data(data);
         label.enter().append('text');
         label.exit().remove();

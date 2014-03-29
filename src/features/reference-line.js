@@ -22,8 +22,8 @@
           return 'line';
         }
       },
-      render: function(scope) {
-        this.featuresGroup.append('g').attr('class', name);
+      render: function(scope, data, selection) {
+        selection.append('g').attr('class', name);
         var referenceLine = this.svg.select('.' + name)
           .selectAll('line').data([0])
           .enter()
