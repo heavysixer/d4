@@ -1,6 +1,6 @@
 /*! d4 - v0.7.0
  *  License: MIT Expat
- *  Date: 2014-03-29
+ *  Date: 2014-03-30
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -847,18 +847,41 @@
     return !!(obj && obj.constructor && obj.call && obj.apply);
   };
 
+  /**
+   * Helper method to determine if a supplied argument is a function
+   * @params {*} obj - the argument to test
+   * @returns boolean
+   */
   d4.isNotFunction = function(obj) {
     return !d4.isFunction(obj);
   };
 
+  /**
+   * Helper method to determine if a supplied argument is undefined
+   * @params {*} value - the argument to test
+   * @returns boolean
+   */
   d4.isUndefined = function(value) {
     return typeof value === 'undefined';
   };
 
+  /**
+   * Helper method to determine if a supplied argument is defined
+   * @params {*} value - the argument to test
+   * @returns boolean
+   */
   d4.isDefined = function(value) {
     return !d4.isUndefined(value);
   };
 
+  /**
+   * Helper method to merge two objects together. The overrides object will
+   * replace any values which also occur in the options object.
+   *
+   * @params {Object} options - the first object
+   * @params {Object} overrides - the second object to merge onto the top.
+   * @returns newly merged object;
+   */
   d4.merge = function(options, overrides) {
     return d4.extend(d4.extend({}, options), overrides);
   };
