@@ -316,7 +316,7 @@
 
     opts.mixins.forEach(function(name) {
       parsedData = prepareDataForFeature(opts, name, data);
-      selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData, opts.featuresGroup);
+      selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData, opts.chartArea);
       addEventsProxy(opts.features[name], selection);
     });
   };
@@ -330,12 +330,17 @@
     }
   };
 
-  var scaffoldChart = function(selection, data) {
-    this.svg = d3.select(selection).selectAll('svg').data([data]);
-    this.featuresGroup = this.svg.enter().append('svg')
+  var scaffoldChart = function(selection) {
+    this.svg = d3.select(selection).selectAll('svg').data([0]).enter().append('svg');
+    this.svg.selectAll('g.margins').data([0]).enter()
+    .append('g')
+    .attr('class', 'margins')
+    .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+
+    this.chartArea = this.svg.select('g.margins').selectAll('g.chartArea').data([0]).enter()
       .append('g')
-      .attr('class', 'featuresGroup')
-      .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+      .attr('class', 'chartArea');
+
     this.svg
       .attr('width', this.width + this.margin.left + this.margin.right)
       .attr('height', this.height + this.margin.top + this.margin.bottom)
@@ -385,7 +390,7 @@
     return function(selection) {
       selection.each(function(data) {
         data = prepareData(opts, data);
-        scaffoldChart.bind(opts, this)(data);
+        scaffoldChart.bind(opts, this)();
         build(opts, data);
       });
     };

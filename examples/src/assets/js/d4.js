@@ -1,6 +1,6 @@
 /*! d4 - v0.7.0
  *  License: MIT Expat
- *  Date: 2014-03-30
+ *  Date: 2014-03-31
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -321,7 +321,7 @@
 
     opts.mixins.forEach(function(name) {
       parsedData = prepareDataForFeature(opts, name, data);
-      selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData, opts.featuresGroup);
+      selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData, opts.chartArea);
       addEventsProxy(opts.features[name], selection);
     });
   };
@@ -335,12 +335,17 @@
     }
   };
 
-  var scaffoldChart = function(selection, data) {
-    this.svg = d3.select(selection).selectAll('svg').data([data]);
-    this.featuresGroup = this.svg.enter().append('svg')
+  var scaffoldChart = function(selection) {
+    this.svg = d3.select(selection).selectAll('svg').data([0]).enter().append('svg');
+    this.svg.selectAll('g.margins').data([0]).enter()
+    .append('g')
+    .attr('class', 'margins')
+    .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+
+    this.chartArea = this.svg.select('g.margins').selectAll('g.chartArea').data([0]).enter()
       .append('g')
-      .attr('class', 'featuresGroup')
-      .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+      .attr('class', 'chartArea');
+
     this.svg
       .attr('width', this.width + this.margin.left + this.margin.right)
       .attr('height', this.height + this.margin.top + this.margin.bottom)
@@ -390,7 +395,7 @@
     return function(selection) {
       selection.each(function(data) {
         data = prepareData(opts, data);
-        scaffoldChart.bind(opts, this)(data);
+        scaffoldChart.bind(opts, this)();
         build(opts, data);
       });
     };
@@ -3122,7 +3127,7 @@
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = selection.append('g').attr('class', 'x axis ' + name)
+        var group = this.svg.select('g.margins').append('g').attr('class', 'x axis ' + name)
           .call(axis);
         alignAxis.bind(this)(aligned, group);
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
@@ -3241,7 +3246,8 @@
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = selection.append('g').attr('class', 'y axis ' + name)
+
+        var group = this.svg.select('g.margins').append('g').attr('class', 'y axis ' + name)
           .call(axis);
         group.selectAll('.tick text')
         .call(d4.helpers.wrapText, this.margin[aligned]);
