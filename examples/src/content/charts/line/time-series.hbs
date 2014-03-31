@@ -1,0 +1,51 @@
+---
+title: Time Series Example
+charts:
+  - Line Chart
+---
+
+<h5>{{title}}</h5>
+<p>
+  This example demonstrates a line chart which has a time series on the x dimension.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8" id='source_code'>
+'use strict';
+
+$(document).ready(function() {
+  d3.csv('{{assets}}/data/aapl.csv')
+  .row(function(d) {
+    return {
+      date: d.date,
+      value: +d.val,
+      volume: d.volume
+    };
+  })
+  .get(function(error, rows) {
+    renderChart(rows)
+  }.bind(this));
+
+  var renderChart = function(data){
+    var chart = d4.charts.line()
+      .outerWidth($('#example').width())
+      .x(function(x) {
+        x
+        .scale('time')
+        .range([0 - this.width])
+        .key('date')
+      })
+      .y(function(y) {
+        y.key('volume');
+      });
+
+    d3.select('#example')
+      .datum(data)
+      .call(chart);
+  }
+});
+
+
+</script>
+<div id="example"></div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript"></code></pre>
