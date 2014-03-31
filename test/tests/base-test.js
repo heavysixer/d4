@@ -165,7 +165,25 @@ describe('d4.base', function() {
         var builder = this.builder;
         expect(function() {
           d4.baseChart({ builder : builder, config : obj });
-        }).to.throw(Error, '[d4] The scale type: "foo" is unrecognized. D4 only supports these scale types: linear, log, pow, sqrt, ordinal, category10, category20, category20b, category20c, quantile, quantize, threshold, identity');
+        }).to.throw(Error, '[d4] The scale type: "foo" is unrecognized. D4 only supports these scale types: category10, category20, category20b, category20c, identity, linear, log, ordinal, pow, quantile, quantize, sqrt, threshold, time, time.utc');
+      });
+
+      it('should allow you to specify a time scale even though it is not part of the normal collection of scales', function(){
+        var obj = { axes : { x : { scale : 'time' } } };
+        var builder = this.builder;
+        var chart = d4.baseChart({ builder : builder, config : obj });
+        chart.x(function(x){
+          expect(x.invert).to.be.an('Function');
+        });
+      });
+
+      it('should allow you to specify a time utc scale even though it is not part of the normal collection of scales', function(){
+        var obj = { axes : { x : { scale : 'time.utc' } } };
+        var builder = this.builder;
+        var chart = d4.baseChart({ builder : builder, config : obj });
+        chart.x(function(x){
+          expect(x.invert).to.be.an('Function');
+        });
       });
 
       it('should require the builder to have a link function', function() {

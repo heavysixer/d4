@@ -164,8 +164,12 @@
 
   var validateScale = function(kind) {
     var supportedScales = d3.keys(d3.scale);
+
+    // manually add time scales to the supports scale types
+    supportedScales.push('time');
+    supportedScales.push('time.utc');
     if (supportedScales.indexOf(kind) < 0) {
-      err('The scale type: "{0}" is unrecognized. D4 only supports these scale types: {1}', kind, supportedScales.join(', '));
+      err('The scale type: "{0}" is unrecognized. D4 only supports these scale types: {1}', kind, supportedScales.sort().join(', '));
     }
   };
 
@@ -212,8 +216,18 @@
   };
 
   var createAxisScale = function(dimension, opts, axis) {
+    var scale;
     validateScale(axis.accessors.scale);
-    var scale = d3.scale[axis.accessors.scale]();
+    switch(true){
+    case axis.accessors.scale === 'time':
+      scale = d3.time.scale();
+      break;
+    case axis.accessors.scale === 'time.utc':
+      scale = d3.time.scale.utc();
+      break;
+    default:
+      scale = d3.scale[axis.accessors.scale]();
+    }
     createAccessorsFromObject(axis);
     opts[dimension] = scale;
 
