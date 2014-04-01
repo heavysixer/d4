@@ -1,6 +1,6 @@
 ## D4
 
-D4 is a friendly DSL charting DSL for D3. The goal of D4 is to allow developers
+D4 is a friendly charting DSL for D3. The goal of D4 is to allow developers
 to quickly build data-driven charts with little knowledge of the internals of D3.
 
 ### Quick Start
