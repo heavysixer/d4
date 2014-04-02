@@ -857,6 +857,10 @@
     return Object.prototype.toString.call(val) === '[object Array]';
   };
 
+  d4.isDate = function(val) {
+    return Object.prototype.toString.call(val) === '[object Date]';
+  };
+
   d4.isFunction = function(obj) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
   };

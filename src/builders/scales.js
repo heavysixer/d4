@@ -27,12 +27,20 @@
     var key = chart[dimension].$key;
     var ext = d3.extent(d3.merge(data.map(function(obj) {
       return d3.extent(obj.values, function(d) {
-        return d[key] + (d.y0 || 0);
+        if(d4.isDate(d[key])) {
+          return d[key];
+        } else {
+          return d[key] + (d.y0 || 0);
+        }
       });
     })));
     var axis = chart[dimension];
     if(!axis.domain.$dirty) {
-      axis.domain([Math.min(axis.$min || 0, ext[0]), axis.$max || ext[1]]);
+      if(d4.isDate(ext[0])){
+        axis.domain([ext[0], ext[1]]);
+      }else{
+        axis.domain([Math.min(axis.$min || 0, ext[0]), axis.$max || ext[1]]);
+      }
     }
     if(!axis.range.$dirty) {
       axis.range(rangeFor(chart, dimension));

@@ -13,12 +13,16 @@ charts:
 'use strict';
 
 $(document).ready(function() {
+
+  // CSV format looks like this:
+  // "Oct 27, 2009",197.37,27019700
+  var parseDate = d3.time.format('%b %e, %Y').parse;
   d3.csv('{{assets}}/data/aapl.csv')
   .row(function(d) {
     return {
-      date: d.date,
+      date: parseDate(d.date),
       value: +d.val,
-      volume: d.volume,
+      volume: +d.volume,
       symbol: 'aapl'
     };
   })
@@ -36,7 +40,7 @@ $(document).ready(function() {
       })
       .y(function(y) {
         y
-        .key('volume')
+        .key('volume');
       });
 
     d3.select('#example')
