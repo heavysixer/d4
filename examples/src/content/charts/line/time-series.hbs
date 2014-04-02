@@ -17,6 +17,9 @@ $(document).ready(function() {
   // CSV format looks like this:
   // "Oct 27, 2009",197.37,27019700
   var parseDate = d3.time.format('%b %e, %Y').parse;
+
+  // We'll use the D3 CSV parser, and call the renderChart function
+  // directly from it.
   d3.csv('{{assets}}/data/aapl.csv')
   .row(function(d) {
     return {
@@ -35,9 +38,11 @@ $(document).ready(function() {
       .marginLeft(70)
       .outerWidth($('#example').width())
       .x(function(x) {
-        x
-        .scale('time')
-        .key('date');
+
+        // by default d4 makes the x axis ordinal so we'll set it to time
+        // and use the date property of the data object as the key.
+        x.scale('time');
+        x.key('date');
       })
       .y(function(y) {
         y
