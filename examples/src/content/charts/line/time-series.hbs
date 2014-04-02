@@ -32,6 +32,7 @@ $(document).ready(function() {
 
   var renderChart = function(data){
     var chart = d4.charts.line()
+      .marginLeft(70)
       .outerWidth($('#example').width())
       .x(function(x) {
         x
