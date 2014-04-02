@@ -181,8 +181,8 @@
    * may try to use scale specific methods that no longer apply, and will create
    * an error down the road.
    *
-   * Special Note: Because builders during the link function may define defaults
-   * for a given axis, it will also need to know if the property in question was
+   * Special Note: Because builders may define defaults for a given axis during
+   * the link function, it will also need to know if the property in question was
    * set by the developer through the API. It is not enough to just check if the
    * property has a value because some d3 properties will have default values.
    * Therefore d4 applies a special $dirty flag to the function itself if the
@@ -279,17 +279,17 @@
     });
 
     var opts = d4.merge({
-      width: 400,
-      height: 400,
-      features: {},
-      mixins: [],
       axes: {},
+      features: {},
+      height: 400,
       margin: {
         top: 20,
         right: 20,
         bottom: 40,
         left: 40
       },
+      mixins: [],
+      width: 400
     }, config);
 
     linkAxes(opts);
@@ -380,12 +380,12 @@
   };
 
   var prepareData = function(opts, data) {
+    var needsParsing = false,
+      keys, item;
+
     if (d4.isUndefined(opts.valueKey)) {
       opts.valueKey = opts.y.$key;
     }
-
-    var needsParsing = false,
-      keys, item;
     if (data.length > 0) {
       item = data[0];
       if (d4.isArray(item)) {

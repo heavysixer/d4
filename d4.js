@@ -1,6 +1,6 @@
 /*! d4 - v0.7.0
  *  License: MIT Expat
- *  Date: 2014-03-31
+ *  Date: 2014-04-02
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -186,8 +186,8 @@
    * may try to use scale specific methods that no longer apply, and will create
    * an error down the road.
    *
-   * Special Note: Because builders during the link function may define defaults
-   * for a given axis, it will also need to know if the property in question was
+   * Special Note: Because builders may define defaults for a given axis during
+   * the link function, it will also need to know if the property in question was
    * set by the developer through the API. It is not enough to just check if the
    * property has a value because some d3 properties will have default values.
    * Therefore d4 applies a special $dirty flag to the function itself if the
@@ -284,17 +284,17 @@
     });
 
     var opts = d4.merge({
-      width: 400,
-      height: 400,
-      features: {},
-      mixins: [],
       axes: {},
+      features: {},
+      height: 400,
       margin: {
         top: 20,
         right: 20,
         bottom: 40,
         left: 40
       },
+      mixins: [],
+      width: 400
     }, config);
 
     linkAxes(opts);
@@ -385,12 +385,12 @@
   };
 
   var prepareData = function(opts, data) {
+    var needsParsing = false,
+      keys, item;
+
     if (d4.isUndefined(opts.valueKey)) {
       opts.valueKey = opts.y.$key;
     }
-
-    var needsParsing = false,
-      keys, item;
     if (data.length > 0) {
       item = data[0];
       if (d4.isArray(item)) {
@@ -3141,8 +3141,11 @@
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = this.svg.select('g.margins').append('g').attr('class', 'x axis ' + name)
-          .call(axis);
+        var group = this.svg.select('g.margins')
+        .append('g')
+        .attr('class', 'x axis ' + name)
+        .attr('data-scale', this.x.$scale)
+        .call(axis);
         alignAxis.bind(this)(aligned, group);
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
@@ -3261,8 +3264,12 @@
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
 
-        var group = this.svg.select('g.margins').append('g').attr('class', 'y axis ' + name)
-          .call(axis);
+        var group = this.svg.select('g.margins')
+        .append('g')
+        .attr('class', 'y axis ' + name)
+        .attr('data-scale', this.y.$scale)
+        .call(axis);
+
         group.selectAll('.tick text')
         .call(d4.helpers.wrapText, this.margin[aligned]);
         alignAxis.bind(this)(aligned, group);
@@ -3845,16 +3852,7 @@
     }
   };
 
-  /**
-   *
-   * Creates a linear scale for a dimension of a given chart.
-   * @name linearScaleForNestedData
-   * @param {Object} d4 chart object
-   * @param {Array} data array
-   * @param {string} string represnting a dimension e.g. `x`,`y`.
-   * @returns {Object} Chart scale object
-   */
-  d4.builder('linearScaleForNestedData', function(chart, data, dimension) {
+  var linearOrTimeScale = function(chart, data, dimension) {
     var key = chart[dimension].$key;
     var ext = d3.extent(d3.merge(data.map(function(obj) {
       return d3.extent(obj.values, function(d) {
@@ -3872,7 +3870,29 @@
       axis.clamp(true);
     }
     return chart[dimension].nice();
-  });
+  };
+
+  /**
+   *
+   * Creates a linear scale for a dimension of a given chart.
+   * @name linearScaleForNestedData
+   * @param {Object} d4 chart object
+   * @param {Array} data array
+   * @param {string} string represnting a dimension e.g. `x`,`y`.
+   * @returns {Object} Chart scale object
+   */
+  d4.builder('linearScaleForNestedData', linearOrTimeScale);
+
+  /**
+   *
+   * Creates a time scale for a dimension of a given chart.
+   * @name timeScaleForNestedData
+   * @param {Object} d4 chart object
+   * @param {Array} data array
+   * @param {string} string represnting a dimension e.g. `x`,`y`.
+   * @returns {Object} Chart scale object
+   */
+  d4.builder('timeScaleForNestedData', linearOrTimeScale);
 
   /**
    * Creates an ordinal scale for a dimension of a given chart.

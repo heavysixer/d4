@@ -18,11 +18,12 @@ $(document).ready(function() {
     return {
       date: d.date,
       value: +d.val,
-      volume: d.volume
+      volume: d.volume,
+      symbol: 'aapl'
     };
   })
   .get(function(error, rows) {
-    renderChart(rows)
+    renderChart([{ key: 'aapl', values: rows }]);
   }.bind(this));
 
   var renderChart = function(data){
@@ -31,17 +32,17 @@ $(document).ready(function() {
       .x(function(x) {
         x
         .scale('time')
-        .range([0 - this.width])
-        .key('date')
+        .key('date');
       })
       .y(function(y) {
-        y.key('volume');
+        y
+        .key('volume')
       });
 
     d3.select('#example')
       .datum(data)
       .call(chart);
-  }
+  };
 });
 
 

@@ -97,8 +97,12 @@
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
 
-        var group = this.svg.select('g.margins').append('g').attr('class', 'y axis ' + name)
-          .call(axis);
+        var group = this.svg.select('g.margins')
+        .append('g')
+        .attr('class', 'y axis ' + name)
+        .attr('data-scale', this.y.$scale)
+        .call(axis);
+
         group.selectAll('.tick text')
         .call(d4.helpers.wrapText, this.margin[aligned]);
         alignAxis.bind(this)(aligned, group);

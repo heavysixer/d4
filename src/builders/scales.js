@@ -23,16 +23,7 @@
     }
   };
 
-  /**
-   *
-   * Creates a linear scale for a dimension of a given chart.
-   * @name linearScaleForNestedData
-   * @param {Object} d4 chart object
-   * @param {Array} data array
-   * @param {string} string represnting a dimension e.g. `x`,`y`.
-   * @returns {Object} Chart scale object
-   */
-  d4.builder('linearScaleForNestedData', function(chart, data, dimension) {
+  var linearOrTimeScale = function(chart, data, dimension) {
     var key = chart[dimension].$key;
     var ext = d3.extent(d3.merge(data.map(function(obj) {
       return d3.extent(obj.values, function(d) {
@@ -50,7 +41,29 @@
       axis.clamp(true);
     }
     return chart[dimension].nice();
-  });
+  };
+
+  /**
+   *
+   * Creates a linear scale for a dimension of a given chart.
+   * @name linearScaleForNestedData
+   * @param {Object} d4 chart object
+   * @param {Array} data array
+   * @param {string} string represnting a dimension e.g. `x`,`y`.
+   * @returns {Object} Chart scale object
+   */
+  d4.builder('linearScaleForNestedData', linearOrTimeScale);
+
+  /**
+   *
+   * Creates a time scale for a dimension of a given chart.
+   * @name timeScaleForNestedData
+   * @param {Object} d4 chart object
+   * @param {Array} data array
+   * @param {string} string represnting a dimension e.g. `x`,`y`.
+   * @returns {Object} Chart scale object
+   */
+  d4.builder('timeScaleForNestedData', linearOrTimeScale);
 
   /**
    * Creates an ordinal scale for a dimension of a given chart.
