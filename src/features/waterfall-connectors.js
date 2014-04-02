@@ -54,14 +54,16 @@
           return 'series' +i;
         }
       },
+      prepare : function(data) {
+        var d = data.map(function(o){
+          return o.values[0];
+        });
+        return d4.flatten(d);
+      },
 
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var lines = this.svg.select('.' + name).selectAll('.' + name).data(function(d) {
-          return d.map(function(o) {
-            return o.values[0];
-          });
-        }.bind(this));
+        var lines = this.svg.select('.' + name).selectAll('.' + name).data(data);
         lines.enter().append('line');
         lines.exit().remove();
         lines
@@ -70,14 +72,14 @@
           if(i === 0){
             return 0;
           }
-          return d4.functor(scope.accessors.x).bind(this)(data[i - 1].values[0]);
+          return d4.functor(scope.accessors.x).bind(this)(data[i - 1]);
         }.bind(this))
 
         .attr('y1', function(d, i) {
           if(i === 0){
             return 0;
           }
-          return d4.functor(scope.accessors.y).bind(this)(data[i - 1].values[0]);
+          return d4.functor(scope.accessors.y).bind(this)(data[i - 1]);
         }.bind(this))
 
         .attr('x2', function(d, i) {
@@ -87,7 +89,7 @@
           if(this.x.$scale === 'ordinal') {
             return d4.functor(scope.accessors.x).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)();
           } else {
-            return d4.functor(scope.accessors.x).bind(this)(data[i - 1].values[0]);
+            return d4.functor(scope.accessors.x).bind(this)(data[i - 1]);
           }
         }.bind(this))
 
@@ -96,7 +98,7 @@
             return 0;
           }
           if(this.x.$scale === 'ordinal') {
-            return d4.functor(scope.accessors.y).bind(this)(data[i - 1].values[0]);
+            return d4.functor(scope.accessors.y).bind(this)(data[i - 1]);
           }else {
             return d4.functor(scope.accessors.y).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)(d);
           }
