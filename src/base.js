@@ -844,7 +844,7 @@
    * > and it simplifies the implementation if we automatically convert constant
    * > values to functions.
    *
-   * @param {Varies} funct - An function or other variable to be wrapped in a function
+   * @param {*} funct - An function or other variable to be wrapped in a function
    * @returns function
    */
   d4.functor = function(funct) {
@@ -867,7 +867,7 @@
 
   /**
    * Helper method to determine if a supplied argument is a function
-   * @params {*} obj - the argument to test
+   * @param {*} obj - the argument to test
    * @returns boolean
    */
   d4.isNotFunction = function(obj) {
@@ -876,7 +876,7 @@
 
   /**
    * Helper method to determine if a supplied argument is undefined
-   * @params {*} value - the argument to test
+   * @param {*} value - the argument to test
    * @returns boolean
    */
   d4.isUndefined = function(value) {
@@ -885,7 +885,7 @@
 
   /**
    * Helper method to determine if a supplied argument is defined
-   * @params {*} value - the argument to test
+   * @param {*} value - the argument to test
    * @returns boolean
    */
   d4.isDefined = function(value) {
@@ -896,8 +896,8 @@
    * Helper method to merge two objects together. The overrides object will
    * replace any values which also occur in the options object.
    *
-   * @params {Object} options - the first object
-   * @params {Object} overrides - the second object to merge onto the top.
+   * @param {Object} options - the first object
+   * @param {Object} overrides - the second object to merge onto the top.
    * @returns newly merged object;
    */
   d4.merge = function(options, overrides) {
