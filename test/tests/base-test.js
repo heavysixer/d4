@@ -1,11 +1,11 @@
 /*global describe:true*/
 /*global it:true*/
-/*global before:true*/
+/*global beforeEach:true*/
 /*global document:true*/
 'use strict';
 
 describe('d4.base', function() {
-  before(function() {
+  beforeEach(function() {
     var container = document.getElementById('test');
     container.innerHTML = '<div id="chart"></div>';
   });
@@ -23,7 +23,7 @@ describe('d4.base', function() {
   });
 
   describe('#baseChart()', function() {
-    before(function() {
+    beforeEach(function() {
       this.builder = function() {
         return {
           link: function() {}
@@ -656,12 +656,14 @@ describe('d4.base', function() {
 
     it('should allow you to replace the default builder with your custom one', function() {
       var chart = d4.charts.column();
-      var chartData = [1, 2, 3];
+      var chartData = [{ x: 1, y: 2 }];
       chart.builder(function() {
         return {
           link: function(chart, data) {
             expect(chart).to.not.be.an('undefined');
             expect(data).to.not.be.an('undefined');
+            d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
+            d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
           }
         };
       });

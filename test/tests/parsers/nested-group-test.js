@@ -1,10 +1,10 @@
 /*global describe:true*/
 /*global it:true*/
-/*global before:true*/
+/*global beforeEach:true*/
 'use strict';
 
 describe('d4.parsers.nestedGroup', function() {
-  before(function(){
+  beforeEach(function(){
     this.data = [{ a: 10, b:20, c:30 }, { a: 100, b:-200, c:-30 }];
   });
   it('should expose the d4 namespace globally', function() {

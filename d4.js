@@ -1,6 +1,6 @@
 /*! d4 - v0.7.1
  *  License: MIT Expat
- *  Date: 2014-04-02
+ *  Date: 2014-04-03
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -200,7 +200,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -350,21 +350,15 @@
   };
 
   var scaffoldChart = function(selection) {
-    this.svg = d3.select(selection).selectAll('svg').data([0]).enter().append('svg');
-    this.svg.selectAll('g.margins').data([0]).enter()
-    .append('g')
-    .attr('class', 'margins')
+    this.svg = d4.append(d3.select(selection), 'svg.d4')
+    .attr('width', this.width + this.margin.left + this.margin.right)
+    .attr('height', this.height + this.margin.top + this.margin.bottom);
+
+    d4.append(this.svg, 'defs');
+    d4.append(this.svg, 'g.margins')
     .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-    this.chartArea = this.svg.select('g.margins').selectAll('g.chartArea').data([0]).enter()
-      .append('g')
-      .attr('class', 'chartArea');
-
-    this.svg
-      .attr('width', this.width + this.margin.left + this.margin.right)
-      .attr('height', this.height + this.margin.top + this.margin.bottom)
-      .attr('class', 'd4');
-    this.svg.selectAll('defs').data([0]).enter().append('defs');
+    this.chartArea = d4.append(this.svg.select('g.margins'), 'g.chartArea');
   };
 
   // Normally d4 series elements inside the data array to be in a specific
@@ -584,7 +578,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @returns An array of features.
@@ -627,7 +621,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -688,6 +682,30 @@
     };
 
     return chart;
+  };
+
+  /**
+   * This function conditionally appends a SVG element if it doesn't already
+   * exist within the parent element.
+   *
+   * @param {D3 Selection} - parent DOM element
+   * @param {String} - string to use as the dom selector
+   *
+   * @returns selection
+   */
+  d4.append = function(element, selector){
+    var selected = element.selectAll(selector),
+    parts;
+
+    if(selected.empty()){
+      parts = selector.split('.');
+      selected = element.append(parts.shift());
+      parts = parts.join('.');
+      if(parts !== '') {
+        selected.attr('class', parts);
+      }
+    }
+    return selected;
   };
 
   /**
@@ -849,7 +867,7 @@
    * > and it simplifies the implementation if we automatically convert constant
    * > values to functions.
    *
-   * @param {Varies} funct - An function or other variable to be wrapped in a function
+   * @param {*} funct - An function or other variable to be wrapped in a function
    * @returns function
    */
   d4.functor = function(funct) {
@@ -872,7 +890,7 @@
 
   /**
    * Helper method to determine if a supplied argument is a function
-   * @params {*} obj - the argument to test
+   * @param {*} obj - the argument to test
    * @returns boolean
    */
   d4.isNotFunction = function(obj) {
@@ -881,7 +899,7 @@
 
   /**
    * Helper method to determine if a supplied argument is undefined
-   * @params {*} value - the argument to test
+   * @param {*} value - the argument to test
    * @returns boolean
    */
   d4.isUndefined = function(value) {
@@ -890,7 +908,7 @@
 
   /**
    * Helper method to determine if a supplied argument is defined
-   * @params {*} value - the argument to test
+   * @param {*} value - the argument to test
    * @returns boolean
    */
   d4.isDefined = function(value) {
@@ -901,8 +919,8 @@
    * Helper method to merge two objects together. The overrides object will
    * replace any values which also occur in the options object.
    *
-   * @params {Object} options - the first object
-   * @params {Object} overrides - the second object to merge onto the top.
+   * @param {Object} options - the first object
+   * @param {Object} overrides - the second object to merge onto the top.
    * @returns newly merged object;
    */
   d4.merge = function(options, overrides) {
@@ -919,7 +937,6 @@
     d4.parsers[name] = funct;
     return d4.parsers[name];
   };
-
 }).call(this);
 
 (function() {

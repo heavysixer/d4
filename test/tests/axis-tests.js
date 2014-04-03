@@ -1,11 +1,11 @@
 /*global describe:true*/
 /*global it:true*/
-/*global before:true*/
+/*global beforeEach:true*/
 /*global document:true*/
 'use strict';
 
 describe('axis tests', function() {
-  before(function() {
+  beforeEach(function() {
     var container = document.getElementById('test');
     container.innerHTML = '<div id="chart"></div>';
   });

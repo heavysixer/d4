@@ -1,6 +1,6 @@
 /*global describe:true*/
 /*global it:true*/
-/*global before:true*/
+/*global beforeEach:true*/
 /*global document:true*/
 'use strict';
 
@@ -11,7 +11,7 @@
   not to work.
 */
 describe('smoke tests', function() {
-  before(function() {
+  beforeEach(function() {
     var container = document.getElementById('test');
     container.innerHTML = '<div id="chart"></div>';
   });
@@ -134,41 +134,46 @@ describe('smoke tests', function() {
 
   it('should render a basic stacked column chart', function() {
     var data = [
-        { year: '2010', unitsSold: -200, salesman : 'Bob' },
+        { year: '2010', unitsSold: 200, salesman : 'Bob' },
         { year: '2011', unitsSold: 200, salesman : 'Bob' },
         { year: '2012', unitsSold: 300, salesman : 'Bob' },
-        { year: '2013', unitsSold: 400, salesman : 'Bob' },
-        { year: '2014', unitsSold: 500, salesman : 'Bob' },
+        { year: '2013', unitsSold: -400, salesman : 'Bob' },
+        { year: '2014', unitsSold: -500, salesman : 'Bob' },
         { year: '2010', unitsSold: 100, salesman : 'Gina' },
         { year: '2011', unitsSold: 100, salesman : 'Gina' },
-        { year: '2012', unitsSold: -200, salesman : 'Gina' },
-        { year: '2013', unitsSold: 500, salesman : 'Gina' },
-        { year: '2014', unitsSold: 600, salesman : 'Gina' },
+        { year: '2012', unitsSold: 200, salesman : 'Gina' },
+        { year: '2013', unitsSold: -500, salesman : 'Gina' },
+        { year: '2014', unitsSold: -600, salesman : 'Gina' },
         { year: '2010', unitsSold: 400, salesman : 'Average' },
-        { year: '2011', unitsSold: 0, salesman : 'Average' },
+        { year: '2011', unitsSold: 100, salesman : 'Average' },
         { year: '2012', unitsSold: 400, salesman : 'Average' },
-        { year: '2013', unitsSold: 400, salesman : 'Average' },
-        { year: '2014', unitsSold: 400, salesman : 'Average' }
+        { year: '2013', unitsSold: -400, salesman : 'Average' },
+        { year: '2014', unitsSold: -400, salesman : 'Average' }
       ];
 
     var parsedData = d4.parsers.nestedStack()
-      .x('year')
-      .y('unitsSold')
+      .x(function(){
+        return 'year';
+      })
+      .y(function(){
+        return 'salesman';
+      })
       .value(function(){
         return 'unitsSold';
       })(data);
 
     var chart = d4.charts.stackedColumn()
-      .x(function(x){
-        x.key('year');
-      })
-      .y(function(y){
-        y.key('unitsSold');
-      });
+    .x(function(x){
+      x.key('year');
+    })
+    .y(function(y){
+      y.key('unitsSold');
+    });
 
     d3.select('#chart')
     .datum(parsedData.data)
     .call(chart);
+
 
     expect(d3.select('.series0')[0][0]).to.not.be.an('null');
   });

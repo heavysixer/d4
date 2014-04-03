@@ -345,21 +345,15 @@
   };
 
   var scaffoldChart = function(selection) {
-    this.svg = d3.select(selection).selectAll('svg').data([0]).enter().append('svg');
-    this.svg.selectAll('g.margins').data([0]).enter()
-    .append('g')
-    .attr('class', 'margins')
+    this.svg = d4.append(d3.select(selection), 'svg.d4')
+    .attr('width', this.width + this.margin.left + this.margin.right)
+    .attr('height', this.height + this.margin.top + this.margin.bottom);
+
+    d4.append(this.svg, 'defs');
+    d4.append(this.svg, 'g.margins')
     .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-    this.chartArea = this.svg.select('g.margins').selectAll('g.chartArea').data([0]).enter()
-      .append('g')
-      .attr('class', 'chartArea');
-
-    this.svg
-      .attr('width', this.width + this.margin.left + this.margin.right)
-      .attr('height', this.height + this.margin.top + this.margin.bottom)
-      .attr('class', 'd4');
-    this.svg.selectAll('defs').data([0]).enter().append('defs');
+    this.chartArea = d4.append(this.svg.select('g.margins'), 'g.chartArea');
   };
 
   // Normally d4 series elements inside the data array to be in a specific
@@ -686,6 +680,30 @@
   };
 
   /**
+   * This function conditionally appends a SVG element if it doesn't already
+   * exist within the parent element.
+   *
+   * @param {D3 Selection} - parent DOM element
+   * @param {String} - string to use as the dom selector
+   *
+   * @returns selection
+   */
+  d4.append = function(element, selector){
+    var selected = element.selectAll(selector),
+    parts;
+
+    if(selected.empty()){
+      parts = selector.split('.');
+      selected = element.append(parts.shift());
+      parts = parts.join('.');
+      if(parts !== '') {
+        selected.attr('class', parts);
+      }
+    }
+    return selected;
+  };
+
+  /**
    * This function creates a d4 chart object. It is only used when creating a
    * new chart factory.
    *
@@ -914,5 +932,4 @@
     d4.parsers[name] = funct;
     return d4.parsers[name];
   };
-
 }).call(this);
