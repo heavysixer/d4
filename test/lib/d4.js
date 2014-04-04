@@ -223,15 +223,15 @@
   var createAxisScale = function(dimension, opts, axis) {
     var scale;
     validateScale(axis.accessors.scale);
-    switch(true){
-    case axis.accessors.scale === 'time':
-      scale = d3.time.scale();
-      break;
-    case axis.accessors.scale === 'time.utc':
-      scale = d3.time.scale.utc();
-      break;
-    default:
-      scale = d3.scale[axis.accessors.scale]();
+    switch (true) {
+      case axis.accessors.scale === 'time':
+        scale = d3.time.scale();
+        break;
+      case axis.accessors.scale === 'time.utc':
+        scale = d3.time.scale.utc();
+        break;
+      default:
+        scale = d3.scale[axis.accessors.scale]();
     }
     createAccessorsFromObject(axis);
     opts[dimension] = scale;
@@ -350,13 +350,13 @@
   };
 
   var scaffoldChart = function(selection) {
-    this.svg = d4.append(d3.select(selection), 'svg.d4')
-    .attr('width', this.width + this.margin.left + this.margin.right)
-    .attr('height', this.height + this.margin.top + this.margin.bottom);
+    this.svg = d4.append(d3.select(selection), 'svg#chart.d4.chart')
+      .attr('width', this.width + this.margin.left + this.margin.right)
+      .attr('height', this.height + this.margin.top + this.margin.bottom);
 
     d4.append(this.svg, 'defs');
     d4.append(this.svg, 'g.margins')
-    .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+      .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
     this.chartArea = d4.append(this.svg.select('g.margins'), 'g.chartArea');
   };
@@ -451,7 +451,7 @@
       err('You need to supply an object or array of objects to mixin to the chart.');
     }
     var mixins = d4.flatten([features]);
-    d4.each(mixins, function(mixin){
+    d4.each(mixins, function(mixin) {
       var name = mixin.name;
       var overrides = extractOverrides.bind(this)(mixin, name);
       var baseFeature = {
@@ -684,25 +684,73 @@
     return chart;
   };
 
+  // This approach was inspired by SizzleJS. Most of the REGEX is based off their own expressions.
+  var tokenizeSelector = function(selector) {
+    var soFar = selector,
+    whitespace = '[\\x20\\t\\r\\n\\f]',
+    characterEncoding = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
+    identifier = characterEncoding.replace( 'w', 'w#' ),
+    attributes = '\\[' + whitespace + '*(' + characterEncoding + ')' + whitespace +
+    '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
+    order = ['TAG','ID','CLASS'],
+    matchers = {
+      'ID': new RegExp( '#(' + characterEncoding + ')' ),
+      'CLASS': new RegExp( '\\.(' + characterEncoding + ')'),
+      'TAG': new RegExp( '^(' + characterEncoding.replace( 'w', 'w*' ) + ')' ),
+      'ATTR': new RegExp( '' + attributes )
+    },
+    parse = function(exp){
+      matched = false;
+      tokens[exp] = [];
+      match = true;
+      while(match) {
+        match = matchers[exp].exec(soFar);
+        if(match !== null) {
+          matched = match.shift();
+          tokens[exp].push(match[0]);
+          soFar = soFar.slice(matched.length);
+        }
+      }
+    },
+    matched,
+    match,
+    tokens = {};
+    d4.each(order, parse);
+    d4.each(order, function(exp){
+      while(soFar) {
+        tokens[exp] = tokens[exp].join(' ');
+        if(!matched){
+          break;
+        }
+      }
+    });
+    return tokens;
+  };
+
   /**
    * This function conditionally appends a SVG element if it doesn't already
    * exist within the parent element.
+   *
+   *##### Examples
+   *
+   *    // this will create a svg element, with the id of chart and apply two classes "d4 and chart"
+   *    d4.append(selection, 'svg#chart.d4.chart')
    *
    * @param {D3 Selection} - parent DOM element
    * @param {String} - string to use as the dom selector
    *
    * @returns selection
    */
-  d4.append = function(element, selector){
+  d4.append = function(element, selector) {
     var selected = element.selectAll(selector),
-    parts;
+      tokens;
 
-    if(selected.empty()){
-      parts = selector.split('.');
-      selected = element.append(parts.shift());
-      parts = parts.join('.');
-      if(parts !== '') {
-        selected.attr('class', parts);
+    if (selected.empty()) {
+      tokens = tokenizeSelector(selector);
+      selected = element.append(tokens.TAG)
+      .attr('class', tokens.CLASS.join(' '));
+      if(tokens.ID) {
+        selected.attr('id', tokens.ID.pop());
       }
     }
     return selected;

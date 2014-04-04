@@ -594,6 +594,25 @@ describe('d4.base', function() {
     });
   });
 
+  describe('#append()', function() {
+    it('should support nested selections', function(){
+      d4.append(d3.select('#chart'),'svg.chart.foo');
+      expect(d3.select('svg.chart.foo')[0]).to.not.be.an('null');
+    });
+    it('should add an element if it does not exist', function(){
+
+    });
+    it('should return an element if it does exist', function(){
+
+    });
+    it('should apply selection attributes if they are provided', function(){
+      // add classes
+      // add attributes
+      // add ids
+    });
+
+  });
+
   describe('#using()', function() {
     it('should throw an error if you try to use a non-existent feature', function() {
       var chart = d4.charts.column();
