@@ -34,7 +34,7 @@
       render: function(scope, data, selection) {
         var defs = this.svg.select('defs');
 
-        d4.append(defs, 'marker#' + name + '-start')
+        d4.appendOnce(defs, 'marker#' + name + '-start')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
@@ -44,15 +44,15 @@
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
-        d4.append(selection, 'g.' + name);
-        var trendLine = d4.append(this.svg.select('.' + name), 'line.line')
+        d4.appendOnce(selection, 'g.' + name);
+        var trendLine = d4.appendOnce(this.svg.select('.' + name), 'line.line')
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
           .attr('x2', d4.functor(scope.accessors.x2).bind(this))
           .attr('y1', d4.functor(scope.accessors.y1).bind(this))
           .attr('y2', d4.functor(scope.accessors.y2).bind(this))
           .attr('marker-end', 'url(#' + name + '-start)');
 
-        d4.append(this.svg.select('.' + name), 'text.trendLine-label')
+        d4.appendOnce(this.svg.select('.' + name), 'text.trendLine-label')
         .text(d4.functor(scope.accessors.text).bind(this))
         .attr('x', d4.functor(scope.accessors.textX).bind(this))
         .attr('y', d4.functor(scope.accessors.textY).bind(this));

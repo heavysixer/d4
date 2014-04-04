@@ -345,15 +345,15 @@
   };
 
   var scaffoldChart = function(selection) {
-    this.svg = d4.append(d3.select(selection), 'svg#chart.d4.chart')
+    this.svg = d4.appendOnce(d3.select(selection), 'svg#chart.d4.chart')
       .attr('width', this.width + this.margin.left + this.margin.right)
       .attr('height', this.height + this.margin.top + this.margin.bottom);
 
-    d4.append(this.svg, 'defs');
-    d4.append(this.svg, 'g.margins')
+    d4.appendOnce(this.svg, 'defs');
+    d4.appendOnce(this.svg, 'g.margins')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-    this.chartArea = d4.append(this.svg.select('g.margins'), 'g.chartArea');
+    this.chartArea = d4.appendOnce(this.svg.select('g.margins'), 'g.chartArea');
   };
 
   // Normally d4 series elements inside the data array to be in a specific
@@ -729,14 +729,14 @@
    *##### Examples
    *
    *    // this will create a svg element, with the id of chart and apply two classes "d4 and chart"
-   *    d4.append(selection, 'svg#chart.d4.chart')
+   *    d4.appendOnce(selection, 'svg#chart.d4.chart')
    *
    * @param {D3 Selection} - parent DOM element
    * @param {String} - string to use as the dom selector
    *
    * @returns selection
    */
-  d4.append = function(element, selector) {
+  d4.appendOnce = function(element, selector) {
     var selected = element.selectAll(selector),
       tokens;
 

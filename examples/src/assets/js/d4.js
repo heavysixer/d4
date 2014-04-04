@@ -350,15 +350,15 @@
   };
 
   var scaffoldChart = function(selection) {
-    this.svg = d4.append(d3.select(selection), 'svg#chart.d4.chart')
+    this.svg = d4.appendOnce(d3.select(selection), 'svg#chart.d4.chart')
       .attr('width', this.width + this.margin.left + this.margin.right)
       .attr('height', this.height + this.margin.top + this.margin.bottom);
 
-    d4.append(this.svg, 'defs');
-    d4.append(this.svg, 'g.margins')
+    d4.appendOnce(this.svg, 'defs');
+    d4.appendOnce(this.svg, 'g.margins')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-    this.chartArea = d4.append(this.svg.select('g.margins'), 'g.chartArea');
+    this.chartArea = d4.appendOnce(this.svg.select('g.margins'), 'g.chartArea');
   };
 
   // Normally d4 series elements inside the data array to be in a specific
@@ -734,14 +734,14 @@
    *##### Examples
    *
    *    // this will create a svg element, with the id of chart and apply two classes "d4 and chart"
-   *    d4.append(selection, 'svg#chart.d4.chart')
+   *    d4.appendOnce(selection, 'svg#chart.d4.chart')
    *
    * @param {D3 Selection} - parent DOM element
    * @param {String} - string to use as the dom selector
    *
    * @returns selection
    */
-  d4.append = function(element, selector) {
+  d4.appendOnce = function(element, selector) {
     var selected = element.selectAll(selector),
       tokens;
 
@@ -2091,7 +2091,7 @@
       render: function(scope, data, selection) {
         var defs = this.svg.select('defs');
 
-        d4.append(defs,'marker#' + name + '-end')
+        d4.appendOnce(defs,'marker#' + name + '-end')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
@@ -2101,7 +2101,7 @@
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
-        d4.append(defs,'marker#' + name + '-start')
+        d4.appendOnce(defs,'marker#' + name + '-start')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
@@ -2111,9 +2111,9 @@
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
-        d4.append(selection,'g.'+name);
+        d4.appendOnce(selection,'g.'+name);
 
-        var arrow = d4.append(this.svg.select('.' + name), 'line')
+        var arrow = d4.appendOnce(this.svg.select('.' + name), 'line')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
           .attr('x2', d4.functor(scope.accessors.x2).bind(this))
@@ -2394,7 +2394,7 @@
       },
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var referenceLine = d4.append(this.svg.select('.' + name), 'line')
+        var referenceLine = d4.appendOnce(this.svg.select('.' + name), 'line')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
           .attr('x2', d4.functor(scope.accessors.x2).bind(this))
@@ -2959,7 +2959,7 @@
       render: function(scope, data, selection) {
         var defs = this.svg.select('defs');
 
-        d4.append(defs, 'marker#' + name + '-start')
+        d4.appendOnce(defs, 'marker#' + name + '-start')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
@@ -2969,15 +2969,15 @@
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
-        d4.append(selection, 'g.' + name);
-        var trendLine = d4.append(this.svg.select('.' + name), 'line.line')
+        d4.appendOnce(selection, 'g.' + name);
+        var trendLine = d4.appendOnce(this.svg.select('.' + name), 'line.line')
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
           .attr('x2', d4.functor(scope.accessors.x2).bind(this))
           .attr('y1', d4.functor(scope.accessors.y1).bind(this))
           .attr('y2', d4.functor(scope.accessors.y2).bind(this))
           .attr('marker-end', 'url(#' + name + '-start)');
 
-        d4.append(this.svg.select('.' + name), 'text.trendLine-label')
+        d4.appendOnce(this.svg.select('.' + name), 'text.trendLine-label')
         .text(d4.functor(scope.accessors.text).bind(this))
         .attr('x', d4.functor(scope.accessors.textX).bind(this))
         .attr('y', d4.functor(scope.accessors.textY).bind(this));

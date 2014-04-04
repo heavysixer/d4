@@ -595,22 +595,22 @@ describe('d4.base', function() {
   });
 
   describe('#append()', function() {
-    it('should support nested selections', function(){
-      d4.append(d3.select('#chart'),'svg.chart.foo');
-      expect(d3.select('svg.chart.foo')[0]).to.not.be.an('null');
-    });
     it('should add an element if it does not exist', function(){
-
+      expect(d3.select('svg.chart.foo')[0][0]).to.be.an('null');
+      d4.appendOnce(d3.select('#chart'),'svg#one.chart.foo');
+      d4.appendOnce(d3.select('#chart'),'svg#two.chart.bar');
+      expect(d3.select('svg#one.chart.foo')[0][0]).to.not.be.an('null');
+      expect(d3.select('svg.chart.bar')[0][0]).to.not.be.an('null');
     });
+
     it('should return an element if it does exist', function(){
-
+      d4.appendOnce(d3.select('#chart'),'svg.chart.foo');
+      expect(d3.selectAll('svg.chart.foo')[0].length).to.equal(1);
+      d4.appendOnce(d3.select('#chart'),'svg.chart.foo');
+      expect(d3.selectAll('svg.chart.foo')[0].length).to.equal(1);
+      d3.select('#chart').append('svg');
+      expect(d3.selectAll('svg')[0].length).to.equal(2);
     });
-    it('should apply selection attributes if they are provided', function(){
-      // add classes
-      // add attributes
-      // add ids
-    });
-
   });
 
   describe('#using()', function() {
