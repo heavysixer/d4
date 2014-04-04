@@ -147,9 +147,9 @@ __Parser__ - A parser prepares the data for a chart.
 * Y Axis
 
 #### Inspiration
-The inspiration of D4's modular and declarative structure came from
+Where possible d4 follows existing d3 community best-practices. The inspiration of D4's modular and declarative structure came from
 [Mike Bostock's](http://bost.ocks.org/mike/chart/) article on writing reusable
-charts in d3.
+charts in d3. d4 also follows the [general update pattern](http://bl.ocks.org/mbostock/3808234) too. (mostly)
 
 #### Other Projects using d4
 [d4-rails](https://github.com/gouravtiwari/d4-rails)
