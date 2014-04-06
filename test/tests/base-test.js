@@ -234,6 +234,39 @@ describe('d4.base', function() {
       });
     });
 
+    describe('when setting margins', function() {
+      it('should allow you to specify all four margins in a single object', function(){
+        var chart = d4.charts.column();
+        chart.margin({ left: 10, right: 10, top: 10, bottom: 10 });
+        expect(chart.margin().left).to.be.equal(10);
+        expect(chart.margin().right).to.be.equal(10);
+        expect(chart.margin().top).to.be.equal(10);
+        expect(chart.margin().bottom).to.be.equal(10);
+      });
+
+      it('should allow you to specify an arbitrary number of margin using an object', function(){
+        var chart = d4.charts.column();
+        expect(chart.margin().top).to.be.equal(20);
+        chart.margin({ left: 100 });
+        expect(chart.margin().left).to.be.equal(100);
+        expect(chart.margin().top).to.be.equal(20);
+        chart.margin(function(){
+          return { left: 1000 };
+        });
+        expect(chart.margin().left).to.be.equal(1000);
+
+      });
+
+      it('should allow you to specify a single margin property using the custom accessors', function(){
+        var chart = d4.charts.column();
+        expect(chart.margin().top).to.be.equal(20);
+        chart.marginTop(200);
+        expect(chart.margin().top).to.be.equal(200);
+        chart.marginTop(300);
+        expect(chart.margin().top).to.be.equal(300);
+      });
+    });
+
     describe('when defining a config object', function() {
       it('should allow you to specify public accessors functions', function() {
         var chart = d4.baseChart({ builder : this.builder, config : {

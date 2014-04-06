@@ -113,6 +113,7 @@
   // character. This allows the developer to do something like this:
   //     chart.width(500)
   //     chart.$width //500
+
   var storeLastValue = function(obj, functName, attr) {
     if (d4.isNotFunction(attr)) {
       var prop = '$' + functName;
@@ -299,7 +300,7 @@
 
     linkAxes(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder || builder);
-    opts.accessors = ['margin', 'width', 'height', 'valueKey'].concat(d3.keys(config.accessors) || []);
+    opts.accessors = ['width', 'height', 'valueKey'].concat(d3.keys(config.accessors) || []);
     return opts;
   };
 
@@ -585,6 +586,14 @@
      */
     chart.features = function() {
       return opts.mixins;
+    };
+
+    chart.margin = function(funct) {
+      if (!arguments.length) {
+        return opts.margin;
+      }
+      opts.margin = d4.merge(opts.margin, d4.functor(funct)());
+      return chart;
     };
 
     /**
@@ -966,6 +975,18 @@
   /**
    * Helper method to merge two objects together. The overrides object will
    * replace any values which also occur in the options object.
+   *
+   *##### Examples:
+   *
+   *        var opts = d4.merge({
+   *          margin: {
+   *            top: 20,
+   *            right: 20,
+   *            bottom: 40,
+   *            left: 40
+   *          },
+   *          width: 400
+   *        }, config);
    *
    * @param {Object} options - the first object
    * @param {Object} overrides - the second object to merge onto the top.

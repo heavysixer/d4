@@ -36,12 +36,13 @@ $(document).ready(function() {
   var renderChart = function(data){
     var chart = d4.charts.line()
       .marginLeft(70)
+      .marginRight(70)
       .outerWidth($('#time_series').width())
       .x(function(x) {
 
-        // Just like other dimensions you can specify a min or max you just
+        // Just like other scales you can specify a min or max you just
         // need to make sure to parse the date first.
-        x.min(parseDate('Nov 14, 2010'))
+        x.min(parseDate('Nov 14, 2010'));
 
         // by default d4 makes the x axis ordinal so we'll set it to time
         // and use the date property of the data object as the key.
