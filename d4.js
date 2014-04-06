@@ -504,6 +504,49 @@
     }
   };
 
+  // This approach was inspired by SizzleJS. Most of the REGEX is based off their own expressions.
+  var tokenizeSelector = function(selector) {
+    var soFar = selector,
+    whitespace = '[\\x20\\t\\r\\n\\f]',
+    characterEncoding = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
+    identifier = characterEncoding.replace( 'w', 'w#' ),
+    attributes = '\\[' + whitespace + '*(' + characterEncoding + ')' + whitespace +
+    '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
+    order = ['TAG','ID','CLASS'],
+    matchers = {
+      'ID': new RegExp( '#(' + characterEncoding + ')' ),
+      'CLASS': new RegExp( '\\.(' + characterEncoding + ')'),
+      'TAG': new RegExp( '^(' + characterEncoding.replace( 'w', 'w*' ) + ')' ),
+      'ATTR': new RegExp( '' + attributes )
+    },
+    parse = function(exp){
+      matched = false;
+      tokens[exp] = [];
+      match = true;
+      while(match) {
+        match = matchers[exp].exec(soFar);
+        if(match !== null) {
+          matched = match.shift();
+          tokens[exp].push(match[0]);
+          soFar = soFar.slice(matched.length);
+        }
+      }
+    },
+    matched,
+    match,
+    tokens = {};
+    d4.each(order, parse);
+    d4.each(order, function(exp){
+      while(soFar) {
+        tokens[exp] = tokens[exp].join(' ');
+        if(!matched){
+          break;
+        }
+      }
+    });
+    return tokens;
+  };
+
   var createChart = function(opts) {
     var chart = applyScaffold(opts);
     createAccessorsFromArray(chart, opts.margin, d3.keys(opts.margin), 'margin');
@@ -693,49 +736,6 @@
     return chart;
   };
 
-  // This approach was inspired by SizzleJS. Most of the REGEX is based off their own expressions.
-  var tokenizeSelector = function(selector) {
-    var soFar = selector,
-    whitespace = '[\\x20\\t\\r\\n\\f]',
-    characterEncoding = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
-    identifier = characterEncoding.replace( 'w', 'w#' ),
-    attributes = '\\[' + whitespace + '*(' + characterEncoding + ')' + whitespace +
-    '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
-    order = ['TAG','ID','CLASS'],
-    matchers = {
-      'ID': new RegExp( '#(' + characterEncoding + ')' ),
-      'CLASS': new RegExp( '\\.(' + characterEncoding + ')'),
-      'TAG': new RegExp( '^(' + characterEncoding.replace( 'w', 'w*' ) + ')' ),
-      'ATTR': new RegExp( '' + attributes )
-    },
-    parse = function(exp){
-      matched = false;
-      tokens[exp] = [];
-      match = true;
-      while(match) {
-        match = matchers[exp].exec(soFar);
-        if(match !== null) {
-          matched = match.shift();
-          tokens[exp].push(match[0]);
-          soFar = soFar.slice(matched.length);
-        }
-      }
-    },
-    matched,
-    match,
-    tokens = {};
-    d4.each(order, parse);
-    d4.each(order, function(exp){
-      while(soFar) {
-        tokens[exp] = tokens[exp].join(' ');
-        if(!matched){
-          break;
-        }
-      }
-    });
-    return tokens;
-  };
-
   /**
    * This function conditionally appends a SVG element if it doesn't already
    * exist within the parent element.
@@ -870,6 +870,25 @@
     });
   };
 
+  /**
+   * Helper method to extend one object with the attributes of another.
+   *
+   *##### Examples:
+   *
+   *        var opts = d4.extend({
+   *          margin: {
+   *            top: 20,
+   *            right: 20,
+   *            bottom: 40,
+   *            left: 40
+   *          },
+   *          width: 400
+   *        }, config);
+   *
+   * @param {Object} obj - the object to extend
+   * @param {Object} overrides - the second object who will extend the first.
+   * @returns the first object which has now been extended;
+   */
   d4.extend = function(obj) {
     each(Array.prototype.slice.call(arguments, 1), function(source) {
       if (source) {
@@ -933,20 +952,35 @@
     };
   };
 
+  /**
+   * Helper method to determine if a supplied argument is an array
+   * @param {*} obj - the argument to test
+   * @returns boolean
+   */
   d4.isArray = Array.isArray || function(val) {
     return Object.prototype.toString.call(val) === '[object Array]';
   };
 
+  /**
+   * Helper method to determine if a supplied argument is a date
+   * @param {*} obj - the argument to test
+   * @returns boolean
+   */
   d4.isDate = function(val) {
     return Object.prototype.toString.call(val) === '[object Date]';
   };
 
+  /**
+   * Helper method to determine if a supplied argument is a function
+   * @param {*} obj - the argument to test
+   * @returns boolean
+   */
   d4.isFunction = function(obj) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
   };
 
   /**
-   * Helper method to determine if a supplied argument is a function
+   * Helper method to determine if a supplied argument is not a function
    * @param {*} obj - the argument to test
    * @returns boolean
    */
@@ -973,8 +1007,9 @@
   };
 
   /**
-   * Helper method to merge two objects together. The overrides object will
-   * replace any values which also occur in the options object.
+   * Helper method to merge two objects together into a new object. This will leave
+   * the two orignal objects untouched. The overrides object will replace any
+   * values which also occur in the options object.
    *
    *##### Examples:
    *
