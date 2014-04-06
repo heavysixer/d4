@@ -146,6 +146,18 @@ __Parser__ - A parser prepares the data for a chart.
 * X Axis
 * Y Axis
 
+#### Contributing
+
+If you make improvements to d4, please share with others.
+
+Fork the project on GitHub.
+
+Make your feature addition or bug fix.
+
+Commit with Git.
+
+Send @heavysixer a pull request.
+
 #### Inspiration
 Where possible d4 follows existing d3 community best-practices. The inspiration of D4's modular and declarative structure came from
 [Mike Bostock's](http://bost.ocks.org/mike/chart/) article on writing reusable
