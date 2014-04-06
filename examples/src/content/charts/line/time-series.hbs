@@ -36,8 +36,12 @@ $(document).ready(function() {
   var renderChart = function(data){
     var chart = d4.charts.line()
       .marginLeft(70)
-      .outerWidth($('#example').width())
+      .outerWidth($('#time_series').width())
       .x(function(x) {
+
+        // Just like other dimensions you can specify a min or max you just
+        // need to make sure to parse the date first.
+        x.min(parseDate('Nov 14, 2010'))
 
         // by default d4 makes the x axis ordinal so we'll set it to time
         // and use the date property of the data object as the key.
@@ -49,7 +53,7 @@ $(document).ready(function() {
         .key('volume');
       });
 
-    d3.select('#example')
+    d3.select('#time_series')
       .datum(data)
       .call(chart);
   };
@@ -57,6 +61,6 @@ $(document).ready(function() {
 
 
 </script>
-<div id="example"></div>
+<div id="time_series"></div>
 <h6>JavaScript Code</h6>
 <pre><code id="code" class="language-javascript"></code></pre>

@@ -37,7 +37,9 @@
     var axis = chart[dimension];
     if(!axis.domain.$dirty) {
       if(d4.isDate(ext[0])){
-        axis.domain([ext[0], ext[1]]);
+        var min = axis.$min || ext[0];
+        var max = axis.$max || ext[1];
+        axis.domain([min, max]);
       }else{
         axis.domain([Math.min(axis.$min || 0, ext[0]), axis.$max || ext[1]]);
       }

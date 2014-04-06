@@ -226,7 +226,7 @@ svg.d4 {
     stroke-width: 1px;
 }
 
-#line_and_dot .d4 .series0 path {
+#line_and_dot .d4 .series0 path, #time_series .d4 .series0 path {
     stroke: darkred;
 }
 
