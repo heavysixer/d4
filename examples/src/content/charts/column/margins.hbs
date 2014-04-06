@@ -4,6 +4,33 @@ concepts:
   - Basic Concepts
 ---
 <h5>{{title}}</h5>
+<p>To understand how to properly arrange your charts so that they appear nicely
+  composed on the screen you need to understand how d4 handles margins and heights.
+</p>
+<h6>Margins</h6>
+<p>d4 allows you to specify the margin of a chart in a number of convenient ways.
+<pre><code class="language-javascript">
+  var chart = d4.charts.column();
+
+  // You can specify the chart margins as an object which contains all four keys.
+  chart.margin(function(){
+    return { top: 10, right: 10, bottom: 10, left: 10 };
+  });
+
+  // You can specify a partial object which contains just the keys to change
+  chart.margin(function(){
+    return { top: 10 };
+  });
+
+  // You can also set the margin object without wrapping it in a function too
+  chart.margin({ top: 10 });
+
+  // You can specify the value using a custom accessor for just one margin attribute
+  chart.marginTop(10);
+
+</code></pre>
+</p>
+<h6>Heights</h6>
 <p>
   d4 measures the height and width of a chart in two ways. Understanding how
   and when these measurements are applied will better help you understand how to
@@ -14,6 +41,7 @@ concepts:
   area only, which means it excludes the margins. That means that when you set
   the height and width of a chart, the actual DOM element may be larger because
   it will include the margin too. Here is an example:
+</p>
 <hr/>
 <script type="text/javascript" charset="utf-8" id='source_code'>
 'use strict';
