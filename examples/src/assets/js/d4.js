@@ -1,6 +1,6 @@
 /*! d4 - v0.7.2
  *  License: MIT Expat
- *  Date: 2014-04-06
+ *  Date: 2014-04-07
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -507,39 +507,39 @@
   // This approach was inspired by SizzleJS. Most of the REGEX is based off their own expressions.
   var tokenizeSelector = function(selector) {
     var soFar = selector,
-    whitespace = '[\\x20\\t\\r\\n\\f]',
-    characterEncoding = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
-    identifier = characterEncoding.replace( 'w', 'w#' ),
-    attributes = '\\[' + whitespace + '*(' + characterEncoding + ')' + whitespace +
-    '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
-    order = ['TAG','ID','CLASS'],
-    matchers = {
-      'ID': new RegExp( '#(' + characterEncoding + ')' ),
-      'CLASS': new RegExp( '\\.(' + characterEncoding + ')'),
-      'TAG': new RegExp( '^(' + characterEncoding.replace( 'w', 'w*' ) + ')' ),
-      'ATTR': new RegExp( '' + attributes )
-    },
-    parse = function(exp){
-      matched = false;
-      tokens[exp] = [];
-      match = true;
-      while(match) {
-        match = matchers[exp].exec(soFar);
-        if(match !== null) {
-          matched = match.shift();
-          tokens[exp].push(match[0]);
-          soFar = soFar.slice(matched.length);
+      whitespace = '[\\x20\\t\\r\\n\\f]',
+      characterEncoding = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
+      identifier = characterEncoding.replace('w', 'w#'),
+      attributes = '\\[' + whitespace + '*(' + characterEncoding + ')' + whitespace +
+        '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
+      order = ['TAG', 'ID', 'CLASS'],
+      matchers = {
+        'ID': new RegExp('#(' + characterEncoding + ')'),
+        'CLASS': new RegExp('\\.(' + characterEncoding + ')'),
+        'TAG': new RegExp('^(' + characterEncoding.replace('w', 'w*') + ')'),
+        'ATTR': new RegExp('' + attributes)
+      },
+      parse = function(exp) {
+        matched = false;
+        tokens[exp] = [];
+        match = true;
+        while (match) {
+          match = matchers[exp].exec(soFar);
+          if (match !== null) {
+            matched = match.shift();
+            tokens[exp].push(match[0]);
+            soFar = soFar.slice(matched.length);
+          }
         }
-      }
-    },
-    matched,
-    match,
-    tokens = {};
+      },
+      matched,
+      match,
+      tokens = {};
     d4.each(order, parse);
-    d4.each(order, function(exp){
-      while(soFar) {
+    d4.each(order, function(exp) {
+      while (soFar) {
         tokens[exp] = tokens[exp].join(' ');
-        if(!matched){
+        if (!matched) {
           break;
         }
       }
@@ -757,8 +757,8 @@
     if (selected.empty()) {
       tokens = tokenizeSelector(selector);
       selected = element.append(tokens.TAG)
-      .attr('class', tokens.CLASS.join(' '));
-      if(tokens.ID) {
+        .attr('class', tokens.CLASS.join(' '));
+      if (tokens.ID) {
         selected.attr('id', tokens.ID.pop());
       }
     }
@@ -1232,20 +1232,20 @@
    */
   d4.chart('column', function column() {
     return d4.baseChart()
-    .mixin(
-    [{
-      'name': 'bars',
-      'feature': d4.features.rectSeries
-    }, {
-      'name': 'barLabels',
-      'feature': d4.features.stackedLabels
-    }, {
-      'name': 'xAxis',
-      'feature': d4.features.xAxis
-    }, {
-      'name': 'yAxis',
-      'feature': d4.features.yAxis
-    }]);
+      .mixin(
+        [{
+          'name': 'bars',
+          'feature': d4.features.rectSeries
+        }, {
+          'name': 'barLabels',
+          'feature': d4.features.stackedLabels
+        }, {
+          'name': 'xAxis',
+          'feature': d4.features.xAxis
+        }, {
+          'name': 'yAxis',
+          'feature': d4.features.yAxis
+        }]);
   });
 }).call(this);
 
@@ -1325,21 +1325,21 @@
         }
       }
     })
-    .mixin(
-      [{
-        'name': 'bars',
-        'feature': d4.features.groupedColumnSeries
-      }, {
-        'name': 'barLabels',
-        'feature': d4.features.stackedLabels,
-        'overrides': columnLabelOverrides
-      }, {
-        'name': 'xAxis',
-        'feature': d4.features.xAxis
-      }, {
-        'name': 'yAxis',
-        'feature': d4.features.yAxis
-      }]);
+      .mixin(
+        [{
+          'name': 'bars',
+          'feature': d4.features.groupedColumnSeries
+        }, {
+          'name': 'barLabels',
+          'feature': d4.features.stackedLabels,
+          'overrides': columnLabelOverrides
+        }, {
+          'name': 'xAxis',
+          'feature': d4.features.xAxis
+        }, {
+          'name': 'yAxis',
+          'feature': d4.features.yAxis
+        }]);
   });
 }).call(this);
 
@@ -1577,20 +1577,20 @@
         }
       }
     })
-    .mixin([{
-      'name': 'circles',
-      'feature': d4.features.circleSeries,
-      'overrides': circleOverrides
-    }, {
-      'name': 'circleLabels',
-      'feature': d4.features.stackedLabels
-    }, {
-      'name': 'xAxis',
-      'feature': d4.features.xAxis
-    }, {
-      'name': 'yAxis',
-      'feature': d4.features.yAxis
-    }]);
+      .mixin([{
+        'name': 'circles',
+        'feature': d4.features.circleSeries,
+        'overrides': circleOverrides
+      }, {
+        'name': 'circleLabels',
+        'feature': d4.features.stackedLabels
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);
 
@@ -2122,7 +2122,7 @@
   d4.feature('arrow', function(name) {
     return {
       accessors: {
-        tipSize: function(){
+        tipSize: function() {
           return 6;
         },
         x1: function() {
@@ -2138,16 +2138,16 @@
         },
 
         y2: function() {
-          return  this.y(this.height);
+          return this.y(this.height);
         },
-        classes: function(){
+        classes: function() {
           return 'line';
         }
       },
       render: function(scope, data, selection) {
         var defs = this.svg.select('defs');
 
-        d4.appendOnce(defs,'marker#' + name + '-end')
+        d4.appendOnce(defs, 'marker#' + name + '-end')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
@@ -2157,7 +2157,7 @@
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
-        d4.appendOnce(defs,'marker#' + name + '-start')
+        d4.appendOnce(defs, 'marker#' + name + '-start')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
@@ -2167,7 +2167,7 @@
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
-        d4.appendOnce(selection,'g.'+name);
+        d4.appendOnce(selection, 'g.' + name);
 
         var arrow = d4.appendOnce(this.svg.select('.' + name), 'line')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
@@ -2185,7 +2185,7 @@
 
 (function() {
   'use strict';
-  d4.feature('columnLabels',function(name) {
+  d4.feature('columnLabels', function(name) {
     var padding = 5;
     var anchorText = function() {
       if (this.y.$scale !== 'ordinal') {
@@ -2197,16 +2197,16 @@
     return {
       accessors: {
         x: function(d) {
-          if(this.x.$scale === 'ordinal') {
+          if (this.x.$scale === 'ordinal') {
             return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
           } else {
             var width = Math.abs(this.x(d[this.x.$key]) - this.x(0));
-            return this.x(d[this.x.$key]) - width/2;
+            return this.x(d[this.x.$key]) - width / 2;
           }
         },
 
         y: function(d) {
-          if(this.y.$scale === 'ordinal') {
+          if (this.y.$scale === 'ordinal') {
             return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2) + padding;
           } else {
             var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
@@ -2220,10 +2220,10 @@
       },
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var label = this.svg.select('.'+name).selectAll('.'+name)
-        .data(data, function(d, i){
-          return '' + d.key + i;
-        });
+        var label = this.svg.select('.' + name).selectAll('.' + name)
+          .data(data, function(d, i) {
+            return '' + d.key + i;
+          });
         label.enter().append('text');
         label.exit().remove();
         label.attr('class', 'column-label')
@@ -2236,6 +2236,7 @@
     };
   });
 }).call(this);
+
 (function() {
   'use strict';
   d4.feature('grid', function(name) {
@@ -2256,7 +2257,7 @@
         var formattedXAxis = d4.functor(scope.accessors.formatXAxis).bind(this)(xAxis);
         var formattedYAxis = d4.functor(scope.accessors.formatYAxis).bind(this)(yAxis);
 
-        selection.append('g').attr('class', 'grid border '+ name)
+        selection.append('g').attr('class', 'grid border ' + name)
           .attr('transform', 'translate(0,0)')
           .append('rect')
           .attr('x', 0)
@@ -2265,22 +2266,23 @@
           .attr('height', this.height);
 
         selection.append('g')
-          .attr('class', 'x grid '+ name)
+          .attr('class', 'x grid ' + name)
           .attr('transform', 'translate(0,' + this.height + ')')
           .call(formattedXAxis
-          .tickSize(-this.height, 0, 0)
-          .tickFormat(''));
+            .tickSize(-this.height, 0, 0)
+            .tickFormat(''));
 
         selection.append('g')
-          .attr('class', 'y grid '+ name)
+          .attr('class', 'y grid ' + name)
           .attr('transform', 'translate(0,0)')
           .call(formattedYAxis
-          .tickSize(-this.width, 0, 0)
-          .tickFormat(''));
+            .tickSize(-this.width, 0, 0)
+            .tickFormat(''));
       }
     };
   });
 }).call(this);
+
 (function() {
   'use strict';
   d4.feature('groupedColumnSeries', function(name) {
@@ -2317,9 +2319,9 @@
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
-        .data(data, function(d, i){
-          return d.key + i;
-        });
+          .data(data, function(d, i) {
+            return d.key + i;
+          });
         group.enter().append('g');
         group.exit().remove();
         group.attr('class', function(d, i) {
@@ -2359,20 +2361,20 @@
           return d.key;
         },
 
-        classes: function(d,n) {
+        classes: function(d, n) {
           return 'stroke series' + n;
         }
       },
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var label = this.svg.select('.'+name).selectAll('.'+name).data(data);
+        var label = this.svg.select('.' + name).selectAll('.' + name).data(data);
         label.enter().append('text');
         label.exit().remove();
         label.attr('class', 'lineSeriesLabel')
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
-          .attr('data-key', function(d){
+          .attr('data-key', function(d) {
             return d.key;
           })
           .attr('class', d4.functor(scope.accessors.classes).bind(this));
@@ -2381,6 +2383,7 @@
     };
   });
 }).call(this);
+
 (function() {
   'use strict';
   d4.feature('lineSeries', function(name) {
@@ -2477,13 +2480,13 @@
       return (num) ? (num < 0) ? -1 : 1 : 0;
     };
 
-    var sharedSigns = function(a, b, key){
+    var sharedSigns = function(a, b, key) {
       return (sign(a[key]) === sign(b[key]));
     };
 
     var processPoint = function(d, i, n, data, callback) {
       var key = (this.y.$scale === 'ordinal') ? this.x.$key : this.y.$key;
-      if(i === 0 || !sharedSigns(data[n].values[i-1], d, key)){
+      if (i === 0 || !sharedSigns(data[n].values[i - 1], d, key)) {
         return 0;
       }
       return callback.bind(this)();
@@ -2492,7 +2495,7 @@
     return {
       accessors: {
         x1: function(d) {
-          if(this.x.$scale === 'ordinal'){
+          if (this.x.$scale === 'ordinal') {
             return this.x(d[this.x.$key]);
           } else {
             return this.x(d.y0 + d.y);
@@ -2500,23 +2503,23 @@
         },
 
         y1: function(d) {
-          if(this.y.$scale === 'ordinal'){
+          if (this.y.$scale === 'ordinal') {
             return this.y(d[this.y.$key]);
           } else {
             return this.y(d.y0 + d.y);
           }
         },
 
-        size: function(){
-          if(this.x.$scale === 'ordinal') {
+        size: function() {
+          if (this.x.$scale === 'ordinal') {
             return this.x.rangeBand();
           } else {
             return this.y.rangeBand();
           }
         },
 
-        classes : function(d, i){
-          return 'series' +i;
+        classes: function(d, i) {
+          return 'series' + i;
         }
       },
 
@@ -2525,8 +2528,8 @@
         var group = this.svg.select('.' + name).selectAll('g')
           .data(data)
           .enter().append('g')
-          .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.y.$key;
+          .attr('class', function(d, i) {
+            return 'series' + i + ' ' + this.y.$key;
           }.bind(this));
 
         var lines = group.selectAll('lines')
@@ -2537,31 +2540,31 @@
         lines.enter().append('line');
         lines.exit().remove();
         lines
-        .attr('class', d4.functor(scope.accessors.classes).bind(this))
-        .attr('stroke-dasharray','5, 5')
-        .attr('x1', function(d, i, n) {
-          return processPoint.bind(this)(d, i, n, data, function(){
-            return d4.functor(scope.accessors.x1).bind(this)(d);
-          });
-        }.bind(this))
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+          .attr('stroke-dasharray', '5, 5')
+          .attr('x1', function(d, i, n) {
+            return processPoint.bind(this)(d, i, n, data, function() {
+              return d4.functor(scope.accessors.x1).bind(this)(d);
+            });
+          }.bind(this))
 
         .attr('y1', function(d, i, n) {
           var offset = (this.y.$scale === 'ordinal') ? d4.functor(scope.accessors.size).bind(this)(d) : 0;
-          return processPoint.bind(this)(d, i, n, data, function(){
+          return processPoint.bind(this)(d, i, n, data, function() {
             return d4.functor(scope.accessors.y1).bind(this)(d) + offset;
           });
         }.bind(this))
 
         .attr('x2', function(d, i, n) {
           var offset = (this.x.$scale === 'ordinal') ? scope.accessors.size.bind(this)(d) : 0;
-          return processPoint.bind(this)(d, i, n, data, function(){
-            return d4.functor(scope.accessors.x1).bind(this)(data[n].values[i-1]) + offset;
+          return processPoint.bind(this)(d, i, n, data, function() {
+            return d4.functor(scope.accessors.x1).bind(this)(data[n].values[i - 1]) + offset;
           });
         }.bind(this))
 
         .attr('y2', function(d, i, n) {
-          return processPoint.bind(this)(d, i, n, data, function(){
-            return d4.functor(scope.accessors.y1).bind(this)(data[n].values[i-1]);
+          return processPoint.bind(this)(d, i, n, data, function() {
+            return d4.functor(scope.accessors.y1).bind(this)(data[n].values[i - 1]);
           });
         }.bind(this));
 
@@ -2653,7 +2656,7 @@
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d, i){
+          .data(data, function(d, i) {
             return d.key + i;
           });
         group.enter().append('g')
@@ -2677,7 +2680,7 @@
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
-          if(this.y.$scale !== 'ordinal') {
+          if (this.y.$scale !== 'ordinal') {
             group.selectAll('text').call(d4.helpers.staggerTextVertically, -1);
           } else {
             group.selectAll('text').call(d4.helpers.staggerTextHorizontally, 1);
@@ -2861,10 +2864,10 @@
           var size = 0;
           if (this.x.$scale === 'ordinal') {
             size = useDiscreteSize.bind(this)('x');
-            return useDiscretePosition.bind(this)('x', d) + size/2;
+            return useDiscretePosition.bind(this)('x', d) + size / 2;
           } else {
             size = useContinuousSize.bind(this)('x', d);
-            return useContinuousPosition.bind(this)('x', d) + size/2;
+            return useContinuousPosition.bind(this)('x', d) + size / 2;
           }
         },
 
@@ -2872,26 +2875,26 @@
           var size = 0;
           if (this.y.$scale === 'ordinal') {
             size = useDiscreteSize.bind(this)('y');
-            return useDiscretePosition.bind(this)('y', d) + size/2;
+            return useDiscretePosition.bind(this)('y', d) + size / 2;
           } else {
             size = useContinuousSize.bind(this)('y', d);
-            return useContinuousPosition.bind(this)('y', d) + size/2;
+            return useContinuousPosition.bind(this)('y', d) + size / 2;
           }
         },
 
         rx: function(d) {
           if (this.x.$scale === 'ordinal') {
-            return useDiscreteSize.bind(this)('x')/2;
+            return useDiscreteSize.bind(this)('x') / 2;
           } else {
-            return useContinuousSize.bind(this)('x', d)/2;
+            return useContinuousSize.bind(this)('x', d) / 2;
           }
         },
 
         ry: function(d) {
           if (this.y.$scale === 'ordinal') {
-            return useDiscreteSize.bind(this)('y')/2;
+            return useDiscreteSize.bind(this)('y') / 2;
           } else {
-            return useContinuousSize.bind(this)('y', d)/2;
+            return useContinuousSize.bind(this)('y', d) / 2;
           }
         }
       }
@@ -3008,7 +3011,7 @@
           return this.x(this.width);
         },
 
-        textY: function(){
+        textY: function() {
           return this.x(this.height);
         }
       },
@@ -3034,9 +3037,9 @@
           .attr('marker-end', 'url(#' + name + '-start)');
 
         d4.appendOnce(this.svg.select('.' + name), 'text.trendLine-label')
-        .text(d4.functor(scope.accessors.text).bind(this))
-        .attr('x', d4.functor(scope.accessors.textX).bind(this))
-        .attr('y', d4.functor(scope.accessors.textY).bind(this));
+          .text(d4.functor(scope.accessors.text).bind(this))
+          .attr('x', d4.functor(scope.accessors.textX).bind(this))
+          .attr('y', d4.functor(scope.accessors.textY).bind(this));
         return trendLine;
       }
     };
@@ -3067,10 +3070,10 @@
     return {
       accessors: {
         x: function(d) {
-          if(this.x.$scale === 'linear'){
+          if (this.x.$scale === 'linear') {
             var width = 0;
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
-            if(d.y > 0){
+            if (d.y > 0) {
               width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
             }
             return this.x(xVal) + width;
@@ -3080,27 +3083,27 @@
         },
 
         y: function(d) {
-          if(this.x.$scale === 'linear'){
+          if (this.x.$scale === 'linear') {
             return this.y(d[this.y.$key]);
           } else {
             return this.y(d.y0 + d.y);
           }
         },
 
-        span: function(){
-          if(this.x.$scale === 'linear'){
+        span: function() {
+          if (this.x.$scale === 'linear') {
             return this.y.rangeBand();
           } else {
             return this.x.rangeBand();
           }
         },
 
-        classes : function(d, i){
-          return 'series' +i;
+        classes: function(d, i) {
+          return 'series' + i;
         }
       },
-      prepare : function(data) {
-        var d = data.map(function(o){
+      prepare: function(data) {
+        var d = data.map(function(o) {
           return o.values[0];
         });
         return d4.flatten(d);
@@ -3112,26 +3115,26 @@
         lines.enter().append('line');
         lines.exit().remove();
         lines
-        .attr('class', d4.functor(scope.accessors.classes).bind(this))
-        .attr('x1', function(d, i) {
-          if(i === 0){
-            return 0;
-          }
-          return d4.functor(scope.accessors.x).bind(this)(data[i - 1]);
-        }.bind(this))
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+          .attr('x1', function(d, i) {
+            if (i === 0) {
+              return 0;
+            }
+            return d4.functor(scope.accessors.x).bind(this)(data[i - 1]);
+          }.bind(this))
 
         .attr('y1', function(d, i) {
-          if(i === 0){
+          if (i === 0) {
             return 0;
           }
           return d4.functor(scope.accessors.y).bind(this)(data[i - 1]);
         }.bind(this))
 
         .attr('x2', function(d, i) {
-          if(i === 0){
+          if (i === 0) {
             return 0;
           }
-          if(this.x.$scale === 'ordinal') {
+          if (this.x.$scale === 'ordinal') {
             return d4.functor(scope.accessors.x).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)();
           } else {
             return d4.functor(scope.accessors.x).bind(this)(data[i - 1]);
@@ -3139,12 +3142,12 @@
         }.bind(this))
 
         .attr('y2', function(d, i) {
-          if(i === 0){
+          if (i === 0) {
             return 0;
           }
-          if(this.x.$scale === 'ordinal') {
+          if (this.x.$scale === 'ordinal') {
             return d4.functor(scope.accessors.y).bind(this)(data[i - 1]);
-          }else {
+          } else {
             return d4.functor(scope.accessors.y).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)(d);
           }
         }.bind(this));
@@ -3224,7 +3227,7 @@
         if (aligned.toLowerCase() === 'bottom') {
           text.attr('transform', 'translate(0,' + (axisBB.height + textHeight) + ')');
         } else {
-          text.attr('transform', 'translate(0,' + (axisBB.y - (textHeight/2)) + ')');
+          text.attr('transform', 'translate(0,' + (axisBB.y - (textHeight / 2)) + ')');
         }
       }
     };
@@ -3255,17 +3258,17 @@
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
         var group = this.svg.select('g.margins')
-        .append('g')
-        .attr('class', 'x axis ' + name)
-        .attr('data-scale', this.x.$scale)
-        .call(axis);
+          .append('g')
+          .attr('class', 'x axis ' + name)
+          .attr('data-scale', this.x.$scale)
+          .call(axis);
         alignAxis.bind(this)(aligned, group);
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
           group.selectAll('.tick text').call(d4.helpers.staggerTextVertically, 1);
         }
-        if(aligned === 'top') {
+        if (aligned === 'top') {
           positionText.bind(this)(subtitle, aligned, 'subtitle');
           positionText.bind(this)(title, aligned, 'title');
         } else {
@@ -3323,11 +3326,11 @@
    *     })
    *
    * @name yAxis
-  */
+   */
   d4.feature('yAxis', function(name) {
     var axis = d3.svg.axis()
-    .orient('left')
-    .tickSize(0);
+      .orient('left')
+      .tickSize(0);
 
     var textRect = function(text, klasses) {
       var rect = d4.helpers.textSize(text, klasses);
@@ -3345,9 +3348,9 @@
           .attr('class', '' + klass);
 
         if (aligned.toLowerCase() === 'left') {
-          text.call(d4.helpers.rotateText('rotate(' + 90 + ')translate(0,'+ (Math.abs(axisBB.x) + textHeight)+')'));
+          text.call(d4.helpers.rotateText('rotate(' + 90 + ')translate(0,' + (Math.abs(axisBB.x) + textHeight) + ')'));
         } else {
-          text.call(d4.helpers.rotateText('rotate(' + 90 + ')translate(0,'+ (Math.abs(axisBB.x) - (axisBB.width + textHeight))+')'));
+          text.call(d4.helpers.rotateText('rotate(' + 90 + ')translate(0,' + (Math.abs(axisBB.x) - (axisBB.width + textHeight)) + ')'));
         }
       }
     };
@@ -3378,13 +3381,13 @@
         var aligned = d4.functor(scope.accessors.align).bind(this)();
 
         var group = this.svg.select('g.margins')
-        .append('g')
-        .attr('class', 'y axis ' + name)
-        .attr('data-scale', this.y.$scale)
-        .call(axis);
+          .append('g')
+          .attr('class', 'y axis ' + name)
+          .attr('data-scale', this.y.$scale)
+          .call(axis);
 
         group.selectAll('.tick text')
-        .call(d4.helpers.wrapText, this.margin[aligned]);
+          .call(d4.helpers.wrapText, this.margin[aligned]);
         alignAxis.bind(this)(aligned, group);
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
@@ -3392,7 +3395,7 @@
           // FIXME: This should be moved into a helper injected using DI.
           this.svg.selectAll('.y.axis .tick text').call(d4.helpers.staggerTextHorizontally, -1);
         }
-        if(aligned === 'left') {
+        if (aligned === 'left') {
           positionText.bind(this)(title, aligned, 'title');
           positionText.bind(this)(subtitle, aligned, 'subtitle');
         } else {
@@ -3410,50 +3413,50 @@
   'use strict';
 
   /**
-  * The nested group parser is useful for grouped column charts where multiple
-  * data items need to appear relative to the axis value, for example grouped
-  * column charts or multi-series line charts.
-  *
-  *       _____________________
-  *       |           _        |
-  *       |   _ _    | |_      |
-  *       |  | | |   | | |     |
-  *       ----------------------
-  *
-  * This module makes use of the d3's "nest" data structure layout
-  *
-  * https://github.com/mbostock/d3/wiki/Arrays#-nest
-  *
-  *##### Approach
-  *
-  * Just like D3, this parser uses a chaining declaritiave style to build up
-  * the necessary prerequistes to create the waterfall data. Here is a simple
-  * example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
-  *
-  *      var parser = d4.parsers.nestedGroup()
-  *          .x('category')
-  *          .y('value')
-  *          .value('value');
-  *
-  *      var groupedColumnData = parser(data);
-  *
-  * Keep reading for more information on these various accessor functions.
-  *
-  *##### Accessor Methods
-  *
-  * `x` - A function which returns a key to access the x values in the data array
-  * `y` - A function which returns a key to access the y values in the data array
-  * `value` - A function which returns a key to access the values in the data array.
-  * `data` - An array of objects with their dimensions specified like this:
-  *
-  *       var data = [
-  *       {"year" : "2010", "category" : "Category One", "value" : 23 },
-  *       {"year" : "2010", "category" : "Category Two", "value" : 55 },
-  *       {"year" : "2010", "category" : "Category Three", "value" : -10 },
-  *       {"year" : "2010", "category" : "Category Four", "value" : 5 }]
-  *
-  * @name nestedGroup
-  **/
+   * The nested group parser is useful for grouped column charts where multiple
+   * data items need to appear relative to the axis value, for example grouped
+   * column charts or multi-series line charts.
+   *
+   *       _____________________
+   *       |           _        |
+   *       |   _ _    | |_      |
+   *       |  | | |   | | |     |
+   *       ----------------------
+   *
+   * This module makes use of the d3's "nest" data structure layout
+   *
+   * https://github.com/mbostock/d3/wiki/Arrays#-nest
+   *
+   *##### Approach
+   *
+   * Just like D3, this parser uses a chaining declaritiave style to build up
+   * the necessary prerequistes to create the waterfall data. Here is a simple
+   * example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
+   *
+   *      var parser = d4.parsers.nestedGroup()
+   *          .x('category')
+   *          .y('value')
+   *          .value('value');
+   *
+   *      var groupedColumnData = parser(data);
+   *
+   * Keep reading for more information on these various accessor functions.
+   *
+   *##### Accessor Methods
+   *
+   * `x` - A function which returns a key to access the x values in the data array
+   * `y` - A function which returns a key to access the y values in the data array
+   * `value` - A function which returns a key to access the values in the data array.
+   * `data` - An array of objects with their dimensions specified like this:
+   *
+   *       var data = [
+   *       {"year" : "2010", "category" : "Category One", "value" : 23 },
+   *       {"year" : "2010", "category" : "Category Two", "value" : 55 },
+   *       {"year" : "2010", "category" : "Category Three", "value" : -10 },
+   *       {"year" : "2010", "category" : "Category Four", "value" : 5 }]
+   *
+   * @name nestedGroup
+   **/
   d4.parser('nestedGroup', function nestedGroup() {
 
     var opts = {
@@ -3471,7 +3474,7 @@
       },
       data: []
     };
-    opts.nestKey = function(){
+    opts.nestKey = function() {
       return opts.x.key;
     };
 
@@ -3535,101 +3538,101 @@
   'use strict';
 
   /**
-  * The nested stack parser is useful for charts which take a data series
-  * and wants to sort them across a dimension and then display the results.
-  * The most common usecase would be a stacked column chart like this:
-  *
-  *       _____________________
-  *       |    _               |
-  *       |   | |   _          |
-  *       |   |-|  | |   _     |
-  *       |   |-|  |-|  |-|    |
-  *       |   | |  |-|  |-|    |
-  *       ----------------------
-  *
-  * This module makes use of the d3's "nest" data structure, and "stack" layout
-  *
-  * + https://github.com/mbostock/d3/wiki/Arrays#-nest
-  * + https://github.com/mbostock/d3/wiki/Stack-Layout
-  *
-  *##### Approach
-  *
-  * Just like D3, this parser uses a chaining declaritiave style to build up
-  * the necessary prerequistes to create the stacked data. Here is a simple
-  * example:
-  *
-  *      var parser = d4.parsers.nestedStack()
-  *          .x(function() {
-  *            return 'title';
-  *          })
-  *          .y(function(){
-  *            return 'group';
-  *          })
-  *          .value(function() {
-  *            return 'values';
-  *          });
-  *
-  *      var stackedData = parser(data);
-  *
-  * Keep reading for more information on these various accessor functions.
-  *
-  *##### Benefits
-  * + Supports negative and positive stacked data series.
-  *
-  *##### Limitations
-  * + The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.
-  *
-  *##### Accessor Methods
-  *
-  * `x` : - function which returns a key to access the x values in the data array
-  * `y` : - function which returns a key to access the y values in the data array
-  * `value` : - function which returns a key to access the values in the data array.
-  * `data` : array - An array of objects with their dimensions specified like this:
-  *
-  *      var data = [{ "title": "3 Years", "group" : "one", "value": 30 },
-  *                  { "title": "3 Years", "group" : "two", "value": 20 },
-  *                  { "title": "3 Years", "group" : "three", "value": 10 },
-  *                  { "title": "5 Years", "group" : "one",  "value": 3 },
-  *                  { "title": "5 Years", "group" : "two", "value": 2 },
-  *                  { "title": "5 Years", "group" : "three", "value": 1 }]
-  *
-  *##### Example Usage
-  *
-  * Given the example data and dimension variables above you can use this module
-  * in the following way:
-  *
-  *      var parser = d4.parsers.nestedStack()
-  *      .x(function() {
-  *        return 'title';
-  *      })
-  *      .y(function(){
-  *        return 'group';
-  *      })
-  *      .value(function() {
-  *        return 'value';
-  *      })
-  *      .call(data);
-  *
-  * The `parser` variable will now be an object containing the following structure:
-  *
-  *      {
-  *        data: Array
-  *        value: {
-  *          key: string,
-  *          values: Array
-  *        },
-  *        x: {
-  *          key: string,
-  *          values: Array
-  *        },
-  *        y: {
-  *          key: string,
-  *          values: Array
-  *        }
-  *      }
-  *
-  * @name nestedStack
-  **/
+   * The nested stack parser is useful for charts which take a data series
+   * and wants to sort them across a dimension and then display the results.
+   * The most common usecase would be a stacked column chart like this:
+   *
+   *       _____________________
+   *       |    _               |
+   *       |   | |   _          |
+   *       |   |-|  | |   _     |
+   *       |   |-|  |-|  |-|    |
+   *       |   | |  |-|  |-|    |
+   *       ----------------------
+   *
+   * This module makes use of the d3's "nest" data structure, and "stack" layout
+   *
+   * + https://github.com/mbostock/d3/wiki/Arrays#-nest
+   * + https://github.com/mbostock/d3/wiki/Stack-Layout
+   *
+   *##### Approach
+   *
+   * Just like D3, this parser uses a chaining declaritiave style to build up
+   * the necessary prerequistes to create the stacked data. Here is a simple
+   * example:
+   *
+   *      var parser = d4.parsers.nestedStack()
+   *          .x(function() {
+   *            return 'title';
+   *          })
+   *          .y(function(){
+   *            return 'group';
+   *          })
+   *          .value(function() {
+   *            return 'values';
+   *          });
+   *
+   *      var stackedData = parser(data);
+   *
+   * Keep reading for more information on these various accessor functions.
+   *
+   *##### Benefits
+   * + Supports negative and positive stacked data series.
+   *
+   *##### Limitations
+   * + The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.
+   *
+   *##### Accessor Methods
+   *
+   * `x` : - function which returns a key to access the x values in the data array
+   * `y` : - function which returns a key to access the y values in the data array
+   * `value` : - function which returns a key to access the values in the data array.
+   * `data` : array - An array of objects with their dimensions specified like this:
+   *
+   *      var data = [{ "title": "3 Years", "group" : "one", "value": 30 },
+   *                  { "title": "3 Years", "group" : "two", "value": 20 },
+   *                  { "title": "3 Years", "group" : "three", "value": 10 },
+   *                  { "title": "5 Years", "group" : "one",  "value": 3 },
+   *                  { "title": "5 Years", "group" : "two", "value": 2 },
+   *                  { "title": "5 Years", "group" : "three", "value": 1 }]
+   *
+   *##### Example Usage
+   *
+   * Given the example data and dimension variables above you can use this module
+   * in the following way:
+   *
+   *      var parser = d4.parsers.nestedStack()
+   *      .x(function() {
+   *        return 'title';
+   *      })
+   *      .y(function(){
+   *        return 'group';
+   *      })
+   *      .value(function() {
+   *        return 'value';
+   *      })
+   *      .call(data);
+   *
+   * The `parser` variable will now be an object containing the following structure:
+   *
+   *      {
+   *        data: Array
+   *        value: {
+   *          key: string,
+   *          values: Array
+   *        },
+   *        x: {
+   *          key: string,
+   *          values: Array
+   *        },
+   *        y: {
+   *          key: string,
+   *          values: Array
+   *        }
+   *      }
+   *
+   * @name nestedStack
+   **/
   d4.parser('nestedStack', function nestedStack() {
 
     var opts = {
@@ -3731,98 +3734,98 @@
 (function() {
   'use strict';
 
-   /**
-    * The waterfall parser is useful for waterfall charts where data items need to account
-    * for the position of earlier values:
-    *
-    *      _____________________
-    *      |   _        _______ |
-    *      |  |_|___   | |  | | |
-    *      |      |_|__|_|  | | |
-    *      |                |_| |
-    *      ----------------------
-    *
-    * This module makes use of the d3's "nest" data structure, and "stack" layout
-    * https://github.com/mbostock/d3/wiki/Arrays#-nest
-    * https://github.com/mbostock/d3/wiki/Stack-Layout
-    *
-    *
-    *##### Approach:
-    * Just like D3, this parser uses a chaining declaritiave style to build up
-    * the necessary prerequistes to create the waterfall data. Here is a simple
-    * example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
-    *
-    *      var parser = d4.parsers.waterfall()
-    *          .x(function() {
-    *            return 'category';
-    *          })
-    *          .y(function(){
-    *            return 'value';
-    *          })
-    *          .value(function() {
-    *            return 'value';
-    *          });
-    *
-    *      var waterfallData = parser(data);
-    *
-    * Keep reading for more information on these various accessor functions.
-    *
-    *##### Benefits:
-    * Supports horizontal or vertical waterfalls
-    * Supports totaling series using a special "e" value in a data item.
-    *
-    *##### Limitations:
-    *
-    * Does not support stacked waterfalls.
-    *
-    *##### Accessors:
-    *
-    * `x` : - function which returns a key to access the x values in the data array
-    * `y` : - function which returns a key to access the y values in the data array
-    * `value` : - function which returns a key to access the values in the data array.
-    * `data` : array - An array of objects with their dimensions specified
-    *   like this:
-    *
-    *      var data = [
-    *      {"category" : "Category One", "value" : 23 },
-    *      {"category" : "Category Two", "value" : 55 },
-    *      {"category" : "Category Three", "value" : -10 },
-    *      {"category" : "Category Four", "value" : 5 },
-    *      {"category" : "Category Five", "value" : "e" }]
-    *
-    *##### SPECIAL NOTE:
-    *
-    * Waterfalls charts typically have the ability to display subtotals at any point.
-    * In order to use this feature simply set the value of your subtotal column to "e."
-    *
-    *##### Example Usage:
-    *
-    * Given the example data and dimension variables above you can use this module
-    * in the following way:
-    *
-    *     var parser = d4.parsers.nestedStack()
-    *     .dimensions(dimensions)
-    *     .call(data);
-    *
-    *     The `parser` variable will now be an object containing the following structure:
-    *     {
-    *       data: Array
-    *       value: {
-    *         key: string,
-    *         values: Array
-    *       },
-    *       x: {
-    *         key: string,
-    *         values: Array
-    *       },
-    *       y: {
-    *         key: string,
-    *         values: Array
-    *       }
-    *     }
-    *
-    * @name waterfall
-    **/
+  /**
+   * The waterfall parser is useful for waterfall charts where data items need to account
+   * for the position of earlier values:
+   *
+   *      _____________________
+   *      |   _        _______ |
+   *      |  |_|___   | |  | | |
+   *      |      |_|__|_|  | | |
+   *      |                |_| |
+   *      ----------------------
+   *
+   * This module makes use of the d3's "nest" data structure, and "stack" layout
+   * https://github.com/mbostock/d3/wiki/Arrays#-nest
+   * https://github.com/mbostock/d3/wiki/Stack-Layout
+   *
+   *
+   *##### Approach:
+   * Just like D3, this parser uses a chaining declaritiave style to build up
+   * the necessary prerequistes to create the waterfall data. Here is a simple
+   * example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
+   *
+   *      var parser = d4.parsers.waterfall()
+   *          .x(function() {
+   *            return 'category';
+   *          })
+   *          .y(function(){
+   *            return 'value';
+   *          })
+   *          .value(function() {
+   *            return 'value';
+   *          });
+   *
+   *      var waterfallData = parser(data);
+   *
+   * Keep reading for more information on these various accessor functions.
+   *
+   *##### Benefits:
+   * Supports horizontal or vertical waterfalls
+   * Supports totaling series using a special "e" value in a data item.
+   *
+   *##### Limitations:
+   *
+   * Does not support stacked waterfalls.
+   *
+   *##### Accessors:
+   *
+   * `x` : - function which returns a key to access the x values in the data array
+   * `y` : - function which returns a key to access the y values in the data array
+   * `value` : - function which returns a key to access the values in the data array.
+   * `data` : array - An array of objects with their dimensions specified
+   *   like this:
+   *
+   *      var data = [
+   *      {"category" : "Category One", "value" : 23 },
+   *      {"category" : "Category Two", "value" : 55 },
+   *      {"category" : "Category Three", "value" : -10 },
+   *      {"category" : "Category Four", "value" : 5 },
+   *      {"category" : "Category Five", "value" : "e" }]
+   *
+   *##### SPECIAL NOTE:
+   *
+   * Waterfalls charts typically have the ability to display subtotals at any point.
+   * In order to use this feature simply set the value of your subtotal column to "e."
+   *
+   *##### Example Usage:
+   *
+   * Given the example data and dimension variables above you can use this module
+   * in the following way:
+   *
+   *     var parser = d4.parsers.nestedStack()
+   *     .dimensions(dimensions)
+   *     .call(data);
+   *
+   *     The `parser` variable will now be an object containing the following structure:
+   *     {
+   *       data: Array
+   *       value: {
+   *         key: string,
+   *         values: Array
+   *       },
+   *       x: {
+   *         key: string,
+   *         values: Array
+   *       },
+   *       y: {
+   *         key: string,
+   *         values: Array
+   *       }
+   *     }
+   *
+   * @name waterfall
+   **/
   d4.parser('waterfall', function waterfall() {
 
     var opts = {
@@ -3840,7 +3843,7 @@
       },
       data: []
     };
-    opts.nestKey = function(){
+    opts.nestKey = function() {
       return opts.x.key;
     };
 
@@ -3864,7 +3867,7 @@
 
     var stackByDimension = function(key, items) {
       var lastOffset = 0;
-      var noNaN = function(num){
+      var noNaN = function(num) {
         return isNaN(num) ? 0 : num;
       };
       var stack = d3.layout.stack()
@@ -3878,8 +3881,8 @@
           return +d[opts.value.key];
         })
         .out(function(d, y0, y) {
-          if(isNaN(y)){
-            if(isNaN(y0)){
+          if (isNaN(y)) {
+            if (isNaN(y0)) {
               y0 = lastOffset;
             }
             d.y0 = 0;
@@ -3887,7 +3890,7 @@
             d[opts.value.key] = y0;
             lastOffset = y0;
           } else {
-            if(isNaN(y0)){
+            if (isNaN(y0)) {
               d.y0 = lastOffset;
               lastOffset += y;
             } else {
@@ -3969,7 +3972,7 @@
     var key = chart[dimension].$key;
     var ext = d3.extent(d3.merge(data.map(function(obj) {
       return d3.extent(obj.values, function(d) {
-        if(d4.isDate(d[key])) {
+        if (d4.isDate(d[key])) {
           return d[key];
         } else {
           return d[key] + (d.y0 || 0);
@@ -3977,19 +3980,19 @@
       });
     })));
     var axis = chart[dimension];
-    if(!axis.domain.$dirty) {
-      if(d4.isDate(ext[0])){
+    if (!axis.domain.$dirty) {
+      if (d4.isDate(ext[0])) {
         var min = axis.$min || ext[0];
         var max = axis.$max || ext[1];
         axis.domain([min, max]);
-      }else{
+      } else {
         axis.domain([Math.min(axis.$min || 0, ext[0]), axis.$max || ext[1]]);
       }
     }
-    if(!axis.range.$dirty) {
+    if (!axis.range.$dirty) {
       axis.range(rangeFor(chart, dimension));
     }
-    if(!axis.clamp.$dirty) {
+    if (!axis.clamp.$dirty) {
       axis.clamp(true);
     }
     return chart[dimension].nice();
@@ -4029,10 +4032,10 @@
     var parsedData = extractValues(data, chart[dimension].$key);
     var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;
     var axis = chart[dimension];
-    if(!axis.domain.$dirty) {
+    if (!axis.domain.$dirty) {
       axis.domain(parsedData);
     }
-    if(!axis.rangeRoundBands.$dirty) {
+    if (!axis.rangeRoundBands.$dirty) {
       axis.rangeRoundBands(rangeFor(chart, dimension), bands);
     }
     return axis;

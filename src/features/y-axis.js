@@ -43,11 +43,11 @@
    *     })
    *
    * @name yAxis
-  */
+   */
   d4.feature('yAxis', function(name) {
     var axis = d3.svg.axis()
-    .orient('left')
-    .tickSize(0);
+      .orient('left')
+      .tickSize(0);
 
     var textRect = function(text, klasses) {
       var rect = d4.helpers.textSize(text, klasses);
@@ -65,9 +65,9 @@
           .attr('class', '' + klass);
 
         if (aligned.toLowerCase() === 'left') {
-          text.call(d4.helpers.rotateText('rotate(' + 90 + ')translate(0,'+ (Math.abs(axisBB.x) + textHeight)+')'));
+          text.call(d4.helpers.rotateText('rotate(' + 90 + ')translate(0,' + (Math.abs(axisBB.x) + textHeight) + ')'));
         } else {
-          text.call(d4.helpers.rotateText('rotate(' + 90 + ')translate(0,'+ (Math.abs(axisBB.x) - (axisBB.width + textHeight))+')'));
+          text.call(d4.helpers.rotateText('rotate(' + 90 + ')translate(0,' + (Math.abs(axisBB.x) - (axisBB.width + textHeight)) + ')'));
         }
       }
     };
@@ -98,13 +98,13 @@
         var aligned = d4.functor(scope.accessors.align).bind(this)();
 
         var group = this.svg.select('g.margins')
-        .append('g')
-        .attr('class', 'y axis ' + name)
-        .attr('data-scale', this.y.$scale)
-        .call(axis);
+          .append('g')
+          .attr('class', 'y axis ' + name)
+          .attr('data-scale', this.y.$scale)
+          .call(axis);
 
         group.selectAll('.tick text')
-        .call(d4.helpers.wrapText, this.margin[aligned]);
+          .call(d4.helpers.wrapText, this.margin[aligned]);
         alignAxis.bind(this)(aligned, group);
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
@@ -112,7 +112,7 @@
           // FIXME: This should be moved into a helper injected using DI.
           this.svg.selectAll('.y.axis .tick text').call(d4.helpers.staggerTextHorizontally, -1);
         }
-        if(aligned === 'left') {
+        if (aligned === 'left') {
           positionText.bind(this)(title, aligned, 'title');
           positionText.bind(this)(subtitle, aligned, 'subtitle');
         } else {

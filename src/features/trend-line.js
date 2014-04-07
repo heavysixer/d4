@@ -27,7 +27,7 @@
           return this.x(this.width);
         },
 
-        textY: function(){
+        textY: function() {
           return this.x(this.height);
         }
       },
@@ -53,9 +53,9 @@
           .attr('marker-end', 'url(#' + name + '-start)');
 
         d4.appendOnce(this.svg.select('.' + name), 'text.trendLine-label')
-        .text(d4.functor(scope.accessors.text).bind(this))
-        .attr('x', d4.functor(scope.accessors.textX).bind(this))
-        .attr('y', d4.functor(scope.accessors.textY).bind(this));
+          .text(d4.functor(scope.accessors.text).bind(this))
+          .attr('x', d4.functor(scope.accessors.textX).bind(this))
+          .attr('y', d4.functor(scope.accessors.textY).bind(this));
         return trendLine;
       }
     };

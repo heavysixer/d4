@@ -170,10 +170,10 @@
           var size = 0;
           if (this.x.$scale === 'ordinal') {
             size = useDiscreteSize.bind(this)('x');
-            return useDiscretePosition.bind(this)('x', d) + size/2;
+            return useDiscretePosition.bind(this)('x', d) + size / 2;
           } else {
             size = useContinuousSize.bind(this)('x', d);
-            return useContinuousPosition.bind(this)('x', d) + size/2;
+            return useContinuousPosition.bind(this)('x', d) + size / 2;
           }
         },
 
@@ -181,26 +181,26 @@
           var size = 0;
           if (this.y.$scale === 'ordinal') {
             size = useDiscreteSize.bind(this)('y');
-            return useDiscretePosition.bind(this)('y', d) + size/2;
+            return useDiscretePosition.bind(this)('y', d) + size / 2;
           } else {
             size = useContinuousSize.bind(this)('y', d);
-            return useContinuousPosition.bind(this)('y', d) + size/2;
+            return useContinuousPosition.bind(this)('y', d) + size / 2;
           }
         },
 
         rx: function(d) {
           if (this.x.$scale === 'ordinal') {
-            return useDiscreteSize.bind(this)('x')/2;
+            return useDiscreteSize.bind(this)('x') / 2;
           } else {
-            return useContinuousSize.bind(this)('x', d)/2;
+            return useContinuousSize.bind(this)('x', d) / 2;
           }
         },
 
         ry: function(d) {
           if (this.y.$scale === 'ordinal') {
-            return useDiscreteSize.bind(this)('y')/2;
+            return useDiscreteSize.bind(this)('y') / 2;
           } else {
-            return useContinuousSize.bind(this)('y', d)/2;
+            return useContinuousSize.bind(this)('y', d) / 2;
           }
         }
       }

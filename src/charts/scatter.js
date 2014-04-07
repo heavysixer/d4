@@ -90,19 +90,19 @@
         }
       }
     })
-    .mixin([{
-      'name': 'circles',
-      'feature': d4.features.circleSeries,
-      'overrides': circleOverrides
-    }, {
-      'name': 'circleLabels',
-      'feature': d4.features.stackedLabels
-    }, {
-      'name': 'xAxis',
-      'feature': d4.features.xAxis
-    }, {
-      'name': 'yAxis',
-      'feature': d4.features.yAxis
-    }]);
+      .mixin([{
+        'name': 'circles',
+        'feature': d4.features.circleSeries,
+        'overrides': circleOverrides
+      }, {
+        'name': 'circleLabels',
+        'feature': d4.features.stackedLabels
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);

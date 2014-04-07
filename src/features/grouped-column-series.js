@@ -34,9 +34,9 @@
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
-        .data(data, function(d, i){
-          return d.key + i;
-        });
+          .data(data, function(d, i) {
+            return d.key + i;
+          });
         group.enter().append('g');
         group.exit().remove();
         group.attr('class', function(d, i) {

@@ -22,10 +22,10 @@
     return {
       accessors: {
         x: function(d) {
-          if(this.x.$scale === 'linear'){
+          if (this.x.$scale === 'linear') {
             var width = 0;
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
-            if(d.y > 0){
+            if (d.y > 0) {
               width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
             }
             return this.x(xVal) + width;
@@ -35,27 +35,27 @@
         },
 
         y: function(d) {
-          if(this.x.$scale === 'linear'){
+          if (this.x.$scale === 'linear') {
             return this.y(d[this.y.$key]);
           } else {
             return this.y(d.y0 + d.y);
           }
         },
 
-        span: function(){
-          if(this.x.$scale === 'linear'){
+        span: function() {
+          if (this.x.$scale === 'linear') {
             return this.y.rangeBand();
           } else {
             return this.x.rangeBand();
           }
         },
 
-        classes : function(d, i){
-          return 'series' +i;
+        classes: function(d, i) {
+          return 'series' + i;
         }
       },
-      prepare : function(data) {
-        var d = data.map(function(o){
+      prepare: function(data) {
+        var d = data.map(function(o) {
           return o.values[0];
         });
         return d4.flatten(d);
@@ -67,26 +67,26 @@
         lines.enter().append('line');
         lines.exit().remove();
         lines
-        .attr('class', d4.functor(scope.accessors.classes).bind(this))
-        .attr('x1', function(d, i) {
-          if(i === 0){
-            return 0;
-          }
-          return d4.functor(scope.accessors.x).bind(this)(data[i - 1]);
-        }.bind(this))
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+          .attr('x1', function(d, i) {
+            if (i === 0) {
+              return 0;
+            }
+            return d4.functor(scope.accessors.x).bind(this)(data[i - 1]);
+          }.bind(this))
 
         .attr('y1', function(d, i) {
-          if(i === 0){
+          if (i === 0) {
             return 0;
           }
           return d4.functor(scope.accessors.y).bind(this)(data[i - 1]);
         }.bind(this))
 
         .attr('x2', function(d, i) {
-          if(i === 0){
+          if (i === 0) {
             return 0;
           }
-          if(this.x.$scale === 'ordinal') {
+          if (this.x.$scale === 'ordinal') {
             return d4.functor(scope.accessors.x).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)();
           } else {
             return d4.functor(scope.accessors.x).bind(this)(data[i - 1]);
@@ -94,12 +94,12 @@
         }.bind(this))
 
         .attr('y2', function(d, i) {
-          if(i === 0){
+          if (i === 0) {
             return 0;
           }
-          if(this.x.$scale === 'ordinal') {
+          if (this.x.$scale === 'ordinal') {
             return d4.functor(scope.accessors.y).bind(this)(data[i - 1]);
-          }else {
+          } else {
             return d4.functor(scope.accessors.y).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)(d);
           }
         }.bind(this));

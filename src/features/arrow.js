@@ -3,7 +3,7 @@
   d4.feature('arrow', function(name) {
     return {
       accessors: {
-        tipSize: function(){
+        tipSize: function() {
           return 6;
         },
         x1: function() {
@@ -19,16 +19,16 @@
         },
 
         y2: function() {
-          return  this.y(this.height);
+          return this.y(this.height);
         },
-        classes: function(){
+        classes: function() {
           return 'line';
         }
       },
       render: function(scope, data, selection) {
         var defs = this.svg.select('defs');
 
-        d4.appendOnce(defs,'marker#' + name + '-end')
+        d4.appendOnce(defs, 'marker#' + name + '-end')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
@@ -38,7 +38,7 @@
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
-        d4.appendOnce(defs,'marker#' + name + '-start')
+        d4.appendOnce(defs, 'marker#' + name + '-start')
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
@@ -48,7 +48,7 @@
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
-        d4.appendOnce(selection,'g.'+name);
+        d4.appendOnce(selection, 'g.' + name);
 
         var arrow = d4.appendOnce(this.svg.select('.' + name), 'line')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))

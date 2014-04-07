@@ -502,39 +502,39 @@
   // This approach was inspired by SizzleJS. Most of the REGEX is based off their own expressions.
   var tokenizeSelector = function(selector) {
     var soFar = selector,
-    whitespace = '[\\x20\\t\\r\\n\\f]',
-    characterEncoding = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
-    identifier = characterEncoding.replace( 'w', 'w#' ),
-    attributes = '\\[' + whitespace + '*(' + characterEncoding + ')' + whitespace +
-    '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
-    order = ['TAG','ID','CLASS'],
-    matchers = {
-      'ID': new RegExp( '#(' + characterEncoding + ')' ),
-      'CLASS': new RegExp( '\\.(' + characterEncoding + ')'),
-      'TAG': new RegExp( '^(' + characterEncoding.replace( 'w', 'w*' ) + ')' ),
-      'ATTR': new RegExp( '' + attributes )
-    },
-    parse = function(exp){
-      matched = false;
-      tokens[exp] = [];
-      match = true;
-      while(match) {
-        match = matchers[exp].exec(soFar);
-        if(match !== null) {
-          matched = match.shift();
-          tokens[exp].push(match[0]);
-          soFar = soFar.slice(matched.length);
+      whitespace = '[\\x20\\t\\r\\n\\f]',
+      characterEncoding = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
+      identifier = characterEncoding.replace('w', 'w#'),
+      attributes = '\\[' + whitespace + '*(' + characterEncoding + ')' + whitespace +
+        '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
+      order = ['TAG', 'ID', 'CLASS'],
+      matchers = {
+        'ID': new RegExp('#(' + characterEncoding + ')'),
+        'CLASS': new RegExp('\\.(' + characterEncoding + ')'),
+        'TAG': new RegExp('^(' + characterEncoding.replace('w', 'w*') + ')'),
+        'ATTR': new RegExp('' + attributes)
+      },
+      parse = function(exp) {
+        matched = false;
+        tokens[exp] = [];
+        match = true;
+        while (match) {
+          match = matchers[exp].exec(soFar);
+          if (match !== null) {
+            matched = match.shift();
+            tokens[exp].push(match[0]);
+            soFar = soFar.slice(matched.length);
+          }
         }
-      }
-    },
-    matched,
-    match,
-    tokens = {};
+      },
+      matched,
+      match,
+      tokens = {};
     d4.each(order, parse);
-    d4.each(order, function(exp){
-      while(soFar) {
+    d4.each(order, function(exp) {
+      while (soFar) {
         tokens[exp] = tokens[exp].join(' ');
-        if(!matched){
+        if (!matched) {
           break;
         }
       }
@@ -752,8 +752,8 @@
     if (selected.empty()) {
       tokens = tokenizeSelector(selector);
       selected = element.append(tokens.TAG)
-      .attr('class', tokens.CLASS.join(' '));
-      if(tokens.ID) {
+        .attr('class', tokens.CLASS.join(' '));
+      if (tokens.ID) {
         selected.attr('id', tokens.ID.pop());
       }
     }

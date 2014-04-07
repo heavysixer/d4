@@ -67,7 +67,7 @@
         if (aligned.toLowerCase() === 'bottom') {
           text.attr('transform', 'translate(0,' + (axisBB.height + textHeight) + ')');
         } else {
-          text.attr('transform', 'translate(0,' + (axisBB.y - (textHeight/2)) + ')');
+          text.attr('transform', 'translate(0,' + (axisBB.y - (textHeight / 2)) + ')');
         }
       }
     };
@@ -98,17 +98,17 @@
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
         var group = this.svg.select('g.margins')
-        .append('g')
-        .attr('class', 'x axis ' + name)
-        .attr('data-scale', this.x.$scale)
-        .call(axis);
+          .append('g')
+          .attr('class', 'x axis ' + name)
+          .attr('data-scale', this.x.$scale)
+          .call(axis);
         alignAxis.bind(this)(aligned, group);
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
           group.selectAll('.tick text').call(d4.helpers.staggerTextVertically, 1);
         }
-        if(aligned === 'top') {
+        if (aligned === 'top') {
           positionText.bind(this)(subtitle, aligned, 'subtitle');
           positionText.bind(this)(title, aligned, 'title');
         } else {

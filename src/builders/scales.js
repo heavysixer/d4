@@ -27,7 +27,7 @@
     var key = chart[dimension].$key;
     var ext = d3.extent(d3.merge(data.map(function(obj) {
       return d3.extent(obj.values, function(d) {
-        if(d4.isDate(d[key])) {
+        if (d4.isDate(d[key])) {
           return d[key];
         } else {
           return d[key] + (d.y0 || 0);
@@ -35,19 +35,19 @@
       });
     })));
     var axis = chart[dimension];
-    if(!axis.domain.$dirty) {
-      if(d4.isDate(ext[0])){
+    if (!axis.domain.$dirty) {
+      if (d4.isDate(ext[0])) {
         var min = axis.$min || ext[0];
         var max = axis.$max || ext[1];
         axis.domain([min, max]);
-      }else{
+      } else {
         axis.domain([Math.min(axis.$min || 0, ext[0]), axis.$max || ext[1]]);
       }
     }
-    if(!axis.range.$dirty) {
+    if (!axis.range.$dirty) {
       axis.range(rangeFor(chart, dimension));
     }
-    if(!axis.clamp.$dirty) {
+    if (!axis.clamp.$dirty) {
       axis.clamp(true);
     }
     return chart[dimension].nice();
@@ -87,10 +87,10 @@
     var parsedData = extractValues(data, chart[dimension].$key);
     var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;
     var axis = chart[dimension];
-    if(!axis.domain.$dirty) {
+    if (!axis.domain.$dirty) {
       axis.domain(parsedData);
     }
-    if(!axis.rangeRoundBands.$dirty) {
+    if (!axis.rangeRoundBands.$dirty) {
       axis.rangeRoundBands(rangeFor(chart, dimension), bands);
     }
     return axis;

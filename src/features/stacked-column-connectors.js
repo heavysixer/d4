@@ -13,13 +13,13 @@
       return (num) ? (num < 0) ? -1 : 1 : 0;
     };
 
-    var sharedSigns = function(a, b, key){
+    var sharedSigns = function(a, b, key) {
       return (sign(a[key]) === sign(b[key]));
     };
 
     var processPoint = function(d, i, n, data, callback) {
       var key = (this.y.$scale === 'ordinal') ? this.x.$key : this.y.$key;
-      if(i === 0 || !sharedSigns(data[n].values[i-1], d, key)){
+      if (i === 0 || !sharedSigns(data[n].values[i - 1], d, key)) {
         return 0;
       }
       return callback.bind(this)();
@@ -28,7 +28,7 @@
     return {
       accessors: {
         x1: function(d) {
-          if(this.x.$scale === 'ordinal'){
+          if (this.x.$scale === 'ordinal') {
             return this.x(d[this.x.$key]);
           } else {
             return this.x(d.y0 + d.y);
@@ -36,23 +36,23 @@
         },
 
         y1: function(d) {
-          if(this.y.$scale === 'ordinal'){
+          if (this.y.$scale === 'ordinal') {
             return this.y(d[this.y.$key]);
           } else {
             return this.y(d.y0 + d.y);
           }
         },
 
-        size: function(){
-          if(this.x.$scale === 'ordinal') {
+        size: function() {
+          if (this.x.$scale === 'ordinal') {
             return this.x.rangeBand();
           } else {
             return this.y.rangeBand();
           }
         },
 
-        classes : function(d, i){
-          return 'series' +i;
+        classes: function(d, i) {
+          return 'series' + i;
         }
       },
 
@@ -61,8 +61,8 @@
         var group = this.svg.select('.' + name).selectAll('g')
           .data(data)
           .enter().append('g')
-          .attr('class', function(d,i) {
-            return 'series'+ i + ' ' +  this.y.$key;
+          .attr('class', function(d, i) {
+            return 'series' + i + ' ' + this.y.$key;
           }.bind(this));
 
         var lines = group.selectAll('lines')
@@ -73,31 +73,31 @@
         lines.enter().append('line');
         lines.exit().remove();
         lines
-        .attr('class', d4.functor(scope.accessors.classes).bind(this))
-        .attr('stroke-dasharray','5, 5')
-        .attr('x1', function(d, i, n) {
-          return processPoint.bind(this)(d, i, n, data, function(){
-            return d4.functor(scope.accessors.x1).bind(this)(d);
-          });
-        }.bind(this))
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+          .attr('stroke-dasharray', '5, 5')
+          .attr('x1', function(d, i, n) {
+            return processPoint.bind(this)(d, i, n, data, function() {
+              return d4.functor(scope.accessors.x1).bind(this)(d);
+            });
+          }.bind(this))
 
         .attr('y1', function(d, i, n) {
           var offset = (this.y.$scale === 'ordinal') ? d4.functor(scope.accessors.size).bind(this)(d) : 0;
-          return processPoint.bind(this)(d, i, n, data, function(){
+          return processPoint.bind(this)(d, i, n, data, function() {
             return d4.functor(scope.accessors.y1).bind(this)(d) + offset;
           });
         }.bind(this))
 
         .attr('x2', function(d, i, n) {
           var offset = (this.x.$scale === 'ordinal') ? scope.accessors.size.bind(this)(d) : 0;
-          return processPoint.bind(this)(d, i, n, data, function(){
-            return d4.functor(scope.accessors.x1).bind(this)(data[n].values[i-1]) + offset;
+          return processPoint.bind(this)(d, i, n, data, function() {
+            return d4.functor(scope.accessors.x1).bind(this)(data[n].values[i - 1]) + offset;
           });
         }.bind(this))
 
         .attr('y2', function(d, i, n) {
-          return processPoint.bind(this)(d, i, n, data, function(){
-            return d4.functor(scope.accessors.y1).bind(this)(data[n].values[i-1]);
+          return processPoint.bind(this)(d, i, n, data, function() {
+            return d4.functor(scope.accessors.y1).bind(this)(data[n].values[i - 1]);
           });
         }.bind(this));
 

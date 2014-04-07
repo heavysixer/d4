@@ -18,7 +18,7 @@
         var formattedXAxis = d4.functor(scope.accessors.formatXAxis).bind(this)(xAxis);
         var formattedYAxis = d4.functor(scope.accessors.formatYAxis).bind(this)(yAxis);
 
-        selection.append('g').attr('class', 'grid border '+ name)
+        selection.append('g').attr('class', 'grid border ' + name)
           .attr('transform', 'translate(0,0)')
           .append('rect')
           .attr('x', 0)
@@ -27,18 +27,18 @@
           .attr('height', this.height);
 
         selection.append('g')
-          .attr('class', 'x grid '+ name)
+          .attr('class', 'x grid ' + name)
           .attr('transform', 'translate(0,' + this.height + ')')
           .call(formattedXAxis
-          .tickSize(-this.height, 0, 0)
-          .tickFormat(''));
+            .tickSize(-this.height, 0, 0)
+            .tickFormat(''));
 
         selection.append('g')
-          .attr('class', 'y grid '+ name)
+          .attr('class', 'y grid ' + name)
           .attr('transform', 'translate(0,0)')
           .call(formattedYAxis
-          .tickSize(-this.width, 0, 0)
-          .tickFormat(''));
+            .tickSize(-this.width, 0, 0)
+            .tickFormat(''));
       }
     };
   });

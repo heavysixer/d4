@@ -80,7 +80,7 @@
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d, i){
+          .data(data, function(d, i) {
             return d.key + i;
           });
         group.enter().append('g')
@@ -104,7 +104,7 @@
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
-          if(this.y.$scale !== 'ordinal') {
+          if (this.y.$scale !== 'ordinal') {
             group.selectAll('text').call(d4.helpers.staggerTextVertically, -1);
           } else {
             group.selectAll('text').call(d4.helpers.staggerTextHorizontally, 1);
