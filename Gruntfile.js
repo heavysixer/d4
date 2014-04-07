@@ -99,6 +99,7 @@ module.exports = function(grunt) {
       files : ['src/**/*.js'],
       options : {
         js: {
+          indentLevel: 0,
           indentSize: 2
         }
       }

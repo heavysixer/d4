@@ -53,19 +53,18 @@
    */
   d4.chart('column', function column() {
     return d4.baseChart()
-      .mixin(
-        [{
-          'name': 'bars',
-          'feature': d4.features.rectSeries
-        }, {
-          'name': 'barLabels',
-          'feature': d4.features.stackedLabels
-        }, {
-          'name': 'xAxis',
-          'feature': d4.features.xAxis
-        }, {
-          'name': 'yAxis',
-          'feature': d4.features.yAxis
-        }]);
+      .mixin([{
+        'name': 'bars',
+        'feature': d4.features.rectSeries
+      }, {
+        'name': 'barLabels',
+        'feature': d4.features.stackedLabels
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);

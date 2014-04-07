@@ -1232,19 +1232,36 @@
    */
   d4.chart('column', function column() {
     return d4.baseChart()
+      .mixin([{
+        'name': 'bars',
+        'feature': d4.features.rectSeries
+      }, {
+        'name': 'barLabels',
+        'feature': d4.features.stackedLabels
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
+  });
+}).call(this);
+
+(function() {
+  'use strict';
+
+  /*
+   * The donut chart
+   *
+   * @name donut
+   */
+  d4.chart('donut', function column() {
+    return d4.baseChart()
       .mixin(
         [{
-          'name': 'bars',
-          'feature': d4.features.rectSeries
-        }, {
-          'name': 'barLabels',
-          'feature': d4.features.stackedLabels
-        }, {
-          'name': 'xAxis',
-          'feature': d4.features.xAxis
-        }, {
-          'name': 'yAxis',
-          'feature': d4.features.yAxis
+          'name': 'slices',
+          'feature': d4.features.arcSeries
         }]);
   });
 }).call(this);
@@ -1325,21 +1342,20 @@
         }
       }
     })
-      .mixin(
-        [{
-          'name': 'bars',
-          'feature': d4.features.groupedColumnSeries
-        }, {
-          'name': 'barLabels',
-          'feature': d4.features.stackedLabels,
-          'overrides': columnLabelOverrides
-        }, {
-          'name': 'xAxis',
-          'feature': d4.features.xAxis
-        }, {
-          'name': 'yAxis',
-          'feature': d4.features.yAxis
-        }]);
+      .mixin([{
+        'name': 'bars',
+        'feature': d4.features.groupedColumnSeries
+      }, {
+        'name': 'barLabels',
+        'feature': d4.features.stackedLabels,
+        'overrides': columnLabelOverrides
+      }, {
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }]);
   });
 }).call(this);
 
