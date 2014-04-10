@@ -146,7 +146,7 @@
    * the `x` axis. This will render the waterfall chart vertically. However,
    * if you swap the scale types then the waterfall will render horizontally.
    *
-   *##### Accessors
+   *##### Features
    *
    * `bars` - series of rects
    * `connectors` - visual lines that connect the various stacked columns together

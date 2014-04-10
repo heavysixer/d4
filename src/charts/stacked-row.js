@@ -5,7 +5,7 @@
    * row expects continious scale for the `x` axis and a discrete scale for
    * the `y` axis. The stacked row has the following default features:
    *
-   *##### Accessors
+   *##### Features
    *
    * `bars` - series of rects
    * `barLabels` - individual data values inside the stacked rect

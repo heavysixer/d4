@@ -8,7 +8,7 @@
    * the sum of the data series across an axis the grouped column can be used to show the
    * relative distribution.
    *
-   *##### Accessors
+   *##### Features
    *
    * `bars` - series bars
    * `barLabels` - data labels above the bars

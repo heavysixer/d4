@@ -5,7 +5,7 @@
    * The line series chart is used to compare a series of data elements grouped
    * along the xAxis.
    *
-   *##### Accessors
+   *##### Features
    *
    * `lineSeries` - series lines
    * `lineSeriesLabels` - data labels beside the lines

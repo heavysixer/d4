@@ -42,7 +42,7 @@
    * plot expects linear scale values for all axes. The basic scatter plot chart
    * has these default features:
    *
-   *##### Accessors
+   *##### Features
    *
    * `circles` - series of circles
    * `xAxis` - the axis for the x dimension

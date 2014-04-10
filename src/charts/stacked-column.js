@@ -6,7 +6,7 @@
    * column expects continious scale for the `y` axis and a discrete scale for
    * the `x` axis. The stacked column has the following default features:
    *
-   *##### Accessors
+   *##### Features
    *
    * `bars` - series of rects
    * `barLabels` - individual data values inside the stacked rect
