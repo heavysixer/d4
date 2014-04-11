@@ -82,7 +82,7 @@ var data = [
 // Create a column chart without a yAxis, but with a grid in the background.
 var columnChart = d4.charts.column()
 .mixout('yAxis')
-.mixin('grid', d4.features.grid, 0)
+.mixin({ name : 'grid',  feature : d4.features.grid , index : 0 })
 
 d3.select('test')
   .datum(data)
@@ -100,7 +100,7 @@ var data = [
 
 // Add styles based on the sign of a value.
 var columnChart = d4.charts.column()
-.using('bars', functions(bars){
+.using('bars', function(bars){
   bars
   .classes(function(d, i){
     return d[1] < 0 ? 'negative' + i : 'positive' + i;
