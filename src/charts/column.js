@@ -6,7 +6,7 @@
    * linear values for the `y` and ordinal values on the `x`. The basic column chart
    * has four default features:
    *
-   *##### Accessors
+   *##### Features
    *
    * `bars` - series bars
    * `barLabels` - data labels above the bars

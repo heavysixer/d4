@@ -1,0 +1,56 @@
+---
+title: Basic Donut Chart
+charts:
+  - Donut Chart
+---
+
+<h5>{{title}}</h5>
+<p>
+  The arc series chart is used to compare a series of data elements arranged
+  along a centroid. This example also uses the pie layout to prepare the data
+  for this chart.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8" id='source_code'>
+'use strict';
+
+$(document).ready(function() {
+  var data = [];
+  var names = ['Clay Hauck', 'Diego Hickle', 'Heloise Quitzon',
+    'Hildegard Littel MD', 'Janiya Legros DDS', 'Karolann Boehm',
+    'Lilyan Deckow IV', 'Lizeth Blick', 'Marlene O\'Kon', 'Marley Gutmann'
+  ];
+
+  d4.each(names, function(name) {
+    data.push({
+      unitsSold: Math.max(10, Math.random() * 100),
+      salesman: name
+    });
+  });
+  var pie = d3.layout.pie()
+    .value(function(d) {
+      return d.unitsSold;
+    });
+
+  var chart = d4.charts.donut()
+    .margin({
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 0
+    })
+    .outerWidth($('#pie').width())
+    .using('slices', function(slice) {
+      var r = this.width /5;
+      slice.radius(r);
+    });
+
+  d3.select('#pie')
+    .datum(pie(data))
+    .call(chart);
+});
+
+</script>
+<div id="pie"></div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript"></code></pre>

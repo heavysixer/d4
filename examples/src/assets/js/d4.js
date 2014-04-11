@@ -1,6 +1,6 @@
 /*! d4 - v0.7.2
  *  License: MIT Expat
- *  Date: 2014-04-07
+ *  Date: 2014-04-11
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -1185,7 +1185,7 @@
    * linear values for the `y` and ordinal values on the `x`. The basic column chart
    * has four default features:
    *
-   *##### Accessors
+   *##### Features
    *
    * `bars` - series bars
    * `barLabels` - data labels above the bars
@@ -1256,16 +1256,14 @@
    *
    * @name donut
    */
-  d4.chart('donut', function column() {
+  d4.chart('donut', function donut() {
     return d4.baseChart()
-      .mixin(
-        [{
-          'name': 'slices',
+    .mixin(
+        [{ 'name': 'slices',
           'feature': d4.features.arcSeries
         }]);
   });
 }).call(this);
-
 (function() {
   'use strict';
 
@@ -1276,7 +1274,7 @@
    * the sum of the data series across an axis the grouped column can be used to show the
    * relative distribution.
    *
-   *##### Accessors
+   *##### Features
    *
    * `bars` - series bars
    * `barLabels` - data labels above the bars
@@ -1366,7 +1364,7 @@
    * The line series chart is used to compare a series of data elements grouped
    * along the xAxis.
    *
-   *##### Accessors
+   *##### Features
    *
    * `lineSeries` - series lines
    * `lineSeriesLabels` - data labels beside the lines
@@ -1442,7 +1440,7 @@
    * linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart
    * has four default features:
    *
-   *##### Accessors
+   *##### Features
    *
    * `bars` - series bars
    * `rowLabels` - data labels to the right of the bars
@@ -1545,7 +1543,7 @@
    * plot expects linear scale values for all axes. The basic scatter plot chart
    * has these default features:
    *
-   *##### Accessors
+   *##### Features
    *
    * `circles` - series of circles
    * `xAxis` - the axis for the x dimension
@@ -1618,7 +1616,7 @@
    * column expects continious scale for the `y` axis and a discrete scale for
    * the `x` axis. The stacked column has the following default features:
    *
-   *##### Accessors
+   *##### Features
    *
    * `bars` - series of rects
    * `barLabels` - individual data values inside the stacked rect
@@ -1761,7 +1759,7 @@
    * row expects continious scale for the `x` axis and a discrete scale for
    * the `y` axis. The stacked row has the following default features:
    *
-   *##### Accessors
+   *##### Features
    *
    * `bars` - series of rects
    * `barLabels` - individual data values inside the stacked rect
@@ -2063,7 +2061,7 @@
    * the `x` axis. This will render the waterfall chart vertically. However,
    * if you swap the scale types then the waterfall will render horizontally.
    *
-   *##### Accessors
+   *##### Features
    *
    * `bars` - series of rects
    * `connectors` - visual lines that connect the various stacked columns together
@@ -2130,6 +2128,57 @@
         'name': 'yAxis',
         'feature': d4.features.yAxis
       }]);
+  });
+}).call(this);
+
+(function() {
+  'use strict';
+  d4.feature('arcSeries', function(name) {
+    var arc = d3.svg.arc();
+    return {
+      accessors: {
+        classes: function(d, n) {
+          return 'arc stroke fill series' + n;
+        },
+        radius: function() {
+          return Math.min(this.width, this.height) / 2;
+        },
+        width: function(radius) {
+          return radius / 3;
+        },
+        x: function() {
+          return this.width / 2;
+        },
+        y: function() {
+          return this.height / 2;
+        }
+      },
+      proxies: [arc],
+      render: function(scope, data, selection) {
+        var r = d4.functor(scope.accessors.radius).bind(this)(),
+          x = d4.functor(scope.accessors.x).bind(this)(),
+          y = d4.functor(scope.accessors.y).bind(this)(),
+          arcWidth = d4.functor(scope.accessors.width).bind(this)(r);
+
+        selection.append('g').attr('class', name);
+        arc
+          .innerRadius(r)
+          .outerRadius(r - arcWidth);
+        var group = this.svg.select('.' + name)
+          .attr('transform', 'translate(' + x + ',' + y + ')');
+
+        var arcs = group.selectAll('path')
+          .data(function(d) {
+            return d;
+          });
+        arcs.exit().remove();
+        arcs.enter()
+          .append('path')
+          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+          .attr('d', arc);
+        return arc;
+      }
+    };
   });
 }).call(this);
 

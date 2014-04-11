@@ -53,6 +53,55 @@ svg.d4 {
     stroke-width: 1px;
 }
 
+#pie .fill {
+    fill-opacity: 0.5;
+}
+#pie .series0.fill {
+    fill:#FF0000;
+}
+#pie .series1.fill {
+    fill:#EC0012;
+}
+#pie .series2.fill {
+    fill:#DA0024;
+}
+#pie .series3.fill {
+    fill:#C80036;
+}
+#pie .series4.fill {
+    fill:#B60048;
+}
+#pie .series5.fill {
+    fill:#A3005B;
+}
+#pie .series6.fill {
+    fill:#91006D;
+}
+#pie .series7.fill {
+    fill:#7F007F;
+}
+#pie .series8.fill {
+    fill:#6D0091;
+}
+#pie .series9.fill {
+    fill:#5B00A3;
+}
+#pie .series10.fill {
+    fill:#4800B6;
+}
+#pie .series11.fill {
+    fill:#3600C8;
+}
+#pie .series12.fill {
+    fill:#2400DA;
+}
+#pie .series13.fill {
+    fill:#1200EC;
+}
+#pie .series14.fill {
+    fill:#0000FF;
+}
+
 #items .item0.fill {
     fill: #CD202C;
 }

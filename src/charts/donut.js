@@ -6,11 +6,10 @@
    *
    * @name donut
    */
-  d4.chart('donut', function column() {
+  d4.chart('donut', function donut() {
     return d4.baseChart()
-      .mixin(
-        [{
-          'name': 'slices',
+    .mixin(
+        [{ 'name': 'slices',
           'feature': d4.features.arcSeries
         }]);
   });
