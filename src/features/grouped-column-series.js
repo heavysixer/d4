@@ -7,14 +7,16 @@
 
     return {
       accessors: {
-        x: function(d, i) {
-          var width = this.x.rangeBand() / this.groupsOf;
-          var xPos = this.x(d[this.x.$key]) + width * i;
-          return xPos;
+        classes: function(d, i) {
+          return 'bar fill item' + i + ' ' + sign(d[this.y.$key]) + ' ' + d[this.y.$key];
         },
 
-        y: function(d) {
-          return d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key]);
+        height: function(d) {
+          return Math.abs(this.y(d[this.y.$key]) - this.y(0));
+        },
+
+        key : function(d, i) {
+          return (d.key || 0) + i;
         },
 
         width: function() {
@@ -23,20 +25,20 @@
           return width - gutter;
         },
 
-        height: function(d) {
-          return Math.abs(this.y(d[this.y.$key]) - this.y(0));
+        x: function(d, i) {
+          var width = this.x.rangeBand() / this.groupsOf;
+          var xPos = this.x(d[this.x.$key]) + width * i;
+          return xPos;
         },
 
-        classes: function(d, i) {
-          return 'bar fill item' + i + ' ' + sign(d[this.y.$key]) + ' ' + d[this.y.$key];
+        y: function(d) {
+          return d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key]);
         }
       },
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d, i) {
-            return d.key + i;
-          });
+          .data(data, d4.functor(scope.accessors.key).bind(this));
         group.enter().append('g');
         group.exit().remove();
         group.attr('class', function(d, i) {

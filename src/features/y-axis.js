@@ -85,13 +85,16 @@
 
     var obj = {
       accessors: {
+        align: 'left',
+
         stagger: true,
+
         subtitle: undefined,
+
         title: undefined,
-        align: 'left'
       },
       proxies: [axis],
-      render: function(scope, data, selection) {
+      render: function(scope) {
         scope.scale(this.y);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');

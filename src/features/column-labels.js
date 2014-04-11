@@ -1,6 +1,8 @@
 (function() {
   'use strict';
   d4.feature('columnLabels', function(name) {
+
+    // FIXME: Remove this hardcoded variable or expose it as a setting.
     var padding = 5;
     var anchorText = function() {
       if (this.y.$scale !== 'ordinal') {
@@ -11,6 +13,9 @@
     };
     return {
       accessors: {
+        key: function(d, i) {
+          return (d.key || 0) + i;
+        },
         x: function(d) {
           if (this.x.$scale === 'ordinal') {
             return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
@@ -36,9 +41,7 @@
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         var label = this.svg.select('.' + name).selectAll('.' + name)
-          .data(data, function(d, i) {
-            return '' + d.key + i;
-          });
+          .data(data, d4.functor(scope.accessors.key).bind(this));
         label.enter().append('text');
         label.exit().remove();
         label.attr('class', 'column-label')

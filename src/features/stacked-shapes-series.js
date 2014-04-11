@@ -49,6 +49,9 @@
       accessors: {
         classes: function(d, i) {
           return 'bar fill item' + i + ' ' + sign(d[this.valueKey]) + ' ' + d[this.y.$key];
+        },
+        key: function(d, i) {
+          return (d.key || 0) + i;
         }
       },
 
@@ -57,9 +60,7 @@
 
         // create data join with the series data
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d, i) {
-            return d.key + i;
-          });
+          .data(data, d4.functor(scope.accessors.key).bind(this));
 
         group.enter().append('g')
           .attr('class', function(d, i) {

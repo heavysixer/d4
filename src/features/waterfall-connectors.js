@@ -21,6 +21,18 @@
   d4.feature('waterfallConnectors', function(name) {
     return {
       accessors: {
+        classes: function(d, i) {
+          return 'series' + i;
+        },
+
+        span: function() {
+          if (this.x.$scale === 'linear') {
+            return this.y.rangeBand();
+          } else {
+            return this.x.rangeBand();
+          }
+        },
+
         x: function(d) {
           if (this.x.$scale === 'linear') {
             var width = 0;
@@ -40,18 +52,6 @@
           } else {
             return this.y(d.y0 + d.y);
           }
-        },
-
-        span: function() {
-          if (this.x.$scale === 'linear') {
-            return this.y.rangeBand();
-          } else {
-            return this.x.rangeBand();
-          }
-        },
-
-        classes: function(d, i) {
-          return 'series' + i;
         }
       },
       prepare: function(data) {

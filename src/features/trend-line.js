@@ -3,6 +3,18 @@
   d4.feature('trendLine', function(name) {
     return {
       accessors: {
+        text: function(d) {
+          return d3.format('').call(this, d[1]);
+        },
+
+        textX: function() {
+          return this.x(this.width);
+        },
+
+        textY: function() {
+          return this.x(this.height);
+        },
+
         x1: function() {
           return this.x(0);
         },
@@ -19,17 +31,6 @@
           return this.y(this.height);
         },
 
-        text: function(d) {
-          return d3.format('').call(this, d[1]);
-        },
-
-        textX: function() {
-          return this.x(this.width);
-        },
-
-        textY: function() {
-          return this.x(this.height);
-        }
       },
       render: function(scope, data, selection) {
         var defs = this.svg.select('defs');

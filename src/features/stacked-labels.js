@@ -42,21 +42,13 @@
 
     return {
       accessors: {
-        x: function(d) {
-          if (this.x.$scale === 'ordinal') {
-            return useDiscretePosition.bind(this)('x', d);
-          } else {
-            return useContinuousPosition.bind(this)('x', d);
-          }
+        classes: 'column-label',
+
+        key: function(d, n) {
+          return (d.key || 0) + n;
         },
 
-        y: function(d) {
-          if (this.y.$scale === 'ordinal') {
-            return useDiscretePosition.bind(this)('y', d);
-          } else {
-            return useContinuousPosition.bind(this)('y', d);
-          }
-        },
+        stagger: true,
 
         text: function(d) {
           if (d4.isDefined(d.y0)) {
@@ -73,16 +65,28 @@
             return d3.format('').call(this, d[this.valueKey]);
           }
         },
-        stagger: true,
-        classes: 'column-label'
+
+        x: function(d) {
+          if (this.x.$scale === 'ordinal') {
+            return useDiscretePosition.bind(this)('x', d);
+          } else {
+            return useContinuousPosition.bind(this)('x', d);
+          }
+        },
+
+        y: function(d) {
+          if (this.y.$scale === 'ordinal') {
+            return useDiscretePosition.bind(this)('y', d);
+          } else {
+            return useContinuousPosition.bind(this)('y', d);
+          }
+        }
       },
 
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d, i) {
-            return d.key + i;
-          });
+          .data(data, d4.functor(scope.accessors.key).bind(this));
         group.enter().append('g')
           .attr('class', function(d, i) {
             return 'series' + i + ' ' + this.x.$key;
