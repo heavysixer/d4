@@ -119,6 +119,7 @@ __Parser__ - A parser prepares the data for a chart.
 
 * Area Chart (Coming Soon)
 * Column Chart
+* Donut Chart
 * Grouped Column Chart
 * Line Chart
 * Mekko Chart (Coming Soon)

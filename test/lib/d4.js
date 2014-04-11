@@ -2140,42 +2140,81 @@
         classes: function(d, n) {
           return 'arc stroke fill series' + n;
         },
+
+        duration: 750,
+
+        key: function(d, i) {
+          return (d.key || 0) + i;
+        },
+
         radius: function() {
           return Math.min(this.width, this.height) / 2;
         },
+
         width: function(radius) {
           return radius / 3;
         },
+
         x: function() {
           return this.width / 2;
         },
+
         y: function() {
           return this.height / 2;
         }
       },
       proxies: [arc],
       render: function(scope, data, selection) {
+
+        // extracted from: http://bl.ocks.org/mbostock/1346410
+        // Store the displayed angles in _current.
+        // Then, interpolate from _current to the new angles.
+        // During the transition, _current is updated in-place by d3.interpolate.
+        var arcTween = function(a) {
+          var i = d3.interpolate(this._current, a);
+          this._current = i(0);
+          return function(t) {
+            return arc(i(t));
+          };
+        };
+
         var r = d4.functor(scope.accessors.radius).bind(this)(),
           x = d4.functor(scope.accessors.x).bind(this)(),
           y = d4.functor(scope.accessors.y).bind(this)(),
           arcWidth = d4.functor(scope.accessors.width).bind(this)(r);
-
-        selection.append('g').attr('class', name);
         arc
           .innerRadius(r)
           .outerRadius(r - arcWidth);
-        var group = this.svg.select('.' + name)
-          .attr('transform', 'translate(' + x + ',' + y + ')');
+
+        var group = selection.selectAll('g.'+name).data(data);
+        group.enter()
+        .append('g')
+        .attr('class', name)
+        .attr('transform', 'translate(' + x + ',' + y + ')');
 
         var arcs = group.selectAll('path')
           .data(function(d) {
-            return d;
-          });
-        arcs.exit().remove();
+            return d.values;
+          }, d4.functor(scope.accessors.key).bind(this));
+
+        // update
+        arcs.transition()
+        .duration(d4.functor(scope.accessors.duration).bind(this)())
+        .attrTween('d', arcTween);
+
+        // create new elements as needed
         arcs.enter()
           .append('path')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
-          .attr('d', arc);
+          .attr('data-key', d4.functor(scope.accessors.key).bind(this))
+          .attr('d', arc)
+          .each(function(d) {
+            this._current = d;
+          });
+
+        //remove old elements as needed
+        arcs.exit().remove();
+        group.exit().remove();
         return arc;
       }
     };
@@ -2251,6 +2290,8 @@
 (function() {
   'use strict';
   d4.feature('columnLabels', function(name) {
+
+    // FIXME: Remove this hardcoded variable or expose it as a setting.
     var padding = 5;
     var anchorText = function() {
       if (this.y.$scale !== 'ordinal') {
@@ -2261,6 +2302,9 @@
     };
     return {
       accessors: {
+        key: function(d, i) {
+          return (d.key || 0) + i;
+        },
         x: function(d) {
           if (this.x.$scale === 'ordinal') {
             return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
@@ -2286,9 +2330,7 @@
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         var label = this.svg.select('.' + name).selectAll('.' + name)
-          .data(data, function(d, i) {
-            return '' + d.key + i;
-          });
+          .data(data, d4.functor(scope.accessors.key).bind(this));
         label.enter().append('text');
         label.exit().remove();
         label.attr('class', 'column-label')
@@ -2357,14 +2399,16 @@
 
     return {
       accessors: {
-        x: function(d, i) {
-          var width = this.x.rangeBand() / this.groupsOf;
-          var xPos = this.x(d[this.x.$key]) + width * i;
-          return xPos;
+        classes: function(d, i) {
+          return 'bar fill item' + i + ' ' + sign(d[this.y.$key]) + ' ' + d[this.y.$key];
         },
 
-        y: function(d) {
-          return d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key]);
+        height: function(d) {
+          return Math.abs(this.y(d[this.y.$key]) - this.y(0));
+        },
+
+        key : function(d, i) {
+          return (d.key || 0) + i;
         },
 
         width: function() {
@@ -2373,20 +2417,20 @@
           return width - gutter;
         },
 
-        height: function(d) {
-          return Math.abs(this.y(d[this.y.$key]) - this.y(0));
+        x: function(d, i) {
+          var width = this.x.rangeBand() / this.groupsOf;
+          var xPos = this.x(d[this.x.$key]) + width * i;
+          return xPos;
         },
 
-        classes: function(d, i) {
-          return 'bar fill item' + i + ' ' + sign(d[this.y.$key]) + ' ' + d[this.y.$key];
+        y: function(d) {
+          return d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key]);
         }
       },
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d, i) {
-            return d.key + i;
-          });
+          .data(data, d4.functor(scope.accessors.key).bind(this));
         group.enter().append('g');
         group.exit().remove();
         group.attr('class', function(d, i) {
@@ -2456,16 +2500,20 @@
     line.interpolate('basis');
     return {
       accessors: {
+        classes: function(d, n) {
+          return 'line stroke series' + n;
+        },
+
+        key : function(d, i) {
+          return (d.key || 0) + i;
+        },
+
         x: function(d) {
           return this.x(d[this.x.$key]);
         },
 
         y: function(d) {
           return this.y(d[this.y.$key]);
-        },
-
-        classes: function(d, n) {
-          return 'line stroke series' + n;
         }
       },
       proxies: [line],
@@ -2475,8 +2523,8 @@
           .x(d4.functor(scope.accessors.x).bind(this))
           .y(d4.functor(scope.accessors.y).bind(this));
 
-        var group = this.svg.select('.' + name).selectAll('g')
-          .data(data);
+        var group = selection.select('.' + name).selectAll('g')
+        .data(data, d4.functor(scope.accessors.key).bind(this));
         group.exit().remove();
         group.enter().append('g')
           .attr('data-key', function(d) {
@@ -2683,21 +2731,13 @@
 
     return {
       accessors: {
-        x: function(d) {
-          if (this.x.$scale === 'ordinal') {
-            return useDiscretePosition.bind(this)('x', d);
-          } else {
-            return useContinuousPosition.bind(this)('x', d);
-          }
+        classes: 'column-label',
+
+        key: function(d, n) {
+          return (d.key || 0) + n;
         },
 
-        y: function(d) {
-          if (this.y.$scale === 'ordinal') {
-            return useDiscretePosition.bind(this)('y', d);
-          } else {
-            return useContinuousPosition.bind(this)('y', d);
-          }
-        },
+        stagger: true,
 
         text: function(d) {
           if (d4.isDefined(d.y0)) {
@@ -2714,16 +2754,28 @@
             return d3.format('').call(this, d[this.valueKey]);
           }
         },
-        stagger: true,
-        classes: 'column-label'
+
+        x: function(d) {
+          if (this.x.$scale === 'ordinal') {
+            return useDiscretePosition.bind(this)('x', d);
+          } else {
+            return useContinuousPosition.bind(this)('x', d);
+          }
+        },
+
+        y: function(d) {
+          if (this.y.$scale === 'ordinal') {
+            return useDiscretePosition.bind(this)('y', d);
+          } else {
+            return useContinuousPosition.bind(this)('y', d);
+          }
+        }
       },
 
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d, i) {
-            return d.key + i;
-          });
+          .data(data, d4.functor(scope.accessors.key).bind(this));
         group.enter().append('g')
           .attr('class', function(d, i) {
             return 'series' + i + ' ' + this.x.$key;
@@ -2808,6 +2860,9 @@
       accessors: {
         classes: function(d, i) {
           return 'bar fill item' + i + ' ' + sign(d[this.valueKey]) + ' ' + d[this.y.$key];
+        },
+        key: function(d, i) {
+          return (d.key || 0) + i;
         }
       },
 
@@ -2816,9 +2871,7 @@
 
         // create data join with the series data
         var group = this.svg.select('.' + name).selectAll('g')
-          .data(data, function(d, i) {
-            return d.key + i;
-          });
+          .data(data, d4.functor(scope.accessors.key).bind(this));
 
         group.enter().append('g')
           .attr('class', function(d, i) {
@@ -3052,6 +3105,18 @@
   d4.feature('trendLine', function(name) {
     return {
       accessors: {
+        text: function(d) {
+          return d3.format('').call(this, d[1]);
+        },
+
+        textX: function() {
+          return this.x(this.width);
+        },
+
+        textY: function() {
+          return this.x(this.height);
+        },
+
         x1: function() {
           return this.x(0);
         },
@@ -3068,17 +3133,6 @@
           return this.y(this.height);
         },
 
-        text: function(d) {
-          return d3.format('').call(this, d[1]);
-        },
-
-        textX: function() {
-          return this.x(this.width);
-        },
-
-        textY: function() {
-          return this.x(this.height);
-        }
       },
       render: function(scope, data, selection) {
         var defs = this.svg.select('defs');
@@ -3134,6 +3188,18 @@
   d4.feature('waterfallConnectors', function(name) {
     return {
       accessors: {
+        classes: function(d, i) {
+          return 'series' + i;
+        },
+
+        span: function() {
+          if (this.x.$scale === 'linear') {
+            return this.y.rangeBand();
+          } else {
+            return this.x.rangeBand();
+          }
+        },
+
         x: function(d) {
           if (this.x.$scale === 'linear') {
             var width = 0;
@@ -3153,18 +3219,6 @@
           } else {
             return this.y(d.y0 + d.y);
           }
-        },
-
-        span: function() {
-          if (this.x.$scale === 'linear') {
-            return this.y.rangeBand();
-          } else {
-            return this.x.rangeBand();
-          }
-        },
-
-        classes: function(d, i) {
-          return 'series' + i;
         }
       },
       prepare: function(data) {
@@ -3310,14 +3364,17 @@
 
     var obj = {
       accessors: {
+        align: 'bottom',
+
         stagger: true,
+
         subtitle: undefined,
+
         title: undefined,
-        align: 'bottom'
       },
       proxies: [axis],
 
-      render: function(scope, data, selection) {
+      render: function(scope) {
         scope.scale(this.x);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
@@ -3433,13 +3490,16 @@
 
     var obj = {
       accessors: {
+        align: 'left',
+
         stagger: true,
+
         subtitle: undefined,
+
         title: undefined,
-        align: 'left'
       },
       proxies: [axis],
-      render: function(scope, data, selection) {
+      render: function(scope) {
         scope.scale(this.y);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');

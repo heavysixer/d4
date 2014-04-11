@@ -15,40 +15,58 @@ charts:
 'use strict';
 
 $(document).ready(function() {
-  var data = [];
-  var names = ['Clay Hauck', 'Diego Hickle', 'Heloise Quitzon',
-    'Hildegard Littel MD', 'Janiya Legros DDS', 'Karolann Boehm',
-    'Lilyan Deckow IV', 'Lizeth Blick', 'Marlene O\'Kon', 'Marley Gutmann'
-  ];
 
-  d4.each(names, function(name) {
-    data.push({
-      unitsSold: Math.max(10, Math.random() * 100),
-      salesman: name
+  var generateData = function() {
+    var data = [];
+    var names = ['Clay Hauck', 'Diego Hickle', 'Heloise Quitzon',
+      'Hildegard Littel MD', 'Janiya Legros DDS', 'Karolann Boehm',
+      'Lilyan Deckow IV', 'Lizeth Blick', 'Marlene O\'Kon', 'Marley Gutmann'
+    ],
+      pie = d3.layout.pie()
+        .sort(null)
+        .value(function(d) {
+          return d.unitsSold;
+        });
+    d4.each(names, function(name) {
+      data.push({
+        unitsSold: Math.max(10, Math.random() * 100),
+        salesman: name
+      });
     });
-  });
-  var pie = d3.layout.pie()
-    .value(function(d) {
-      return d.unitsSold;
-    });
+    return pie(data);
+  };
 
   var chart = d4.charts.donut()
+    .outerWidth($('#pie').width())
     .margin({
       left: 0,
       top: 0,
       right: 0,
       bottom: 0
     })
-    .outerWidth($('#pie').width())
+
     .using('slices', function(slice) {
-      var r = this.width /5;
+      var r = this.width / 5;
       slice.radius(r);
+      slice.key(function(d) {
+        //return d.value;
+        return d.data.salesman;
+      });
     });
 
-  d3.select('#pie')
-    .datum(pie(data))
-    .call(chart);
+  setInterval(function() {
+    redraw();
+  }, 4500);
+
+  var redraw = function() {
+    var data = generateData();
+    d3.select('#pie')
+      .datum(data)
+      .call(chart);
+  };
+  redraw();
 });
+
 
 </script>
 <div id="pie"></div>
