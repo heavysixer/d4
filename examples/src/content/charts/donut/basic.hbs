@@ -44,12 +44,11 @@ $(document).ready(function() {
       right: 0,
       bottom: 0
     })
-
+    .radius(function(){
+      return this.width/5;
+    })
     .using('slices', function(slice) {
-      var r = this.width / 5;
-      slice.radius(r);
       slice.key(function(d) {
-        //return d.value;
         return d.data.salesman;
       });
     });

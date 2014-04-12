@@ -14,14 +14,6 @@
           return (d.key || 0) + i;
         },
 
-        radius: function() {
-          return Math.min(this.width, this.height) / 2;
-        },
-
-        width: function(radius) {
-          return radius / 3;
-        },
-
         x: function() {
           return this.width / 2;
         },
@@ -45,13 +37,13 @@
           };
         };
 
-        var r = d4.functor(scope.accessors.radius).bind(this)(),
+        var r = d4.functor(this.radius).bind(this)(),
           x = d4.functor(scope.accessors.x).bind(this)(),
           y = d4.functor(scope.accessors.y).bind(this)(),
-          arcWidth = d4.functor(scope.accessors.width).bind(this)(r);
+          aw = d4.functor(this.arcWidth).bind(this)(r);
         arc
           .innerRadius(r)
-          .outerRadius(r - arcWidth);
+          .outerRadius(r - aw);
 
         var group = selection.selectAll('g.'+name).data(data);
         group.enter()
