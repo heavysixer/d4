@@ -2223,6 +2223,7 @@
           };
         };
 
+        // FIXME: radius and arcWidth are assumed to be provided by the enclosing chart. maybe we should default back to a feature based implementation if it doesn't find it?
         var r = d4.functor(this.radius).bind(this)(),
           x = d4.functor(scope.accessors.x).bind(this)(),
           y = d4.functor(scope.accessors.y).bind(this)(),
