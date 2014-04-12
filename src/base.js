@@ -278,7 +278,8 @@
         d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
       }
     });
-
+    var chartAccessors = d4.merge({},config.accessors);
+    delete config.accessors;
     var opts = d4.merge({
       axes: {},
       features: {},
@@ -292,10 +293,12 @@
       mixins: [],
       width: 400
     }, config);
+    opts = d4.merge(opts,chartAccessors);
 
     linkAxes(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder || builder);
-    opts.accessors = ['width', 'height', 'valueKey'].concat(d3.keys(config.accessors) || []);
+    opts.accessors = ['width', 'height', 'valueKey'].concat(d3.keys(chartAccessors) || []);
+
     return opts;
   };
 

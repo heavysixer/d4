@@ -270,10 +270,11 @@ describe('d4.base', function() {
     describe('when defining a config object', function() {
       it('should allow you to specify public accessors functions', function() {
         var chart = d4.baseChart({ builder : this.builder, config : {
-          accessors: { z: 'z' }
+          accessors: { z: 'z', arcWidth : function(){return 10;} }
         }});
-        expect(chart.z).to.not.be.an('undefined');
+        expect(chart.arcWidth).to.not.be.an('undefined');
         expect(chart.accessors).to.include('z');
+        expect(chart.accessors).to.include('arcWidth');
       });
 
       it('should allow you to get the value or set the value using the accessor methods', function() {
