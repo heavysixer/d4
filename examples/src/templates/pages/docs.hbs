@@ -3,6 +3,7 @@ title: Home
 h1: 'd4 Documentation'
 ---
 <div class='content'>
+  <div class="row">
     <div class="col-md-12">
       <div class="alert alert-info">
         <strong>Howdy</strong>, this documentation is auto-generated using the comments from the source
@@ -12,4 +13,8 @@ h1: 'd4 Documentation'
       </div>
       {{md '../docs/d4-doc.md'}}
     </div>
+    <div class="row prependTop">
+      {{> disqus }}
+    </div>
+  </div>
 </div>
