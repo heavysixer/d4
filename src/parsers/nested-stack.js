@@ -176,20 +176,12 @@
       return opts;
     };
 
-    parser.x = function(funct) {
-      setDimension.bind(opts)('x', funct);
-      return parser;
-    };
-
-    parser.y = function(funct) {
-      setDimension.bind(opts)('y', funct);
-      return parser;
-    };
-
-    parser.value = function(funct) {
-      setDimension.bind(opts)('value', funct);
-      return parser;
-    };
+    d4.each(['x','y','value'], function(k){
+      parser[k] = function(funct) {
+        setDimension.bind(opts)(k, d4.functor(funct));
+        return parser;
+      };
+    }.bind(this));
 
     return parser;
   });

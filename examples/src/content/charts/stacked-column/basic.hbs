@@ -47,15 +47,9 @@ $(document).ready(function(){
     ];
 
   var parsedData = d4.parsers.nestedStack()
-    .x(function(){
-      return 'year';
-    })
-    .y(function(){
-      return 'salesman';
-    })
-    .value(function(){
-      return 'unitsSold';
-    })(data);
+    .x('year')
+    .y('salesman')
+    .value('unitsSold')(data);
 
   var chart = d4.charts.stackedColumn()
   .outerWidth($('#example').width())
