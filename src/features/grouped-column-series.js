@@ -15,7 +15,7 @@
           return Math.abs(this.y(d[this.y.$key]) - this.y(0));
         },
 
-        key : function(d, i) {
+        key: function(d, i) {
           return (d.key || 0) + i;
         },
 

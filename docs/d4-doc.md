@@ -1,4 +1,4 @@
-# d4 -0.7.2
+# d4 -0.7.3
 
 ###### [base.js][0]
 
@@ -39,49 +39,49 @@
 * [`timeScaleForNestedData`][30]
 * [`ordinalScaleForNestedData`][31]
 
-###### [nested-group.js][32]
+###### [column.js][32]
 
-* [`nestedGroup`][33]
+* [`column`][33]
 
-###### [nested-stack.js][34]
+###### [donut.js][34]
 
-* [`nestedStack`][35]
+* [`donut`][35]
 
-###### [waterfall.js][36]
+###### [grouped-column.js][36]
 
-* [`waterfall`][37]
+* [`groupedColumn`][37]
 
-###### [column.js][38]
+###### [line.js][38]
 
-* [`column`][39]
+* [`line`][39]
 
-###### [grouped-column.js][40]
+###### [row.js][40]
 
-* [`groupedColumn`][41]
+* [`row`][41]
 
-###### [line.js][42]
+###### [scatter.js][42]
 
-* [`line`][43]
+* [`scatterPlot`][43]
 
-###### [row.js][44]
+###### [stacked-column.js][44]
 
-* [`row`][45]
+* [`stackedColumn`][45]
 
-###### [scatter.js][46]
+###### [stacked-row.js][46]
 
-* [`scatterPlot`][47]
+* [`stackedRow`][47]
 
-###### [stacked-column.js][48]
+###### [waterfall.js][48]
 
-* [`stackedColumn`][49]
+* [`waterfall`][49]
 
-###### [stacked-row.js][50]
+###### [arc-labels.js][50]
 
-* [`stackedRow`][51]
+* [``][27]
 
-###### [waterfall.js][36]
+###### [arc-series.js][51]
 
-* [`waterfall`][37]
+* [``][27]
 
 ###### [arrow.js][52]
 
@@ -140,6 +140,18 @@
 ###### [y-axis.js][71]
 
 * [`yAxis`][72]
+
+###### [nested-group.js][73]
+
+* [`nestedGroup`][74]
+
+###### [nested-stack.js][75]
+
+* [`nestedStack`][76]
+
+###### [waterfall.js][48]
+
+* [`waterfall`][49]
 
 ## base.js
 
@@ -696,284 +708,18 @@ Creates an ordinal scale for a dimension of a given chart.
 
 ---
 
-## nested-group.js
-
-### nestedGroup
-
-[\#][33]
-[Ⓣ][32]
-
-The nested group parser is useful for grouped column charts where multiple  
-data items need to appear relative to the axis value, for example grouped  
-column charts or multi-series line charts.
-
-      _____________________
-      |           _        |
-      |   _ _    | |_      |
-      |  | | |   | | |     |
-      ----------------------
-    
-
-This module makes use of the d3's "nest" data structure layout
-
-[https://github.com/mbostock/d3/wiki/Arrays\#-nest][73]
-
-##### Approach
-
-Just like D3, this parser uses a chaining declaritiave style to build up  
-the necessary prerequistes to create the waterfall data. Here is a simple  
-example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
-
-     var parser = d4.parsers.nestedGroup()
-         .x('category')
-         .y('value')
-         .value('value');
-    
-     var groupedColumnData = parser(data);
-    
-
-Keep reading for more information on these various accessor functions.
-
-##### Accessor Methods
-
-`x` - A function which returns a key to access the x values in the data array  
-`y` - A function which returns a key to access the y values in the data array  
-`value` - A function which returns a key to access the values in the data array.  
-`data` - An array of objects with their dimensions specified like this:
-
-      var data = [
-      {"year" : "2010", "category" : "Category One", "value" : 23 },
-      {"year" : "2010", "category" : "Category Two", "value" : 55 },
-      {"year" : "2010", "category" : "Category Three", "value" : -10 },
-      {"year" : "2010", "category" : "Category Four", "value" : 5 }]
-    
-
----
-
-## nested-stack.js
-
-### nestedStack
-
-[\#][35]
-[Ⓣ][34]
-
-The nested stack parser is useful for charts which take a data series  
-and wants to sort them across a dimension and then display the results.  
-The most common usecase would be a stacked column chart like this:
-
-      _____________________
-      |    _               |
-      |   | |   _          |
-      |   |-|  | |   _     |
-      |   |-|  |-|  |-|    |
-      |   | |  |-|  |-|    |
-      ----------------------
-    
-
-This module makes use of the d3's "nest" data structure, and "stack" layout
-
-* [https://github.com/mbostock/d3/wiki/Arrays\#-nest][73]
-* [https://github.com/mbostock/d3/wiki/Stack-Layout][74]
-
-##### Approach
-
-Just like D3, this parser uses a chaining declaritiave style to build up  
-the necessary prerequistes to create the stacked data. Here is a simple  
-example:
-
-     var parser = d4.parsers.nestedStack()
-         .x(function() {
-           return 'title';
-         })
-         .y(function(){
-           return 'group';
-         })
-         .value(function() {
-           return 'values';
-         });
-    
-     var stackedData = parser(data);
-    
-
-Keep reading for more information on these various accessor functions.
-
-##### Benefits
-
-* Supports negative and positive stacked data series.
-
-##### Limitations
-
-* The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.
-
-##### Accessor Methods
-
-`x` : - function which returns a key to access the x values in the data array  
-`y` : - function which returns a key to access the y values in the data array  
-`value` : - function which returns a key to access the values in the data array.  
-`data` : array - An array of objects with their dimensions specified like this:
-
-     var data = [{ "title": "3 Years", "group" : "one", "value": 30 },
-                 { "title": "3 Years", "group" : "two", "value": 20 },
-                 { "title": "3 Years", "group" : "three", "value": 10 },
-                 { "title": "5 Years", "group" : "one",  "value": 3 },
-                 { "title": "5 Years", "group" : "two", "value": 2 },
-                 { "title": "5 Years", "group" : "three", "value": 1 }]
-    
-
-##### Example Usage
-
-Given the example data and dimension variables above you can use this module  
-in the following way:
-
-     var parser = d4.parsers.nestedStack()
-     .x(function() {
-       return 'title';
-     })
-     .y(function(){
-       return 'group';
-     })
-     .value(function() {
-       return 'value';
-     })
-     .call(data);
-    
-
-The `parser` variable will now be an object containing the following structure:
-
-     {
-       data: Array
-       value: {
-         key: string,
-         values: Array
-       },
-       x: {
-         key: string,
-         values: Array
-       },
-       y: {
-         key: string,
-         values: Array
-       }
-     }
-    
-
----
-
-## waterfall.js
-
-### waterfall
-
-[\#][37]
-[Ⓣ][36]
-
-The waterfall parser is useful for waterfall charts where data items need to account  
-for the position of earlier values:
-
-     _____________________
-     |   _        _______ |
-     |  |_|___   | |  | | |
-     |      |_|__|_|  | | |
-     |                |_| |
-     ----------------------
-    
-
-This module makes use of the d3's "nest" data structure, and "stack" layout  
-[https://github.com/mbostock/d3/wiki/Arrays\#-nest][73]  
-[https://github.com/mbostock/d3/wiki/Stack-Layout][74]
-
-##### Approach:
-
-Just like D3, this parser uses a chaining declaritiave style to build up  
-the necessary prerequistes to create the waterfall data. Here is a simple  
-example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
-
-     var parser = d4.parsers.waterfall()
-         .x(function() {
-           return 'category';
-         })
-         .y(function(){
-           return 'value';
-         })
-         .value(function() {
-           return 'value';
-         });
-    
-     var waterfallData = parser(data);
-    
-
-Keep reading for more information on these various accessor functions.
-
-##### Benefits:
-
-Supports horizontal or vertical waterfalls  
-Supports totaling series using a special "e" value in a data item.
-
-##### Limitations:
-
-Does not support stacked waterfalls.
-
-##### Accessors:
-
-`x` : - function which returns a key to access the x values in the data array  
-`y` : - function which returns a key to access the y values in the data array  
-`value` : - function which returns a key to access the values in the data array.  
-`data` : array - An array of objects with their dimensions specified  
-like this:
-
-     var data = [
-     {"category" : "Category One", "value" : 23 },
-     {"category" : "Category Two", "value" : 55 },
-     {"category" : "Category Three", "value" : -10 },
-     {"category" : "Category Four", "value" : 5 },
-     {"category" : "Category Five", "value" : "e" }]
-    
-
-##### SPECIAL NOTE:
-
-Waterfalls charts typically have the ability to display subtotals at any point.  
-In order to use this feature simply set the value of your subtotal column to "e."
-
-##### Example Usage:
-
-Given the example data and dimension variables above you can use this module  
-in the following way:
-
-    var parser = d4.parsers.nestedStack()
-    .dimensions(dimensions)
-    .call(data);
-    
-    The `parser` variable will now be an object containing the following structure:
-    {
-      data: Array
-      value: {
-        key: string,
-        values: Array
-      },
-      x: {
-        key: string,
-        values: Array
-      },
-      y: {
-        key: string,
-        values: Array
-      }
-    }
-    
-
----
-
 ## column.js
 
 ### column
 
-[\#][39]
-[Ⓣ][38]
+[\#][33]
+[Ⓣ][32]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
 has four default features:
 
-##### Accessors
+##### Features
 
 `bars` - series bars  
 `barLabels` - data labels above the bars  
@@ -1020,12 +766,23 @@ The default format may not be desired and so we'll override it:
 
 ---
 
+## donut.js
+
+### donut
+
+[\#][35]
+[Ⓣ][34]
+
+The donut chart
+
+---
+
 ## grouped-column.js
 
 ### groupedColumn
 
-[\#][41]
-[Ⓣ][40]
+[\#][37]
+[Ⓣ][36]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -1033,7 +790,7 @@ chart because they can use the same data series, and where the stacked column hi
 the sum of the data series across an axis the grouped column can be used to show the  
 relative distribution.
 
-##### Accessors
+##### Features
 
 `bars` - series bars  
 `barLabels` - data labels above the bars  
@@ -1083,13 +840,13 @@ relative distribution.
 
 ### line
 
-[\#][43]
-[Ⓣ][42]
+[\#][39]
+[Ⓣ][38]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
 
-##### Accessors
+##### Features
 
 `lineSeries` - series lines  
 `lineSeriesLabels` - data labels beside the lines  
@@ -1145,14 +902,14 @@ along the xAxis.
 
 ### row
 
-[\#][45]
-[Ⓣ][44]
+[\#][41]
+[Ⓣ][40]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
 has four default features:
 
-##### Accessors
+##### Features
 
 `bars` - series bars  
 `rowLabels` - data labels to the right of the bars  
@@ -1180,14 +937,14 @@ has four default features:
 
 ### scatterPlot
 
-[\#][47]
-[Ⓣ][46]
+[\#][43]
+[Ⓣ][42]
 
 The scatter plot has three axes (`x`, `y` and `z`). By default the scatter  
 plot expects linear scale values for all axes. The basic scatter plot chart  
 has these default features:
 
-##### Accessors
+##### Features
 
 `circles` - series of circles  
 `xAxis` - the axis for the x dimension  
@@ -1226,14 +983,14 @@ has these default features:
 
 ### stackedColumn
 
-[\#][49]
-[Ⓣ][48]
+[\#][45]
+[Ⓣ][44]
 
 The stacked column chart has two axes (`x` and `y`). By default the stacked  
 column expects continious scale for the `y` axis and a discrete scale for  
 the `x` axis. The stacked column has the following default features:
 
-##### Accessors
+##### Features
 
 `bars` - series of rects  
 `barLabels` - individual data values inside the stacked rect  
@@ -1292,14 +1049,14 @@ the `x` axis. The stacked column has the following default features:
 
 ### stackedRow
 
-[\#][51]
-[Ⓣ][50]
+[\#][47]
+[Ⓣ][46]
 
 The stacked row chart has two axes (`x` and `y`). By default the stacked  
 row expects continious scale for the `x` axis and a discrete scale for  
 the `y` axis. The stacked row has the following default features:
 
-##### Accessors
+##### Features
 
 `bars` - series of rects  
 `barLabels` - individual data values inside the stacked rect  
@@ -1359,8 +1116,8 @@ the `y` axis. The stacked row has the following default features:
 
 ### waterfall
 
-[\#][37]
-[Ⓣ][36]
+[\#][49]
+[Ⓣ][48]
 
 The waterfall chart visually tallies the cumulative result of negative and  
 positive values over a data series. In addition to specifying the normal  
@@ -1373,7 +1130,7 @@ column expects continious scale for the `y` axis and a discrete scale for
 the `x` axis. This will render the waterfall chart vertically. However,  
 if you swap the scale types then the waterfall will render horizontally.
 
-##### Accessors
+##### Features
 
 `bars` - series of rects  
 `connectors` - visual lines that connect the various stacked columns together  
@@ -1416,6 +1173,24 @@ if you swap the scale types then the waterfall will render horizontally.
          .datum(parsedData.data)
          .call(chart);
     
+
+---
+
+## arc-labels.js
+
+### 
+
+[\#][27]
+[Ⓣ][50]
+
+---
+
+## arc-series.js
+
+### 
+
+[\#][27]
+[Ⓣ][51]
 
 ---
 
@@ -1610,17 +1385,17 @@ accessors described below which modify the behavior and apperance of the axis.
 ##### Accessors
 
 `axis` - The d3 axis object itself.  
-`innerTickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize][75]  
-`orient` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#orient][76]  
-`outerTickSize`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize][77]  
-`scale` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#scale][78]  
+`innerTickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize][77]  
+`orient` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#orient][78]  
+`outerTickSize`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize][79]  
+`scale` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#scale][80]  
 `stagger` - (true | false) determines if the axis should stagger overlapping text (true by default)  
-`tickFormat` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat][79]  
-`tickPadding` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding][80]  
-`tickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize][81]  
-`tickSubdivide`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide][82]  
-`tickValues` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues][83]  
-`ticks` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks][84]
+`tickFormat` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat][81]  
+`tickPadding` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding][82]  
+`tickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize][83]  
+`tickSubdivide`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide][84]  
+`tickValues` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues][85]  
+`ticks` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks][86]
 
     var chart = d4.charts.groupedColumn()
     .using('yAxis', function(axis){
@@ -1660,17 +1435,17 @@ accessors described below which modify the behavior and apperance of the axis.
 ##### Accessors
 
 `axis` - The d3 axis object itself.  
-`innerTickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize][75]  
-`orient` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#orient][76]  
-`outerTickSize`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize][77]  
-`scale` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#scale][78]  
+`innerTickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#innerTickSize][77]  
+`orient` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#orient][78]  
+`outerTickSize`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#outerTickSize][79]  
+`scale` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#scale][80]  
 `stagger` - (true | false) determines if the axis should stagger overlapping text (true by default)  
-`tickFormat` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat][79]  
-`tickPadding` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding][80]  
-`tickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize][81]  
-`tickSubdivide`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide][82]  
-`tickValues` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues][83]  
-`ticks` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks][84]
+`tickFormat` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickFormat][81]  
+`tickPadding` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickPadding][82]  
+`tickSize` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSize][83]  
+`tickSubdivide`- see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickSubdivide][84]  
+`tickValues` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#tickValues][85]  
+`ticks` - see: [https://github.com/mbostock/d3/wiki/SVG-Axes\#ticks][86]
 
 ##### Examples
 
@@ -1695,6 +1470,272 @@ accessors described below which modify the behavior and apperance of the axis.
       // move the axis to the top of the chart.
       axis.y(-20);
     })
+    
+
+---
+
+## nested-group.js
+
+### nestedGroup
+
+[\#][74]
+[Ⓣ][73]
+
+The nested group parser is useful for grouped column charts where multiple  
+data items need to appear relative to the axis value, for example grouped  
+column charts or multi-series line charts.
+
+      _____________________
+      |           _        |
+      |   _ _    | |_      |
+      |  | | |   | | |     |
+      ----------------------
+    
+
+This module makes use of the d3's "nest" data structure layout
+
+[https://github.com/mbostock/d3/wiki/Arrays\#-nest][87]
+
+##### Approach
+
+Just like D3, this parser uses a chaining declaritiave style to build up  
+the necessary prerequistes to create the waterfall data. Here is a simple  
+example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
+
+     var parser = d4.parsers.nestedGroup()
+         .x('category')
+         .y('value')
+         .value('value');
+    
+     var groupedColumnData = parser(data);
+    
+
+Keep reading for more information on these various accessor functions.
+
+##### Accessor Methods
+
+`x` - A function which returns a key to access the x values in the data array  
+`y` - A function which returns a key to access the y values in the data array  
+`value` - A function which returns a key to access the values in the data array.  
+`data` - An array of objects with their dimensions specified like this:
+
+      var data = [
+      {"year" : "2010", "category" : "Category One", "value" : 23 },
+      {"year" : "2010", "category" : "Category Two", "value" : 55 },
+      {"year" : "2010", "category" : "Category Three", "value" : -10 },
+      {"year" : "2010", "category" : "Category Four", "value" : 5 }]
+    
+
+---
+
+## nested-stack.js
+
+### nestedStack
+
+[\#][76]
+[Ⓣ][75]
+
+The nested stack parser is useful for charts which take a data series  
+and wants to sort them across a dimension and then display the results.  
+The most common usecase would be a stacked column chart like this:
+
+      _____________________
+      |    _               |
+      |   | |   _          |
+      |   |-|  | |   _     |
+      |   |-|  |-|  |-|    |
+      |   | |  |-|  |-|    |
+      ----------------------
+    
+
+This module makes use of the d3's "nest" data structure, and "stack" layout
+
+* [https://github.com/mbostock/d3/wiki/Arrays\#-nest][87]
+* [https://github.com/mbostock/d3/wiki/Stack-Layout][88]
+
+##### Approach
+
+Just like D3, this parser uses a chaining declaritiave style to build up  
+the necessary prerequistes to create the stacked data. Here is a simple  
+example:
+
+     var parser = d4.parsers.nestedStack()
+         .x(function() {
+           return 'title';
+         })
+         .y(function(){
+           return 'group';
+         })
+         .value(function() {
+           return 'values';
+         });
+    
+     var stackedData = parser(data);
+    
+
+Keep reading for more information on these various accessor functions.
+
+##### Benefits
+
+* Supports negative and positive stacked data series.
+
+##### Limitations
+
+* The parser expects the stack will occur on the yAxis, which means it is only suitable for column charts presently.
+
+##### Accessor Methods
+
+`x` : - function which returns a key to access the x values in the data array  
+`y` : - function which returns a key to access the y values in the data array  
+`value` : - function which returns a key to access the values in the data array.  
+`data` : array - An array of objects with their dimensions specified like this:
+
+     var data = [{ "title": "3 Years", "group" : "one", "value": 30 },
+                 { "title": "3 Years", "group" : "two", "value": 20 },
+                 { "title": "3 Years", "group" : "three", "value": 10 },
+                 { "title": "5 Years", "group" : "one",  "value": 3 },
+                 { "title": "5 Years", "group" : "two", "value": 2 },
+                 { "title": "5 Years", "group" : "three", "value": 1 }]
+    
+
+##### Example Usage
+
+Given the example data and dimension variables above you can use this module  
+in the following way:
+
+     var parser = d4.parsers.nestedStack()
+     .x(function() {
+       return 'title';
+     })
+     .y(function(){
+       return 'group';
+     })
+     .value(function() {
+       return 'value';
+     })
+     .call(data);
+    
+
+The `parser` variable will now be an object containing the following structure:
+
+     {
+       data: Array
+       value: {
+         key: string,
+         values: Array
+       },
+       x: {
+         key: string,
+         values: Array
+       },
+       y: {
+         key: string,
+         values: Array
+       }
+     }
+    
+
+---
+
+## waterfall.js
+
+### waterfall
+
+[\#][49]
+[Ⓣ][48]
+
+The waterfall parser is useful for waterfall charts where data items need to account  
+for the position of earlier values:
+
+     _____________________
+     |   _        _______ |
+     |  |_|___   | |  | | |
+     |      |_|__|_|  | | |
+     |                |_| |
+     ----------------------
+    
+
+This module makes use of the d3's "nest" data structure, and "stack" layout  
+[https://github.com/mbostock/d3/wiki/Arrays\#-nest][87]  
+[https://github.com/mbostock/d3/wiki/Stack-Layout][88]
+
+##### Approach:
+
+Just like D3, this parser uses a chaining declaritiave style to build up  
+the necessary prerequistes to create the waterfall data. Here is a simple  
+example. Given a data item structure like this: {"category" : "Category One", "value" : 23 }
+
+     var parser = d4.parsers.waterfall()
+         .x(function() {
+           return 'category';
+         })
+         .y(function(){
+           return 'value';
+         })
+         .value(function() {
+           return 'value';
+         });
+    
+     var waterfallData = parser(data);
+    
+
+Keep reading for more information on these various accessor functions.
+
+##### Benefits:
+
+Supports horizontal or vertical waterfalls  
+Supports totaling series using a special "e" value in a data item.
+
+##### Limitations:
+
+Does not support stacked waterfalls.
+
+##### Accessors:
+
+`x` : - function which returns a key to access the x values in the data array  
+`y` : - function which returns a key to access the y values in the data array  
+`value` : - function which returns a key to access the values in the data array.  
+`data` : array - An array of objects with their dimensions specified  
+like this:
+
+     var data = [
+     {"category" : "Category One", "value" : 23 },
+     {"category" : "Category Two", "value" : 55 },
+     {"category" : "Category Three", "value" : -10 },
+     {"category" : "Category Four", "value" : 5 },
+     {"category" : "Category Five", "value" : "e" }]
+    
+
+##### SPECIAL NOTE:
+
+Waterfalls charts typically have the ability to display subtotals at any point.  
+In order to use this feature simply set the value of your subtotal column to "e."
+
+##### Example Usage:
+
+Given the example data and dimension variables above you can use this module  
+in the following way:
+
+    var parser = d4.parsers.nestedStack()
+    .dimensions(dimensions)
+    .call(data);
+    
+    The `parser` variable will now be an object containing the following structure:
+    {
+      data: Array
+      value: {
+        key: string,
+        values: Array
+      },
+      x: {
+        key: string,
+        values: Array
+      },
+      y: {
+        key: string,
+        values: Array
+      }
+    }
     
 
 ---
@@ -1733,26 +1774,26 @@ accessors described below which modify the behavior and apperance of the axis.
 [29]: #linearscalefornesteddata
 [30]: #timescalefornesteddata
 [31]: #ordinalscalefornesteddata
-[32]: #nested-group-js
-[33]: #nestedgroup
-[34]: #nested-stack-js
-[35]: #nestedstack
-[36]: #waterfall-js
-[37]: #waterfall
-[38]: #column-js
-[39]: #column
-[40]: #grouped-column-js
-[41]: #groupedcolumn
-[42]: #line-js
-[43]: #line
-[44]: #row-js
-[45]: #row
-[46]: #scatter-js
-[47]: #scatterplot
-[48]: #stacked-column-js
-[49]: #stackedcolumn
-[50]: #stacked-row-js
-[51]: #stackedrow
+[32]: #column-js
+[33]: #column
+[34]: #donut-js
+[35]: #donut
+[36]: #grouped-column-js
+[37]: #groupedcolumn
+[38]: #line-js
+[39]: #line
+[40]: #row-js
+[41]: #row
+[42]: #scatter-js
+[43]: #scatterplot
+[44]: #stacked-column-js
+[45]: #stackedcolumn
+[46]: #stacked-row-js
+[47]: #stackedrow
+[48]: #waterfall-js
+[49]: #waterfall
+[50]: #arc-labels-js
+[51]: #arc-series-js
 [52]: #arrow-js
 [53]: #column-labels-js
 [54]: #grid-js
@@ -1774,15 +1815,19 @@ accessors described below which modify the behavior and apperance of the axis.
 [70]: #xaxis
 [71]: #y-axis-js
 [72]: #yaxis
-[73]: https://github.com/mbostock/d3/wiki/Arrays#-nest
-[74]: https://github.com/mbostock/d3/wiki/Stack-Layout
-[75]: https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize
-[76]: https://github.com/mbostock/d3/wiki/SVG-Axes#orient
-[77]: https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize
-[78]: https://github.com/mbostock/d3/wiki/SVG-Axes#scale
-[79]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat
-[80]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding
-[81]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize
-[82]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide
-[83]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues
-[84]: https://github.com/mbostock/d3/wiki/SVG-Axes#ticks
+[73]: #nested-group-js
+[74]: #nestedgroup
+[75]: #nested-stack-js
+[76]: #nestedstack
+[77]: https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize
+[78]: https://github.com/mbostock/d3/wiki/SVG-Axes#orient
+[79]: https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize
+[80]: https://github.com/mbostock/d3/wiki/SVG-Axes#scale
+[81]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat
+[82]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding
+[83]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize
+[84]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide
+[85]: https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues
+[86]: https://github.com/mbostock/d3/wiki/SVG-Axes#ticks
+[87]: https://github.com/mbostock/d3/wiki/Arrays#-nest
+[88]: https://github.com/mbostock/d3/wiki/Stack-Layout

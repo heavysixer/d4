@@ -46,11 +46,11 @@
           .innerRadius(r)
           .outerRadius(r - aw);
 
-        var group = selection.selectAll('g.'+name).data(data);
+        var group = selection.selectAll('g.' + name).data(data);
         group.enter()
-        .append('g')
-        .attr('class', name)
-        .attr('transform', 'translate(' + x + ',' + y + ')');
+          .append('g')
+          .attr('class', name)
+          .attr('transform', 'translate(' + x + ',' + y + ')');
 
         var arcs = group.selectAll('path')
           .data(function(d) {
@@ -59,8 +59,8 @@
 
         // update
         arcs.transition()
-        .duration(d4.functor(scope.accessors.duration).bind(this)())
-        .attrTween('d', arcTween);
+          .duration(d4.functor(scope.accessors.duration).bind(this)())
+          .attrTween('d', arcTween);
 
         // create new elements as needed
         arcs.enter()

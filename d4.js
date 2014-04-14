@@ -1,4 +1,4 @@
-/*! d4 - v0.7.2
+/*! d4 - v0.7.3
  *  License: MIT Expat
  *  Date: 2014-04-14
  *  Copyright: Mark Daggett, D4 Team
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   console.log(chart.x.domain.$dirty) // false;
+   *                   // false;
    *               }
    *           }
    *       });
@@ -283,7 +283,7 @@
         d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
       }
     });
-    var chartAccessors = d4.merge({},config.accessors);
+    var chartAccessors = d4.merge({}, config.accessors);
     delete config.accessors;
     var opts = d4.merge({
       axes: {},
@@ -298,7 +298,7 @@
       mixins: [],
       width: 400
     }, config);
-    opts = d4.merge(opts,chartAccessors);
+    opts = d4.merge(opts, chartAccessors);
 
     linkAxes(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder || builder);
@@ -625,7 +625,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      console.log(chart.features());
+     *      
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @returns An array of features.
@@ -676,7 +676,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      console.log(chart.features());
+     *      
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -1272,15 +1272,17 @@
         }
       }
     })
-    .mixin(
-        [{ 'name': 'arcs',
+      .mixin(
+        [{
+          'name': 'arcs',
           'feature': d4.features.arcSeries
         }, {
-        'name': 'arcLabels',
-        'feature': d4.features.arcLabels
-      }]);
+          'name': 'arcLabels',
+          'feature': d4.features.arcLabels
+        }]);
   });
 }).call(this);
+
 (function() {
   'use strict';
 
@@ -2178,7 +2180,7 @@
       },
       proxies: [arc],
       render: function(scope, data, selection) {
-        var labelAngle = function (d) {
+        var labelAngle = function(d) {
           return (180 / Math.PI * (d.startAngle + d.endAngle) / 2 - 90);
         };
 
@@ -2200,13 +2202,13 @@
           y = d4.functor(scope.accessors.y).bind(this)();
         arc
           .innerRadius(r)
-          .outerRadius(r+ 10);
+          .outerRadius(r + 10);
 
-        var group = selection.selectAll('g.'+name).data(data);
+        var group = selection.selectAll('g.' + name).data(data);
         group.enter()
-        .append('g')
-        .attr('class', name)
-        .attr('transform', 'translate(' + x + ',' + y + ')');
+          .append('g')
+          .attr('class', name)
+          .attr('transform', 'translate(' + x + ',' + y + ')');
 
         var labels = group.selectAll('text')
           .data(function(d) {
@@ -2215,8 +2217,8 @@
 
         // update
         labels.transition()
-        .duration(d4.functor(scope.accessors.duration).bind(this)())
-        .attrTween('transform', arcTween);
+          .duration(d4.functor(scope.accessors.duration).bind(this)())
+          .attrTween('transform', arcTween);
 
         // create new elements as needed
         labels.enter()
@@ -2291,11 +2293,11 @@
           .innerRadius(r)
           .outerRadius(r - aw);
 
-        var group = selection.selectAll('g.'+name).data(data);
+        var group = selection.selectAll('g.' + name).data(data);
         group.enter()
-        .append('g')
-        .attr('class', name)
-        .attr('transform', 'translate(' + x + ',' + y + ')');
+          .append('g')
+          .attr('class', name)
+          .attr('transform', 'translate(' + x + ',' + y + ')');
 
         var arcs = group.selectAll('path')
           .data(function(d) {
@@ -2304,8 +2306,8 @@
 
         // update
         arcs.transition()
-        .duration(d4.functor(scope.accessors.duration).bind(this)())
-        .attrTween('d', arcTween);
+          .duration(d4.functor(scope.accessors.duration).bind(this)())
+          .attrTween('d', arcTween);
 
         // create new elements as needed
         arcs.enter()
@@ -2512,7 +2514,7 @@
           return Math.abs(this.y(d[this.y.$key]) - this.y(0));
         },
 
-        key : function(d, i) {
+        key: function(d, i) {
           return (d.key || 0) + i;
         },
 
@@ -2609,7 +2611,7 @@
           return 'line stroke series' + n;
         },
 
-        key : function(d, i) {
+        key: function(d, i) {
           return (d.key || 0) + i;
         },
 
@@ -2629,7 +2631,7 @@
           .y(d4.functor(scope.accessors.y).bind(this));
 
         var group = selection.select('.' + name).selectAll('g')
-        .data(data, d4.functor(scope.accessors.key).bind(this));
+          .data(data, d4.functor(scope.accessors.key).bind(this));
         group.exit().remove();
         group.enter().append('g')
           .attr('data-key', function(d) {

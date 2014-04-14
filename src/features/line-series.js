@@ -9,7 +9,7 @@
           return 'line stroke series' + n;
         },
 
-        key : function(d, i) {
+        key: function(d, i) {
           return (d.key || 0) + i;
         },
 
@@ -29,7 +29,7 @@
           .y(d4.functor(scope.accessors.y).bind(this));
 
         var group = selection.select('.' + name).selectAll('g')
-        .data(data, d4.functor(scope.accessors.key).bind(this));
+          .data(data, d4.functor(scope.accessors.key).bind(this));
         group.exit().remove();
         group.enter().append('g')
           .attr('data-key', function(d) {

@@ -278,7 +278,7 @@
         d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
       }
     });
-    var chartAccessors = d4.merge({},config.accessors);
+    var chartAccessors = d4.merge({}, config.accessors);
     delete config.accessors;
     var opts = d4.merge({
       axes: {},
@@ -293,7 +293,7 @@
       mixins: [],
       width: 400
     }, config);
-    opts = d4.merge(opts,chartAccessors);
+    opts = d4.merge(opts, chartAccessors);
 
     linkAxes(opts);
     assignDefaultBuilder.bind(opts)(defaultBuilder || builder);

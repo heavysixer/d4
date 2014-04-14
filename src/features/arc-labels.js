@@ -28,7 +28,7 @@
       },
       proxies: [arc],
       render: function(scope, data, selection) {
-        var labelAngle = function (d) {
+        var labelAngle = function(d) {
           return (180 / Math.PI * (d.startAngle + d.endAngle) / 2 - 90);
         };
 
@@ -50,13 +50,13 @@
           y = d4.functor(scope.accessors.y).bind(this)();
         arc
           .innerRadius(r)
-          .outerRadius(r+ 10);
+          .outerRadius(r + 10);
 
-        var group = selection.selectAll('g.'+name).data(data);
+        var group = selection.selectAll('g.' + name).data(data);
         group.enter()
-        .append('g')
-        .attr('class', name)
-        .attr('transform', 'translate(' + x + ',' + y + ')');
+          .append('g')
+          .attr('class', name)
+          .attr('transform', 'translate(' + x + ',' + y + ')');
 
         var labels = group.selectAll('text')
           .data(function(d) {
@@ -65,8 +65,8 @@
 
         // update
         labels.transition()
-        .duration(d4.functor(scope.accessors.duration).bind(this)())
-        .attrTween('transform', arcTween);
+          .duration(d4.functor(scope.accessors.duration).bind(this)())
+          .attrTween('transform', arcTween);
 
         // create new elements as needed
         labels.enter()
