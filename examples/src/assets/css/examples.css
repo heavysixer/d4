@@ -46,6 +46,21 @@ svg.d4 {
 /*
   Specific Examples
 */
+#grid .d4 .grid.border rect {
+    fill: none;
+    stroke: #aaa;
+    stroke-width: 1px;
+    shape-rendering: crispEdges;
+}
+
+#grid .d4 .grid line {
+    fill:none;
+    stroke: #aaa;
+    stroke-width: 1px;
+    stroke-dasharray :3, 4;
+    shape-rendering: crispEdges;
+}
+
 #scatter .d4 circle.series0 {
     fill: #CD202C;
     fill-opacity: 0.6;

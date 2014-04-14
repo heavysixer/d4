@@ -19,7 +19,7 @@ $(document).ready(function() {
   var generateData = function() {
     var data = [];
     var names = ['Clay Hauck', 'Diego Hickle', 'Heloise Quitzon',
-      'Hildegard Littel MD', 'Janiya Legros DDS', 'Karolann Boehm',
+      'Hildegard Littel', 'Janiya Legros', 'Karolann Boehm',
       'Lilyan Deckow IV', 'Lizeth Blick', 'Marlene O\'Kon', 'Marley Gutmann'
     ],
       pie = d3.layout.pie()
@@ -44,11 +44,12 @@ $(document).ready(function() {
       right: 0,
       bottom: 0
     })
-    .radius(function(){
-      return this.width/5;
+    .radius(function() {
+      return this.width / 8;
     })
-    .using('arcLabels', function(labels){
-      labels.text(function(d){
+    .arcWidth(50)
+    .using('arcLabels', function(labels) {
+      labels.text(function(d) {
         return d.data.salesman;
       })
     })
@@ -66,11 +67,11 @@ $(document).ready(function() {
       .call(chart);
   };
   (function loop() {
-      redraw();
-      setTimeout(loop, 4500);
+    redraw();
+    setTimeout(loop, 4500);
   })();
-});
 
+});
 
 </script>
 <div id="pie"></div>
