@@ -71,9 +71,7 @@ $(document).ready(function(){
   })
   .using('zeroLine', function(zero) {
     zero
-      .x1(function() {
-        return this.x(0);
-      })
+      .x1(0)
       .x2(function() {
         return this.width;
       })
