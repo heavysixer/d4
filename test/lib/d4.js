@@ -81,7 +81,7 @@
     });
   };
 
-  var err = function() {
+  var err = d4.err = function() {
     var parts = Array.prototype.slice.call(arguments);
     var message = parts.shift();
     var regexp;
@@ -3921,7 +3921,11 @@
     };
 
     var setDimension = function(dim, funct) {
-      opts[dim].key = d4.functor(funct)();
+      var val = d4.functor(funct)();
+      if(dim === 'x' && val === 'y') {
+        d4.err('You cannot use `y` as the key for an `x` dimension because it creates an ambiguous `y` property in the nested stack.');
+      }
+      opts[dim].key = val;
     };
 
     var parser = function(data) {

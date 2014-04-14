@@ -76,7 +76,7 @@
     });
   };
 
-  var err = function() {
+  var err = d4.err = function() {
     var parts = Array.prototype.slice.call(arguments);
     var message = parts.shift();
     var regexp;

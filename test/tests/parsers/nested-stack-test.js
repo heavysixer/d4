@@ -61,4 +61,30 @@ describe('d4.parsers.nestedStack', function() {
       total += item.y;
     }.bind(this));
   });
+
+  it('should not allow the letter `y` to be used as a key on the `y` or `value` dimension', function(){
+    var data = [{ x: 100, y : '2001' }, { x: 200, y : '2001' }];
+    var parsedData = d4.parsers.nestedStack()
+    .x('x')
+    .y('y')
+    .value('y')
+    (data);
+    var total = 0;
+    d4.each(parsedData.data, function(d){
+      var item = d.values[0];
+      expect(item.y0).to.equal(total);
+      total += item.y;
+    }.bind(this));
+  });
+
+  it('should allow the letter `y` to be used as a key on the `x` dimension', function(){
+    var data = [{ x: 100, y : '2001' }, { x: 200, y : '2001' }];
+    expect(function() {
+      d4.parsers.nestedStack()
+      .x('y')
+      .y('x')
+      .value('x')
+      (data);
+    }).to.throw(Error, '[d4] You cannot use `y` as the key for an `x` dimension because it creates an ambiguous `y` property in the nested stack.');
+  });
 });
