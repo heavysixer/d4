@@ -53,17 +53,18 @@ $(document).ready(function() {
       });
     });
 
-  setInterval(function() {
-    redraw();
-  }, 4500);
 
   var redraw = function() {
+    console.log('redraw')
     var data = generateData();
     d3.select('#pie')
       .datum(data)
       .call(chart);
   };
-  redraw();
+  (function loop() {
+      redraw();
+      setTimeout(loop, 4500);
+  })();
 });
 
 
