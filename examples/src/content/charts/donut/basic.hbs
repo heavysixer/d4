@@ -47,15 +47,19 @@ $(document).ready(function() {
     .radius(function(){
       return this.width/5;
     })
-    .using('slices', function(slice) {
-      slice.key(function(d) {
+    .using('arcLabels', function(labels){
+      labels.text(function(d){
+        return d.data.salesman;
+      })
+    })
+    .using('arcs', function(slices) {
+      slices.key(function(d) {
         return d.data.salesman;
       });
     });
 
 
   var redraw = function() {
-    console.log('redraw')
     var data = generateData();
     d3.select('#pie')
       .datum(data)

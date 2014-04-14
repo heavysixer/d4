@@ -20,7 +20,7 @@
       }
     })
     .mixin(
-        [{ 'name': 'slices',
+        [{ 'name': 'arcs',
           'feature': d4.features.arcSeries
         }, {
         'name': 'arcLabels',
