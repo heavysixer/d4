@@ -64,10 +64,13 @@ d3.select('someDomElement')
 ```
 
 #####Additional Examples
+
 There are **many** more examples of d4 in the examples site inside the source code repository. Simply clone the repo and
 open the `examples/` folder in your favorite web browser.
 
 You can find a hosted version of the example site here: http://visible.io/
+
+You can find a quickstart presentation on d4 [here](www.slideshare.net/heavysixer/d4-and-friendly-charting-dsl-for-d3). 
 
 ### Philosophy
 * * *
