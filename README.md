@@ -70,7 +70,7 @@ open the `examples/` folder in your favorite web browser.
 
 You can find a hosted version of the example site here: http://visible.io/
 
-You can find a quickstart presentation on d4 [here](www.slideshare.net/heavysixer/d4-and-friendly-charting-dsl-for-d3). 
+You can find a quickstart presentation on d4 [here](http://www.slideshare.net/heavysixer/d4-and-friendly-charting-dsl-for-d3). 
 
 ### Philosophy
 * * *
