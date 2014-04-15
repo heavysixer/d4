@@ -246,6 +246,7 @@ describe('d4.base', function() {
         .outerWidth(400)
         .outerHeight(400);
         testMargin.bind(this)();
+        console.log(chart.accessors);
 
         expect(chart.height()).to.be.equal(340);
         expect(chart.width()).to.be.equal(340);
@@ -300,8 +301,7 @@ describe('d4.base', function() {
           accessors: { z: 'z', arcWidth : function(){return 10;} }
         }});
         expect(chart.arcWidth).to.not.be.an('undefined');
-        expect(chart.accessors).to.include('z');
-        expect(chart.accessors).to.include('arcWidth');
+        expect(chart.z).to.not.be.an('undefined');
       });
 
       it('should allow you to get the value or set the value using the accessor methods', function() {
@@ -325,14 +325,6 @@ describe('d4.base', function() {
         chart.marginLeft(500);
         expect(chart.margin().left).to.equal(500);
         expect(chart.marginLeft()).to.equal(500);
-      });
-
-      it('should define a collection of common accessors useful to all charts which are exposed through an accessors array', function() {
-        var chart = d4.baseChart({ builder : this.builder });
-        expect(chart.z).to.be.an('undefined');
-        chart.accessors.forEach(function(accessor) {
-          expect(chart[accessor]).to.not.be.an('undefined');
-        });
       });
     });
   });

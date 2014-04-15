@@ -550,9 +550,7 @@
   var createChart = function(opts) {
     var chart = applyScaffold(opts);
     createAccessorsFromArray(chart, opts.margin, d3.keys(opts.margin), 'margin');
-
-    chart.accessors = opts.accessors;
-    createAccessorsFromArray(chart, opts, chart.accessors);
+    createAccessorsFromArray(chart, opts, opts.accessors);
     createAccessorsFromAxes(chart, opts);
 
     /**
