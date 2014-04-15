@@ -235,6 +235,33 @@ describe('d4.base', function() {
     });
 
     describe('when setting margins', function() {
+      it('should recalculate the `height()` and `width()` when margins are adjusted', function(){
+        var margin = {top: 20, right: 20, bottom: 40, left: 40};
+        var testMargin = function(){
+          d4.each(d3.keys(margin), function(k){
+            expect(chart.margin()[k]).to.be.equal(margin[k]);
+          }.bind(this));
+        };
+        var chart = d4.charts.column()
+        .outerWidth(400)
+        .outerHeight(400);
+        testMargin.bind(this)();
+
+        expect(chart.height()).to.be.equal(340);
+        expect(chart.width()).to.be.equal(340);
+
+        expect(chart.outerHeight()).to.be.equal(400);
+        expect(chart.outerWidth()).to.be.equal(400);
+        margin = {top: 0, left:0, right: 0, bottom: 0};
+        chart.margin(margin);
+        testMargin.bind(this)();
+
+        expect(chart.outerHeight()).to.be.equal(400);
+        expect(chart.outerWidth()).to.be.equal(400);
+        expect(chart.height()).to.be.equal(400);
+        expect(chart.width()).to.be.equal(400);
+      });
+
       it('should allow you to specify all four margins in a single object', function(){
         var chart = d4.charts.column();
         chart.margin({ left: 10, right: 10, top: 10, bottom: 10 });

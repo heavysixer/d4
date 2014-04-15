@@ -291,6 +291,8 @@
         left: 40
       },
       mixins: [],
+      outerHeight: 460,
+      outerWidth: 460,
       width: 400
     }, config);
     opts = d4.merge(opts, chartAccessors);
@@ -634,6 +636,8 @@
         return opts.margin;
       }
       opts.margin = d4.merge(opts.margin, d4.functor(funct)());
+      chart.height(chart.outerHeight() - opts.margin.top - opts.margin.bottom);
+      chart.width(chart.outerWidth() - opts.margin.left - opts.margin.right);
       return chart;
     };
 
@@ -688,10 +692,12 @@
      * @param {Number} height
      * @returns chart instance
      */
-    chart.outerHeight = function(height) {
+    chart.outerHeight = function(funct) {
+      var height = d4.functor(funct)();
       if (!arguments.length) {
-        return opts.height + opts.margin.top + opts.margin.bottom;
+        return opts.outerHeight;
       }
+      opts.outerHeight = height;
       chart.height(height - opts.margin.top - opts.margin.bottom);
       return chart;
     };
@@ -701,10 +707,12 @@
      *
      * @param {Number} width
      */
-    chart.outerWidth = function(width) {
+    chart.outerWidth = function(funct) {
+      var width = d4.functor(funct)();
       if (!arguments.length) {
-        return opts.width + opts.margin.left + opts.margin.right;
+        return opts.outerWidth;
       }
+      opts.outerWidth = width;
       chart.width(width - opts.margin.left - opts.margin.right);
       return chart;
     };
