@@ -80,6 +80,8 @@ var data = [
 ];
 
 // Create a column chart without a yAxis, but with a grid in the background.
+// Note that `index` is optional and is only needed if you want to specify a
+// specific layer for the feature to render on.
 var columnChart = d4.charts.column()
 .mixout('yAxis')
 .mixin({ name : 'grid',  feature : d4.features.grid , index : 0 })

@@ -730,6 +730,7 @@
      * Returns or sets the outerWidth of the chart.
      *
      * @param {Number} width
+     * @returns chart instance
      */
     chart.outerWidth = function(funct) {
       var width = d4.functor(funct)();
@@ -757,6 +758,7 @@
      *
      * @param {String} name - accessor name for chart feature.
      * @param {Function} funct - function which will perform the modifcation.
+     * @returns chart instance
      */
     chart.using = function(name, funct) {
       usingFeature.bind(opts)(name, funct);
@@ -921,6 +923,18 @@
    */
   d4.extend = function(obj) {
     each(Array.prototype.slice.call(arguments, 1), function(source) {
+      var dupeItems = function(items) {
+        var dupe = [];
+        d4.each(items, function(item){
+          var i = item;
+          if(d4.isObject(item)){
+            i = d4.extend({}, item);
+          }
+          dupe.push(i);
+        });
+        return dupe;
+      };
+
       if (source) {
         for (var prop in source) {
           if (source[prop] && source[prop].constructor &&
@@ -928,7 +942,13 @@
             obj[prop] = obj[prop] || {};
             d4.extend(obj[prop], source[prop]);
           } else if (d4.isArray(source[prop])) {
-            obj[prop] = source[prop].slice();
+            var items = dupeItems(source[prop].slice());
+            if(d4.isArray(obj[prop])) {
+              obj[prop] = obj[prop].concat(items);
+            } else {
+              obj[prop] = items;
+            }
+
           } else {
             obj[prop] = source[prop];
           }
@@ -1001,12 +1021,30 @@
   };
 
   /**
+   * Helper method to determine if a supplied argument is defined
+   * @param {*} value - the argument to test
+   * @returns boolean
+   */
+  d4.isDefined = function(value) {
+    return !d4.isUndefined(value);
+  };
+
+  /**
    * Helper method to determine if a supplied argument is a function
    * @param {*} obj - the argument to test
    * @returns boolean
    */
   d4.isFunction = function(obj) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
+  };
+
+  /**
+   * Helper method to determine if a supplied argument is not an object
+   * @param {*} obj - the argument to test
+   * @returns boolean
+   */
+  d4.isObject = function(value){
+    return value !== null && typeof value === 'object';
   };
 
   /**
@@ -1025,15 +1063,6 @@
    */
   d4.isUndefined = function(value) {
     return typeof value === 'undefined';
-  };
-
-  /**
-   * Helper method to determine if a supplied argument is defined
-   * @param {*} value - the argument to test
-   * @returns boolean
-   */
-  d4.isDefined = function(value) {
-    return !d4.isUndefined(value);
   };
 
   /**

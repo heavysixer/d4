@@ -246,7 +246,6 @@ describe('d4.base', function() {
         .outerWidth(400)
         .outerHeight(400);
         testMargin.bind(this)();
-        console.log(chart.accessors);
 
         expect(chart.height()).to.be.equal(340);
         expect(chart.width()).to.be.equal(340);
@@ -363,24 +362,39 @@ describe('d4.base', function() {
     });
 
     it('should allow deep merges of two objects', function() {
+      var obj = {name: 'martha'};
       var a = {
         hello: {
           foo: 'foo',
-          baz: 'woof'
-        }
+          baz: 'woof',
+        },
+        items: [obj]
       },
         b = {
           hello: {
             bar: 'bar',
             baz: 'baz'
           },
+          items: [{name: 'martha'}],
           hi: 'hi'
         };
       var c = d4.merge(a, b);
       expect(c.hello.foo).to.equal('foo');
       expect(c.hello.bar).to.equal('bar');
       expect(c.hello.baz).to.equal('baz');
+      expect(a.hello.baz).to.equal('woof');
       expect(c.hi).to.equal('hi');
+      expect(c.items.length).to.equal(2);
+      d4.each(c.items, function(item){
+        expect(item.name).to.equal('martha');
+      }.bind(this));
+
+      obj.name = 'foo';
+
+      // ensure we are dealing with copies of the object and not just references
+      d4.each(c.items, function(item){
+        expect(item.name).to.equal('martha');
+      }.bind(this));
     });
   });
 
