@@ -2863,7 +2863,7 @@
         },
 
         textAnchor: function(d) {
-          return anchorText(d);
+          return anchorText.bind(this)(d);
         },
 
         x: function(d) {
