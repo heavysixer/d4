@@ -162,7 +162,7 @@
 
     var setDimension = function(dim, funct) {
       var val = d4.functor(funct)();
-      if(dim === 'x' && val === 'y') {
+      if (dim === 'x' && val === 'y') {
         d4.err('You cannot use `y` as the key for an `x` dimension because it creates an ambiguous `y` property in the nested stack.');
       }
       opts[dim].key = val;
@@ -180,7 +180,7 @@
       return opts;
     };
 
-    d4.each(['x','y','value'], function(k){
+    d4.each(['x', 'y', 'value'], function(k) {
       parser[k] = function(funct) {
         setDimension.bind(opts)(k, d4.functor(funct));
         return parser;

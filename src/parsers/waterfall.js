@@ -191,7 +191,7 @@
       return parser;
     };
 
-    d4.each(['x','y','value'], function(k){
+    d4.each(['x', 'y', 'value'], function(k) {
       parser[k] = function(funct) {
         setDimension.bind(opts)(k, d4.functor(funct));
         return parser;

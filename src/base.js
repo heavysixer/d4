@@ -925,9 +925,9 @@
     each(Array.prototype.slice.call(arguments, 1), function(source) {
       var dupeItems = function(items) {
         var dupe = [];
-        d4.each(items, function(item){
+        d4.each(items, function(item) {
           var i = item;
-          if(d4.isObject(item)){
+          if (d4.isObject(item)) {
             i = d4.extend({}, item);
           }
           dupe.push(i);
@@ -943,7 +943,7 @@
             d4.extend(obj[prop], source[prop]);
           } else if (d4.isArray(source[prop])) {
             var items = dupeItems(source[prop].slice());
-            if(d4.isArray(obj[prop])) {
+            if (d4.isArray(obj[prop])) {
               obj[prop] = obj[prop].concat(items);
             } else {
               obj[prop] = items;
@@ -1043,7 +1043,7 @@
    * @param {*} obj - the argument to test
    * @returns boolean
    */
-  d4.isObject = function(value){
+  d4.isObject = function(value) {
     return value !== null && typeof value === 'object';
   };
 

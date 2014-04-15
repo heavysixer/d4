@@ -1,4 +1,4 @@
-/*! d4 - v0.7.3
+/*! d4 - v0.7.4
  *  License: MIT Expat
  *  Date: 2014-04-15
  *  Copyright: Mark Daggett, D4 Team
@@ -930,9 +930,9 @@
     each(Array.prototype.slice.call(arguments, 1), function(source) {
       var dupeItems = function(items) {
         var dupe = [];
-        d4.each(items, function(item){
+        d4.each(items, function(item) {
           var i = item;
-          if(d4.isObject(item)){
+          if (d4.isObject(item)) {
             i = d4.extend({}, item);
           }
           dupe.push(i);
@@ -948,7 +948,7 @@
             d4.extend(obj[prop], source[prop]);
           } else if (d4.isArray(source[prop])) {
             var items = dupeItems(source[prop].slice());
-            if(d4.isArray(obj[prop])) {
+            if (d4.isArray(obj[prop])) {
               obj[prop] = obj[prop].concat(items);
             } else {
               obj[prop] = items;
@@ -1048,7 +1048,7 @@
    * @param {*} obj - the argument to test
    * @returns boolean
    */
-  d4.isObject = function(value){
+  d4.isObject = function(value) {
     return value !== null && typeof value === 'object';
   };
 
@@ -3812,7 +3812,7 @@
       return parser;
     };
 
-    d4.each(['x','y','value'], function(k){
+    d4.each(['x', 'y', 'value'], function(k) {
       parser[k] = function(funct) {
         setDimension.bind(opts)(k, d4.functor(funct));
         return parser;
@@ -3987,7 +3987,7 @@
 
     var setDimension = function(dim, funct) {
       var val = d4.functor(funct)();
-      if(dim === 'x' && val === 'y') {
+      if (dim === 'x' && val === 'y') {
         d4.err('You cannot use `y` as the key for an `x` dimension because it creates an ambiguous `y` property in the nested stack.');
       }
       opts[dim].key = val;
@@ -4005,7 +4005,7 @@
       return opts;
     };
 
-    d4.each(['x','y','value'], function(k){
+    d4.each(['x', 'y', 'value'], function(k) {
       parser[k] = function(funct) {
         setDimension.bind(opts)(k, d4.functor(funct));
         return parser;
@@ -4209,7 +4209,7 @@
       return parser;
     };
 
-    d4.each(['x','y','value'], function(k){
+    d4.each(['x', 'y', 'value'], function(k) {
       parser[k] = function(funct) {
         setDimension.bind(opts)(k, d4.functor(funct));
         return parser;
