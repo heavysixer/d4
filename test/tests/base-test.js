@@ -362,7 +362,8 @@ describe('d4.base', function() {
     });
 
     it('should allow deep merges of two objects', function() {
-      var obj = {name: 'martha'};
+      var obj2 = {foo: 'bar'};
+      var obj = {name: 'martha', items: [obj2] };
       var a = {
         hello: {
           foo: 'foo',
@@ -375,7 +376,7 @@ describe('d4.base', function() {
             bar: 'bar',
             baz: 'baz'
           },
-          items: [{name: 'martha'}],
+          items: [{name: 'martha', items: [{foo : 'bar' }]}],
           hi: 'hi'
         };
       var c = d4.merge(a, b);
@@ -387,13 +388,16 @@ describe('d4.base', function() {
       expect(c.items.length).to.equal(2);
       d4.each(c.items, function(item){
         expect(item.name).to.equal('martha');
+        expect(item.items[0].foo).to.equal('bar');
       }.bind(this));
 
       obj.name = 'foo';
+      obj2.foo = 'baz';
 
       // ensure we are dealing with copies of the object and not just references
       d4.each(c.items, function(item){
         expect(item.name).to.equal('martha');
+        expect(item.items[0].foo).to.equal('bar');
       }.bind(this));
     });
   });

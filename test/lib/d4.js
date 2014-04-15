@@ -1050,7 +1050,7 @@
    */
   d4.isObject = function(value){
     return value !== null && typeof value === 'object';
-  }
+  };
 
   /**
    * Helper method to determine if a supplied argument is not a function
