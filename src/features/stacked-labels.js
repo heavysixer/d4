@@ -66,6 +66,10 @@
           }
         },
 
+        textAnchor: function(d) {
+          return anchorText(d);
+        },
+
         x: function(d) {
           if (this.x.$scale === 'ordinal') {
             return useDiscretePosition.bind(this)('x', d);
@@ -100,7 +104,7 @@
         text.exit().remove();
         text.enter().append('text')
           .text(d4.functor(scope.accessors.text).bind(this))
-          .attr('text-anchor', anchorText.bind(this))
+          .attr('text-anchor', d4.functor(scope.accessors.textAnchor).bind(this))
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this));
