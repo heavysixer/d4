@@ -562,7 +562,7 @@
      * This function returns the internal axes object as a parameter to the
      * supplied function.
      * @param {Function} funct - function which will perform the modifcation.
-     * @returns chart instance
+     * @returns {Function} chart instance
      */
     chart.axes = function(funct) {
       if (!arguments.length) {
@@ -590,7 +590,7 @@
      *     };
      *
      * @param {Function} funct - function which returns a builder object.
-     * @returns chart instance
+     * @returns {Function} chart instance
      */
     chart.builder = function(funct) {
       opts.builder = validateBuilder(funct.bind(opts)());
@@ -607,7 +607,7 @@
      *      var chart = d4.charts.column();
      *      var clone = chart.clone();
      *
-     * @returns a copy of the current chart
+     * @returns {Function} a copy of the current chart
      */
     chart.clone = function() {
       var dupe = d4.extend({}, opts);
@@ -628,7 +628,7 @@
      *      console.log(chart.features());
      *      // => ["bars", "barLabels", "xAxis"]
      *
-     * @returns An array of features.
+     * @returns {Array} An array of features.
      */
     chart.features = function() {
       return opts.mixins;
@@ -658,7 +658,7 @@
      *      chart.marginLeft() // => 20;
      *
      * @param {*} funct - an object or a function that returns an object.
-     * @returns chart instance
+     * @returns {Function} chart instance
      */
     chart.margin = function(funct) {
       if (!arguments.length) {
@@ -687,7 +687,7 @@
      *                  ])
      *
      * @param {*} features - an object or array of objects describing the feature to mix in.
-     * @returns chart instance
+     * @returns {Function} chart instance
      */
     chart.mixin = function(features) {
       mixin.bind(opts)(features);
@@ -708,7 +708,7 @@
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
-     * @returns chart instance
+     * @returns {Function} chart instance
      */
     chart.mixout = function(feature, index) {
       mixout.bind(opts)(feature, index);
@@ -719,7 +719,7 @@
      * Returns or sets the outerHeight of the chart.
      *
      * @param {Number} height
-     * @returns chart instance
+     * @returns {Function} chart instance
      */
     chart.outerHeight = function(funct) {
       var height = d4.functor(funct)();
@@ -735,7 +735,7 @@
      * Returns or sets the outerWidth of the chart.
      *
      * @param {Number} width
-     * @returns chart instance
+     * @returns {Function} chart instance
      */
     chart.outerWidth = function(funct) {
       var width = d4.functor(funct)();
@@ -763,7 +763,7 @@
      *
      * @param {String} name - accessor name for chart feature.
      * @param {Function} funct - function which will perform the modifcation.
-     * @returns chart instance
+     * @returns {Function} chart instance
      */
     chart.using = function(name, funct) {
       usingFeature.bind(opts)(name, funct);
@@ -785,7 +785,7 @@
    * @param {D3 Selection} - parent DOM element
    * @param {String} - string to use as the dom selector
    *
-   * @returns selection
+   * @returns {D3 Selection} selection
    */
   d4.appendOnce = function(element, selector) {
     var selected = element.selectAll(selector),
@@ -824,7 +824,7 @@
    *
    * @param {Object} options - object which contains an optional config and /or
    * builder property
-   * @returns chart instance
+   * @returns {Function} chart instance
    */
   d4.baseChart = function(options) {
     var opts = assignDefaults(options && options.config || {}, options && options.builder || undefined);
@@ -835,7 +835,7 @@
    * This function allows you to register a reusable chart builder with d4.
    * @param {String} name - accessor name for chart builder.
    * @param {Function} funct - function which will instantiate the chart builder.
-   * @returns a reference to the chart builder
+   * @returns {Function} a reference to the chart builder
    */
   d4.builder = function(name, funct) {
     d4.builders[name] = funct;
@@ -846,7 +846,7 @@
    * This function allows you to register a reusable chart with d4.
    * @param {String} name - accessor name for chart.
    * @param {Function} funct - function which will instantiate the chart.
-   * @returns a reference to the chart function
+   * @returns {Function} a reference to the chart function
    */
   d4.chart = function(name, funct) {
     d4.charts[name] = funct;
@@ -924,7 +924,7 @@
    *
    * @param {Object} obj - the object to extend
    * @param {Object} overrides - the second object who will extend the first.
-   * @returns the first object which has now been extended;
+   * @returns {Object} the first object which has now been extended;
    */
   d4.extend = function(obj) {
     each(Array.prototype.slice.call(arguments, 1), function(source) {
@@ -967,7 +967,7 @@
    * This function allows you to register a reusable chart feature with d4.
    * @param {String} name - accessor name for chart feature.
    * @param {Function} funct - function which will instantiate the chart feature.
-   * @returns a reference to the chart feature
+   * @returns {Function} a reference to the chart feature
    */
   d4.feature = function(name, funct) {
     d4.features[name] = funct;
@@ -977,7 +977,7 @@
   /**
    * Helper method to flatten a multi-dimensional array into a single array.
    * @param {Array} arr - array to be flattened.
-   * @returns flattened array.
+   * @returns {Array} flattened array.
    */
   d4.flatten = function(arr) {
     var result = arr.reduce(function(a, b) {
@@ -999,7 +999,7 @@
    * > values to functions.
    *
    * @param {*} funct - An function or other variable to be wrapped in a function
-   * @returns function
+   * @returns {Function}
    */
   d4.functor = function(funct) {
     return d4.isFunction(funct) ? funct : function() {
@@ -1010,7 +1010,7 @@
   /**
    * Helper method to determine if a supplied argument is an array
    * @param {*} obj - the argument to test
-   * @returns boolean
+   * @returns {Boolean}
    */
   d4.isArray = Array.isArray || function(val) {
     return Object.prototype.toString.call(val) === '[object Array]';
@@ -1019,7 +1019,7 @@
   /**
    * Helper method to determine if a supplied argument is a date
    * @param {*} obj - the argument to test
-   * @returns boolean
+   * @returns {Boolean}
    */
   d4.isDate = function(val) {
     return Object.prototype.toString.call(val) === '[object Date]';
@@ -1028,7 +1028,7 @@
   /**
    * Helper method to determine if a supplied argument is defined
    * @param {*} value - the argument to test
-   * @returns boolean
+   * @returns {Boolean}
    */
   d4.isDefined = function(value) {
     return !d4.isUndefined(value);
@@ -1037,7 +1037,7 @@
   /**
    * Helper method to determine if a supplied argument is a function
    * @param {*} obj - the argument to test
-   * @returns boolean
+   * @returns {Boolean}
    */
   d4.isFunction = function(obj) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
@@ -1046,7 +1046,7 @@
   /**
    * Helper method to determine if a supplied argument is not an object
    * @param {*} obj - the argument to test
-   * @returns boolean
+   * @returns {Boolean}
    */
   d4.isObject = function(value) {
     return value !== null && typeof value === 'object';
@@ -1055,7 +1055,7 @@
   /**
    * Helper method to determine if a supplied argument is not a function
    * @param {*} obj - the argument to test
-   * @returns boolean
+   * @returns {Boolean}
    */
   d4.isNotFunction = function(obj) {
     return !d4.isFunction(obj);
@@ -1064,7 +1064,7 @@
   /**
    * Helper method to determine if a supplied argument is undefined
    * @param {*} value - the argument to test
-   * @returns boolean
+   * @returns {Boolean}
    */
   d4.isUndefined = function(value) {
     return typeof value === 'undefined';
@@ -1089,7 +1089,7 @@
    *
    * @param {Object} options - the first object
    * @param {Object} overrides - the second object to merge onto the top.
-   * @returns newly merged object;
+   * @returns {Object} newly merged object;
    */
   d4.merge = function(options, overrides) {
     return d4.extend(d4.extend({}, options), overrides);
@@ -1099,7 +1099,7 @@
    * This function allows you to register a reusable data parser with d4.
    * @param {String} name - accessor name for data parser.
    * @param {Function} funct - function which will instantiate the data parser.
-   * @returns a reference to the data parser
+   * @returns {*} a reference to the data parser
    */
   d4.parser = function(name, funct) {
     d4.parsers[name] = funct;
