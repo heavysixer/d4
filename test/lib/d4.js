@@ -626,7 +626,7 @@
      *
      *      // Now test that the feature has been removed.
      *      console.log(chart.features());
-     *      => ["bars", "barLabels", "xAxis"]
+     *      // => ["bars", "barLabels", "xAxis"]
      *
      * @returns An array of features.
      */
@@ -634,6 +634,32 @@
       return opts.mixins;
     };
 
+    /**
+     * To adjust the chart's margins supply either an object or a function that returns
+     * an object to this method.
+     *
+     *##### Examples
+     *
+     *      // set the margin this using an object:
+     *      chart.margin({ top: 10, right: 10, bottom: 10, left: 10 });
+     *
+     *      // set using a function:
+     *      chart.margin(function(){
+     *          return { top: 10, right: 10, bottom: 10, left: 10 };
+     *      });
+     *
+     *      // since JavaScript is a pass by reference language you can also
+     *      // set portions of the margin this way:
+     *      chart.margin().left = 20;
+     *
+     *      // there are also accessor method for each property of the margin
+     *      // object:
+     *      chart.marginLeft(20);
+     *      chart.marginLeft() // => 20;
+     *
+     * @param {*} funct - an object or a function that returns an object.
+     * @returns chart instance
+     */
     chart.margin = function(funct) {
       if (!arguments.length) {
         return opts.margin;
