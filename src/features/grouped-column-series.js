@@ -5,34 +5,80 @@
       return (val > 0) ? 'positive' : 'negative';
     };
 
+    var useDiscretePosition = function(dimension, d, i) {
+      var axis = this[dimension];
+      var size = axis.rangeBand() / this.groupsOf;
+      var pos = axis(d[axis.$key]) + size * i;
+      return pos;
+    };
+
+    var useDiscreteSize = function(dimension) {
+      var axis = this[dimension];
+      var size = axis.rangeBand() / this.groupsOf;
+      var gutter = size * 0.1;
+      return size - gutter;
+    };
+
+    var useContinuousSize = function(dimension, d) {
+      var axis = this[dimension];
+      return Math.abs(axis(d[axis.$key]) - axis(0));
+    };
+
+    var useContinuousPosition = function(dimension, d) {
+      var axis = this[dimension],
+      val;
+      if (dimension === 'y') {
+        return d[axis.$key] < 0 ? axis(0) : axis(d[axis.$key]);
+      } else {
+        val = d[axis.$key] - Math.max(0, d[axis.$key]);
+        return axis(val);
+      }
+    };
+
     return {
       accessors: {
         classes: function(d, i) {
-          return 'bar fill item' + i + ' ' + sign(d[this.y.$key]) + ' ' + d[this.y.$key];
+          return 'bar fill item' + i + ' ' + sign(d[this.valueKey]) + ' ' + d[this.valueKey];
         },
 
         height: function(d) {
-          return Math.abs(this.y(d[this.y.$key]) - this.y(0));
+          if (this.y.$scale === 'ordinal') {
+            return useDiscreteSize.bind(this)('y');
+          } else {
+            return useContinuousSize.bind(this)('y', d);
+          }
         },
 
         key: function(d, i) {
           return (d.key || 0) + i;
         },
 
-        width: function() {
-          var width = this.x.rangeBand() / this.groupsOf;
-          var gutter = width * 0.1;
-          return width - gutter;
+        rx: 0,
+
+        ry: 0,
+
+        width: function(d) {
+          if (this.x.$scale === 'ordinal') {
+            return useDiscreteSize.bind(this)('x');
+          } else {
+            return useContinuousSize.bind(this)('x', d);
+          }
         },
 
         x: function(d, i) {
-          var width = this.x.rangeBand() / this.groupsOf;
-          var xPos = this.x(d[this.x.$key]) + width * i;
-          return xPos;
+          if (this.x.$scale === 'ordinal') {
+            return useDiscretePosition.bind(this)('x', d, i);
+          } else {
+            return useContinuousPosition.bind(this)('x', d, i);
+          }
         },
 
-        y: function(d) {
-          return d[this.y.$key] < 0 ? this.y(0) : this.y(d[this.y.$key]);
+        y: function(d, i) {
+          if (this.y.$scale === 'ordinal') {
+            return useDiscretePosition.bind(this)('y', d, i);
+          } else {
+            return useContinuousPosition.bind(this)('y', d, i);
+          }
         }
       },
       render: function(scope, data, selection) {
@@ -53,6 +99,8 @@
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
+          .attr('ry', d4.functor(scope.accessors.ry).bind(this))
+          .attr('rx', d4.functor(scope.accessors.rx).bind(this))
           .attr('width', d4.functor(scope.accessors.width).bind(this))
           .attr('height', d4.functor(scope.accessors.height).bind(this));
         return rect;
