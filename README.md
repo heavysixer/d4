@@ -70,7 +70,7 @@ open the `examples/` folder in your favorite web browser.
 
 You can find a hosted version of the example site here: http://visible.io/
 
-You can find a quickstart presentation on d4 [here](http://www.slideshare.net/heavysixer/d4-and-friendly-charting-dsl-for-d3). 
+You can find a quickstart presentation on d4 [here](http://www.slideshare.net/heavysixer/d4-and-friendly-charting-dsl-for-d3).
 
 ### Philosophy
 * * *
@@ -121,16 +121,17 @@ __Parser__ - A parser prepares the data for a chart.
 ####Base Charts
 
 * Area Chart (Coming Soon)
-* Column Chart
-* Donut Chart
-* Grouped Column Chart
-* Line Chart
+* [Column Chart](http://visible.io/charts/column/basic.html)
+* [Donut Chart](http://visible.io/charts/donut/basic.html)
+* [Grouped Column Chart](http://visible.io/charts/grouped-column/basic.html)
+* [Grouped Row Chart](http://visible.io/charts/grouped-column/grouped-row.html)
+* [Line Chart](http://visible.io/charts/line/basic.html)
 * Mekko Chart (Coming Soon)
-* Row Chart
-* Scatter Chart
-* Stacked Column Chart
-* Stacked Row Chart
-* Waterfall Chart (both horizontal and vertical)
+* [Row Chart](http://visible.io/charts/row/basic.html)
+* [Scatter Chart](http://visible.io/charts/scatter/basic.html)
+* [Stacked Column Chart](http://visible.io/charts/stacked-column/basic.html)
+* [Stacked Row Chart](http://visible.io/charts/stacked-column/stacked-row.html)
+* Waterfall Chart (both [horizontal](http://visible.io/charts/waterfall/horizontal.html) and [vertical](http://visible.io/charts/waterfall/basic.html))
 
 #### Chart Features (Mixins)
 
