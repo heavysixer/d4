@@ -1,6 +1,6 @@
 {
   "name": "d4",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "A friendly reusable chart DSL for D3",
   "repository": {
     "type": "git",

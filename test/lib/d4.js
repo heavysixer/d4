@@ -1,4 +1,4 @@
-/*! d4 - v0.7.4
+/*! d4 - v0.7.5
  *  License: MIT Expat
  *  Date: 2014-04-16
  *  Copyright: Mark Daggett, D4 Team
@@ -2693,7 +2693,7 @@
 
     var useContinuousPosition = function(dimension, d) {
       var axis = this[dimension],
-      val;
+        val;
       if (dimension === 'y') {
         return d[axis.$key] < 0 ? axis(0) : axis(d[axis.$key]);
       } else {

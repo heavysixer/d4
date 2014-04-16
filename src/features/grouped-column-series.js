@@ -26,7 +26,7 @@
 
     var useContinuousPosition = function(dimension, d) {
       var axis = this[dimension],
-      val;
+        val;
       if (dimension === 'y') {
         return d[axis.$key] < 0 ? axis(0) : axis(d[axis.$key]);
       } else {
