@@ -1,5 +1,9 @@
 (function() {
   'use strict';
+  /*
+   *
+   * @name stackedLabels
+   */
   d4.feature('stackedLabels', function(name) {
 
     // FIXME: We should not need to sniff this out.

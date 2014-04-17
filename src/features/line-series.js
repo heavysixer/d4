@@ -1,5 +1,9 @@
 (function() {
   'use strict';
+  /*
+   *
+   * @name lineSeries
+   */
   d4.feature('lineSeries', function(name) {
     var line = d3.svg.line();
     line.interpolate('basis');

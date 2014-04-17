@@ -1,5 +1,9 @@
 (function() {
   'use strict';
+  /*
+   *
+   * @name arcLabels
+   */
   d4.feature('arcLabels', function(name) {
     var arc = d3.svg.arc();
     return {

@@ -1,5 +1,9 @@
 (function() {
   'use strict';
+  /*
+   *
+   * @name groupedColumnSeries
+   */
   d4.feature('groupedColumnSeries', function(name) {
     var sign = function(val) {
       return (val > 0) ? 'positive' : 'negative';

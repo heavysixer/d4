@@ -1,5 +1,9 @@
 (function() {
   'use strict';
+  /*
+   *
+   * @name grid
+   */
   d4.feature('grid', function(name) {
 
     return {

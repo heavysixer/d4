@@ -1,5 +1,9 @@
 (function() {
   'use strict';
+  /*
+   *
+   * @name trendLine
+   */
   d4.feature('trendLine', function(name) {
     return {
       accessors: {

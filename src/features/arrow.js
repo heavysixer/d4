@@ -1,5 +1,9 @@
 (function() {
   'use strict';
+  /*
+   *
+   * @name arrow
+   */
   d4.feature('arrow', function(name) {
     return {
       accessors: {

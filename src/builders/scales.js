@@ -60,7 +60,7 @@
    * @param {Object} d4 chart object
    * @param {Array} data array
    * @param {string} string represnting a dimension e.g. `x`,`y`.
-   * @returns {Object} Chart scale object
+   * @return {Object} Chart scale object
    */
   d4.builder('linearScaleForNestedData', linearOrTimeScale);
 
@@ -71,7 +71,7 @@
    * @param {Object} d4 chart object
    * @param {Array} data array
    * @param {string} string represnting a dimension e.g. `x`,`y`.
-   * @returns {Object} Chart scale object
+   * @return {Object} Chart scale object
    */
   d4.builder('timeScaleForNestedData', linearOrTimeScale);
 
@@ -81,7 +81,7 @@
    * @param {Object} d4 chart object
    * @param {Array} data array
    * @param {string} string represnting a dimension e.g. `x`,`y`.
-   * @returns {Object} Chart scale object
+   * @return {Object} Chart scale object
    */
   d4.builder('ordinalScaleForNestedData', function(chart, data, dimension) {
     var parsedData = extractValues(data, chart[dimension].$key);

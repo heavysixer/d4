@@ -1,5 +1,9 @@
 (function() {
   'use strict';
+  /*
+   *
+   * @name referenceLine
+   */
   d4.feature('referenceLine', function(name) {
     return {
       accessors: {

@@ -1,5 +1,9 @@
 (function() {
   'use strict';
+  /*
+   *
+   * @name columnLabels
+   */
   d4.feature('columnLabels', function(name) {
 
     // FIXME: Remove this hardcoded variable or expose it as a setting.
