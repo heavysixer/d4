@@ -9,7 +9,7 @@
    *##### Features
    *
    * `bars` - series bars
-   * `rowLabels` - data labels to the right of the bars
+   * `barLabels` - data labels to the right of the bars
    * `xAxis` - the axis for the x dimension
    * `yAxis` - the axis for the y dimension
    *

@@ -5,10 +5,6 @@
    * Waterfall connectors are orthogonal series connectors which visually join
    * column series together by spanning the top or bottom of adjacent columns.
    *
-   * When using this feature in charts other than waterfall, be aware that the
-   * mixin expects an accessor property for `orientation`, which it uses to render
-   * the direction of the lines.
-   *
    *##### Accessors
    *
    * `x` - Used in placement of the connector lines.

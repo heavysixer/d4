@@ -1,6 +1,7 @@
 (function() {
   'use strict';
   /*
+   * The stackedLabels are appropriate for use with the stacked shape series.
    *
    * @name stackedLabels
    */

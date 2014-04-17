@@ -1,6 +1,9 @@
 (function() {
   'use strict';
   /*
+   * The reference line feature is helpful when you want to apply a line to a chart
+   * which demarcates a value within the data. For example a common use of this
+   * feature is to specify the zero value across an axis.
    *
    * @name referenceLine
    */

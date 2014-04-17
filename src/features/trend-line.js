@@ -1,6 +1,7 @@
 (function() {
   'use strict';
   /*
+   * A trendline allows you to associate a line with a numerical value.
    *
    * @name trendLine
    */

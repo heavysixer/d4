@@ -1630,7 +1630,7 @@
    *##### Features
    *
    * `bars` - series bars
-   * `rowLabels` - data labels to the right of the bars
+   * `barLabels` - data labels to the right of the bars
    * `xAxis` - the axis for the x dimension
    * `yAxis` - the axis for the y dimension
    *
@@ -2906,6 +2906,9 @@
 (function() {
   'use strict';
   /*
+   * The reference line feature is helpful when you want to apply a line to a chart
+   * which demarcates a value within the data. For example a common use of this
+   * feature is to specify the zero value across an axis.
    *
    * @name referenceLine
    */
@@ -3057,6 +3060,7 @@
 (function() {
   'use strict';
   /*
+   * The stackedLabels are appropriate for use with the stacked shape series.
    *
    * @name stackedLabels
    */
@@ -3488,6 +3492,7 @@
 (function() {
   'use strict';
   /*
+   * A trendline allows you to associate a line with a numerical value.
    *
    * @name trendLine
    */
@@ -3560,10 +3565,6 @@
   /*
    * Waterfall connectors are orthogonal series connectors which visually join
    * column series together by spanning the top or bottom of adjacent columns.
-   *
-   * When using this feature in charts other than waterfall, be aware that the
-   * mixin expects an accessor property for `orientation`, which it uses to render
-   * the direction of the lines.
    *
    *##### Accessors
    *
