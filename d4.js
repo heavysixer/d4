@@ -1,6 +1,6 @@
 /*! d4 - v0.7.5
  *  License: MIT Expat
- *  Date: 2014-04-16
+ *  Date: 2014-04-17
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -625,7 +625,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -704,7 +704,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -2321,6 +2321,7 @@
 (function() {
   'use strict';
   /*
+   * Arc labels are used to annotate arc series, for example those created by pie and donut charts.
    *
    * @name arcLabels
    */
@@ -2420,6 +2421,7 @@
 (function() {
   'use strict';
   /*
+   * The arcSeries create the "slices" that are used by donut and pie charts.
    *
    * @name arcSeries
    */
@@ -2507,6 +2509,8 @@
 (function() {
   'use strict';
   /*
+   * The arrow feature is a convienient way to visually draw attention to a portion
+   * of a chart by pointing an arrow at it.
    *
    * @name arrow
    */
@@ -2577,6 +2581,7 @@
 (function() {
   'use strict';
   /*
+   * The columnLabels feature is used to affix data labels to column series.
    *
    * @name columnLabels
    */
@@ -2638,6 +2643,7 @@
 (function() {
   'use strict';
   /*
+   * This feature allows you to specify a grid over a portion or the entire chart area.
    *
    * @name grid
    */
@@ -2688,6 +2694,7 @@
 (function() {
   'use strict';
   /*
+   * This feature is specifically designed to use with the groupedColumn and groupedRow charts.
    *
    * @name groupedColumnSeries
    */
@@ -2803,6 +2810,7 @@
 (function() {
   'use strict';
   /*
+   *
    *
    * @name lineSeriesLabels
    */
@@ -3078,7 +3086,7 @@
     var useContinuousPosition = function(dimension, d) {
       var axis = this[dimension];
       var offset = Math.abs(axis(d.y0) - axis(d.y0 + d.y)) / 2;
-      var padding = 5;
+      var padding = 10;
       var val;
       if (dimension === 'x') {
         offset *= -1;
@@ -3153,13 +3161,14 @@
           .data(function(d) {
             return d.values;
           }.bind(this));
-        text.exit().remove();
         text.enter().append('text')
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', d4.functor(scope.accessors.textAnchor).bind(this))
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this));
+
+        text.exit().remove();
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
@@ -3170,6 +3179,15 @@
             group.selectAll('text').call(d4.helpers.staggerTextHorizontally, 1);
           }
         }
+        group.selectAll('text').call(function(rows){
+          var rect;
+          d4.each(rows, function(cols){
+            d4.each(cols, function(text){
+              rect = text.getBoundingClientRect();
+              d3.select(text).attr('transform', 'translate(0,' + Math.floor(rect.height/2) + ')');
+            });
+          });
+        });
         return text;
       }
     };

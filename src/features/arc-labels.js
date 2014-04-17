@@ -1,6 +1,7 @@
 (function() {
   'use strict';
   /*
+   * Arc labels are used to annotate arc series, for example those created by pie and donut charts.
    *
    * @name arcLabels
    */

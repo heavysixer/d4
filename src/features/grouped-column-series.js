@@ -1,6 +1,7 @@
 (function() {
   'use strict';
   /*
+   * This feature is specifically designed to use with the groupedColumn and groupedRow charts.
    *
    * @name groupedColumnSeries
    */

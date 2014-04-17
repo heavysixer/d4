@@ -30,7 +30,7 @@
     var useContinuousPosition = function(dimension, d) {
       var axis = this[dimension];
       var offset = Math.abs(axis(d.y0) - axis(d.y0 + d.y)) / 2;
-      var padding = 5;
+      var padding = 10;
       var val;
       if (dimension === 'x') {
         offset *= -1;
@@ -105,13 +105,14 @@
           .data(function(d) {
             return d.values;
           }.bind(this));
-        text.exit().remove();
         text.enter().append('text')
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', d4.functor(scope.accessors.textAnchor).bind(this))
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this));
+
+        text.exit().remove();
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
@@ -122,6 +123,15 @@
             group.selectAll('text').call(d4.helpers.staggerTextHorizontally, 1);
           }
         }
+        group.selectAll('text').call(function(rows){
+          var rect;
+          d4.each(rows, function(cols){
+            d4.each(cols, function(text){
+              rect = text.getBoundingClientRect();
+              d3.select(text).attr('transform', 'translate(0,' + Math.floor(rect.height/2) + ')');
+            });
+          });
+        });
         return text;
       }
     };

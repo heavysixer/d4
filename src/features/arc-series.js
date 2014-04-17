@@ -1,6 +1,7 @@
 (function() {
   'use strict';
   /*
+   * The arcSeries create the "slices" that are used by donut and pie charts.
    *
    * @name arcSeries
    */

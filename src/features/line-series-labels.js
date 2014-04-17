@@ -2,6 +2,7 @@
   'use strict';
   /*
    *
+   *
    * @name lineSeriesLabels
    */
   d4.feature('lineSeriesLabels', function(name) {

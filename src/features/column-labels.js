@@ -1,6 +1,7 @@
 (function() {
   'use strict';
   /*
+   * The columnLabels feature is used to affix data labels to column series.
    *
    * @name columnLabels
    */

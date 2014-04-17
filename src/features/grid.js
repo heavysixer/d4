@@ -1,6 +1,7 @@
 (function() {
   'use strict';
   /*
+   * This feature allows you to specify a grid over a portion or the entire chart area.
    *
    * @name grid
    */

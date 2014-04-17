@@ -1,6 +1,8 @@
 (function() {
   'use strict';
   /*
+   * The arrow feature is a convienient way to visually draw attention to a portion
+   * of a chart by pointing an arrow at it.
    *
    * @name arrow
    */
