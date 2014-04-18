@@ -1,0 +1,109 @@
+---
+title: Punchcard Chart
+concepts:
+  - Advanced Examples
+---
+<h5>{{title}}</h5>
+<p>
+  One of the most popular and unique charts on github is the punchcard chart.
+  This example demonstrates how to faithfully recreate the chart using d4.
+</p>
+<hr/>
+<script type="text/javascript" charset="utf-8" id='source_code'>
+'use strict';
+
+$(document).ready(function(){
+  // punchcard.json consists of a collection is a multi-dimensional array where
+  // the first index is day of the week, the second index is the hour of the
+  // day and the third index is number of commits:
+  //[[0,1,2],[0,2,0]...]
+  d3.json('{{assets}}/data/punchcard.json', function(error, json) {
+    if (error) {
+      return console.warn(error);
+    }
+    renderChart(json);
+  });
+  var renderChart = function(data) {
+    var extent = d3.extent(data,function(d){
+      return d[2];
+    });
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var hours = ['12a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a', '12p', '1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p', '11p'];
+    var width = $('#punchcard').width();
+    var columnWidth = (width/hours.length)*0.49;
+
+    var chart = d4.baseChart({
+      config: {
+        axes: {
+          y: {
+            scale: 'ordinal'
+          },
+          z: {
+            scale: 'linear'
+          }
+        }
+      }
+    })
+      .mixin([{
+        'name': 'xAxis',
+        'feature': d4.features.xAxis
+      }, {
+        'name': 'yAxis',
+        'feature': d4.features.yAxis
+      }, {
+        'name': 'circles',
+        'feature': d4.features.circleSeries
+      }])
+      .outerWidth(width)
+      .x(function(x) {
+        x
+          .key(1);
+      })
+      .y(function(y) {
+        y
+          .domain([6, 5, 4, 3, 2, 1, 0])
+          .key(0);
+      })
+      .z(function(z) {
+        z
+          .key(2)
+          .domain(extent)
+          .range([0, columnWidth]);
+      })
+      .marginLeft(80)
+      .using('circles', function(circles){
+        circles
+        .r(function(d){
+          return this.z(d[this.z.$key]);
+        })
+        .cx(function(d){
+          return this.x(d[this.x.$key]) + columnWidth/2;
+        });
+      })
+      .using('xAxis', function(axis) {
+        axis.tickFormat(function(d) {
+          return hours[d];
+        });
+      })
+      .using('yAxis', function(axis) {
+        axis
+          .tickFormat(function(d) {
+            return days[d];
+          });
+      });
+
+    d3.select('#punchcard')
+      .datum(data)
+      .call(chart);
+  };
+});
+
+</script>
+<div class="clearfix">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12" id="punchcard"></div>
+  </div>
+</div>
+<h6>JavaScript Code</h6>
+<pre><code id="code" class="language-javascript"></code></pre>
+{{> disqus }}

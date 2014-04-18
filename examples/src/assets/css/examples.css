@@ -46,6 +46,15 @@ svg.d4 {
 /*
   Specific Examples
 */
+#punchcard circle {
+  stroke-width: 0;
+  fill: #444;
+}
+#punchcard circle:hover {
+  stroke-width: 0;
+  fill: #4183c4;
+}
+
 #grid .d4 .grid.border rect {
     fill: none;
     stroke: #aaa;
