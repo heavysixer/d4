@@ -1,6 +1,6 @@
 /*! d4 - v0.7.5
  *  License: MIT Expat
- *  Date: 2014-04-18
+ *  Date: 2014-04-19
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -2649,6 +2649,10 @@
    */
   d4.feature('grid', function(name) {
 
+    // TODO: These should really be added to the proxies, but it will require a prefix option so that they do not override each other.
+    var xAxis = d3.svg.axis();
+    var yAxis = d3.svg.axis();
+
     return {
       accessors: {
         formatXAxis: function(xAxis) {
@@ -2660,8 +2664,9 @@
         }
       },
       render: function(scope, data, selection) {
-        var xAxis = d3.svg.axis().scale(this.x);
-        var yAxis = d3.svg.axis().scale(this.y);
+        xAxis.scale(this.x);
+        yAxis.scale(this.y);
+
         var formattedXAxis = d4.functor(scope.accessors.formatXAxis).bind(this)(xAxis);
         var formattedYAxis = d4.functor(scope.accessors.formatYAxis).bind(this)(yAxis);
 
