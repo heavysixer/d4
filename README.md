@@ -126,7 +126,6 @@ __Parser__ - A parser prepares the data for a chart.
 * [Grouped Column Chart](http://visible.io/charts/grouped-column/basic.html)
 * [Grouped Row Chart](http://visible.io/charts/grouped-column/grouped-row.html)
 * [Line Chart](http://visible.io/charts/line/basic.html)
-* Mekko Chart (Coming Soon)
 * [Row Chart](http://visible.io/charts/row/basic.html)
 * [Scatter Chart](http://visible.io/charts/scatter/basic.html)
 * [Stacked Column Chart](http://visible.io/charts/stacked-column/basic.html)
