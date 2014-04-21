@@ -1,6 +1,6 @@
 /*! d4 - v0.7.5
  *  License: MIT Expat
- *  Date: 2014-04-19
+ *  Date: 2014-04-21
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -2556,7 +2556,7 @@
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
-          .attr('markerWidth', -d4.functor(scope.accessors.tipSize).bind(this)())
+          .attr('markerWidth', d4.functor(scope.accessors.tipSize).bind(this)())
           .attr('markerHeight', d4.functor(scope.accessors.tipSize).bind(this))
           .attr('orient', 'auto')
           .append('path')

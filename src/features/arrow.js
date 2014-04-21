@@ -48,7 +48,7 @@
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
-          .attr('markerWidth', -d4.functor(scope.accessors.tipSize).bind(this)())
+          .attr('markerWidth', d4.functor(scope.accessors.tipSize).bind(this)())
           .attr('markerHeight', d4.functor(scope.accessors.tipSize).bind(this))
           .attr('orient', 'auto')
           .append('path')
