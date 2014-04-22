@@ -27,7 +27,7 @@
           return this.height / 2;
         }
       },
-      proxies: [arc],
+      proxies: [{ target : arc }],
       render: function(scope, data, selection) {
 
         // extracted from: http://bl.ocks.org/mbostock/1346410

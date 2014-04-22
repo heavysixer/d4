@@ -457,6 +457,25 @@ describe('d4.base', function() {
         chart.mixin();
       }).to.throw(Error, '[d4] You need to supply an object or array of objects to mixin to the chart.');
     });
+    it('should require features that specify proxies to use the correct format', function(){
+      var chart = d4.baseChart();
+      d4.feature('faker', function() {
+        var arc = d3.svg.arc();
+        return { proxies: [{ target : arc }] };
+      });
+      d4.feature('badfaker', function() {
+        var arc = d3.svg.arc();
+        return { proxies: [arc] };
+      });
+      chart.mixin({name : 'fake', feature : d4.features.faker});
+      chart.using('fake', function(fake){
+        expect(fake.innerRadius).to.not.be.an('undefined');
+      });
+      expect(function() {
+        chart.mixin({name : 'badfake', feature : d4.features.badfaker});
+      }).to.throw(Error, '[d4] You included a feature which has a malformed proxy target.');
+
+    });
 
     it('should add the newly mixed in feature into the list of features', function() {
       var chart = d4.charts.column();

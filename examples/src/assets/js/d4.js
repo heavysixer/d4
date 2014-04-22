@@ -1,6 +1,6 @@
 /*! d4 - v0.7.5
  *  License: MIT Expat
- *  Date: 2014-04-21
+ *  Date: 2014-04-22
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -448,7 +448,10 @@
   var assignMixinProxies = function(feature) {
     assignD3SelectionProxy(feature);
     d4.each(feature.proxies, function(obj) {
-      d4.createAccessorProxy(feature, obj);
+      if(d4.isUndefined(obj.target)){
+        err('You included a feature which has a malformed proxy target.', feature.name);
+      }
+      d4.createAccessorProxy(feature, obj.target);
     });
   };
 
@@ -2351,7 +2354,7 @@
           return this.height / 2;
         }
       },
-      proxies: [arc],
+      proxies: [{ target : arc }],
       render: function(scope, data, selection) {
         var labelAngle = function(d) {
           return (180 / Math.PI * (d.startAngle + d.endAngle) / 2 - 90);
@@ -2447,7 +2450,7 @@
           return this.height / 2;
         }
       },
-      proxies: [arc],
+      proxies: [{ target : arc }],
       render: function(scope, data, selection) {
 
         // extracted from: http://bl.ocks.org/mbostock/1346410
@@ -2884,7 +2887,7 @@
           return this.y(d[this.y.$key]);
         }
       },
-      proxies: [line],
+      proxies: [{ target : line }],
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         line
@@ -3767,7 +3770,7 @@
 
         title: undefined,
       },
-      proxies: [axis],
+      proxies: [{ target : axis }],
 
       render: function(scope) {
         scope.scale(this.x);
@@ -3893,7 +3896,7 @@
 
         title: undefined,
       },
-      proxies: [axis],
+      proxies: [{ target : axis }],
       render: function(scope) {
         scope.scale(this.y);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
