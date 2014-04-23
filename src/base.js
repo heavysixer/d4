@@ -446,7 +446,7 @@
       if(d4.isUndefined(obj.target)){
         err('You included a feature which has a malformed proxy target.', feature.name);
       }
-      d4.createAccessorProxy(feature, obj.target);
+      d4.createAccessorProxy(feature, obj.target, obj.prefix);
     });
   };
 

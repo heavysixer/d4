@@ -474,7 +474,17 @@ describe('d4.base', function() {
       expect(function() {
         chart.mixin({name : 'badfake', feature : d4.features.badfaker});
       }).to.throw(Error, '[d4] You included a feature which has a malformed proxy target.');
-
+    });
+    it('should allow you to specify a prefix for the proxy', function(){
+      var chart = d4.baseChart();
+      d4.feature('faker', function() {
+        var arc = d3.svg.arc();
+        return { proxies: [{ target : arc, prefix: 'foo' }] };
+      });
+      chart.mixin({name : 'fake', feature : d4.features.faker});
+      chart.using('fake', function(fake){
+        expect(fake.fooInnerRadius).to.not.be.an('undefined');
+      });
     });
 
     it('should add the newly mixed in feature into the list of features', function() {
