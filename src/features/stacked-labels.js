@@ -124,12 +124,12 @@
             group.selectAll('text').call(d4.helpers.staggerTextHorizontally, 1);
           }
         }
-        group.selectAll('text').call(function(rows){
+        group.selectAll('text').call(function(rows) {
           var rect;
-          d4.each(rows, function(cols){
-            d4.each(cols, function(text){
+          d4.each(rows, function(cols) {
+            d4.each(cols, function(text) {
               rect = text.getBoundingClientRect();
-              d3.select(text).attr('transform', 'translate(0,' + Math.floor(rect.height/2) + ')');
+              d3.select(text).attr('transform', 'translate(0,' + Math.floor(rect.height / 2) + ')');
             });
           });
         });

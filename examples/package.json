@@ -1,7 +1,7 @@
 {
   "name": "examples",
   "description": "D4 examples.",
-  "version": "0.7.5",
+  "version": "0.8.0",
   "homepage": "https://github.com/heavysixer/d4",
   "author": {
     "name": "Mark Daggett",

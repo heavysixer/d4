@@ -443,7 +443,7 @@
   var assignMixinProxies = function(feature) {
     assignD3SelectionProxy(feature);
     d4.each(feature.proxies, function(obj) {
-      if(d4.isUndefined(obj.target)){
+      if (d4.isUndefined(obj.target)) {
         err('You included a feature which has a malformed proxy target.', feature.name);
       }
       d4.createAccessorProxy(feature, obj.target, obj.prefix);

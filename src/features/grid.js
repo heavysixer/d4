@@ -21,7 +21,13 @@
           return yAxis.orient('left');
         }
       },
-      proxies: [{ target: xAxis, prefix : 'x' }, { target: yAxis, prefix : 'y' }],
+      proxies: [{
+        target: xAxis,
+        prefix: 'x'
+      }, {
+        target: yAxis,
+        prefix: 'y'
+      }],
       render: function(scope, data, selection) {
         xAxis.scale(this.x);
         yAxis.scale(this.y);

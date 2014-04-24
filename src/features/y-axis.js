@@ -93,7 +93,9 @@
 
         title: undefined,
       },
-      proxies: [{ target : axis }],
+      proxies: [{
+        target: axis
+      }],
       render: function(scope) {
         scope.scale(this.y);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');

@@ -25,7 +25,9 @@
           return this.y(d[this.y.$key]);
         }
       },
-      proxies: [{ target : line }],
+      proxies: [{
+        target: line
+      }],
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         line

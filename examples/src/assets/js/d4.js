@@ -1,4 +1,4 @@
-/*! d4 - v0.7.5
+/*! d4 - v0.8.0
  *  License: MIT Expat
  *  Date: 2014-04-24
  *  Copyright: Mark Daggett, D4 Team
@@ -448,7 +448,7 @@
   var assignMixinProxies = function(feature) {
     assignD3SelectionProxy(feature);
     d4.each(feature.proxies, function(obj) {
-      if(d4.isUndefined(obj.target)){
+      if (d4.isUndefined(obj.target)) {
         err('You included a feature which has a malformed proxy target.', feature.name);
       }
       d4.createAccessorProxy(feature, obj.target, obj.prefix);
@@ -2370,7 +2370,9 @@
           return this.height / 2;
         }
       },
-      proxies: [{ target : arc }],
+      proxies: [{
+        target: arc
+      }],
       render: function(scope, data, selection) {
         var labelAngle = function(d) {
           return (180 / Math.PI * (d.startAngle + d.endAngle) / 2 - 90);
@@ -2466,7 +2468,9 @@
           return this.height / 2;
         }
       },
-      proxies: [{ target : arc }],
+      proxies: [{
+        target: arc
+      }],
       render: function(scope, data, selection) {
 
         // extracted from: http://bl.ocks.org/mbostock/1346410
@@ -2682,7 +2686,13 @@
           return yAxis.orient('left');
         }
       },
-      proxies: [{ target: xAxis, prefix : 'x' }, { target: yAxis, prefix : 'y' }],
+      proxies: [{
+        target: xAxis,
+        prefix: 'x'
+      }, {
+        target: yAxis,
+        prefix: 'y'
+      }],
       render: function(scope, data, selection) {
         xAxis.scale(this.x);
         yAxis.scale(this.y);
@@ -2904,7 +2914,9 @@
           return this.y(d[this.y.$key]);
         }
       },
-      proxies: [{ target : line }],
+      proxies: [{
+        target: line
+      }],
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
         line
@@ -3208,12 +3220,12 @@
             group.selectAll('text').call(d4.helpers.staggerTextHorizontally, 1);
           }
         }
-        group.selectAll('text').call(function(rows){
+        group.selectAll('text').call(function(rows) {
           var rect;
-          d4.each(rows, function(cols){
-            d4.each(cols, function(text){
+          d4.each(rows, function(cols) {
+            d4.each(cols, function(text) {
               rect = text.getBoundingClientRect();
-              d3.select(text).attr('transform', 'translate(0,' + Math.floor(rect.height/2) + ')');
+              d3.select(text).attr('transform', 'translate(0,' + Math.floor(rect.height / 2) + ')');
             });
           });
         });
@@ -3787,7 +3799,9 @@
 
         title: undefined,
       },
-      proxies: [{ target : axis }],
+      proxies: [{
+        target: axis
+      }],
 
       render: function(scope) {
         scope.scale(this.x);
@@ -3913,7 +3927,9 @@
 
         title: undefined,
       },
-      proxies: [{ target : axis }],
+      proxies: [{
+        target: axis
+      }],
       render: function(scope) {
         scope.scale(this.y);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');

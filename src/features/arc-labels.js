@@ -31,7 +31,9 @@
           return this.height / 2;
         }
       },
-      proxies: [{ target : arc }],
+      proxies: [{
+        target: arc
+      }],
       render: function(scope, data, selection) {
         var labelAngle = function(d) {
           return (180 / Math.PI * (d.startAngle + d.endAngle) / 2 - 90);

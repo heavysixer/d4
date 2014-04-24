@@ -93,7 +93,9 @@
 
         title: undefined,
       },
-      proxies: [{ target : axis }],
+      proxies: [{
+        target: axis
+      }],
 
       render: function(scope) {
         scope.scale(this.x);
