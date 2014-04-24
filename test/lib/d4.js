@@ -2609,7 +2609,7 @@
     // FIXME: Remove this hardcoded variable or expose it as a setting.
     var padding = 5;
     var anchorText = function() {
-      if (d4.isContinuousScale(this.y.$scale)) {
+      if (d4.isContinuousScale(this.y)) {
         return 'middle';
       } else {
         return 'start';
@@ -2621,7 +2621,7 @@
           return (d.key || 0) + i;
         },
         x: function(d) {
-          if (d4.isOrdinalScale(this.x.$scale)) {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
           } else {
             var width = Math.abs(this.x(d[this.x.$key]) - this.x(0));
@@ -2630,7 +2630,7 @@
         },
 
         y: function(d) {
-          if (d4.isOrdinalScale(this.y.$scale)) {
+          if (d4.isOrdinalScale(this.y)) {
             return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2) + padding;
           } else {
             var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
