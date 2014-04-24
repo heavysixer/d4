@@ -12,7 +12,7 @@
       if (d4.isDefined(d.y0)) {
         return true;
       }
-      if (this.y.$scale !== 'ordinal') {
+      if (d4.isContinuousScale(this.y)) {
         return true;
       } else {
         return false;
@@ -57,7 +57,7 @@
 
         text: function(d) {
           if (d4.isDefined(d.y0)) {
-            if (this.x.$scale === 'ordinal') {
+            if (d4.isOrdinalScale(this.x)) {
               if (Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
                 return d3.format('').call(this, d[this.valueKey]);
               }
@@ -76,7 +76,7 @@
         },
 
         x: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscretePosition.bind(this)('x', d);
           } else {
             return useContinuousPosition.bind(this)('x', d);
@@ -84,7 +84,7 @@
         },
 
         y: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscretePosition.bind(this)('y', d);
           } else {
             return useContinuousPosition.bind(this)('y', d);
@@ -118,7 +118,7 @@
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
-          if (this.y.$scale !== 'ordinal') {
+          if (d4.isContinuousScale(this.y)) {
             group.selectAll('text').call(d4.helpers.staggerTextVertically, -1);
           } else {
             group.selectAll('text').call(d4.helpers.staggerTextHorizontally, 1);

@@ -102,7 +102,7 @@
       accessors: {
         cx: function(d) {
           var size = 0;
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             size = useDiscreteSize.bind(this)('x');
             return useDiscretePosition.bind(this)('x', d) + size / 2;
           } else {
@@ -113,7 +113,7 @@
 
         cy: function(d) {
           var size = 0;
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             size = useDiscreteSize.bind(this)('y');
             return useDiscretePosition.bind(this)('y', d) + size / 2;
           } else {
@@ -124,12 +124,12 @@
 
         r: function(d) {
           var x, y;
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             x = useDiscreteSize.bind(this)('x');
           } else {
             x = useContinuousSize.bind(this)('x', d);
           }
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             y = useDiscreteSize.bind(this)('y');
           } else {
             y = useContinuousSize.bind(this)('y', d);
@@ -169,7 +169,7 @@
       accessors: {
         cx: function(d) {
           var size = 0;
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             size = useDiscreteSize.bind(this)('x');
             return useDiscretePosition.bind(this)('x', d) + size / 2;
           } else {
@@ -180,7 +180,7 @@
 
         cy: function(d) {
           var size = 0;
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             size = useDiscreteSize.bind(this)('y');
             return useDiscretePosition.bind(this)('y', d) + size / 2;
           } else {
@@ -190,7 +190,7 @@
         },
 
         rx: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscreteSize.bind(this)('x') / 2;
           } else {
             return useContinuousSize.bind(this)('x', d) / 2;
@@ -198,7 +198,7 @@
         },
 
         ry: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscreteSize.bind(this)('y') / 2;
           } else {
             return useContinuousSize.bind(this)('y', d) / 2;
@@ -239,7 +239,7 @@
     var rectObj = {
       accessors: {
         height: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscreteSize.bind(this)('y');
           } else {
             return useContinuousSize.bind(this)('y', d);
@@ -251,7 +251,7 @@
         ry: 0,
 
         width: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscreteSize.bind(this)('x');
           } else {
             return useContinuousSize.bind(this)('x', d);
@@ -259,7 +259,7 @@
         },
 
         x: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscretePosition.bind(this)('x', d);
           } else {
             return useContinuousPosition.bind(this)('x', d);
@@ -267,7 +267,7 @@
         },
 
         y: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscretePosition.bind(this)('y', d);
           } else {
             return useContinuousPosition.bind(this)('y', d);

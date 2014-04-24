@@ -18,7 +18,7 @@
     };
 
     var processPoint = function(d, i, n, data, callback) {
-      var key = (this.y.$scale === 'ordinal') ? this.x.$key : this.y.$key;
+      var key = (d4.isOrdinalScale(this.y)) ? this.x.$key : this.y.$key;
       if (i === 0 || !sharedSigns(data[n].values[i - 1], d, key)) {
         return 0;
       }
@@ -28,7 +28,7 @@
     return {
       accessors: {
         x1: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x(d[this.x.$key]);
           } else {
             return this.x(d.y0 + d.y);
@@ -36,7 +36,7 @@
         },
 
         y1: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return this.y(d[this.y.$key]);
           } else {
             return this.y(d.y0 + d.y);
@@ -44,7 +44,7 @@
         },
 
         size: function() {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x.rangeBand();
           } else {
             return this.y.rangeBand();
@@ -82,14 +82,14 @@
           }.bind(this))
 
         .attr('y1', function(d, i, n) {
-          var offset = (this.y.$scale === 'ordinal') ? d4.functor(scope.accessors.size).bind(this)(d) : 0;
+          var offset = (d4.isOrdinalScale(this.y)) ? d4.functor(scope.accessors.size).bind(this)(d) : 0;
           return processPoint.bind(this)(d, i, n, data, function() {
             return d4.functor(scope.accessors.y1).bind(this)(d) + offset;
           });
         }.bind(this))
 
         .attr('x2', function(d, i, n) {
-          var offset = (this.x.$scale === 'ordinal') ? scope.accessors.size.bind(this)(d) : 0;
+          var offset = (d4.isOrdinalScale(this.x)) ? scope.accessors.size.bind(this)(d) : 0;
           return processPoint.bind(this)(d, i, n, data, function() {
             return d4.functor(scope.accessors.x1).bind(this)(data[n].values[i - 1]) + offset;
           });

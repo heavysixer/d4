@@ -1015,8 +1015,8 @@
   };
 
   /**
-   * Helper method to determine if the supplied scale wants continuous values as
-   * opposed to categorical values.
+   * Helper method to determine if the supplied scale wants continuous as
+   * opposed to ordinal values.
    */
   d4.isContinuousScale = function(scale) {
     return d4.isDefined(scale.rangeRound);
@@ -1056,6 +1056,14 @@
    */
   d4.isObject = function(value) {
     return value !== null && typeof value === 'object';
+  };
+
+  /**
+   * Helper method to determine if the supplied scale wants ordinal as
+   * opposed to continuous values.
+   */
+  d4.isOrdinalScale = function(scale) {
+    return d4.isUndefined(scale.rangeRound);
   };
 
   /**

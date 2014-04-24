@@ -1020,8 +1020,8 @@
   };
 
   /**
-   * Helper method to determine if the supplied scale wants continuous values as
-   * opposed to categorical values.
+   * Helper method to determine if the supplied scale wants continuous as
+   * opposed to ordinal values.
    */
   d4.isContinuousScale = function(scale) {
     return d4.isDefined(scale.rangeRound);
@@ -1061,6 +1061,14 @@
    */
   d4.isObject = function(value) {
     return value !== null && typeof value === 'object';
+  };
+
+  /**
+   * Helper method to determine if the supplied scale wants ordinal as
+   * opposed to continuous values.
+   */
+  d4.isOrdinalScale = function(scale) {
+    return d4.isUndefined(scale.rangeRound);
   };
 
   /**
@@ -2118,7 +2126,7 @@
     return {
       accessors: {
         y: function(d) {
-          if (this.y.$scale === 'linear') {
+          if (d4.isContinuousScale(this.y)) {
             var yVal = (d.y0 + d.y) - Math.min(0, d.y);
             return this.y(yVal);
           } else {
@@ -2127,7 +2135,7 @@
         },
 
         x: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x(d[this.x.$key]);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
@@ -2136,7 +2144,7 @@
         },
 
         width: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x.rangeBand();
           } else {
             return Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
@@ -2144,7 +2152,7 @@
         },
 
         height: function(d) {
-          if (this.y.$scale === 'linear') {
+          if (d4.isContinuousScale(this.y)) {
             return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
           } else {
             return this.y.rangeBand();
@@ -2166,7 +2174,7 @@
     return {
       accessors: {
         y: function(d) {
-          if (this.y.$scale === 'linear') {
+          if (d4.isContinuousScale(this.y)) {
             var height = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
             var yVal = (d.y0 + d.y) - Math.max(0, d.y);
             return this.y(yVal) - 10 - height;
@@ -2176,7 +2184,7 @@
         },
 
         x: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
@@ -2199,7 +2207,7 @@
         return [0, chart.width];
       } else {
         rangeBounds = [0, chart.height];
-        return (chart.x.$scale === 'ordinal') ? rangeBounds.reverse() : rangeBounds;
+        return (d4.isOrdinalScale(chart.x)) ? rangeBounds.reverse() : rangeBounds;
       }
     };
 
@@ -2230,7 +2238,7 @@
     };
 
     var configureScales = function(chart, data) {
-      if (chart.x.$scale === 'ordinal') {
+      if (d4.isOrdinalScale(chart.x)) {
         setOrdinal.bind(this)(chart, 'x', data);
         setLinear.bind(this)(chart, 'y', data);
       } else {
@@ -2601,7 +2609,7 @@
     // FIXME: Remove this hardcoded variable or expose it as a setting.
     var padding = 5;
     var anchorText = function() {
-      if (this.y.$scale !== 'ordinal') {
+      if (d4.isContinuousScale(this.y.$scale)) {
         return 'middle';
       } else {
         return 'start';
@@ -2613,7 +2621,7 @@
           return (d.key || 0) + i;
         },
         x: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x.$scale)) {
             return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
           } else {
             var width = Math.abs(this.x(d[this.x.$key]) - this.x(0));
@@ -2622,7 +2630,7 @@
         },
 
         y: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y.$scale)) {
             return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2) + padding;
           } else {
             var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
@@ -2757,7 +2765,7 @@
         },
 
         height: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscreteSize.bind(this)('y');
           } else {
             return useContinuousSize.bind(this)('y', d);
@@ -2773,7 +2781,7 @@
         ry: 0,
 
         width: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscreteSize.bind(this)('x');
           } else {
             return useContinuousSize.bind(this)('x', d);
@@ -2781,7 +2789,7 @@
         },
 
         x: function(d, i) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscretePosition.bind(this)('x', d, i);
           } else {
             return useContinuousPosition.bind(this)('x', d, i);
@@ -2789,7 +2797,7 @@
         },
 
         y: function(d, i) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscretePosition.bind(this)('y', d, i);
           } else {
             return useContinuousPosition.bind(this)('y', d, i);
@@ -2985,7 +2993,7 @@
     };
 
     var processPoint = function(d, i, n, data, callback) {
-      var key = (this.y.$scale === 'ordinal') ? this.x.$key : this.y.$key;
+      var key = (d4.isOrdinalScale(this.y)) ? this.x.$key : this.y.$key;
       if (i === 0 || !sharedSigns(data[n].values[i - 1], d, key)) {
         return 0;
       }
@@ -2995,7 +3003,7 @@
     return {
       accessors: {
         x1: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x(d[this.x.$key]);
           } else {
             return this.x(d.y0 + d.y);
@@ -3003,7 +3011,7 @@
         },
 
         y1: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return this.y(d[this.y.$key]);
           } else {
             return this.y(d.y0 + d.y);
@@ -3011,7 +3019,7 @@
         },
 
         size: function() {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x.rangeBand();
           } else {
             return this.y.rangeBand();
@@ -3049,14 +3057,14 @@
           }.bind(this))
 
         .attr('y1', function(d, i, n) {
-          var offset = (this.y.$scale === 'ordinal') ? d4.functor(scope.accessors.size).bind(this)(d) : 0;
+          var offset = (d4.isOrdinalScale(this.y)) ? d4.functor(scope.accessors.size).bind(this)(d) : 0;
           return processPoint.bind(this)(d, i, n, data, function() {
             return d4.functor(scope.accessors.y1).bind(this)(d) + offset;
           });
         }.bind(this))
 
         .attr('x2', function(d, i, n) {
-          var offset = (this.x.$scale === 'ordinal') ? scope.accessors.size.bind(this)(d) : 0;
+          var offset = (d4.isOrdinalScale(this.x)) ? scope.accessors.size.bind(this)(d) : 0;
           return processPoint.bind(this)(d, i, n, data, function() {
             return d4.functor(scope.accessors.x1).bind(this)(data[n].values[i - 1]) + offset;
           });
@@ -3088,7 +3096,7 @@
       if (d4.isDefined(d.y0)) {
         return true;
       }
-      if (this.y.$scale !== 'ordinal') {
+      if (d4.isContinuousScale(this.y)) {
         return true;
       } else {
         return false;
@@ -3133,7 +3141,7 @@
 
         text: function(d) {
           if (d4.isDefined(d.y0)) {
-            if (this.x.$scale === 'ordinal') {
+            if (d4.isOrdinalScale(this.x)) {
               if (Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
                 return d3.format('').call(this, d[this.valueKey]);
               }
@@ -3152,7 +3160,7 @@
         },
 
         x: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscretePosition.bind(this)('x', d);
           } else {
             return useContinuousPosition.bind(this)('x', d);
@@ -3160,7 +3168,7 @@
         },
 
         y: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscretePosition.bind(this)('y', d);
           } else {
             return useContinuousPosition.bind(this)('y', d);
@@ -3194,7 +3202,7 @@
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
-          if (this.y.$scale !== 'ordinal') {
+          if (d4.isContinuousScale(this.y)) {
             group.selectAll('text').call(d4.helpers.staggerTextVertically, -1);
           } else {
             group.selectAll('text').call(d4.helpers.staggerTextHorizontally, 1);
@@ -3319,7 +3327,7 @@
       accessors: {
         cx: function(d) {
           var size = 0;
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             size = useDiscreteSize.bind(this)('x');
             return useDiscretePosition.bind(this)('x', d) + size / 2;
           } else {
@@ -3330,7 +3338,7 @@
 
         cy: function(d) {
           var size = 0;
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             size = useDiscreteSize.bind(this)('y');
             return useDiscretePosition.bind(this)('y', d) + size / 2;
           } else {
@@ -3341,12 +3349,12 @@
 
         r: function(d) {
           var x, y;
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             x = useDiscreteSize.bind(this)('x');
           } else {
             x = useContinuousSize.bind(this)('x', d);
           }
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             y = useDiscreteSize.bind(this)('y');
           } else {
             y = useContinuousSize.bind(this)('y', d);
@@ -3386,7 +3394,7 @@
       accessors: {
         cx: function(d) {
           var size = 0;
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             size = useDiscreteSize.bind(this)('x');
             return useDiscretePosition.bind(this)('x', d) + size / 2;
           } else {
@@ -3397,7 +3405,7 @@
 
         cy: function(d) {
           var size = 0;
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             size = useDiscreteSize.bind(this)('y');
             return useDiscretePosition.bind(this)('y', d) + size / 2;
           } else {
@@ -3407,7 +3415,7 @@
         },
 
         rx: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscreteSize.bind(this)('x') / 2;
           } else {
             return useContinuousSize.bind(this)('x', d) / 2;
@@ -3415,7 +3423,7 @@
         },
 
         ry: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscreteSize.bind(this)('y') / 2;
           } else {
             return useContinuousSize.bind(this)('y', d) / 2;
@@ -3456,7 +3464,7 @@
     var rectObj = {
       accessors: {
         height: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscreteSize.bind(this)('y');
           } else {
             return useContinuousSize.bind(this)('y', d);
@@ -3468,7 +3476,7 @@
         ry: 0,
 
         width: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscreteSize.bind(this)('x');
           } else {
             return useContinuousSize.bind(this)('x', d);
@@ -3476,7 +3484,7 @@
         },
 
         x: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscretePosition.bind(this)('x', d);
           } else {
             return useContinuousPosition.bind(this)('x', d);
@@ -3484,7 +3492,7 @@
         },
 
         y: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscretePosition.bind(this)('y', d);
           } else {
             return useContinuousPosition.bind(this)('y', d);
@@ -3600,31 +3608,31 @@
         },
 
         span: function() {
-          if (this.x.$scale === 'linear') {
-            return this.y.rangeBand();
-          } else {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x.rangeBand();
+          } else {
+            return this.y.rangeBand();
           }
         },
 
         x: function(d) {
-          if (this.x.$scale === 'linear') {
+          if (d4.isOrdinalScale(this.x)) {
+            return this.x(d[this.x.$key]);
+          } else {
             var width = 0;
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
             if (d.y > 0) {
               width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
             }
             return this.x(xVal) + width;
-          } else {
-            return this.x(d[this.x.$key]);
           }
         },
 
         y: function(d) {
-          if (this.x.$scale === 'linear') {
-            return this.y(d[this.y.$key]);
-          } else {
+          if (d4.isOrdinalScale(this.x)) {
             return this.y(d.y0 + d.y);
+          } else {
+            return this.y(d[this.y.$key]);
           }
         }
       },
@@ -3660,7 +3668,7 @@
           if (i === 0) {
             return 0;
           }
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return d4.functor(scope.accessors.x).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)();
           } else {
             return d4.functor(scope.accessors.x).bind(this)(data[i - 1]);
@@ -3671,7 +3679,7 @@
           if (i === 0) {
             return 0;
           }
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return d4.functor(scope.accessors.y).bind(this)(data[i - 1]);
           } else {
             return d4.functor(scope.accessors.y).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)(d);

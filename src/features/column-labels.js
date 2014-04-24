@@ -10,7 +10,7 @@
     // FIXME: Remove this hardcoded variable or expose it as a setting.
     var padding = 5;
     var anchorText = function() {
-      if (this.y.$scale !== 'ordinal') {
+      if (d4.isContinuousScale(this.y.$scale)) {
         return 'middle';
       } else {
         return 'start';
@@ -22,7 +22,7 @@
           return (d.key || 0) + i;
         },
         x: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x.$scale)) {
             return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
           } else {
             var width = Math.abs(this.x(d[this.x.$key]) - this.x(0));
@@ -31,7 +31,7 @@
         },
 
         y: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y.$scale)) {
             return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2) + padding;
           } else {
             var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));

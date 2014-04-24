@@ -442,6 +442,24 @@ describe('d4.base', function() {
     });
   });
 
+  describe('#isOrdinalScale()', function(){
+    it('should return true or false if the scale in question supports continuous values', function(){
+      expect(d4.isOrdinalScale(d3.scale.category10())).to.equal(true);
+      expect(d4.isOrdinalScale(d3.scale.category20())).to.equal(true);
+      expect(d4.isOrdinalScale(d3.scale.category20b())).to.equal(true);
+      expect(d4.isOrdinalScale(d3.scale.category20c())).to.equal(true);
+      expect(d4.isOrdinalScale(d3.scale.identity())).to.equal(true);
+      expect(d4.isOrdinalScale(d3.scale.linear())).to.equal(false);
+      expect(d4.isOrdinalScale(d3.scale.log())).to.equal(false);
+      expect(d4.isOrdinalScale(d3.scale.ordinal())).to.equal(true);
+      expect(d4.isOrdinalScale(d3.scale.pow())).to.equal(false);
+      expect(d4.isOrdinalScale(d3.scale.quantile())).to.equal(true);
+      expect(d4.isOrdinalScale(d3.scale.quantize())).to.equal(true);
+      expect(d4.isOrdinalScale(d3.scale.sqrt())).to.equal(false);
+      expect(d4.isOrdinalScale(d3.scale.threshold())).to.equal(true);
+    });
+  });
+
   describe('#isUndefined()', function(){
     it('should determine if a value is undefined or not', function(){
       expect(d4.isUndefined(undefined)).to.equal(true);

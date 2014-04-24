@@ -47,7 +47,7 @@
         },
 
         height: function(d) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscreteSize.bind(this)('y');
           } else {
             return useContinuousSize.bind(this)('y', d);
@@ -63,7 +63,7 @@
         ry: 0,
 
         width: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscreteSize.bind(this)('x');
           } else {
             return useContinuousSize.bind(this)('x', d);
@@ -71,7 +71,7 @@
         },
 
         x: function(d, i) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return useDiscretePosition.bind(this)('x', d, i);
           } else {
             return useContinuousPosition.bind(this)('x', d, i);
@@ -79,7 +79,7 @@
         },
 
         y: function(d, i) {
-          if (this.y.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.y)) {
             return useDiscretePosition.bind(this)('y', d, i);
           } else {
             return useContinuousPosition.bind(this)('y', d, i);

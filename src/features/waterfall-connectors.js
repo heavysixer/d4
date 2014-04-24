@@ -22,31 +22,31 @@
         },
 
         span: function() {
-          if (this.x.$scale === 'linear') {
-            return this.y.rangeBand();
-          } else {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x.rangeBand();
+          } else {
+            return this.y.rangeBand();
           }
         },
 
         x: function(d) {
-          if (this.x.$scale === 'linear') {
+          if (d4.isOrdinalScale(this.x)) {
+            return this.x(d[this.x.$key]);
+          } else {
             var width = 0;
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
             if (d.y > 0) {
               width = Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
             }
             return this.x(xVal) + width;
-          } else {
-            return this.x(d[this.x.$key]);
           }
         },
 
         y: function(d) {
-          if (this.x.$scale === 'linear') {
-            return this.y(d[this.y.$key]);
-          } else {
+          if (d4.isOrdinalScale(this.x)) {
             return this.y(d.y0 + d.y);
+          } else {
+            return this.y(d[this.y.$key]);
           }
         }
       },
@@ -82,7 +82,7 @@
           if (i === 0) {
             return 0;
           }
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return d4.functor(scope.accessors.x).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)();
           } else {
             return d4.functor(scope.accessors.x).bind(this)(data[i - 1]);
@@ -93,7 +93,7 @@
           if (i === 0) {
             return 0;
           }
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return d4.functor(scope.accessors.y).bind(this)(data[i - 1]);
           } else {
             return d4.functor(scope.accessors.y).bind(this)(d) + d4.functor(scope.accessors.span).bind(this)(d);

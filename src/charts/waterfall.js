@@ -5,7 +5,7 @@
     return {
       accessors: {
         y: function(d) {
-          if (this.y.$scale === 'linear') {
+          if (d4.isContinuousScale(this.y)) {
             var yVal = (d.y0 + d.y) - Math.min(0, d.y);
             return this.y(yVal);
           } else {
@@ -14,7 +14,7 @@
         },
 
         x: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x(d[this.x.$key]);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
@@ -23,7 +23,7 @@
         },
 
         width: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x.rangeBand();
           } else {
             return Math.abs(this.x(d.y0) - this.x(d.y0 + d.y));
@@ -31,7 +31,7 @@
         },
 
         height: function(d) {
-          if (this.y.$scale === 'linear') {
+          if (d4.isContinuousScale(this.y)) {
             return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
           } else {
             return this.y.rangeBand();
@@ -53,7 +53,7 @@
     return {
       accessors: {
         y: function(d) {
-          if (this.y.$scale === 'linear') {
+          if (d4.isContinuousScale(this.y)) {
             var height = Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
             var yVal = (d.y0 + d.y) - Math.max(0, d.y);
             return this.y(yVal) - 10 - height;
@@ -63,7 +63,7 @@
         },
 
         x: function(d) {
-          if (this.x.$scale === 'ordinal') {
+          if (d4.isOrdinalScale(this.x)) {
             return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
           } else {
             var xVal = (d.y0 + d.y) - Math.max(0, d.y);
@@ -86,7 +86,7 @@
         return [0, chart.width];
       } else {
         rangeBounds = [0, chart.height];
-        return (chart.x.$scale === 'ordinal') ? rangeBounds.reverse() : rangeBounds;
+        return (d4.isOrdinalScale(chart.x)) ? rangeBounds.reverse() : rangeBounds;
       }
     };
 
@@ -117,7 +117,7 @@
     };
 
     var configureScales = function(chart, data) {
-      if (chart.x.$scale === 'ordinal') {
+      if (d4.isOrdinalScale(chart.x)) {
         setOrdinal.bind(this)(chart, 'x', data);
         setLinear.bind(this)(chart, 'y', data);
       } else {
