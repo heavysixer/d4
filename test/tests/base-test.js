@@ -414,6 +414,24 @@ describe('d4.base', function() {
     });
   });
 
+  describe('#isContinuousScale()', function(){
+    it('should return true or false if the scale in question supports continuous values', function(){
+      expect(d4.isContinuousScale(d3.scale.category10())).to.equal(false);
+      expect(d4.isContinuousScale(d3.scale.category20())).to.equal(false);
+      expect(d4.isContinuousScale(d3.scale.category20b())).to.equal(false);
+      expect(d4.isContinuousScale(d3.scale.category20c())).to.equal(false);
+      expect(d4.isContinuousScale(d3.scale.identity())).to.equal(false);
+      expect(d4.isContinuousScale(d3.scale.linear())).to.equal(true);
+      expect(d4.isContinuousScale(d3.scale.log())).to.equal(true);
+      expect(d4.isContinuousScale(d3.scale.ordinal())).to.equal(false);
+      expect(d4.isContinuousScale(d3.scale.pow())).to.equal(true);
+      expect(d4.isContinuousScale(d3.scale.quantile())).to.equal(false);
+      expect(d4.isContinuousScale(d3.scale.quantize())).to.equal(false);
+      expect(d4.isContinuousScale(d3.scale.sqrt())).to.equal(true);
+      expect(d4.isContinuousScale(d3.scale.threshold())).to.equal(false);
+    });
+  });
+
   describe('#isDefined()', function(){
     it('should determine if a value is undefined or not', function(){
       expect(d4.isDefined(undefined)).to.equal(false);

@@ -1015,6 +1015,14 @@
   };
 
   /**
+   * Helper method to determine if the supplied scale wants continuous values as
+   * opposed to categorical values.
+   */
+  d4.isContinuousScale = function(scale) {
+    return d4.isDefined(scale.rangeRound);
+  };
+
+  /**
    * Helper method to determine if a supplied argument is a date
    * @param {*} obj - the argument to test
    * @return {Boolean}

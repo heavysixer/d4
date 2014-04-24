@@ -1,6 +1,6 @@
 /*! d4 - v0.7.5
  *  License: MIT Expat
- *  Date: 2014-04-22
+ *  Date: 2014-04-24
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -1017,6 +1017,14 @@
    */
   d4.isArray = Array.isArray || function(val) {
     return Object.prototype.toString.call(val) === '[object Array]';
+  };
+
+  /**
+   * Helper method to determine if the supplied scale wants continuous values as
+   * opposed to categorical values.
+   */
+  d4.isContinuousScale = function(scale) {
+    return d4.isDefined(scale.rangeRound);
   };
 
   /**
@@ -2666,7 +2674,7 @@
           return yAxis.orient('left');
         }
       },
-      proxies: [{ target: xAxis, prefix : 'x' }, { target: yAxis, prefix : 'y' }]
+      proxies: [{ target: xAxis, prefix : 'x' }, { target: yAxis, prefix : 'y' }],
       render: function(scope, data, selection) {
         xAxis.scale(this.x);
         yAxis.scale(this.y);
