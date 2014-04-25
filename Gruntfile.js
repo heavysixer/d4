@@ -71,7 +71,7 @@ module.exports = function(grunt) {
       test: {
         files: {
           'test/lib/d4.js': '<%= meta.srcFiles %>',
-          'examples/src/assets/js/d4.js': '<%= meta.srcFiles %>'
+          '../d4-www/src/assets/js/d4.js': '<%= meta.srcFiles %>'
         }
       },
       release: {
