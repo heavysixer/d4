@@ -1,6 +1,6 @@
 /*! d4 - v0.8.0
  *  License: MIT Expat
- *  Date: 2014-04-24
+ *  Date: 2014-04-26
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -628,7 +628,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -707,7 +707,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -2643,7 +2643,7 @@
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.valueKey]);
+          return d[this.valueKey];
         }
       },
       render: function(scope, data, selection) {
@@ -3155,15 +3155,15 @@
           if (d4.isDefined(d.y0)) {
             if (d4.isOrdinalScale(this.x)) {
               if (Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
-                return d3.format('').call(this, d[this.valueKey]);
+                return d[this.valueKey];
               }
             } else {
               if (Math.abs(this.x(d.y0) - this.x(d.y0 + d.y)) > 20) {
-                return d3.format('').call(this, d[this.valueKey]);
+                return d[this.valueKey];
               }
             }
           } else {
-            return d3.format('').call(this, d[this.valueKey]);
+            return d[this.valueKey];
           }
         },
 
@@ -3572,7 +3572,7 @@
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
-          .attr('markerWidth', -6)
+          .attr('markerWidth', 6)
           .attr('markerHeight', 6)
           .attr('orient', 'auto')
           .append('path')

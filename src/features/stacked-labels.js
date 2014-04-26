@@ -59,15 +59,15 @@
           if (d4.isDefined(d.y0)) {
             if (d4.isOrdinalScale(this.x)) {
               if (Math.abs(this.y(d.y0) - this.y(d.y0 + d.y)) > 20) {
-                return d3.format('').call(this, d[this.valueKey]);
+                return d[this.valueKey];
               }
             } else {
               if (Math.abs(this.x(d.y0) - this.x(d.y0 + d.y)) > 20) {
-                return d3.format('').call(this, d[this.valueKey]);
+                return d[this.valueKey];
               }
             }
           } else {
-            return d3.format('').call(this, d[this.valueKey]);
+            return d[this.valueKey];
           }
         },
 

@@ -40,7 +40,7 @@
         },
 
         text: function(d) {
-          return d3.format('').call(this, d[this.valueKey]);
+          return d[this.valueKey];
         }
       },
       render: function(scope, data, selection) {
