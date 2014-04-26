@@ -9,7 +9,7 @@
     return {
       accessors: {
         text: function(d) {
-          return d3.format('').call(this, d[1]);
+          return d[this.valueKey];
         },
 
         textX: function() {
@@ -21,7 +21,7 @@
         },
 
         x1: function() {
-          return this.x(0);
+          return this.x(this.x.$key);
         },
 
         x2: function() {
@@ -29,7 +29,7 @@
         },
 
         y1: function() {
-          return this.y(0);
+          return this.y(this.y.$key);
         },
 
         y2: function() {
