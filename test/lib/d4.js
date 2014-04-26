@@ -441,7 +441,27 @@
     };
   };
 
+  var usingSvgFilter = function(name, funct){
+    var filter = this.svgFilters[name];
+    if (d4.isNotFunction(funct)) {
+      err('You must supply a continuation function in order to use a svg filter.');
+    }
+    if (!filter) {
+      err('Could not find filter: "{0}", maybe you forgot to mix it in?', name);
+    } else {
+      funct.bind(this)(filter);
+    }
+  };
+
+  var assignBaseFeatureAccessors = function(feature) {
+    feature.svgFilter = function(name, funct){
+      usingSvgFilter.bind(feature)(name, funct);
+      return feature;
+    };
+  };
+
   var assignMixinAccessors = function(feature) {
+    assignBaseFeatureAccessors(feature);
     createAccessorsFromObject(feature);
   };
 
