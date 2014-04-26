@@ -4535,7 +4535,6 @@
   };
 
   /**
-   *
    * Creates a linear scale for a dimension of a given chart.
    * @name linearScaleForNestedData
    * @param {Object} d4 chart object
@@ -4546,7 +4545,6 @@
   d4.builder('linearScaleForNestedData', linearOrTimeScale);
 
   /**
-   *
    * Creates a time scale for a dimension of a given chart.
    * @name timeScaleForNestedData
    * @param {Object} d4 chart object
