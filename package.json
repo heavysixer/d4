@@ -31,7 +31,8 @@
     "grunt-jsbeautifier": "^0.2.7",
     "grunt-mocha": "~0.4.6",
     "grunt-node-inspector": "~0.1.2",
-    "grunt-plato": "~0.6.2",
+    "grunt-plato": "*",
+    "grunt-remove-logging": ">=0.1.0",
     "sinon": "~1.8.1",
     "sinon-chai": "~2.5.0"
   },
