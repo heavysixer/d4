@@ -1337,6 +1337,70 @@
   /*
    * The donut chart
    *
+   *##### Features
+   *
+   * `arcs` - The arc series
+   * `arcLabels` - The data labels linked to the arcs
+   * `radius` - The total radius of the chart
+   * `arcWidth` - The width of the arc
+   *
+   *##### Example Usage
+   *
+   *     var generateData = function() {
+   *       var data = [];
+   *       var names = ['Clay Hauck', 'Diego Hickle', 'Heloise Quitzon',
+   *         'Hildegard Littel', 'Janiya Legros', 'Karolann Boehm',
+   *         'Lilyan Deckow IV', 'Lizeth Blick', 'Marlene O\'Kon', 'Marley Gutmann'
+   *       ],
+   *         pie = d3.layout.pie()
+   *           .sort(null)
+   *           .value(function(d) {
+   *             return d.unitsSold;
+   *           });
+   *       d4.each(names, function(name) {
+   *         data.push({
+   *           unitsSold: Math.max(10, Math.random() * 100),
+   *           salesman: name
+   *         });
+   *       });
+   *       return pie(data);
+   *     };
+   *
+   *     var chart = d4.charts.donut()
+   *       .outerWidth($('#pie').width())
+   *       .margin({
+   *         left: 0,
+   *         top: 0,
+   *         right: 0,
+   *         bottom: 0
+   *       })
+   *       .radius(function() {
+   *         return this.width / 8;
+   *       })
+   *       .arcWidth(50)
+   *       .using('arcLabels', function(labels) {
+   *         labels.text(function(d) {
+   *           return d.data.salesman;
+   *         })
+   *       })
+   *       .using('arcs', function(slices) {
+   *         slices.key(function(d) {
+   *           return d.data.salesman;
+   *         });
+   *       });
+   *
+   *
+   *     var redraw = function() {
+   *       var data = generateData();
+   *       d3.select('#pie')
+   *         .datum(data)
+   *         .call(chart);
+   *     };
+   *     (function loop() {
+   *       redraw();
+   *       setTimeout(loop, 4500);
+   *     })();
+   *
    * @name donut
    */
   d4.chart('donut', function donut() {
@@ -1353,11 +1417,9 @@
       }
     })
       .mixin(
-        [{
-          'name': 'arcs',
+        [{ 'name': 'arcs',
           'feature': d4.features.arcSeries
-        }, {
-          'name': 'arcLabels',
+        }, { 'name': 'arcLabels',
           'feature': d4.features.arcLabels
         }]);
   });
@@ -2571,9 +2633,8 @@
   d4.feature('arrow', function(name) {
     return {
       accessors: {
-        tipSize: function() {
-          return 6;
-        },
+        classes: 'line',
+        tipSize: 6,
         x1: function() {
           return this.x(0);
         },
@@ -2588,9 +2649,6 @@
 
         y2: function() {
           return this.y(this.height);
-        },
-        classes: function() {
-          return 'line';
         }
       },
       render: function(scope, data, selection) {
@@ -2655,6 +2713,7 @@
         key: function(d, i) {
           return (d.key || 0) + i;
         },
+
         x: function(d) {
           if (d4.isOrdinalScale(this.x)) {
             return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
@@ -2699,11 +2758,25 @@
   /*
    * This feature allows you to specify a grid over a portion or the entire chart area.
    *
+   *##### Accessors
+   *
+   * `axis` - The d3 axis object itself.
+   * `innerTickSize` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize
+   * `orient` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#orient
+   * `outerTickSize`- see: https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize
+   * `scale` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#scale
+   * `stagger` - (true | false) determines if the axis should stagger overlapping text (true by default)
+   * `tickFormat` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat
+   * `tickPadding` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding
+   * `tickSize` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize
+   * `tickSubdivide`- see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide
+   * `tickValues` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues
+   * `ticks` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#ticks
+   *
    * @name grid
    */
   d4.feature('grid', function(name) {
 
-    // TODO: These should really be added to the proxies, but it will require a prefix option so that they do not override each other.
     var xAxis = d3.svg.axis();
     var yAxis = d3.svg.axis();
 

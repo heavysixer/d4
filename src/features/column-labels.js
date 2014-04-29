@@ -21,6 +21,7 @@
         key: function(d, i) {
           return (d.key || 0) + i;
         },
+
         x: function(d) {
           if (d4.isOrdinalScale(this.x)) {
             return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);

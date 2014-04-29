@@ -7,7 +7,6 @@
    */
   d4.feature('grid', function(name) {
 
-    // TODO: These should really be added to the proxies, but it will require a prefix option so that they do not override each other.
     var xAxis = d3.svg.axis();
     var yAxis = d3.svg.axis();
 

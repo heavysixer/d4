@@ -9,9 +9,8 @@
   d4.feature('arrow', function(name) {
     return {
       accessors: {
-        tipSize: function() {
-          return 6;
-        },
+        classes: 'line',
+        tipSize: 6,
         x1: function() {
           return this.x(0);
         },
@@ -26,9 +25,6 @@
 
         y2: function() {
           return this.y(this.height);
-        },
-        classes: function() {
-          return 'line';
         }
       },
       render: function(scope, data, selection) {
