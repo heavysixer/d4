@@ -2,6 +2,8 @@
   'use strict';
   /*
    * Arc labels are used to annotate arc series, for example those created by pie and donut charts.
+   * Many of the accessors of this feature proxy directly to D3's arc object:
+   * https://github.com/mbostock/d3/wiki/SVG-Shapes#arc
    *
    *##### Accessors
    *

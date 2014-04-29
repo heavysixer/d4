@@ -2341,6 +2341,8 @@
   'use strict';
   /*
    * Arc labels are used to annotate arc series, for example those created by pie and donut charts.
+   * Many of the accessors of this feature proxy directly to D3's arc object:
+   * https://github.com/mbostock/d3/wiki/SVG-Shapes#arc
    *
    *##### Accessors
    *
@@ -2456,7 +2458,22 @@
 (function() {
   'use strict';
   /*
-   * The arcSeries create the "slices" that are used by donut and pie charts.
+   * Arc series is a collection of arcs suitable for those needed by pie and donut charts.
+   * Many of the accessors of this feature proxy directly to D3's arc object:
+   * https://github.com/mbostock/d3/wiki/SVG-Shapes#arc
+   *
+   *##### Accessors
+   *
+   * `centroid` - proxied accessor to the navtive d3 function
+   * `classes` - classes assigned to the arc label.
+   * `duration` - time in milliseconds for the transition to occur.
+   * `endAngle` - proxied accessor to the navtive d3 function
+   * `innerRadius` - proxied accessor to the navtive d3 function
+   * `key` - unique identifier used for linking the element during d3's transition process
+   * `outerRadius` - proxied accessor to the navtive d3 function
+   * `startAngle` - proxied accessor to the navtive d3 function
+   * `x` - position across the x axis
+   * `y` - position across the y axis
    *
    * @name arcSeries
    */
@@ -4212,6 +4229,10 @@
       },
       data: []
     };
+    opts.nestKey = function() {
+      return opts.y.key;
+    };
+
 
     var findValues = function(dimensions, items) {
       ['x', 'y', 'value'].forEach(function(k) {
@@ -4272,10 +4293,15 @@
       }
 
       findValues(opts, opts.data);
-      opts.data = nestByDimension(opts.y.key, opts.value.key, opts.data);
+      opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
 
       stackByDimension(opts.x.key, opts.data);
       return opts;
+    };
+
+    parser.nestKey = function(funct) {
+      opts.nestKey = d4.functor(funct).bind(opts);
+      return parser;
     };
 
     d4.each(['x', 'y', 'value'], function(k) {

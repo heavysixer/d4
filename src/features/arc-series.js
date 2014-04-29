@@ -1,7 +1,22 @@
 (function() {
   'use strict';
   /*
-   * The arcSeries create the "slices" that are used by donut and pie charts.
+   * Arc series is a collection of arcs suitable for those needed by pie and donut charts.
+   * Many of the accessors of this feature proxy directly to D3's arc object:
+   * https://github.com/mbostock/d3/wiki/SVG-Shapes#arc
+   *
+   *##### Accessors
+   *
+   * `centroid` - proxied accessor to the navtive d3 function
+   * `classes` - classes assigned to the arc label.
+   * `duration` - time in milliseconds for the transition to occur.
+   * `endAngle` - proxied accessor to the navtive d3 function
+   * `innerRadius` - proxied accessor to the navtive d3 function
+   * `key` - unique identifier used for linking the element during d3's transition process
+   * `outerRadius` - proxied accessor to the navtive d3 function
+   * `startAngle` - proxied accessor to the navtive d3 function
+   * `x` - position across the x axis
+   * `y` - position across the y axis
    *
    * @name arcSeries
    */

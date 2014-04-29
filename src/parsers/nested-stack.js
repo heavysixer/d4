@@ -114,6 +114,10 @@
       },
       data: []
     };
+    opts.nestKey = function() {
+      return opts.y.key;
+    };
+
 
     var findValues = function(dimensions, items) {
       ['x', 'y', 'value'].forEach(function(k) {
@@ -174,10 +178,15 @@
       }
 
       findValues(opts, opts.data);
-      opts.data = nestByDimension(opts.y.key, opts.value.key, opts.data);
+      opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
 
       stackByDimension(opts.x.key, opts.data);
       return opts;
+    };
+
+    parser.nestKey = function(funct) {
+      opts.nestKey = d4.functor(funct).bind(opts);
+      return parser;
     };
 
     d4.each(['x', 'y', 'value'], function(k) {
