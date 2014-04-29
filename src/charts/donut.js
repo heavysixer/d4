@@ -4,6 +4,13 @@
   /*
    * The donut chart
    *
+   *##### Features
+   *
+   * `arcs` - The arc series
+   * `arcLabels` - The data labels linked to the arcs
+   * `radius` - The total radius of the chart
+   * `arcWidth` - The width of the arc
+   *
    *##### Example Usage
    *
    *     var generateData = function() {
