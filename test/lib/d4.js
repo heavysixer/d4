@@ -1,4 +1,4 @@
-/*! d4 - v0.8.0
+/*! d4 - v0.8.1
  *  License: MIT Expat
  *  Date: 2014-04-29
  *  Copyright: Mark Daggett, D4 Team
@@ -1417,9 +1417,11 @@
       }
     })
       .mixin(
-        [{ 'name': 'arcs',
+        [{
+          'name': 'arcs',
           'feature': d4.features.arcSeries
-        }, { 'name': 'arcLabels',
+        }, {
+          'name': 'arcLabels',
           'feature': d4.features.arcLabels
         }]);
   });
@@ -2758,21 +2760,6 @@
   /*
    * This feature allows you to specify a grid over a portion or the entire chart area.
    *
-   *##### Accessors
-   *
-   * `axis` - The d3 axis object itself.
-   * `innerTickSize` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#innerTickSize
-   * `orient` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#orient
-   * `outerTickSize`- see: https://github.com/mbostock/d3/wiki/SVG-Axes#outerTickSize
-   * `scale` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#scale
-   * `stagger` - (true | false) determines if the axis should stagger overlapping text (true by default)
-   * `tickFormat` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickFormat
-   * `tickPadding` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickPadding
-   * `tickSize` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSize
-   * `tickSubdivide`- see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickSubdivide
-   * `tickValues` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#tickValues
-   * `ticks` - see: https://github.com/mbostock/d3/wiki/SVG-Axes#ticks
-   *
    * @name grid
    */
   d4.feature('grid', function(name) {
@@ -3330,7 +3317,7 @@
             d4.each(cols, function(text) {
               var txt = d3.select(text);
               rect = text.getBoundingClientRect();
-              if(txt.attr('transform') === null){
+              if (txt.attr('transform') === null) {
                 txt.attr('transform', 'translate(0,' + Math.floor(rect.height / 2) + ')');
               }
             });

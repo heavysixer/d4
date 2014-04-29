@@ -84,9 +84,11 @@
       }
     })
       .mixin(
-        [{ 'name': 'arcs',
+        [{
+          'name': 'arcs',
           'feature': d4.features.arcSeries
-        }, { 'name': 'arcLabels',
+        }, {
+          'name': 'arcLabels',
           'feature': d4.features.arcLabels
         }]);
   });

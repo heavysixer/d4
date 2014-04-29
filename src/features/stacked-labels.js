@@ -130,7 +130,7 @@
             d4.each(cols, function(text) {
               var txt = d3.select(text);
               rect = text.getBoundingClientRect();
-              if(txt.attr('transform') === null){
+              if (txt.attr('transform') === null) {
                 txt.attr('transform', 'translate(0,' + Math.floor(rect.height / 2) + ')');
               }
             });
