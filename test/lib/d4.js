@@ -3255,8 +3255,11 @@
           var rect;
           d4.each(rows, function(cols) {
             d4.each(cols, function(text) {
+              var txt = d3.select(text);
               rect = text.getBoundingClientRect();
-              d3.select(text).attr('transform', 'translate(0,' + Math.floor(rect.height / 2) + ')');
+              if(txt.attr('transform') === null){
+                txt.attr('transform', 'translate(0,' + Math.floor(rect.height / 2) + ')');
+              }
             });
           });
         });
