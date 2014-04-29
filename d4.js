@@ -1,6 +1,6 @@
 /*! d4 - v0.8.0
  *  License: MIT Expat
- *  Date: 2014-04-26
+ *  Date: 2014-04-29
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -2342,6 +2342,20 @@
   /*
    * Arc labels are used to annotate arc series, for example those created by pie and donut charts.
    *
+   *##### Accessors
+   *
+   * `centroid` - proxied accessor to the navtive d3 function
+   * `classes` - classes assigned to the arc label.
+   * `duration` - time in milliseconds for the transition to occur.
+   * `endAngle` - proxied accessor to the navtive d3 function
+   * `innerRadius` - proxied accessor to the navtive d3 function
+   * `key` - unique identifier used for linking the element during d3's transition process
+   * `outerRadius` - proxied accessor to the navtive d3 function
+   * `startAngle` - proxied accessor to the navtive d3 function
+   * `text` - value to display in the label.
+   * `x` - position across the x axis
+   * `y` - position across the y axis
+   *
    * @name arcLabels
    */
   d4.feature('arcLabels', function(name) {
@@ -2873,7 +2887,7 @@
         var label = this.svg.select('.' + name).selectAll('.' + name).data(data);
         label.enter().append('text');
         label.exit().remove();
-        label.attr('class', 'lineSeriesLabel')
+        label.attr('class', 'line-series-label')
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))

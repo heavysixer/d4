@@ -29,7 +29,7 @@
         var label = this.svg.select('.' + name).selectAll('.' + name).data(data);
         label.enter().append('text');
         label.exit().remove();
-        label.attr('class', 'lineSeriesLabel')
+        label.attr('class', 'line-series-label')
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
