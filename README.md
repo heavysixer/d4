@@ -134,21 +134,24 @@ __Parser__ - A parser prepares the data for a chart.
 
 #### Chart Features (Mixins)
 
-* Arrows
-* Column Labels
-* Grid
-* Grouped Column Series
-* Line Series
-* Line Series Labels
-* Reference Lines
-* Stacked Labels
-* Stacked Circle Series
-* Stacked Ellipse Series
-* Stacked Rect Series
-* Trend Line
-* Waterfall Column Connectors
-* X Axis
-* Y Axis
+* [Arc Labels](https://github.com/heavysixer/d4/blob/master/src/features/arc-labels.js)
+* [Arc Series](https://github.com/heavysixer/d4/blob/master/src/features/arc-series.js)
+* [Arrows](https://github.com/heavysixer/d4/blob/master/src/features/arrow.js)
+* [Column Labels](https://github.com/heavysixer/d4/blob/master/src/features/column-labels.js)
+* [Grid](https://github.com/heavysixer/d4/blob/master/src/features/grid.js)
+* [Grouped Column Series](https://github.com/heavysixer/d4/blob/master/src/features/grouped-column-series.js)
+* [Line Series Labels](https://github.com/heavysixer/d4/blob/master/src/features/line-series-labels.js)
+* [Line Series](https://github.com/heavysixer/d4/blob/master/src/features/line-series.js)
+* [Reference Lines](https://github.com/heavysixer/d4/blob/master/src/features/reference-line.js)
+* [Stacked Column Connectors](https://github.com/heavysixer/d4/blob/master/src/features/stacked-column-connectors.js)
+* [Stacked Labels](https://github.com/heavysixer/d4/blob/master/src/features/stacked-labels.js)
+* [Stacked Circle Series](https://github.com/heavysixer/d4/blob/master/src/features/stacked-shapes-series.js#L100)
+* [Stacked Ellipse Series](https://github.com/heavysixer/d4/blob/master/src/features/stacked-shapes-series.js#L167)
+* [Stacked Rect Series](https://github.com/heavysixer/d4/blob/master/src/features/stacked-shapes-series.js#L238)
+* [Trend Line](https://github.com/heavysixer/d4/blob/master/src/features/trend-line.js)
+* [Waterfall Column Connectors](https://github.com/heavysixer/d4/blob/master/src/features/waterfall-connectors.js)
+* [X Axis](https://github.com/heavysixer/d4/blob/master/src/features/x-axis.js)
+* [Y Axis](https://github.com/heavysixer/d4/blob/master/src/features/y-axis.js)
 
 #### Contributing
 
