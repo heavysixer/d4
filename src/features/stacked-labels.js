@@ -12,11 +12,7 @@
       if (d4.isDefined(d.y0)) {
         return true;
       }
-      if (d4.isContinuousScale(this.y)) {
-        return true;
-      } else {
-        return false;
-      }
+      return d4.isContinuousScale(this.y);
     };
 
     var anchorText = function(d) {
@@ -31,6 +27,8 @@
     var useContinuousPosition = function(dimension, d) {
       var axis = this[dimension];
       var offset = Math.abs(axis(d.y0) - axis(d.y0 + d.y)) / 2;
+
+      // FIXME: Remove this hardcoding.
       var padding = 10;
       var val;
       if (dimension === 'x') {
