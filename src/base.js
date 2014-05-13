@@ -352,8 +352,8 @@
 
   var scaffoldChart = function(selection) {
     this.svg = d4.appendOnce(d3.select(selection), 'svg#chart.d4.chart')
-      .attr('width', this.width + this.margin.left + this.margin.right)
-      .attr('height', this.height + this.margin.top + this.margin.bottom);
+      .attr('width', Math.abs(this.width + this.margin.left + this.margin.right))
+      .attr('height', Math.abs(this.height + this.margin.top + this.margin.bottom));
 
     d4.appendOnce(this.svg, 'defs');
     d4.appendOnce(this.svg, 'g.margins')
