@@ -8,6 +8,7 @@
   d4.feature('trendLine', function(name) {
     return {
       accessors: {
+        tipSize: 6,
         text: function(d) {
           return d[this.valueKey];
         },
@@ -44,8 +45,8 @@
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
-          .attr('markerWidth', 6)
-          .attr('markerHeight', 6)
+          .attr('markerWidth', d4.functor(scope.accessors.tipSize).bind(this)())
+          .attr('markerHeight', d4.functor(scope.accessors.tipSize).bind(this))
           .attr('orient', 'auto')
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
