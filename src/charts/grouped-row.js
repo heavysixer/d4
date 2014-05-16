@@ -61,7 +61,7 @@
             var height = this.y.rangeBand() / this.groupsOf;
             var yPos = this.y(d[this.y.$key]) + height * i;
             var gutter = height * 0.1;
-            return yPos + height / 2 + gutter;
+            return yPos + height / 4 + gutter;
           }
         }
       };
