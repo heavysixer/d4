@@ -74,8 +74,8 @@
 
     var removeUndefinedValues = function(items) {
       var onlyDefined = [];
-      d4.each(items, function(i){
-        if(opts.defined(i)){
+      d4.each(items, function(i) {
+        if (opts.defined(i)) {
           onlyDefined.push(i);
         }
       }.bind(this));

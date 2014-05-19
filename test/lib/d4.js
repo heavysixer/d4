@@ -1,4 +1,4 @@
-/*! d4 - v0.8.3
+/*! d4 - v0.8.4
  *  License: MIT Expat
  *  Date: 2014-05-19
  *  Copyright: Mark Daggett, D4 Team
@@ -4182,8 +4182,8 @@
 
     var removeUndefinedValues = function(items) {
       var onlyDefined = [];
-      d4.each(items, function(i){
-        if(opts.defined(i)){
+      d4.each(items, function(i) {
+        if (opts.defined(i)) {
           onlyDefined.push(i);
         }
       }.bind(this));
@@ -4371,8 +4371,8 @@
 
     var removeUndefinedValues = function(items) {
       var onlyDefined = [];
-      d4.each(items, function(i){
-        if(opts.defined(i)){
+      d4.each(items, function(i) {
+        if (opts.defined(i)) {
           onlyDefined.push(i);
         }
       }.bind(this));
