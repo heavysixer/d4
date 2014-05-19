@@ -32,6 +32,35 @@ describe('d4.parsers.nestedGroup', function() {
     expect(parsedData.value.key).to.equal('value');
   });
 
+  it('should be able to weed out undefined values using a custom accessor', function(){
+    var data = [
+      { year: '2010', unitsSold: null, salesman : null },
+      { year: '2011', unitsSold: null, salesman : null },
+      { year: '2010', unitsSold: 100, salesman : 'Gina' },
+      { year: '2011', unitsSold: 100, salesman : 'Gina' },
+      { year: '2010', unitsSold: 400, salesman : 'Average' },
+      { year: '2011', unitsSold: 100, salesman : 'Average' },
+      { year: '2010', unitsSold: null, salesman : null },
+      { year: '2011', unitsSold: null, salesman : null }
+    ];
+    var parsedData = d4.parsers.nestedGroup()
+    .x('year')
+    .y('salesman')
+    .value('unitsSold')
+    (data);
+    expect(parsedData.data[0].values.length).to.equal(4);
+
+    parsedData = d4.parsers.nestedGroup()
+    .x('year')
+    .y('salesman')
+    .value('unitsSold')
+    .defined(function(d){
+      return d.salesman !== null;
+    })
+    (data);
+    expect(parsedData.data[0].values.length).to.equal(2);
+  });
+
   it('should allow you to specify a nestKey which can be used to sort on a dimension', function(){
     var parsedData = d4.parsers.nestedGroup()
     .x('a')

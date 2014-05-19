@@ -4171,8 +4171,23 @@
       },
       data: []
     };
+
+    opts.defined = function() {
+      return true;
+    };
+
     opts.nestKey = function() {
       return opts.x.key;
+    };
+
+    var removeUndefinedValues = function(items) {
+      var onlyDefined = [];
+      d4.each(items, function(i){
+        if(opts.defined(i)){
+          onlyDefined.push(i);
+        }
+      }.bind(this));
+      return onlyDefined;
     };
 
     var findValues = function(dimensions, items) {
@@ -4202,6 +4217,7 @@
       }
 
       findValues(opts, opts.data);
+      opts.data = removeUndefinedValues(opts.data);
       opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
 
       return opts;
@@ -4209,6 +4225,11 @@
 
     parser.nestKey = function(funct) {
       opts.nestKey = d4.functor(funct).bind(opts);
+      return parser;
+    };
+
+    parser.defined = function(funct) {
+      opts.defined = d4.functor(funct).bind(opts);
       return parser;
     };
 
