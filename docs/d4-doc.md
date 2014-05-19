@@ -1,87 +1,87 @@
-# d4 -0.8.2
+# d4 -0.8.3
 
-###### [helpers.js][0]
+###### [base.js][0]
 
-* [``][1]
+* [`axes`][1]
+* [`builder`][2]
+* [`clone`][3]
+* [`features`][4]
+* [`margin`][5]
+* [`mixin`][6]
+* [`mixout`][7]
+* [`outerHeight`][8]
+* [`outerWidth`][9]
+* [`using`][10]
+* [`appendOnce`][11]
+* [`baseChart`][12]
+* [`builder`][2]
+* [`chart`][13]
+* [`createAccessorProxy`][14]
+* [`extend`][15]
+* [`feature`][16]
+* [`flatten`][17]
+* [`functor`][18]
+* [`isArray`][19]
+* [`isContinuousScale`][20]
+* [`isDate`][21]
+* [`isDefined`][22]
+* [`isFunction`][23]
+* [`isObject`][24]
+* [`isOrdinalScale`][25]
+* [`isNotFunction`][26]
+* [`isUndefined`][27]
+* [`merge`][28]
+* [`parser`][29]
 
-###### [base.js][2]
+###### [helpers.js][30]
 
-* [`axes`][3]
-* [`builder`][4]
-* [`clone`][5]
-* [`features`][6]
-* [`margin`][7]
-* [`mixin`][8]
-* [`mixout`][9]
-* [`outerHeight`][10]
-* [`outerWidth`][11]
-* [`using`][12]
-* [`appendOnce`][13]
-* [`baseChart`][14]
-* [`builder`][4]
-* [`chart`][15]
-* [`createAccessorProxy`][16]
-* [`extend`][17]
-* [`feature`][18]
-* [`flatten`][19]
-* [`functor`][20]
-* [`isArray`][21]
-* [`isContinuousScale`][22]
-* [`isDate`][23]
-* [`isDefined`][24]
-* [`isFunction`][25]
-* [`isObject`][26]
-* [`isOrdinalScale`][27]
-* [`isNotFunction`][28]
-* [`isUndefined`][29]
-* [`merge`][30]
-* [`parser`][31]
+* [``][31]
 
-###### [column.js][32]
+###### [scales.js][32]
 
-* [`column`][33]
+* [`linearScaleForNestedData`][33]
+* [`timeScaleForNestedData`][34]
+* [`ordinalScaleForNestedData`][35]
 
-###### [donut.js][34]
+###### [column.js][36]
 
-* [`donut`][35]
+* [`column`][37]
 
-###### [grouped-column.js][36]
+###### [donut.js][38]
 
-* [`groupedColumn`][37]
+* [`donut`][39]
 
-###### [grouped-row.js][38]
+###### [grouped-column.js][40]
 
-* [`groupedRow`][39]
+* [`groupedColumn`][41]
 
-###### [line.js][40]
+###### [grouped-row.js][42]
 
-* [`line`][41]
+* [`groupedRow`][43]
 
-###### [row.js][42]
+###### [line.js][44]
 
-* [`row`][43]
+* [`line`][45]
 
-###### [scatter.js][44]
+###### [row.js][46]
 
-* [`scatterPlot`][45]
+* [`row`][47]
 
-###### [stacked-column.js][46]
+###### [scatter.js][48]
 
-* [`stackedColumn`][47]
+* [`scatterPlot`][49]
 
-###### [stacked-row.js][48]
+###### [stacked-column.js][50]
 
-* [`stackedRow`][49]
+* [`stackedColumn`][51]
 
-###### [waterfall.js][50]
+###### [stacked-row.js][52]
 
-* [`waterfall`][51]
+* [`stackedRow`][53]
 
-###### [scales.js][52]
+###### [waterfall.js][54]
 
-* [`linearScaleForNestedData`][53]
-* [`timeScaleForNestedData`][54]
-* [`ordinalScaleForNestedData`][55]
+* [`waterfall`][55]
 
 ###### [arc-labels.js][56]
 
@@ -109,11 +109,11 @@
 
 ###### [line-series-labels.js][68]
 
-* [``][1]
+* [``][31]
 
 ###### [line-series.js][69]
 
-* [``][1]
+* [``][31]
 
 ###### [reference-line.js][70]
 
@@ -157,25 +157,16 @@
 
 * [`nestedStack`][91]
 
-###### [waterfall.js][50]
+###### [waterfall.js][54]
 
-* [`waterfall`][51]
-
-## helpers.js
-
-### 
-
-[\#][1]
-[Ⓣ][0]
-
----
+* [`waterfall`][55]
 
 ## base.js
 
 ### axes
 
-[\#][3]
-[Ⓣ][2]
+[\#][1]
+[Ⓣ][0]
 
 This function returns the internal axes object as a parameter to the  
 supplied function.
@@ -192,8 +183,8 @@ _(Function)_ -chart instance
 
 ### builder
 
-[\#][4]
-[Ⓣ][2]
+[\#][2]
+[Ⓣ][0]
 
 Specifies an object, which d4 uses to initialize the chart with. By default  
 d4 expects charts to return a builder object, which will be used to  
@@ -224,8 +215,8 @@ _(Function)_ -chart instance
 
 ### clone
 
-[\#][5]
-[Ⓣ][2]
+[\#][3]
+[Ⓣ][0]
 
 This function creates a deep copy of the current chart and returns it.  
 This is useful if you have to create several charts which have a variety  
@@ -245,8 +236,8 @@ _(Function)_ -a copy of the current chart
 
 ### features
 
-[\#][6]
-[Ⓣ][2]
+[\#][4]
+[Ⓣ][0]
 
 To see what features are currently mixed into your chart you can use  
 this method. This function cannot be chained.
@@ -270,8 +261,8 @@ _(Array)_ -An array of features.
 
 ### margin
 
-[\#][7]
-[Ⓣ][2]
+[\#][5]
+[Ⓣ][0]
 
 To adjust the chart's margins supply either an object or a function that returns  
 an object to this method.
@@ -308,8 +299,8 @@ _(Function)_ -chart instance
 
 ### mixin
 
-[\#][8]
-[Ⓣ][2]
+[\#][6]
+[Ⓣ][0]
 
 Specifies a feature to be mixed into a given chart.  
 The feature is an object where the key represents the feature name, and a  
@@ -339,8 +330,8 @@ _(Function)_ -chart instance
 
 ### mixout
 
-[\#][9]
-[Ⓣ][2]
+[\#][7]
+[Ⓣ][0]
 
 Specifies an existing feature of a chart to be removed (mixed out).
 
@@ -367,8 +358,8 @@ _(Function)_ -chart instance
 
 ### outerHeight
 
-[\#][10]
-[Ⓣ][2]
+[\#][8]
+[Ⓣ][0]
 
 Returns or sets the outerHeight of the chart.
 
@@ -384,8 +375,8 @@ _(Function)_ -chart instance
 
 ### outerWidth
 
-[\#][11]
-[Ⓣ][2]
+[\#][9]
+[Ⓣ][0]
 
 Returns or sets the outerWidth of the chart.
 
@@ -401,8 +392,8 @@ _(Function)_ -chart instance
 
 ### using
 
-[\#][12]
-[Ⓣ][2]
+[\#][10]
+[Ⓣ][0]
 
 The heart of the d4 API is the `using` function, which allows you to  
 contextually modify attributes of the chart or one of its features.
@@ -431,8 +422,8 @@ _(Function)_ -chart instance
 
 ### appendOnce
 
-[\#][13]
-[Ⓣ][2]
+[\#][11]
+[Ⓣ][0]
 
 This function conditionally appends a SVG element if it doesn't already  
 exist within the parent element.
@@ -455,8 +446,8 @@ _(D3)_ -Selection} selection
 
 ### baseChart
 
-[\#][14]
-[Ⓣ][2]
+[\#][12]
+[Ⓣ][0]
 
 This function creates a d4 chart object. It is only used when creating a  
 new chart factory.
@@ -490,8 +481,8 @@ _(Function)_ -chart instance
 
 ### builder
 
-[\#][4]
-[Ⓣ][2]
+[\#][2]
+[Ⓣ][0]
 
 This function allows you to register a reusable chart builder with d4\.
 
@@ -508,8 +499,8 @@ _(Function)_ -a reference to the chart builder
 
 ### chart
 
-[\#][15]
-[Ⓣ][2]
+[\#][13]
+[Ⓣ][0]
 
 This function allows you to register a reusable chart with d4\.
 
@@ -526,8 +517,8 @@ _(Function)_ -a reference to the chart function
 
 ### createAccessorProxy
 
-[\#][16]
-[Ⓣ][2]
+[\#][14]
+[Ⓣ][0]
 
 This function allows create proxy accessor to other objects. This is most  
 useful when you need a feature to transparently control a component of a  
@@ -564,8 +555,8 @@ proxy that links the two.
 
 ### extend
 
-[\#][17]
-[Ⓣ][2]
+[\#][15]
+[Ⓣ][0]
 
 Helper method to extend one object with the attributes of another.
 
@@ -595,8 +586,8 @@ _(Object)_ -the first object which has now been extended;
 
 ### feature
 
-[\#][18]
-[Ⓣ][2]
+[\#][16]
+[Ⓣ][0]
 
 This function allows you to register a reusable chart feature with d4\.
 
@@ -613,8 +604,8 @@ _(Function)_ -a reference to the chart feature
 
 ### flatten
 
-[\#][19]
-[Ⓣ][2]
+[\#][17]
+[Ⓣ][0]
 
 Helper method to flatten a multi-dimensional array into a single array.
 
@@ -630,8 +621,8 @@ _(Array)_ -flattened array.
 
 ### functor
 
-[\#][20]
-[Ⓣ][2]
+[\#][18]
+[Ⓣ][0]
 
 Based on D3's own functor function.
 
@@ -656,8 +647,8 @@ _(Function)_ -
 
 ### isArray
 
-[\#][21]
-[Ⓣ][2]
+[\#][19]
+[Ⓣ][0]
 
 Helper method to determine if a supplied argument is an array
 
@@ -673,8 +664,8 @@ _(Boolean)_ -
 
 ### isContinuousScale
 
-[\#][22]
-[Ⓣ][2]
+[\#][20]
+[Ⓣ][0]
 
 Helper method to determine if the supplied scale wants continuous as  
 opposed to ordinal values.
@@ -683,8 +674,8 @@ opposed to ordinal values.
 
 ### isDate
 
-[\#][23]
-[Ⓣ][2]
+[\#][21]
+[Ⓣ][0]
 
 Helper method to determine if a supplied argument is a date
 
@@ -700,8 +691,8 @@ _(Boolean)_ -
 
 ### isDefined
 
-[\#][24]
-[Ⓣ][2]
+[\#][22]
+[Ⓣ][0]
 
 Helper method to determine if a supplied argument is defined
 
@@ -717,8 +708,8 @@ _(Boolean)_ -
 
 ### isFunction
 
-[\#][25]
-[Ⓣ][2]
+[\#][23]
+[Ⓣ][0]
 
 Helper method to determine if a supplied argument is a function
 
@@ -734,8 +725,8 @@ _(Boolean)_ -
 
 ### isObject
 
-[\#][26]
-[Ⓣ][2]
+[\#][24]
+[Ⓣ][0]
 
 Helper method to determine if a supplied argument is not an object
 
@@ -751,8 +742,8 @@ _(Boolean)_ -
 
 ### isOrdinalScale
 
-[\#][27]
-[Ⓣ][2]
+[\#][25]
+[Ⓣ][0]
 
 Helper method to determine if the supplied scale wants ordinal as  
 opposed to continuous values.
@@ -761,8 +752,8 @@ opposed to continuous values.
 
 ### isNotFunction
 
-[\#][28]
-[Ⓣ][2]
+[\#][26]
+[Ⓣ][0]
 
 Helper method to determine if a supplied argument is not a function
 
@@ -778,8 +769,8 @@ _(Boolean)_ -
 
 ### isUndefined
 
-[\#][29]
-[Ⓣ][2]
+[\#][27]
+[Ⓣ][0]
 
 Helper method to determine if a supplied argument is undefined
 
@@ -795,8 +786,8 @@ _(Boolean)_ -
 
 ### merge
 
-[\#][30]
-[Ⓣ][2]
+[\#][28]
+[Ⓣ][0]
 
 Helper method to merge two objects together into a new object. This will leave  
 the two orignal objects untouched. The overrides object will replace any  
@@ -828,8 +819,8 @@ _(Object)_ -newly merged object;
 
 ### parser
 
-[\#][31]
-[Ⓣ][2]
+[\#][29]
+[Ⓣ][0]
 
 This function allows you to register a reusable data parser with d4\.
 
@@ -844,12 +835,80 @@ _(\*)_ -a reference to the data parser
 
 ---
 
+## helpers.js
+
+### 
+
+[\#][31]
+[Ⓣ][30]
+
+---
+
+## scales.js
+
+### linearScaleForNestedData
+
+[\#][33]
+[Ⓣ][32]
+
+Creates a linear scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
+
+#### Returns  
+  
+_(Object)_ -Chart scale object
+
+---
+
+### timeScaleForNestedData
+
+[\#][34]
+[Ⓣ][32]
+
+Creates a time scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
+
+#### Returns  
+  
+_(Object)_ -Chart scale object
+
+---
+
+### ordinalScaleForNestedData
+
+[\#][35]
+[Ⓣ][32]
+
+Creates an ordinal scale for a dimension of a given chart.
+
+#### Arguments
+
+1. `d4`_(Object) -chart object_
+2. `data`_(Array) -array_
+3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
+
+#### Returns  
+  
+_(Object)_ -Chart scale object
+
+---
+
 ## column.js
 
 ### column
 
-[\#][33]
-[Ⓣ][32]
+[\#][37]
+[Ⓣ][36]
 
 The column chart has two axes (`x` and `y`). By default the column chart expects  
 linear values for the `y` and ordinal values on the `x`. The basic column chart  
@@ -906,8 +965,8 @@ The default format may not be desired and so we'll override it:
 
 ### donut
 
-[\#][35]
-[Ⓣ][34]
+[\#][39]
+[Ⓣ][38]
 
 The donut chart
 
@@ -982,8 +1041,8 @@ The donut chart
 
 ### groupedColumn
 
-[\#][37]
-[Ⓣ][36]
+[\#][41]
+[Ⓣ][40]
 
 The grouped column chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked column  
@@ -1041,8 +1100,8 @@ relative distribution.
 
 ### groupedRow
 
-[\#][39]
-[Ⓣ][38]
+[\#][43]
+[Ⓣ][42]
 
 The grouped row chart is used to compare a series of data elements grouped  
 along the xAxis. This chart is often useful in conjunction with a stacked row  
@@ -1100,8 +1159,8 @@ relative distribution.
 
 ### line
 
-[\#][41]
-[Ⓣ][40]
+[\#][45]
+[Ⓣ][44]
 
 The line series chart is used to compare a series of data elements grouped  
 along the xAxis.
@@ -1162,8 +1221,8 @@ along the xAxis.
 
 ### row
 
-[\#][43]
-[Ⓣ][42]
+[\#][47]
+[Ⓣ][46]
 
 The row chart has two axes (`x` and `y`). By default the column chart expects  
 linear scale values for the `x` and ordinal scale values on the `y`. The basic column chart  
@@ -1197,8 +1256,8 @@ has four default features:
 
 ### scatterPlot
 
-[\#][45]
-[Ⓣ][44]
+[\#][49]
+[Ⓣ][48]
 
 The scatter plot has three axes (`x`, `y` and `z`). By default the scatter  
 plot expects linear scale values for all axes. The basic scatter plot chart  
@@ -1243,8 +1302,8 @@ has these default features:
 
 ### stackedColumn
 
-[\#][47]
-[Ⓣ][46]
+[\#][51]
+[Ⓣ][50]
 
 The stacked column chart has two axes (`x` and `y`). By default the stacked  
 column expects continious scale for the `y` axis and a discrete scale for  
@@ -1309,8 +1368,8 @@ the `x` axis. The stacked column has the following default features:
 
 ### stackedRow
 
-[\#][49]
-[Ⓣ][48]
+[\#][53]
+[Ⓣ][52]
 
 The stacked row chart has two axes (`x` and `y`). By default the stacked  
 row expects continious scale for the `x` axis and a discrete scale for  
@@ -1376,8 +1435,8 @@ the `y` axis. The stacked row has the following default features:
 
 ### waterfall
 
-[\#][51]
-[Ⓣ][50]
+[\#][55]
+[Ⓣ][54]
 
 The waterfall chart visually tallies the cumulative result of negative and  
 positive values over a data series. In addition to specifying the normal  
@@ -1433,65 +1492,6 @@ if you swap the scale types then the waterfall will render horizontally.
          .datum(parsedData.data)
          .call(chart);
     
-
----
-
-## scales.js
-
-### linearScaleForNestedData
-
-[\#][53]
-[Ⓣ][52]
-
-Creates a linear scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
-#### Returns  
-  
-_(Object)_ -Chart scale object
-
----
-
-### timeScaleForNestedData
-
-[\#][54]
-[Ⓣ][52]
-
-Creates a time scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
-#### Returns  
-  
-_(Object)_ -Chart scale object
-
----
-
-### ordinalScaleForNestedData
-
-[\#][55]
-[Ⓣ][52]
-
-Creates an ordinal scale for a dimension of a given chart.
-
-#### Arguments
-
-1. `d4`_(Object) -chart object_
-2. `data`_(Array) -array_
-3. `string`_(string) -represnting a dimension e.g. \`x\`,\`y\`._
-
-#### Returns  
-  
-_(Object)_ -Chart scale object
 
 ---
 
@@ -1597,7 +1597,7 @@ This feature is specifically designed to use with the groupedColumn and groupedR
 
 ### 
 
-[\#][1]
+[\#][31]
 [Ⓣ][68]
 
 @name lineSeriesLabels
@@ -1608,7 +1608,7 @@ This feature is specifically designed to use with the groupedColumn and groupedR
 
 ### 
 
-[\#][1]
+[\#][31]
 [Ⓣ][69]
 
 @name lineSeries
@@ -2012,8 +2012,8 @@ The `parser` variable will now be an object containing the following structure:
 
 ### waterfall
 
-[\#][51]
-[Ⓣ][50]
+[\#][55]
+[Ⓣ][54]
 
 The waterfall parser is useful for waterfall charts where data items need to account  
 for the position of earlier values:
@@ -2113,62 +2113,62 @@ in the following way:
 
 
 
-[0]: #helpers-js
-[1]: #
-[2]: #base-js
-[3]: #axes
-[4]: #builder
-[5]: #clone
-[6]: #features
-[7]: #margin
-[8]: #mixin
-[9]: #mixout
-[10]: #outerheight
-[11]: #outerwidth
-[12]: #using
-[13]: #appendonce
-[14]: #basechart
-[15]: #chart
-[16]: #createaccessorproxy
-[17]: #extend
-[18]: #feature
-[19]: #flatten
-[20]: #functor
-[21]: #isarray
-[22]: #iscontinuousscale
-[23]: #isdate
-[24]: #isdefined
-[25]: #isfunction
-[26]: #isobject
-[27]: #isordinalscale
-[28]: #isnotfunction
-[29]: #isundefined
-[30]: #merge
-[31]: #parser
-[32]: #column-js
-[33]: #column
-[34]: #donut-js
-[35]: #donut
-[36]: #grouped-column-js
-[37]: #groupedcolumn
-[38]: #grouped-row-js
-[39]: #groupedrow
-[40]: #line-js
-[41]: #line
-[42]: #row-js
-[43]: #row
-[44]: #scatter-js
-[45]: #scatterplot
-[46]: #stacked-column-js
-[47]: #stackedcolumn
-[48]: #stacked-row-js
-[49]: #stackedrow
-[50]: #waterfall-js
-[51]: #waterfall
-[52]: #scales-js
-[53]: #linearscalefornesteddata
-[54]: #timescalefornesteddata
-[55]: #ordinalscalefornesteddata
+[0]: #base-js
+[1]: #axes
+[2]: #builder
+[3]: #clone
+[4]: #features
+[5]: #margin
+[6]: #mixin
+[7]: #mixout
+[8]: #outerheight
+[9]: #outerwidth
+[10]: #using
+[11]: #appendonce
+[12]: #basechart
+[13]: #chart
+[14]: #createaccessorproxy
+[15]: #extend
+[16]: #feature
+[17]: #flatten
+[18]: #functor
+[19]: #isarray
+[20]: #iscontinuousscale
+[21]: #isdate
+[22]: #isdefined
+[23]: #isfunction
+[24]: #isobject
+[25]: #isordinalscale
+[26]: #isnotfunction
+[27]: #isundefined
+[28]: #merge
+[29]: #parser
+[30]: #helpers-js
+[31]: #
+[32]: #scales-js
+[33]: #linearscalefornesteddata
+[34]: #timescalefornesteddata
+[35]: #ordinalscalefornesteddata
+[36]: #column-js
+[37]: #column
+[38]: #donut-js
+[39]: #donut
+[40]: #grouped-column-js
+[41]: #groupedcolumn
+[42]: #grouped-row-js
+[43]: #groupedrow
+[44]: #line-js
+[45]: #line
+[46]: #row-js
+[47]: #row
+[48]: #scatter-js
+[49]: #scatterplot
+[50]: #stacked-column-js
+[51]: #stackedcolumn
+[52]: #stacked-row-js
+[53]: #stackedrow
+[54]: #waterfall-js
+[55]: #waterfall
 [56]: #arc-labels-js
 [57]: #arclabels
 [58]: #arc-series-js

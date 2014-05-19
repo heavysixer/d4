@@ -76,6 +76,35 @@ describe('d4.parsers.nestedStack', function() {
       total += item.y;
     }.bind(this));
   });
+  it('should be able to weed out undefined values using a custom accessor', function(){
+    var data = [
+      { year: '2010', unitsSold: null, salesman : null },
+      { year: '2011', unitsSold: null, salesman : null },
+      { year: '2010', unitsSold: 100, salesman : 'Gina' },
+      { year: '2011', unitsSold: 100, salesman : 'Gina' },
+      { year: '2010', unitsSold: 400, salesman : 'Average' },
+      { year: '2011', unitsSold: 100, salesman : 'Average' },
+      { year: '2010', unitsSold: null, salesman : null },
+      { year: '2011', unitsSold: null, salesman : null }
+    ];
+    var parsedData = d4.parsers.nestedStack()
+    .x('year')
+    .y('salesman')
+    .value('unitsSold')
+    (data);
+    expect(parsedData.data.length).to.equal(3);
+
+    parsedData = d4.parsers.nestedStack()
+    .x('year')
+    .y('salesman')
+    .value('unitsSold')
+    .defined(function(d){
+      return d.salesman !== null;
+    })
+    (data);
+
+    expect(parsedData.data.length).to.equal(2);
+  });
 
   it('should allow the letter `y` to be used as a key on the `x` dimension', function(){
     var data = [{ x: 100, y : '2001' }, { x: 200, y : '2001' }];

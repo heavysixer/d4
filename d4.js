@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -628,7 +628,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -707,7 +707,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -4339,10 +4339,24 @@
       },
       data: []
     };
+
+    opts.defined = function() {
+      return true;
+    };
+
     opts.nestKey = function() {
       return opts.y.key;
     };
 
+    var removeUndefinedValues = function(items) {
+      var onlyDefined = [];
+      d4.each(items, function(i){
+        if(opts.defined(i)){
+          onlyDefined.push(i);
+        }
+      }.bind(this));
+      return onlyDefined;
+    };
 
     var findValues = function(dimensions, items) {
       ['x', 'y', 'value'].forEach(function(k) {
@@ -4403,6 +4417,7 @@
       }
 
       findValues(opts, opts.data);
+      opts.data = removeUndefinedValues(opts.data);
       opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
 
       stackByDimension(opts.x.key, opts.data);
@@ -4411,6 +4426,11 @@
 
     parser.nestKey = function(funct) {
       opts.nestKey = d4.functor(funct).bind(opts);
+      return parser;
+    };
+
+    parser.defined = function(funct) {
+      opts.defined = d4.functor(funct).bind(opts);
       return parser;
     };
 
