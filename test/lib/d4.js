@@ -1,6 +1,6 @@
-/*! d4 - v0.8.2
+/*! d4 - v0.8.3
  *  License: MIT Expat
- *  Date: 2014-05-06
+ *  Date: 2014-05-19
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -357,8 +357,8 @@
 
   var scaffoldChart = function(selection) {
     this.svg = d4.appendOnce(d3.select(selection), 'svg#chart.d4.chart')
-      .attr('width', this.width + this.margin.left + this.margin.right)
-      .attr('height', this.height + this.margin.top + this.margin.bottom);
+      .attr('width', Math.max(0, this.width + this.margin.left + this.margin.right))
+      .attr('height', Math.max(0, this.height + this.margin.top + this.margin.bottom));
 
     d4.appendOnce(this.svg, 'defs');
     d4.appendOnce(this.svg, 'g.margins')
@@ -1583,7 +1583,7 @@
             var height = this.y.rangeBand() / this.groupsOf;
             var yPos = this.y(d[this.y.$key]) + height * i;
             var gutter = height * 0.1;
-            return yPos + height / 2 + gutter;
+            return yPos + height / 4 + gutter;
           }
         }
       };
@@ -3676,6 +3676,7 @@
   d4.feature('trendLine', function(name) {
     return {
       accessors: {
+        tipSize: 6,
         text: function(d) {
           return d[this.valueKey];
         },
@@ -3712,8 +3713,8 @@
           .attr('viewBox', '0 0 10 10')
           .attr('refX', 10)
           .attr('refY', 5)
-          .attr('markerWidth', 6)
-          .attr('markerHeight', 6)
+          .attr('markerWidth', d4.functor(scope.accessors.tipSize).bind(this)())
+          .attr('markerHeight', d4.functor(scope.accessors.tipSize).bind(this))
           .attr('orient', 'auto')
           .append('path')
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
