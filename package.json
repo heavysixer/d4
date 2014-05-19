@@ -6,6 +6,7 @@
     "type": "git",
     "url": "git://github.com/heavysixer/d4"
   },
+  "main": "d4.js",
   "keywords": [
     "d3.js",
     "visualization",
