@@ -9,6 +9,8 @@ to quickly build data-driven charts with little knowledge of the internals of D3
 For the bleeding edge version of d4 download it directly from the [github](https://github.com/heavysixer/d4) repository. If you prefer a more stable release you can install the latest released tag using a package manager like bower.
 
     $ bower install d4
+    or
+    $ npm install d4
 
 Once you have a local copy of d4 simply include it **after** d3 in your source file.
 
