@@ -11,19 +11,19 @@
     return {
       accessors: {
         x1: function() {
-          return this.x(0);
+          return this.x(this.x.domain()[0]);
         },
 
         x2: function() {
-          return this.x(this.width);
+          return this.x(this.x.domain()[1]);
         },
 
         y1: function() {
-          return this.y(0);
+          return this.y(this.y.domain()[1]);
         },
 
         y2: function() {
-          return this.y(this.height);
+          return this.y(this.y.domain()[0]);
         },
         classes: function() {
           return 'line';
