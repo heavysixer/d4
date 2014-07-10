@@ -205,6 +205,27 @@ describe('d4.base', function() {
       });
     });
 
+    describe('when using a brush', function(){
+      it('should create a bush when needed', function(){
+        var chart = d4.baseChart({ builder : this.builder });
+        chart.brush(function(brush){
+          d4.each(['event', 'x', 'y', 'clamp', 'extent', 'clear', 'empty', 'on'], function(i){
+            expect(brush[i]).to.be.an('function');
+          });
+        });
+        expect(chart.brush()).to.not.be.an('undefined');
+      });
+
+      it('should update the brush scales before rendering', function(){
+        var chart = d4.baseChart({ builder : this.builder });
+        var chartData = [{ x: 1, y: 2 }];
+        chart.brush();
+        d3.select('#chart')
+          .datum(chartData)
+          .call(chart);
+      });
+    });
+
     describe('when using accessors', function() {
       it('should set a custom property for each accessor, which will give you the last assigned value', function(){
         var chart = d4.baseChart({ builder : this.builder });

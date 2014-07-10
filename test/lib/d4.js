@@ -1,6 +1,6 @@
 /*! d4 - v0.8.4
  *  License: MIT Expat
- *  Date: 2014-05-19
+ *  Date: 2014-07-10
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -405,12 +405,24 @@
     return needsParsing ? applyDefaultParser(opts, data) : data;
   };
 
+  var updateBrush = function(opts) {
+    if(d4.isDefined(opts.brush)) {
+      if(opts.brush.x() === null) {
+        opts.brush.x(opts.x);
+      }
+      if(opts.brush.y() === null) {
+        opts.brush.y(opts.y);
+      }
+    }
+  };
+
   var applyScaffold = function(opts) {
     return function(selection) {
       selection.each(function(data) {
         data = prepareData(opts, data);
         scaffoldChart.bind(opts, this)();
         build(opts, data);
+        updateBrush(opts);
       });
     };
   };
@@ -572,6 +584,23 @@
         return opts.axes;
       }
       funct(opts.axes);
+      return chart;
+    };
+
+    /**
+     * This function allows you to configure a selection brush for a chart.
+     * https://github.com/mbostock/d3/wiki/SVG-Controls#brush
+     * @param {Function} funct - function which will return a boolean.
+     * @return {Function} chart instance
+     */
+    chart.brush = function(funct) {
+      if(d4.isUndefined(opts.brush)) {
+        opts.brush = d3.svg.brush();
+      }
+      if (!arguments.length) {
+        return opts.brush;
+      }
+      opts.brushable = d4.functor(funct(opts.brush));
       return chart;
     };
 
@@ -3092,19 +3121,19 @@
     return {
       accessors: {
         x1: function() {
-          return this.x(0);
+          return this.x(this.x.domain()[0]);
         },
 
         x2: function() {
-          return this.x(this.width);
+          return this.x(this.x.domain()[1]);
         },
 
         y1: function() {
-          return this.y(0);
+          return this.y(this.y.domain()[1]);
         },
 
         y2: function() {
-          return this.y(this.height);
+          return this.y(this.y.domain()[0]);
         },
         classes: function() {
           return 'line';
