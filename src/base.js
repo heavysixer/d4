@@ -400,12 +400,24 @@
     return needsParsing ? applyDefaultParser(opts, data) : data;
   };
 
+  var updateBrush = function(opts) {
+    if(d4.isDefined(opts.brush)) {
+      if(opts.brush.x() === null) {
+        opts.brush.x(opts.x);
+      }
+      if(opts.brush.y() === null) {
+        opts.brush.y(opts.y);
+      }
+    }
+  };
+
   var applyScaffold = function(opts) {
     return function(selection) {
       selection.each(function(data) {
         data = prepareData(opts, data);
         scaffoldChart.bind(opts, this)();
         build(opts, data);
+        updateBrush(opts);
       });
     };
   };
