@@ -291,6 +291,7 @@
         left: 40
       },
       mixins: [],
+      brushable: false,
       outerHeight: 460,
       outerWidth: 460,
       width: 400
@@ -567,6 +568,20 @@
         return opts.axes;
       }
       funct(opts.axes);
+      return chart;
+    };
+
+    /**
+     * This function determines if the chart has a brush or not.
+     * https://github.com/mbostock/d3/wiki/SVG-Controls#brush
+     * @param {Function} funct - function which will return a boolean.
+     * @return {Function} chart instance
+     */
+    chart.brushable = function(funct) {
+      if (!arguments.length) {
+        return opts.brushable;
+      }
+      opts.brushable = d4.functor(funct)();
       return chart;
     };
 
