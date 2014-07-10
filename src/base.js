@@ -291,7 +291,6 @@
         left: 40
       },
       mixins: [],
-      brushable: false,
       outerHeight: 460,
       outerWidth: 460,
       width: 400
@@ -572,16 +571,19 @@
     };
 
     /**
-     * This function determines if the chart has a brush or not.
+     * This function allows you to configure a selection brush for a chart.
      * https://github.com/mbostock/d3/wiki/SVG-Controls#brush
      * @param {Function} funct - function which will return a boolean.
      * @return {Function} chart instance
      */
-    chart.brushable = function(funct) {
-      if (!arguments.length) {
-        return opts.brushable;
+    chart.brush = function(funct) {
+      if(d4.isUndefined(opts.brush)) {
+        opts.brush = d3.svg.brush();
       }
-      opts.brushable = d4.functor(funct)();
+      if (!arguments.length) {
+        return opts.brush;
+      }
+      opts.brushable = d4.functor(funct(opts.brush));
       return chart;
     };
 
