@@ -6,10 +6,19 @@
 
     var obj = {
       accessors: {
+        brushstart : function(){},
+        brush: function(){},
+        brushend: function(){}
       },
-      proxies: [brush],
-      render: function(scope) {
-
+      proxies: [{
+        target: brush
+      }],
+      render: function(scope, data, selection) {
+        d4.appendOnce(selection, 'g.' + name)
+        .call(brush.x(this.x).y(this.y)
+        .on('brushstart', d4.functor(scope.accessors.brushstart).bind(this))
+        .on('brush', d4.functor(scope.accessors.brushmove).bind(this))
+        .on('brushend', d4.functor(scope.accessors.brushend).bind(this)));
       }
     };
     return obj;
