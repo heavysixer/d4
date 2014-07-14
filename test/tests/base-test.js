@@ -38,6 +38,54 @@ describe('d4.base', function() {
           expect(x.scale()).to.be.equal('ordinal');
         });
       });
+      it('should pass the settings configured in the accessors along to the features', function(){
+
+        // These are the correctly calculated range points for this chart's settings.
+        var rangePoints = [1,34,67,100];
+        var chartData =[1,2,3,4];
+
+        d4.feature('pathSeries', function(name) {
+          return {
+            render: function(scope, data, selection) {
+              selection.append('g').attr('class', name);
+              var group = selection.select('.' + name).selectAll('g').data(data);
+              group.exit().remove();
+              group.enter().append('g');
+              var path = group.selectAll('path')
+              .data(function(d){
+                return d.values;
+              });
+              path.enter().append('path')
+              .attr('transform', function(d,i) {
+                expect(this.x(d)).to.equal(rangePoints[i]);
+              }.bind(this));
+            }
+          };
+        }).call(this);
+
+        var chart = d4.baseChart().mixin([
+          {
+            'name': 'pathSeries',
+            'feature' : d4.features.pathSeries
+          },
+          {
+            'name': 'xAxis',
+            'feature': d4.features.xAxis
+          }
+        ]);
+        chart.width(200);
+        chart.x(function(x){
+          expect(x.scale()).to.equal('ordinal');
+          x.domain(chartData).rangePoints([1, 100], 0);
+          var points = x.range();
+          d4.each(rangePoints, function(e,i){
+            expect(e).to.equal(points[i]);
+          });
+        });
+        d3.select('#chart')
+          .datum(chartData)
+          .call(chart);
+      });
 
       it('should create accessors for the chosen scale from d3', function(){
         var chart = d4.charts.column();
