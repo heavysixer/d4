@@ -1,6 +1,6 @@
 /*! d4 - v0.8.4
  *  License: MIT Expat
- *  Date: 2014-05-19
+ *  Date: 2014-07-14
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -356,7 +356,7 @@
   };
 
   var scaffoldChart = function(selection) {
-    this.svg = d4.appendOnce(d3.select(selection), 'svg#chart.d4.chart')
+    this.svg = d4.appendOnce(d3.select(selection), 'svg.d4.chart')
       .attr('width', Math.max(0, this.width + this.margin.left + this.margin.right))
       .attr('height', Math.max(0, this.height + this.margin.top + this.margin.bottom));
 
@@ -3092,19 +3092,19 @@
     return {
       accessors: {
         x1: function() {
-          return this.x(0);
+          return this.x(this.x.domain()[0]);
         },
 
         x2: function() {
-          return this.x(this.width);
+          return this.x(this.x.domain()[1]);
         },
 
         y1: function() {
-          return this.y(0);
+          return this.y(this.y.domain()[1]);
         },
 
         y2: function() {
-          return this.y(this.height);
+          return this.y(this.y.domain()[0]);
         },
         classes: function() {
           return 'line';
