@@ -40,7 +40,7 @@ describe('d4.base', function() {
       });
       it('should pass the settings configured in the accessors along to the features', function(){
 
-        // These are the correctly calculated range points for this chart's settings.
+        // These are the previously calculated range points for this chart's settings. based on the supplied chartData and chart width.
         var rangePoints = [1,34,67,100];
         var chartData =[1,2,3,4];
 
@@ -55,6 +55,7 @@ describe('d4.base', function() {
               .data(function(d){
                 return d.values;
               });
+              console.log('set range in feature', this.x.range());
               path.enter().append('path')
               .attr('transform', function(d,i) {
                 expect(this.x(d)).to.equal(rangePoints[i]);
@@ -78,6 +79,7 @@ describe('d4.base', function() {
           expect(x.scale()).to.equal('ordinal');
           x.domain(chartData).rangePoints([1, 100], 0);
           var points = x.range();
+          console.log('set range in test', points);
           d4.each(rangePoints, function(e,i){
             expect(e).to.equal(points[i]);
           });

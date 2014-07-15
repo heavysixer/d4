@@ -1,6 +1,6 @@
 /*! d4 - v0.8.4
  *  License: MIT Expat
- *  Date: 2014-07-14
+ *  Date: 2014-07-15
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -4759,9 +4759,11 @@
         axis.domain([Math.min(axis.$min || 0, ext[0]), axis.$max || ext[1]]);
       }
     }
-    if (!axis.range.$dirty) {
+
+    if (!axis.range.$dirty && !axis.rangeRound.$dirty) {
       axis.range(rangeFor(chart, dimension));
     }
+
     if (!axis.clamp.$dirty) {
       axis.clamp(true);
     }
@@ -4803,7 +4805,8 @@
     if (!axis.domain.$dirty) {
       axis.domain(parsedData);
     }
-    if (!axis.rangeRoundBands.$dirty) {
+
+    if (!axis.rangeRoundBands.$dirty && !axis.rangePoints.$dirty && !axis.rangeBands.$dirty) {
       axis.rangeRoundBands(rangeFor(chart, dimension), bands);
     }
     return axis;
