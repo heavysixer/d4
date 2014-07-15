@@ -1076,6 +1076,24 @@
   };
 
   /**
+   * Helper method to determine if a supplied argument is not null
+   * @param {*} value - the argument to test
+   * @return {Boolean}
+   */
+  d4.isNotNull = function(value) {
+    return !d4.isNull(value);
+  };
+
+  /**
+   * Helper method to determine if a supplied argument is null
+   * @param {*} value - the argument to test
+   * @return {Boolean}
+   */
+  d4.isNull = function(value) {
+    return value === null;
+  };
+
+  /**
    * Helper method to determine if a supplied argument is undefined
    * @param {*} value - the argument to test
    * @return {Boolean}
