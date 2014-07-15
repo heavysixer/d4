@@ -55,7 +55,6 @@ describe('d4.base', function() {
               .data(function(d){
                 return d.values;
               });
-              console.log('set range in feature', this.x.range());
               path.enter().append('path')
               .attr('transform', function(d,i) {
                 expect(this.x(d)).to.equal(rangePoints[i]);
@@ -79,7 +78,6 @@ describe('d4.base', function() {
           expect(x.scale()).to.equal('ordinal');
           x.domain(chartData).rangePoints([1, 100], 0);
           var points = x.range();
-          console.log('set range in test', points);
           d4.each(rangePoints, function(e,i){
             expect(e).to.equal(points[i]);
           });
