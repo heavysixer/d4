@@ -1,4 +1,4 @@
-/*! d4 - v0.8.4
+/*! d4 - v0.8.5
  *  License: MIT Expat
  *  Date: 2014-07-15
  *  Copyright: Mark Daggett, D4 Team
@@ -2774,7 +2774,7 @@
     };
 
     var brushDetectionFunction = function(e) {
-      if(d4.isNull(brush.y())){
+      if (d4.isNull(brush.y())) {
         return function(d) {
           var x = d[this.x.$key];
           var selected = e[0] <= x && x <= e[1];
@@ -2782,7 +2782,7 @@
         }.bind(this);
       }
 
-      if(d4.isNull(brush.x())) {
+      if (d4.isNull(brush.x())) {
         return function(d) {
           var y = d[this.y.$key];
           var selected = e[0] <= y && y <= e[1];
@@ -2820,7 +2820,7 @@
         brushstart: function() {
           this.svg.classed('selecting', true);
         },
-        selection : function(selection) {
+        selection: function(selection) {
           return selection;
         },
         x: function() {
@@ -2842,9 +2842,9 @@
         }
 
         brush
-        .on('brushstart', d4.functor(scope.accessors.brushstart).bind(this))
-        .on('brush', d4.functor(scope.accessors.brushmove).bind(this))
-        .on('brushend', d4.functor(scope.accessors.brushend).bind(this));
+          .on('brushstart', d4.functor(scope.accessors.brushstart).bind(this))
+          .on('brush', d4.functor(scope.accessors.brushmove).bind(this))
+          .on('brushend', d4.functor(scope.accessors.brushend).bind(this));
         d4.appendOnce(selection, 'g.' + name)
           .call(brush);
 
