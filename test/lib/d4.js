@@ -1,6 +1,6 @@
 /*! d4 - v0.8.5
  *  License: MIT Expat
- *  Date: 2014-07-15
+ *  Date: 2014-07-16
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -2803,9 +2803,6 @@
 
     var obj = {
       accessors: {
-        brush: function(obj) {
-          return obj;
-        },
         brushable: function() {
           return d3.selectAll('.brushable');
         },
@@ -2820,6 +2817,11 @@
         brushstart: function() {
           this.svg.classed('selecting', true);
         },
+        clamp : brush.clamp,
+        clear : brush.clear,
+        extent : brush.extent,
+        empty : brush.empty,
+        event : brush.event,
         selection: function(selection) {
           return selection;
         },
@@ -4833,7 +4835,7 @@
       }
     }
 
-    if (!axis.range.$dirty && !axis.rangeRound.$dirty) {
+    if (!axis.range.$dirty) {
       axis.range(rangeFor(chart, dimension));
     }
 

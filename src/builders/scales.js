@@ -45,7 +45,7 @@
       }
     }
 
-    if (!axis.range.$dirty && !axis.rangeRound.$dirty) {
+    if (!axis.range.$dirty) {
       axis.range(rangeFor(chart, dimension));
     }
 
