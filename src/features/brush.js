@@ -43,9 +43,6 @@
 
     var obj = {
       accessors: {
-        brush: function(obj) {
-          return obj;
-        },
         brushable: function() {
           return d3.selectAll('.brushable');
         },
@@ -60,6 +57,11 @@
         brushstart: function() {
           this.svg.classed('selecting', true);
         },
+        clamp : brush.clamp,
+        clear : brush.clear,
+        extent : brush.extent,
+        empty : brush.empty,
+        event : brush.event,
         selection: function(selection) {
           return selection;
         },
