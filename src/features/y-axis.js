@@ -47,6 +47,7 @@
   d4.feature('yAxis', function(name) {
     var axis = d3.svg.axis()
       .orient('left')
+      .tickPadding(10)
       .tickSize(0);
 
     var textRect = function(text, klasses) {

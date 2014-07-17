@@ -1,6 +1,6 @@
 /*! d4 - v0.8.5
  *  License: MIT Expat
- *  Date: 2014-07-16
+ *  Date: 2014-07-17
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -4012,6 +4012,7 @@
   d4.feature('xAxis', function(name) {
     var axis = d3.svg.axis()
       .orient('bottom')
+      .tickPadding(10)
       .tickSize(0);
 
     var textRect = function(text, klasses) {
@@ -4140,6 +4141,7 @@
   d4.feature('yAxis', function(name) {
     var axis = d3.svg.axis()
       .orient('left')
+      .tickPadding(10)
       .tickSize(0);
 
     var textRect = function(text, klasses) {
