@@ -3137,11 +3137,9 @@
           .attr('height', this.height)
           .on('mouseover', function() {
             xLabel.style('display', null);
-            point.style('display', null);
           })
           .on('mouseout', function() {
             xLabel.style('display', 'none');
-            point.style('display', 'none');
           })
           .on('mousemove', d4.functor(scope.accessors.mouseMove).bind(this));
       }
@@ -3157,22 +3155,30 @@
           var selector = '.' + name + ' circle.selectedPoint[data-key="' + datum.key + '"]';
           var circle = this.svg.select(selector);
           circle
+          .style('display', null)
           .attr('transform', 'translate(' + this.x(d[this.x.$key]) + ',' + this.y(d[this.y.$key]) + ')');
         },
 
         mouseMove: function(data) {
           var bisectX = d3.bisector(function(d) {
             return d[this.x.$key];
-          }.bind(this)).left;
+          }.bind(this)).right;
           var overlay = this.svg.select('.' + name + ' rect.overlay')[0][0];
           var x0 = this.x.invert(d3.mouse(overlay)[0]);
           d4.each(data, function(datum){
-            var i = bisectX(datum.values, x0, 1),
-            d0 = datum.values[i - 1],
-            d1 = datum.values[i];
-            d1 = (d4.isUndefined(d1)) ? datum.values[datum.values.length -1] : d1;
-            var d = x0 - d0[this.x.$key] > d1[this.x.$key] - x0 ? d1 : d0;
-            d4.functor(this.features[name].accessors.showDataPoint).bind(this)(d, datum);
+            var i = bisectX(datum.values, x0, 1);
+            var d0 = datum.values[i - 1];
+            if(x0.getTime() >= d0[this.x.$key].getTime()) {
+              var d1 = datum.values[i];
+              d1 = (d4.isUndefined(d1)) ? datum.values[datum.values.length -1] : d1;
+              var d = x0 - d0[this.x.$key] > d1[this.x.$key] - x0 ? d1 : d0;
+              d4.functor(this.features[name].accessors.showDataPoint).bind(this)(d, datum);
+            } else {
+              var selector = '.' + name + ' circle.selectedPoint[data-key="' + datum.key + '"]';
+              var circle = this.svg.select(selector);
+              circle
+              .style('display', 'none');
+            }
           }.bind(this));
         },
 
