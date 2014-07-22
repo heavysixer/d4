@@ -47,6 +47,7 @@
   d4.feature('xAxis', function(name) {
     var axis = d3.svg.axis()
       .orient('bottom')
+      .tickPadding(10)
       .tickSize(0);
 
     var textRect = function(text, klasses) {

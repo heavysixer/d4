@@ -139,6 +139,7 @@ __Parser__ - A parser prepares the data for a chart.
 * [Arc Labels](https://github.com/heavysixer/d4/blob/master/src/features/arc-labels.js)
 * [Arc Series](https://github.com/heavysixer/d4/blob/master/src/features/arc-series.js)
 * [Arrows](https://github.com/heavysixer/d4/blob/master/src/features/arrow.js)
+* [Brush](https://github.com/heavysixer/d4/blob/master/src/features/brush.js)
 * [Column Labels](https://github.com/heavysixer/d4/blob/master/src/features/column-labels.js)
 * [Grid](https://github.com/heavysixer/d4/blob/master/src/features/grid.js)
 * [Grouped Column Series](https://github.com/heavysixer/d4/blob/master/src/features/grouped-column-series.js)
