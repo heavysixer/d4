@@ -3137,7 +3137,7 @@
           .attr('height', this.height)
           .on('mouseover', function() {
             xLabel.style('display', null);
-            point.style('display', null)
+            point.style('display', null);
           })
           .on('mouseout', function() {
             xLabel.style('display', 'none');
@@ -3223,7 +3223,7 @@
    */
   d4.feature('lineSeries', function(name) {
     var line = d3.svg.line();
-    line.interpolate('basis');
+    line.interpolate('linear');
     return {
       accessors: {
         classes: function(d, n) {

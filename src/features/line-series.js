@@ -6,7 +6,7 @@
    */
   d4.feature('lineSeries', function(name) {
     var line = d3.svg.line();
-    line.interpolate('basis');
+    line.interpolate('linear');
     return {
       accessors: {
         classes: function(d, n) {
