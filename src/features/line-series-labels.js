@@ -46,6 +46,7 @@
           return d.key;
         },
 
+        // Fixme: This should be renamed to something more expressive.
         trackMouse: false,
 
         x: function(d) {
