@@ -3175,6 +3175,14 @@
         },
 
         mouseMove: function(data) {
+          var inRange = function(a,b) {
+            if(this.x.$scale === 'time') {
+              return a.getTime() >= b[this.x.$key].getTime();
+            } else {
+              return a >= b[this.x.$key];
+            }
+          };
+
           var bisectX = d3.bisector(function(d) {
             return d[this.x.$key];
           }.bind(this)).right;
@@ -3183,7 +3191,7 @@
           d4.each(data, function(datum, n){
             var i = bisectX(datum.values, x0, 1);
             var d0 = datum.values[i - 1];
-            if(x0.getTime() >= d0[this.x.$key].getTime()) {
+            if(inRange.bind(this)(x0, d0)) {
               var d1 = datum.values[i];
               d1 = (d4.isUndefined(d1)) ? datum.values[datum.values.length -1] : d1;
               var d = x0 - d0[this.x.$key] > d1[this.x.$key] - x0 ? d1 : d0;
@@ -3212,7 +3220,7 @@
           var offset = n * 20;
           label
           .style('display', null)
-          .attr('transform', 'translate(' + this.x(0) + ',' + (this.y(this.y.domain()[1]) + offset) + ')')
+          .attr('transform', 'translate(5,' + offset + ')')
           .text(d4.functor(this.features[name].accessors.pointLabelText).bind(this)(d));
         },
 
