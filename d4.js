@@ -1,4 +1,4 @@
-/*! d4 - v0.8.5
+/*! d4 - v0.8.6
  *  License: MIT Expat
  *  Date: 2014-07-23
  *  Copyright: Mark Daggett, D4 Team
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   console.log(chart.x.domain.$dirty) // false;
+   *                   // false;
    *               }
    *           }
    *       });
@@ -628,7 +628,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      console.log(chart.features());
+     *      
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -707,7 +707,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      console.log(chart.features());
+     *      
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -2817,11 +2817,11 @@
         brushstart: function() {
           this.svg.classed('selecting', true);
         },
-        clamp : brush.clamp,
-        clear : brush.clear,
-        extent : brush.extent,
-        empty : brush.empty,
-        event : brush.event,
+        clamp: brush.clamp,
+        clear: brush.clear,
+        extent: brush.extent,
+        empty: brush.empty,
+        event: brush.event,
         selection: function(selection) {
           return selection;
         },
@@ -3108,18 +3108,18 @@
    * @name lineSeriesLabels
    */
   d4.feature('lineSeriesLabels', function(name) {
-    var addDataPoint = function(scope, data){
+    var addDataPoint = function(scope, data) {
       var point = this.svg.select('.' + name).selectAll('.' + name + ' circle.dataPoint').data(data);
       point.enter().append('circle');
       point.exit().remove();
       point.attr('data-key', function(d) {
         return d.key;
       })
-      .style('display','none')
-      .attr('r', d4.functor(scope.accessors.r).bind(this)())
-      .attr('class',  function(d, n){
-        return d4.functor(scope.accessors.classes).bind(this)(d, n) + ' dataPoint';
-      }.bind(this));
+        .style('display', 'none')
+        .attr('r', d4.functor(scope.accessors.r).bind(this)())
+        .attr('class', function(d, n) {
+          return d4.functor(scope.accessors.classes).bind(this)(d, n) + ' dataPoint';
+        }.bind(this));
     };
 
     var addDataPointLabel = function(scope, data) {
@@ -3128,8 +3128,8 @@
       xLabel.exit().remove();
       xLabel
         .attr('data-key', d4.functor(scope.accessors.key).bind(this))
-        .style('display','none')
-        .attr('class', function(d, n){
+        .style('display', 'none')
+        .attr('class', function(d, n) {
           return d4.functor(scope.accessors.classes).bind(this)(d, n) + ' dataPoint';
         }.bind(this));
     };
@@ -3137,7 +3137,7 @@
     var addOverlay = function(scope) {
       this.svg.select('.' + name).append('rect')
         .attr('class', 'overlay')
-        .style('fill-opacity',0)
+        .style('fill-opacity', 0)
         .attr('width', this.width)
         .attr('height', this.height)
         .on('mouseover', function() {
@@ -3152,7 +3152,7 @@
 
     var displayXValue = function(scope, data) {
       if (d4.functor(scope.accessors.displayPointValue).bind(this)()) {
-        if(d4.isNotFunction(this.x.invert)){
+        if (d4.isNotFunction(this.x.invert)) {
           d4.err(' In order to track the x position of a line series your scale must have an invert() function.  However, your {0} scale does not have the invert() function.', this.x.$scale);
         } else {
           addDataPointLabel.bind(this)(scope, data);
@@ -3170,13 +3170,13 @@
 
         displayPointValue: false,
 
-        key : function(d) {
+        key: function(d) {
           return d.key;
         },
 
         mouseMove: function(data) {
-          var inRange = function(a,b) {
-            if(this.x.$scale === 'time') {
+          var inRange = function(a, b) {
+            if (this.x.$scale === 'time') {
               return a.getTime() >= b[this.x.$key].getTime();
             } else {
               return a >= b[this.x.$key];
@@ -3188,12 +3188,12 @@
           }.bind(this)).right;
           var overlay = this.svg.select('.' + name + ' rect.overlay')[0][0];
           var x0 = this.x.invert(d3.mouse(overlay)[0]);
-          d4.each(data, function(datum, n){
+          d4.each(data, function(datum, n) {
             var i = bisectX(datum.values, x0, 1);
             var d0 = datum.values[i - 1];
-            if(inRange.bind(this)(x0, d0)) {
+            if (inRange.bind(this)(x0, d0)) {
               var d1 = datum.values[i];
-              d1 = (d4.isUndefined(d1)) ? datum.values[datum.values.length -1] : d1;
+              d1 = (d4.isUndefined(d1)) ? datum.values[datum.values.length - 1] : d1;
               var d = x0 - d0[this.x.$key] > d1[this.x.$key] - x0 ? d1 : d0;
               d4.functor(this.features[name].accessors.showDataPoint).bind(this)(d, datum, n);
               d4.functor(this.features[name].accessors.showDataLabel).bind(this)(d, datum, n);
@@ -3201,12 +3201,12 @@
               var selector = '.' + name + ' .dataPoint[data-key="' + datum.key + '"]';
               var point = this.svg.select(selector);
               point
-              .style('display', 'none');
+                .style('display', 'none');
             }
           }.bind(this));
         },
 
-        pointLabelText : function(d) {
+        pointLabelText: function(d) {
           var str = this.x.$key + ': ' + d[this.x.$key];
           str += ' ' + this.y.$key + ': ' + d[this.y.$key];
           return str;
@@ -3214,22 +3214,22 @@
 
         r: 4.5,
 
-        showDataLabel : function(d, datum, n) {
+        showDataLabel: function(d, datum, n) {
           var pointLabelSelector = '.' + name + ' text.dataPoint[data-key="' + datum.key + '"]';
           var label = this.svg.select(pointLabelSelector);
           var offset = n * 20;
           label
-          .style('display', null)
-          .attr('transform', 'translate(5,' + offset + ')')
-          .text(d4.functor(this.features[name].accessors.pointLabelText).bind(this)(d));
+            .style('display', null)
+            .attr('transform', 'translate(5,' + offset + ')')
+            .text(d4.functor(this.features[name].accessors.pointLabelText).bind(this)(d));
         },
 
         showDataPoint: function(d, datum) {
           var pointSelector = '.' + name + ' circle.dataPoint[data-key="' + datum.key + '"]';
           var point = this.svg.select(pointSelector);
           point
-          .style('display', null)
-          .attr('transform', 'translate(' + this.x(d[this.x.$key]) + ',' + this.y(d[this.y.$key]) + ')');
+            .style('display', null)
+            .attr('transform', 'translate(' + this.x(d[this.x.$key]) + ',' + this.y(d[this.y.$key]) + ')');
         },
 
         text: function(d) {
