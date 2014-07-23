@@ -105,8 +105,8 @@
           }.bind(this));
         },
 
-        pointLabelText: function(d) {
-          var str = this.x.$key + ': ' + d[this.x.$key];
+        pointLabelText: function(d, datum) {
+          var str = datum.key + ' ' + this.x.$key + ': ' + d[this.x.$key];
           str += ' ' + this.y.$key + ': ' + d[this.y.$key];
           return str;
         },
@@ -120,7 +120,7 @@
           label
             .style('display', null)
             .attr('transform', 'translate(5,' + offset + ')')
-            .text(d4.functor(this.features[name].accessors.pointLabelText).bind(this)(d));
+            .text(d4.functor(this.features[name].accessors.pointLabelText).bind(this)(d, datum));
         },
 
         showDataPoint: function(d, datum) {
@@ -154,7 +154,9 @@
           .attr('x', d4.functor(scope.accessors.x).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('data-key', d4.functor(scope.accessors.key).bind(this))
-          .attr('class', d4.functor(scope.accessors.classes).bind(this));
+          .attr('class', function(d, n) {
+            return d4.functor(scope.accessors.classes).bind(this)(d, n) + ' seriesLabel';
+          }.bind(this));
         displayXValue.bind(this)(scope, data, selection);
 
         return label;
