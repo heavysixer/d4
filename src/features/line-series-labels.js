@@ -91,7 +91,7 @@
         showDataLabel : function(d, datum, n) {
           var pointLabelSelector = '.' + name + ' text.dataPointLabel[data-key="' + datum.key + '"]';
           var label = this.svg.select(pointLabelSelector);
-          var offset = n * 40;
+          var offset = n * 20;
           label
           .style('display', null)
           .attr('transform', 'translate(' + this.x(0) + ',' + (this.y(this.y.domain()[1]) + offset) + ')')
