@@ -1,4 +1,4 @@
-/*! d4 - v0.8.6
+/*! d4 - v0.8.7
  *  License: MIT Expat
  *  Date: 2014-07-28
  *  Copyright: Mark Daggett, D4 Team
@@ -911,7 +911,7 @@
   };
 
   d4.defaultKey = function(d, i) {
-    return (d.key || 0) +'_'+ i;
+    return (d.key || 0) + '_' + i;
   };
 
   /**

@@ -906,7 +906,7 @@
   };
 
   d4.defaultKey = function(d, i) {
-    return (d.key || 0) +'_'+ i;
+    return (d.key || 0) + '_' + i;
   };
 
   /**
