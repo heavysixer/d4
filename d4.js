@@ -1,6 +1,6 @@
 /*! d4 - v0.8.6
  *  License: MIT Expat
- *  Date: 2014-07-23
+ *  Date: 2014-07-28
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -628,7 +628,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -707,7 +707,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -908,6 +908,10 @@
       target[funct].$dirty = false;
       proxy[proxyFunct].$dirty = false;
     });
+  };
+
+  d4.defaultKey = function(d, i) {
+    return (d.key || 0) +'-'+ i;
   };
 
   /**
@@ -2500,9 +2504,7 @@
 
         duration: 750,
 
-        key: function(d, i) {
-          return (d.key || 0) + i;
-        },
+        key: d4.functor(d4.defaultKey),
 
         text: function(d) {
           return d.value;
@@ -2617,9 +2619,7 @@
 
         duration: 750,
 
-        key: function(d, i) {
-          return (d.key || 0) + i;
-        },
+        key: d4.functor(d4.defaultKey),
 
         x: function() {
           return this.width / 2;
@@ -2878,9 +2878,7 @@
     };
     return {
       accessors: {
-        key: function(d, i) {
-          return (d.key || 0) + i;
-        },
+        key: d4.defaultKey,
 
         x: function(d) {
           if (d4.isOrdinalScale(this.x)) {
@@ -3039,9 +3037,7 @@
           }
         },
 
-        key: function(d, i) {
-          return (d.key || 0) + i;
-        },
+        key: d4.functor(d4.defaultKey),
 
         rx: 0,
 
@@ -3281,9 +3277,7 @@
           return 'line stroke series' + n;
         },
 
-        key: function(d, i) {
-          return (d.key || 0) + i;
-        },
+        key: d4.functor(d4.defaultKey),
 
         x: function(d) {
           return this.x(d[this.x.$key]);
@@ -3667,9 +3661,7 @@
         classes: function(d, i) {
           return 'bar fill item' + i + ' ' + sign(d[this.valueKey]) + ' ' + d[this.y.$key];
         },
-        key: function(d, i) {
-          return (d.key || 0) + i;
-        }
+        key: d4.functor(d4.defaultKey)
       },
 
       render: function(scope, data, selection) {
@@ -3681,6 +3673,7 @@
 
         group.enter().append('g')
           .attr('class', function(d, i) {
+            console.log('series',i);
             return 'series' + i + ' ' + this.y.$key;
           }.bind(this));
         group.exit().remove();

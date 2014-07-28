@@ -13,9 +13,7 @@
           return 'line stroke series' + n;
         },
 
-        key: function(d, i) {
-          return (d.key || 0) + i;
-        },
+        key: d4.functor(d4.defaultKey),
 
         x: function(d) {
           return this.x(d[this.x.$key]);

@@ -54,9 +54,7 @@
           }
         },
 
-        key: function(d, i) {
-          return (d.key || 0) + i;
-        },
+        key: d4.functor(d4.defaultKey),
 
         rx: 0,
 

@@ -30,9 +30,7 @@
 
         duration: 750,
 
-        key: function(d, i) {
-          return (d.key || 0) + i;
-        },
+        key: d4.functor(d4.defaultKey),
 
         x: function() {
           return this.width / 2;

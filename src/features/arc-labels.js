@@ -31,9 +31,7 @@
 
         duration: 750,
 
-        key: function(d, i) {
-          return (d.key || 0) + i;
-        },
+        key: d4.functor(d4.defaultKey),
 
         text: function(d) {
           return d.value;

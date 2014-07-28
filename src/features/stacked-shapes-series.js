@@ -50,9 +50,7 @@
         classes: function(d, i) {
           return 'bar fill item' + i + ' ' + sign(d[this.valueKey]) + ' ' + d[this.y.$key];
         },
-        key: function(d, i) {
-          return (d.key || 0) + i;
-        }
+        key: d4.functor(d4.defaultKey)
       },
 
       render: function(scope, data, selection) {
@@ -64,6 +62,7 @@
 
         group.enter().append('g')
           .attr('class', function(d, i) {
+            console.log('series',i);
             return 'series' + i + ' ' + this.y.$key;
           }.bind(this));
         group.exit().remove();
