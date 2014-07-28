@@ -911,7 +911,7 @@
   };
 
   d4.defaultKey = function(d, i) {
-    return (d.key || 0) +'-'+ i;
+    return (d.key || 0) +'_'+ i;
   };
 
   /**
@@ -3673,7 +3673,6 @@
 
         group.enter().append('g')
           .attr('class', function(d, i) {
-            console.log('series',i);
             return 'series' + i + ' ' + this.y.$key;
           }.bind(this));
         group.exit().remove();

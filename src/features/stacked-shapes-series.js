@@ -62,7 +62,6 @@
 
         group.enter().append('g')
           .attr('class', function(d, i) {
-            console.log('series',i);
             return 'series' + i + ' ' + this.y.$key;
           }.bind(this));
         group.exit().remove();
