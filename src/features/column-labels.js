@@ -18,7 +18,7 @@
     };
     return {
       accessors: {
-        key: d4.defaultKey,
+        key: d4.functor(d4.defaultKey),
 
         x: function(d) {
           if (d4.isOrdinalScale(this.x)) {

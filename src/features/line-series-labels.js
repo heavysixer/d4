@@ -69,9 +69,7 @@
 
         displayPointValue: false,
 
-        key: function(d) {
-          return d.key;
-        },
+        key: d4.functor(d4.defaultKey),
 
         mouseMove: function(data) {
           var inRange = function(a, b) {

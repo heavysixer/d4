@@ -47,9 +47,7 @@
       accessors: {
         classes: 'column-label',
 
-        key: function(d, n) {
-          return (d.key || 0) + n;
-        },
+        key: d4.functor(d4.defaultKey),
 
         stagger: true,
 
