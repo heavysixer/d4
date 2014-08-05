@@ -10,6 +10,10 @@ describe('d4.parsers.nestedGroup', function() {
   it('should expose the d4 namespace globally', function() {
     expect(d4).to.not.be.an('undefined');
   });
+  it('should not throw an error when stacking an empty array', function(){
+    var parsedData = d4.parsers.nestedGroup()([]);
+    expect(parsedData.data.length).to.equal(0);
+  });
 
   it('should use default accessors if none or provided', function(){
     var parsedData = d4.parsers.nestedGroup()(this.data);

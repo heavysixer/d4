@@ -1,6 +1,6 @@
 /*! d4 - v0.8.7
  *  License: MIT Expat
- *  Date: 2014-07-28
+ *  Date: 2014-08-05
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -628,7 +628,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -707,7 +707,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -2878,7 +2878,7 @@
     };
     return {
       accessors: {
-        key: d4.defaultKey,
+        key: d4.functor(d4.defaultKey),
 
         x: function(d) {
           if (d4.isOrdinalScale(this.x)) {
@@ -3166,9 +3166,7 @@
 
         displayPointValue: false,
 
-        key: function(d) {
-          return d.key;
-        },
+        key: d4.functor(d4.defaultKey),
 
         mouseMove: function(data) {
           var inRange = function(a, b) {
@@ -3516,9 +3514,7 @@
       accessors: {
         classes: 'column-label',
 
-        key: function(d, n) {
-          return (d.key || 0) + n;
-        },
+        key: d4.functor(d4.defaultKey),
 
         stagger: true,
 
@@ -4674,8 +4670,9 @@
       findValues(opts, opts.data);
       opts.data = removeUndefinedValues(opts.data);
       opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
-
-      stackByDimension(opts.x.key, opts.data);
+      if(opts.data.length > 0){
+        stackByDimension(opts.x.key, opts.data);
+      }
       return opts;
     };
 
@@ -4883,8 +4880,9 @@
 
       findValues(opts, opts.data);
       opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
-
-      stackByDimension(opts.x.key, opts.data);
+      if(opts.data.length > 0){
+        stackByDimension(opts.x.key, opts.data);
+      }
       return opts;
     };
 
