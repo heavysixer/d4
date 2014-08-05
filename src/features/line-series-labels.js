@@ -93,7 +93,7 @@
               d4.functor(this.features[name].accessors.showDataPoint).bind(this)(d, datum, n);
               d4.functor(this.features[name].accessors.showDataLabel).bind(this)(d, datum, n);
             } else {
-              var selector = '.' + name + ' .dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum,n) + '"]';
+              var selector = '.' + name + ' .dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum, n) + '"]';
               var point = this.svg.select(selector);
               point
                 .style('display', 'none');
@@ -110,7 +110,7 @@
         r: 4.5,
 
         showDataLabel: function(d, datum, n) {
-          var pointLabelSelector = '.' + name + ' text.dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum,n) + '"]';
+          var pointLabelSelector = '.' + name + ' text.dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum, n) + '"]';
           var label = this.svg.select(pointLabelSelector);
           var offset = n * 20;
           label
@@ -120,7 +120,7 @@
         },
 
         showDataPoint: function(d, datum, n) {
-          var pointSelector = '.' + name + ' circle.dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum,n) + '"]';
+          var pointSelector = '.' + name + ' circle.dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum, n) + '"]';
           var point = this.svg.select(pointSelector);
           point
             .style('display', null)
