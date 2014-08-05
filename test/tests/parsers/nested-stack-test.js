@@ -28,6 +28,11 @@ describe('d4.parsers.nestedStack', function() {
     }];
   });
 
+  it('should not throw an error when stacking an empty array', function(){
+    var parsedData = d4.parsers.nestedStack()([]);
+    expect(parsedData.data.length).to.equal(0);
+  });
+
   it('should use default accessors if none or provided', function(){
     var parsedData = d4.parsers.nestedStack()(this.data);
     expect(parsedData.x.key).to.equal('x');
