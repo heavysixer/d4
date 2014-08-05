@@ -1,4 +1,4 @@
-/*! d4 - v0.8.7
+/*! d4 - v0.8.8
  *  License: MIT Expat
  *  Date: 2014-08-05
  *  Copyright: Mark Daggett, D4 Team
@@ -4670,7 +4670,7 @@
       findValues(opts, opts.data);
       opts.data = removeUndefinedValues(opts.data);
       opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
-      if(opts.data.length > 0){
+      if (opts.data.length > 0) {
         stackByDimension(opts.x.key, opts.data);
       }
       return opts;
@@ -4880,7 +4880,7 @@
 
       findValues(opts, opts.data);
       opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
-      if(opts.data.length > 0){
+      if (opts.data.length > 0) {
         stackByDimension(opts.x.key, opts.data);
       }
       return opts;

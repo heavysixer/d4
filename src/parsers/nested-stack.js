@@ -194,7 +194,7 @@
       findValues(opts, opts.data);
       opts.data = removeUndefinedValues(opts.data);
       opts.data = nestByDimension(opts.nestKey(), opts.value.key, opts.data);
-      if(opts.data.length > 0){
+      if (opts.data.length > 0) {
         stackByDimension(opts.x.key, opts.data);
       }
       return opts;
