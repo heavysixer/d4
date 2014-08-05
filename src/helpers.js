@@ -75,7 +75,7 @@
   d4.helpers.staggerTextHorizontally = function(text, direction) {
     var move = function(lastRect, rect) {
       var text = d3.select(this);
-      var lastOffset = text.attr('data-last-horizontal-offset') || 1;
+      var lastOffset = +(text.attr('data-last-horizontal-offset') || 1);
       var left = lastRect.left - rect.left;
       var offset = (rect.width - left + lastOffset) * direction;
       text.attr('transform', 'translate(' + offset + ', 0)');
