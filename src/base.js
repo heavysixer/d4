@@ -337,6 +337,7 @@
     opts.mixins.forEach(function(name) {
       parsedData = prepareDataForFeature(opts, name, data);
       selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData, opts.chartArea);
+      opts.features[name].accessors.afterRender.bind(opts)(opts.features[name], parsedData, opts.chartArea, selection);
       addEventsProxy(opts.features[name], selection);
     });
   };
@@ -459,6 +460,9 @@
       var name = mixin.name;
       var overrides = extractOverrides.bind(this)(mixin, name);
       var baseFeature = {
+        accessors : {
+          afterRender: function(){},
+        },
         proxies: []
       };
       mixin[name] = d4.merge(d4.merge(baseFeature, mixin.feature(name)), overrides);

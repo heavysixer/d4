@@ -92,6 +92,7 @@
 
         scope.accessors.selection.bind(this)(selection.select('.brush'));
         scope.accessors.brush.bind(this)(brush);
+        return brush;
       }
     };
     return obj;

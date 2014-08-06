@@ -1,6 +1,6 @@
 /*! d4 - v0.8.8
  *  License: MIT Expat
- *  Date: 2014-08-05
+ *  Date: 2014-08-06
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -342,6 +342,7 @@
     opts.mixins.forEach(function(name) {
       parsedData = prepareDataForFeature(opts, name, data);
       selection = opts.features[name].render.bind(opts)(opts.features[name], parsedData, opts.chartArea);
+      opts.features[name].accessors.afterRender.bind(opts)(opts.features[name], parsedData, opts.chartArea, selection);
       addEventsProxy(opts.features[name], selection);
     });
   };
@@ -464,6 +465,9 @@
       var name = mixin.name;
       var overrides = extractOverrides.bind(this)(mixin, name);
       var baseFeature = {
+        accessors : {
+          afterRender: function(){},
+        },
         proxies: []
       };
       mixin[name] = d4.merge(d4.merge(baseFeature, mixin.feature(name)), overrides);
@@ -628,7 +632,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -707,7 +711,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -2852,6 +2856,7 @@
 
         scope.accessors.selection.bind(this)(selection.select('.brush'));
         scope.accessors.brush.bind(this)(brush);
+        return brush;
       }
     };
     return obj;
@@ -2976,6 +2981,7 @@
           .call(formattedYAxis
             .tickSize(-this.width, 0, 0)
             .tickFormat(''));
+        return selection;
       }
     };
   });
@@ -3304,6 +3310,7 @@
           .attr('d', function(d) {
             return line(d.values);
           });
+        return group;
       }
     };
   });
@@ -4194,6 +4201,7 @@
           positionText.bind(this)(title, aligned, 'title');
           positionText.bind(this)(subtitle, aligned, 'subtitle');
         }
+        return group;
       }
     };
     return obj;
@@ -4327,7 +4335,7 @@
           positionText.bind(this)(subtitle, aligned, 'subtitle');
           positionText.bind(this)(title, aligned, 'title');
         }
-
+        return group;
       }
     };
     return obj;

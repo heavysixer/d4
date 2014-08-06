@@ -644,6 +644,42 @@ describe('d4.base', function() {
         .datum(chartData)
         .call(chart);
     });
+
+    it('should allow you to specify an afterRender function which supplies you the rendered elements', function(){
+      var chart = d4.charts.column();
+      var lameFeature = function(name){
+        return {
+          accessors : {
+            foo : function() {
+              return 'foo';
+            },
+            bar : function() {
+              return 'bar';
+            }
+          },
+          render : function(scope, data, selection) {
+            data.push(1);
+            selection.append('g').attr('class', name);
+            return 'foo';
+          }
+        };
+      };
+      chart.mixin({
+        'name' : 'lameness',
+        'feature' : lameFeature
+      })
+      .using('lameness', function(l){
+        l.afterRender(function(feature, data, chart, selection ){
+          expect(feature.afterRender).to.not.be.an('undefined');
+          expect(data[0]).to.be.equal(1);
+          expect(selection).to.be.equal('foo');
+        });
+      });
+      d3.select('#chart')
+        .datum([])
+        .call(chart);
+    });
+
     it('should not touch existing accessors that were specified in the override object', function(){
       var lameFeature = function(){
         return {

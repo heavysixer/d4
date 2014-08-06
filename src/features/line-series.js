@@ -44,6 +44,7 @@
           .attr('d', function(d) {
             return line(d.values);
           });
+        return group;
       }
     };
   });

@@ -125,7 +125,7 @@
           positionText.bind(this)(subtitle, aligned, 'subtitle');
           positionText.bind(this)(title, aligned, 'title');
         }
-
+        return group;
       }
     };
     return obj;

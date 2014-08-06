@@ -55,6 +55,7 @@
           .call(formattedYAxis
             .tickSize(-this.width, 0, 0)
             .tickFormat(''));
+        return selection;
       }
     };
   });
