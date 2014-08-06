@@ -1,4 +1,4 @@
-/*! d4 - v0.8.8
+/*! d4 - v0.8.9
  *  License: MIT Expat
  *  Date: 2014-08-06
  *  Copyright: Mark Daggett, D4 Team
@@ -465,8 +465,8 @@
       var name = mixin.name;
       var overrides = extractOverrides.bind(this)(mixin, name);
       var baseFeature = {
-        accessors : {
-          afterRender: function(){},
+        accessors: {
+          afterRender: function() {},
         },
         proxies: []
       };

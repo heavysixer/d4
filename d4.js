@@ -1,4 +1,4 @@
-/*! d4 - v0.8.8
+/*! d4 - v0.8.9
  *  License: MIT Expat
  *  Date: 2014-08-06
  *  Copyright: Mark Daggett, D4 Team
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   console.log(chart.x.domain.$dirty) // false;
+   *                   // false;
    *               }
    *           }
    *       });
@@ -465,8 +465,8 @@
       var name = mixin.name;
       var overrides = extractOverrides.bind(this)(mixin, name);
       var baseFeature = {
-        accessors : {
-          afterRender: function(){},
+        accessors: {
+          afterRender: function() {},
         },
         proxies: []
       };
@@ -632,7 +632,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      console.log(chart.features());
+     *      
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -711,7 +711,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      console.log(chart.features());
+     *      
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.

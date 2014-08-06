@@ -460,8 +460,8 @@
       var name = mixin.name;
       var overrides = extractOverrides.bind(this)(mixin, name);
       var baseFeature = {
-        accessors : {
-          afterRender: function(){},
+        accessors: {
+          afterRender: function() {},
         },
         proxies: []
       };
