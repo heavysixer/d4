@@ -1,6 +1,6 @@
 /*! d4 - v0.8.9
  *  License: MIT Expat
- *  Date: 2014-08-06
+ *  Date: 2014-08-08
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -439,6 +439,7 @@
     };
     feature.on = function() {
       feature._proxiedFunctions.on.push(Array.prototype.slice.call(arguments));
+      return feature;
     };
   };
 
@@ -632,7 +633,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -711,7 +712,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.

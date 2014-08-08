@@ -854,6 +854,15 @@ describe('d4.base', function() {
         chart.using('bars');
       }).to.throw(Error, '[d4] You must supply a continuation function in order to use a chart feature.');
     });
+    it('should create a proxy for d3 mouse and touch events for a given selection', function(){
+      var chart = d4.charts.column();
+      chart
+      .using('bars', function(bar){
+        bar.on('mouseup', function(){})
+        .width(function(){});
+        expect(bar.on).to.be.an('function');
+      });
+    });
   });
 
   describe('#builder()', function() {

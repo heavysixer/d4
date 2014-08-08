@@ -1,6 +1,6 @@
 /*! d4 - v0.8.9
  *  License: MIT Expat
- *  Date: 2014-08-06
+ *  Date: 2014-08-08
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -439,6 +439,7 @@
     };
     feature.on = function() {
       feature._proxiedFunctions.on.push(Array.prototype.slice.call(arguments));
+      return feature;
     };
   };
 
