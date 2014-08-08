@@ -434,6 +434,7 @@
     };
     feature.on = function() {
       feature._proxiedFunctions.on.push(Array.prototype.slice.call(arguments));
+      return feature;
     };
   };
 
