@@ -45,7 +45,7 @@ d3.select('someDomElement')
   .call(columnChart);
 ```
 #####Getting Fancy
-d4 allows you to quickly build up sophisticated charts using a declaritive and highly contextual API that allows you to mixin
+d4 allows you to quickly build up sophisticated charts using a declarative and highly contextual API that allows you to mixin
 or mixout features from your chart.
 
 ```javascript
