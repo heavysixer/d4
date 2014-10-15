@@ -1,6 +1,6 @@
 /*! d4 - v0.8.10
  *  License: MIT Expat
- *  Date: 2014-08-08
+ *  Date: 2014-10-15
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -357,15 +357,29 @@
   };
 
   var scaffoldChart = function(selection) {
-    this.svg = d4.appendOnce(d3.select(selection), 'svg.d4.chart')
-      .attr('width', Math.max(0, this.width + this.margin.left + this.margin.right))
-      .attr('height', Math.max(0, this.height + this.margin.top + this.margin.bottom));
+    if (selection.tagName == "svg") {
+      this.container = d3.select(selection)
+        .classed("d4", true)
+        .classed("chart", true)
+        .attr('width', Math.max(0, this.width + this.margin.left + this.margin.right))
+        .attr('height', Math.max(0, this.height + this.margin.top + this.margin.bottom));
+    } else if (selection.tagName == "g") {
+      this.container = d3.select(selection)
+        .classed("d4", true)
+        .classed("chart", true)
 
-    d4.appendOnce(this.svg, 'defs');
-    d4.appendOnce(this.svg, 'g.margins')
+    } else {
+      this.container = d4.appendOnce(d3.select(selection), 'svg.d4.chart')
+        .attr('width', Math.max(0, this.width + this.margin.left + this.margin.right))
+        .attr('height', Math.max(0, this.height + this.margin.top + this.margin.bottom));
+    }
+
+
+    d4.appendOnce(this.container, 'defs');
+    d4.appendOnce(this.container, 'g.margins')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-    this.chartArea = d4.appendOnce(this.svg.select('g.margins'), 'g.chartArea');
+    this.chartArea = d4.appendOnce(this.container.select('g.margins'), 'g.chartArea');
   };
 
   // Normally d4 series elements inside the data array to be in a specific
@@ -524,7 +538,7 @@
       characterEncoding = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
       identifier = characterEncoding.replace('w', 'w#'),
       attributes = '\\[' + whitespace + '*(' + characterEncoding + ')' + whitespace +
-        '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
+      '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
       order = ['TAG', 'ID', 'CLASS'],
       matchers = {
         'ID': new RegExp('#(' + characterEncoding + ')'),
@@ -633,7 +647,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -712,7 +726,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -1432,17 +1446,17 @@
    */
   d4.chart('donut', function donut() {
     return d4.baseChart({
-      config: {
-        accessors: {
-          radius: function() {
-            return Math.min(this.width, this.height) / 2;
-          },
-          arcWidth: function(radius) {
-            return radius / 3;
+        config: {
+          accessors: {
+            radius: function() {
+              return Math.min(this.width, this.height) / 2;
+            },
+            arcWidth: function(radius) {
+              return radius / 3;
+            }
           }
         }
-      }
-    })
+      })
       .mixin(
         [{
           'name': 'arcs',
@@ -1524,12 +1538,12 @@
     };
 
     return d4.baseChart({
-      config: {
-        accessors: {
-          groupsOf: 1
+        config: {
+          accessors: {
+            groupsOf: 1
+          }
         }
-      }
-    })
+      })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.groupedColumnSeries
@@ -1617,26 +1631,26 @@
     };
 
     return d4.baseChart({
-      config: {
-        accessors: {
-          groupsOf: 1
-        },
-        margin: {
-          top: 20,
-          right: 40,
-          bottom: 20,
-          left: 40
-        },
-        axes: {
-          x: {
-            scale: 'linear'
+        config: {
+          accessors: {
+            groupsOf: 1
           },
-          y: {
-            scale: 'ordinal'
+          margin: {
+            top: 20,
+            right: 40,
+            bottom: 20,
+            left: 40
+          },
+          axes: {
+            x: {
+              scale: 'linear'
+            },
+            y: {
+              scale: 'ordinal'
+            }
           }
         }
-      }
-    })
+      })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.groupedColumnSeries
@@ -1762,24 +1776,24 @@
    */
   d4.chart('row', function row() {
     return d4.baseChart({
-      config: {
-        margin: {
-          top: 20,
-          right: 40,
-          bottom: 20,
-          left: 40
-        },
-        valueKey: 'x',
-        axes: {
-          x: {
-            scale: 'linear'
+        config: {
+          margin: {
+            top: 20,
+            right: 40,
+            bottom: 20,
+            left: 40
           },
-          y: {
-            scale: 'ordinal'
+          valueKey: 'x',
+          axes: {
+            x: {
+              scale: 'linear'
+            },
+            y: {
+              scale: 'ordinal'
+            }
           }
         }
-      }
-    })
+      })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries
@@ -1923,18 +1937,18 @@
    */
   d4.chart('scatterPlot', function scatterPlot() {
     return d4.baseChart({
-      builder: scatterPlotBuilder,
-      config: {
-        axes: {
-          x: {
-            scale: 'linear'
-          },
-          z: {
-            scale: 'linear'
+        builder: scatterPlotBuilder,
+        config: {
+          axes: {
+            x: {
+              scale: 'linear'
+            },
+            z: {
+              scale: 'linear'
+            }
           }
         }
-      }
-    })
+      })
       .mixin([{
         'name': 'circles',
         'feature': d4.features.circleSeries,
@@ -2034,19 +2048,19 @@
           }.bind(this))
 
         .rollup(function(leaves) {
-          var text = d3.sum(leaves, function(d) {
-            return d[this.valueKey];
-          }.bind(this));
+            var text = d3.sum(leaves, function(d) {
+              return d[this.valueKey];
+            }.bind(this));
 
-          var size = d3.sum(leaves, function(d) {
-            return Math.max(0, d[this.valueKey]);
-          }.bind(this));
+            var size = d3.sum(leaves, function(d) {
+              return Math.max(0, d[this.valueKey]);
+            }.bind(this));
 
-          return {
-            text: text,
-            size: size
-          };
-        }.bind(this))
+            return {
+              text: text,
+              size: size
+            };
+          }.bind(this))
           .entries(arr);
       };
 
@@ -2178,19 +2192,19 @@
           }.bind(this))
 
         .rollup(function(leaves) {
-          var text = d3.sum(leaves, function(d) {
-            return d[this.valueKey];
-          }.bind(this));
+            var text = d3.sum(leaves, function(d) {
+              return d[this.valueKey];
+            }.bind(this));
 
-          var size = d3.sum(leaves, function(d) {
-            return Math.max(0, d[this.valueKey]);
-          }.bind(this));
+            var size = d3.sum(leaves, function(d) {
+              return Math.max(0, d[this.valueKey]);
+            }.bind(this));
 
-          return {
-            text: text,
-            size: size
-          };
-        }.bind(this))
+            return {
+              text: text,
+              size: size
+            };
+          }.bind(this))
           .entries(arr);
       };
 
@@ -2218,23 +2232,23 @@
     };
 
     return d4.baseChart({
-      config: {
-        margin: {
-          top: 20,
-          right: 40,
-          bottom: 20,
-          left: 40
-        },
-        axes: {
-          x: {
-            scale: 'linear'
+        config: {
+          margin: {
+            top: 20,
+            right: 40,
+            bottom: 20,
+            left: 40
           },
-          y: {
-            scale: 'ordinal'
+          axes: {
+            x: {
+              scale: 'linear'
+            },
+            y: {
+              scale: 'ordinal'
+            }
           }
         }
-      }
-    })
+      })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries
@@ -2453,8 +2467,8 @@
    */
   d4.chart('waterfall', function waterfallChart() {
     return d4.baseChart({
-      builder: waterfallChartBuilder
-    })
+        builder: waterfallChartBuilder
+      })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries,
@@ -2725,7 +2739,7 @@
         }
       },
       render: function(scope, data, selection) {
-        var defs = this.svg.select('defs');
+        var defs = this.container.select('defs');
 
         d4.appendOnce(defs, 'marker#' + name + '-end')
           .attr('viewBox', '0 0 10 10')
@@ -2749,7 +2763,7 @@
 
         d4.appendOnce(selection, 'g.' + name);
 
-        var arrow = d4.appendOnce(this.svg.select('.' + name), 'line')
+        var arrow = d4.appendOnce(this.container.select('.' + name), 'line')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
           .attr('x2', d4.functor(scope.accessors.x2).bind(this))
@@ -2812,7 +2826,7 @@
           return d3.selectAll('.brushable');
         },
         brushend: function() {
-          this.svg.classed('selecting', !d3.event.target.empty());
+          this.container.classed('selecting', !d3.event.target.empty());
         },
         brushmove: function() {
           var e = d3.event.target.extent();
@@ -2820,7 +2834,7 @@
           this.features[name].accessors.brushable().classed('selected', brushDetected);
         },
         brushstart: function() {
-          this.svg.classed('selecting', true);
+          this.container.classed('selecting', true);
         },
         clamp: brush.clamp,
         clear: brush.clear,
@@ -2910,7 +2924,7 @@
       },
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var label = this.svg.select('.' + name).selectAll('.' + name)
+        var label = this.container.select('.' + name).selectAll('.' + name)
           .data(data, d4.functor(scope.accessors.key).bind(this));
         label.enter().append('text');
         label.exit().remove();
@@ -3076,7 +3090,7 @@
       },
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var group = this.svg.select('.' + name).selectAll('g')
+        var group = this.container.select('.' + name).selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
         group.enter().append('g');
         group.exit().remove();
@@ -3112,7 +3126,7 @@
    */
   d4.feature('lineSeriesLabels', function(name) {
     var addDataPoint = function(scope, data) {
-      var point = this.svg.select('.' + name).selectAll('.' + name + ' circle.dataPoint').data(data);
+      var point = this.container.select('.' + name).selectAll('.' + name + ' circle.dataPoint').data(data);
       point.enter().append('circle');
       point.exit().remove();
       point.attr('data-key', d4.functor(scope.accessors.key).bind(this))
@@ -3124,7 +3138,7 @@
     };
 
     var addDataPointLabel = function(scope, data) {
-      var xLabel = this.svg.select('.' + name).selectAll('.' + name + ' text.dataPoint').data(data);
+      var xLabel = this.container.select('.' + name).selectAll('.' + name + ' text.dataPoint').data(data);
       xLabel.enter().append('text');
       xLabel.exit().remove();
       xLabel
@@ -3136,16 +3150,16 @@
     };
 
     var addOverlay = function(scope) {
-      this.svg.select('.' + name).append('rect')
+      this.container.select('.' + name).append('rect')
         .attr('class', 'overlay')
         .style('fill-opacity', 0)
         .attr('width', this.width)
         .attr('height', this.height)
         .on('mouseover', function() {
-          this.svg.selectAll('.' + name + ' .dataPoint').style('display', null);
+          this.container.selectAll('.' + name + ' .dataPoint').style('display', null);
         }.bind(this))
         .on('mouseout', function() {
-          this.svg.selectAll('.' + name + ' .dataPoint').style('display', 'none');
+          this.container.selectAll('.' + name + ' .dataPoint').style('display', 'none');
         }.bind(this))
         .on('mousemove', d4.functor(scope.accessors.mouseMove).bind(this));
 
@@ -3185,7 +3199,7 @@
           var bisectX = d3.bisector(function(d) {
             return d[this.x.$key];
           }.bind(this)).right;
-          var overlay = this.svg.select('.' + name + ' rect.overlay')[0][0];
+          var overlay = this.container.select('.' + name + ' rect.overlay')[0][0];
           var x0 = this.x.invert(d3.mouse(overlay)[0]);
           d4.each(data, function(datum, n) {
             var i = bisectX(datum.values, x0, 1);
@@ -3198,7 +3212,7 @@
               d4.functor(this.features[name].accessors.showDataLabel).bind(this)(d, datum, n);
             } else {
               var selector = '.' + name + ' .dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum, n) + '"]';
-              var point = this.svg.select(selector);
+              var point = this.container.select(selector);
               point
                 .style('display', 'none');
             }
@@ -3215,7 +3229,7 @@
 
         showDataLabel: function(d, datum, n) {
           var pointLabelSelector = '.' + name + ' text.dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum, n) + '"]';
-          var label = this.svg.select(pointLabelSelector);
+          var label = this.container.select(pointLabelSelector);
           var offset = n * 20;
           label
             .style('display', null)
@@ -3225,7 +3239,7 @@
 
         showDataPoint: function(d, datum, n) {
           var pointSelector = '.' + name + ' circle.dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum, n) + '"]';
-          var point = this.svg.select(pointSelector);
+          var point = this.container.select(pointSelector);
           point
             .style('display', null)
             .attr('transform', 'translate(' + this.x(d[this.x.$key]) + ',' + this.y(d[this.y.$key]) + ')');
@@ -3246,7 +3260,7 @@
 
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var label = this.svg.select('.' + name).selectAll('.' + name).data(data);
+        var label = this.container.select('.' + name).selectAll('.' + name).data(data);
         label.enter().append('text');
         label.exit().remove();
         label.attr('class', 'line-series-label')
@@ -3350,7 +3364,7 @@
       },
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var referenceLine = d4.appendOnce(this.svg.select('.' + name), 'line')
+        var referenceLine = d4.appendOnce(this.container.select('.' + name), 'line')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
           .attr('x2', d4.functor(scope.accessors.x2).bind(this))
@@ -3422,7 +3436,7 @@
 
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var group = this.svg.select('.' + name).selectAll('g')
+        var group = this.container.select('.' + name).selectAll('g')
           .data(data)
           .enter().append('g')
           .attr('class', function(d, i) {
@@ -3563,7 +3577,7 @@
 
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var group = this.svg.select('.' + name).selectAll('g')
+        var group = this.container.select('.' + name).selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
         group.enter().append('g')
           .attr('class', function(d, i) {
@@ -3670,7 +3684,7 @@
         selection.append('g').attr('class', name);
 
         // create data join with the series data
-        var group = this.svg.select('.' + name).selectAll('g')
+        var group = this.container.select('.' + name).selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
 
         group.enter().append('g')
@@ -3941,7 +3955,7 @@
 
       },
       render: function(scope, data, selection) {
-        var defs = this.svg.select('defs');
+        var defs = this.container.select('defs');
 
         d4.appendOnce(defs, 'marker#' + name + '-start')
           .attr('viewBox', '0 0 10 10')
@@ -3954,14 +3968,14 @@
           .attr('d', 'M 0 0 L 10 5 L 0 10 z');
 
         d4.appendOnce(selection, 'g.' + name);
-        var trendLine = d4.appendOnce(this.svg.select('.' + name), 'line.line')
+        var trendLine = d4.appendOnce(this.container.select('.' + name), 'line.line')
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
           .attr('x2', d4.functor(scope.accessors.x2).bind(this))
           .attr('y1', d4.functor(scope.accessors.y1).bind(this))
           .attr('y2', d4.functor(scope.accessors.y2).bind(this))
           .attr('marker-end', 'url(#' + name + '-start)');
 
-        d4.appendOnce(this.svg.select('.' + name), 'text.trendLine-label')
+        d4.appendOnce(this.container.select('.' + name), 'text.trendLine-label')
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('x', d4.functor(scope.accessors.textX).bind(this))
           .attr('y', d4.functor(scope.accessors.textY).bind(this));
@@ -4032,7 +4046,7 @@
 
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var lines = this.svg.select('.' + name).selectAll('.' + name).data(data);
+        var lines = this.container.select('.' + name).selectAll('.' + name).data(data);
         lines.enter().append('line');
         lines.exit().remove();
         lines
@@ -4139,7 +4153,7 @@
 
     var positionText = function(obj, aligned, klass) {
       if (obj.text) {
-        var axis = this.svg.selectAll('.x.axis');
+        var axis = this.container.selectAll('.x.axis');
         var axisBB = axis.node().getBBox();
         var textHeight = obj.height * 0.8;
         var text = axis.append('text')
@@ -4184,7 +4198,7 @@
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = this.svg.select('g.margins')
+        var group = this.container.select('g.margins')
           .append('g')
           .attr('class', 'x axis ' + name)
           .attr('data-scale', this.x.$scale)
@@ -4269,7 +4283,7 @@
 
     var positionText = function(obj, aligned, klass) {
       if (obj.text) {
-        var axis = this.svg.selectAll('.y.axis');
+        var axis = this.container.selectAll('.y.axis');
         var axisBB = axis.node().getBBox();
         var textHeight = obj.height * 0.8;
         var text = axis.append('text')
@@ -4304,6 +4318,8 @@
         subtitle: undefined,
 
         title: undefined,
+
+        wrap: true,
       },
       proxies: [{
         target: axis
@@ -4313,21 +4329,25 @@
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
+        var wrap = d4.functor(scope.accessors.wrap).bind(this)();
 
-        var group = this.svg.select('g.margins')
+        var group = this.container.select('g.margins')
           .append('g')
           .attr('class', 'y axis ' + name)
           .attr('data-scale', this.y.$scale)
           .call(axis);
 
-        group.selectAll('.tick text')
-          .call(d4.helpers.wrapText, this.margin[aligned]);
+        if (wrap) {
+          group.selectAll('.tick text')
+            .call(d4.helpers.wrapText, this.margin[aligned]);
+        }
+
         alignAxis.bind(this)(aligned, group);
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
-          this.svg.selectAll('.y.axis .tick text').call(d4.helpers.staggerTextHorizontally, -1);
+          this.container.selectAll('.y.axis .tick text').call(d4.helpers.staggerTextHorizontally, -1);
         }
         if (aligned === 'left') {
           positionText.bind(this)(title, aligned, 'title');

@@ -58,7 +58,7 @@
 
     var positionText = function(obj, aligned, klass) {
       if (obj.text) {
-        var axis = this.svg.selectAll('.y.axis');
+        var axis = this.container.selectAll('.y.axis');
         var axisBB = axis.node().getBBox();
         var textHeight = obj.height * 0.8;
         var text = axis.append('text')
@@ -93,6 +93,8 @@
         subtitle: undefined,
 
         title: undefined,
+
+        wrap: true,
       },
       proxies: [{
         target: axis
@@ -102,21 +104,25 @@
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
+        var wrap = d4.functor(scope.accessors.wrap).bind(this)();
 
-        var group = this.svg.select('g.margins')
+        var group = this.container.select('g.margins')
           .append('g')
           .attr('class', 'y axis ' + name)
           .attr('data-scale', this.y.$scale)
           .call(axis);
 
-        group.selectAll('.tick text')
-          .call(d4.helpers.wrapText, this.margin[aligned]);
+        if (wrap) {
+          group.selectAll('.tick text')
+            .call(d4.helpers.wrapText, this.margin[aligned]);
+        }
+
         alignAxis.bind(this)(aligned, group);
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
-          this.svg.selectAll('.y.axis .tick text').call(d4.helpers.staggerTextHorizontally, -1);
+          this.container.selectAll('.y.axis .tick text').call(d4.helpers.staggerTextHorizontally, -1);
         }
         if (aligned === 'left') {
           positionText.bind(this)(title, aligned, 'title');

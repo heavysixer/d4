@@ -47,7 +47,7 @@
           return d3.selectAll('.brushable');
         },
         brushend: function() {
-          this.svg.classed('selecting', !d3.event.target.empty());
+          this.container.classed('selecting', !d3.event.target.empty());
         },
         brushmove: function() {
           var e = d3.event.target.extent();
@@ -55,7 +55,7 @@
           this.features[name].accessors.brushable().classed('selected', brushDetected);
         },
         brushstart: function() {
-          this.svg.classed('selecting', true);
+          this.container.classed('selecting', true);
         },
         clamp: brush.clamp,
         clear: brush.clear,

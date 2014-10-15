@@ -31,7 +31,7 @@
       },
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var referenceLine = d4.appendOnce(this.svg.select('.' + name), 'line')
+        var referenceLine = d4.appendOnce(this.container.select('.' + name), 'line')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
           .attr('x2', d4.functor(scope.accessors.x2).bind(this))

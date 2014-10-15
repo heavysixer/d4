@@ -44,7 +44,7 @@
       },
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var label = this.svg.select('.' + name).selectAll('.' + name)
+        var label = this.container.select('.' + name).selectAll('.' + name)
           .data(data, d4.functor(scope.accessors.key).bind(this));
         label.enter().append('text');
         label.exit().remove();

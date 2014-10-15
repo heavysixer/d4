@@ -352,15 +352,29 @@
   };
 
   var scaffoldChart = function(selection) {
-    this.svg = d4.appendOnce(d3.select(selection), 'svg.d4.chart')
-      .attr('width', Math.max(0, this.width + this.margin.left + this.margin.right))
-      .attr('height', Math.max(0, this.height + this.margin.top + this.margin.bottom));
+    if (selection.tagName == "svg") {
+      this.container = d3.select(selection)
+        .classed("d4", true)
+        .classed("chart", true)
+        .attr('width', Math.max(0, this.width + this.margin.left + this.margin.right))
+        .attr('height', Math.max(0, this.height + this.margin.top + this.margin.bottom));
+    } else if (selection.tagName == "g") {
+      this.container = d3.select(selection)
+        .classed("d4", true)
+        .classed("chart", true)
 
-    d4.appendOnce(this.svg, 'defs');
-    d4.appendOnce(this.svg, 'g.margins')
+    } else {
+      this.container = d4.appendOnce(d3.select(selection), 'svg.d4.chart')
+        .attr('width', Math.max(0, this.width + this.margin.left + this.margin.right))
+        .attr('height', Math.max(0, this.height + this.margin.top + this.margin.bottom));
+    }
+
+
+    d4.appendOnce(this.container, 'defs');
+    d4.appendOnce(this.container, 'g.margins')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
-    this.chartArea = d4.appendOnce(this.svg.select('g.margins'), 'g.chartArea');
+    this.chartArea = d4.appendOnce(this.container.select('g.margins'), 'g.chartArea');
   };
 
   // Normally d4 series elements inside the data array to be in a specific
@@ -519,7 +533,7 @@
       characterEncoding = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
       identifier = characterEncoding.replace('w', 'w#'),
       attributes = '\\[' + whitespace + '*(' + characterEncoding + ')' + whitespace +
-        '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
+      '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
       order = ['TAG', 'ID', 'CLASS'],
       matchers = {
         'ID': new RegExp('#(' + characterEncoding + ')'),

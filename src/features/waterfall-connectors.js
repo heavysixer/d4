@@ -59,7 +59,7 @@
 
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var lines = this.svg.select('.' + name).selectAll('.' + name).data(data);
+        var lines = this.container.select('.' + name).selectAll('.' + name).data(data);
         lines.enter().append('line');
         lines.exit().remove();
         lines
