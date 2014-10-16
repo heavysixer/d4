@@ -374,59 +374,6 @@ describe('d4.base', function() {
         expect(chart.marginLeft()).to.equal(500);
       });
     });
-
-    describe('when appending a chart', function() {
-      it('should append an svg to draw the chart in if the target is not an svg', function() {
-        var chartData = [{
-          x: '2010',
-          y: -10
-        }];
-        var chart = d4.baseChart();
-
-        d3.select('div#chart')
-          .datum(chartData)
-          .call(chart);
-
-        expect(function() {
-          d3.selectAll('div#chart > svg.chart.d4')[0].to.have.length(1);
-        });
-      });
-
-      it('should draw in an svg if the target an svg', function() {
-        var chartData = [{
-          x: '2010',
-          y: -10
-        }];
-        var chart = d4.baseChart();
-
-        d3.select('#chart')
-          .append('svg')
-          .datum(chartData)
-          .call(chart);
-
-        expect(function() {
-          d3.selectAll('#chart > svg.chart.d4')[0].to.have.length(1);
-        });
-      });
-
-      it('should draw in a g if the target is a g', function() {
-        var chartData = [{
-          x: '2010',
-          y: -10
-        }];
-        var chart = d4.baseChart();
-
-        d3.select('#chart')
-          .append('svg')
-          .append('g')
-          .datum(chartData)
-          .call(chart);
-
-        expect(function() {
-          d3.selectAll('#chart > svg > g.chart.d4')[0].to.have.length(1);
-        });
-      });
-    });
   });
 
   describe('#outerWidth()', function(){
