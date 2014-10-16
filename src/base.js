@@ -533,7 +533,7 @@
       characterEncoding = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
       identifier = characterEncoding.replace('w', 'w#'),
       attributes = '\\[' + whitespace + '*(' + characterEncoding + ')' + whitespace +
-      '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
+        '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
       order = ['TAG', 'ID', 'CLASS'],
       matchers = {
         'ID': new RegExp('#(' + characterEncoding + ')'),

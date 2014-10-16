@@ -68,26 +68,26 @@
     };
 
     return d4.baseChart({
-        config: {
-          accessors: {
-            groupsOf: 1
+      config: {
+        accessors: {
+          groupsOf: 1
+        },
+        margin: {
+          top: 20,
+          right: 40,
+          bottom: 20,
+          left: 40
+        },
+        axes: {
+          x: {
+            scale: 'linear'
           },
-          margin: {
-            top: 20,
-            right: 40,
-            bottom: 20,
-            left: 40
-          },
-          axes: {
-            x: {
-              scale: 'linear'
-            },
-            y: {
-              scale: 'ordinal'
-            }
+          y: {
+            scale: 'ordinal'
           }
         }
-      })
+      }
+    })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.groupedColumnSeries
