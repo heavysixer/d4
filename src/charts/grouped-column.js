@@ -68,12 +68,12 @@
     };
 
     return d4.baseChart({
-      config: {
-        accessors: {
-          groupsOf: 1
+        config: {
+          accessors: {
+            groupsOf: 1
+          }
         }
-      }
-    })
+      })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.groupedColumnSeries

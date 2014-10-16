@@ -79,19 +79,19 @@
           }.bind(this))
 
         .rollup(function(leaves) {
-          var text = d3.sum(leaves, function(d) {
-            return d[this.valueKey];
-          }.bind(this));
+            var text = d3.sum(leaves, function(d) {
+              return d[this.valueKey];
+            }.bind(this));
 
-          var size = d3.sum(leaves, function(d) {
-            return Math.max(0, d[this.valueKey]);
-          }.bind(this));
+            var size = d3.sum(leaves, function(d) {
+              return Math.max(0, d[this.valueKey]);
+            }.bind(this));
 
-          return {
-            text: text,
-            size: size
-          };
-        }.bind(this))
+            return {
+              text: text,
+              size: size
+            };
+          }.bind(this))
           .entries(arr);
       };
 
@@ -119,23 +119,23 @@
     };
 
     return d4.baseChart({
-      config: {
-        margin: {
-          top: 20,
-          right: 40,
-          bottom: 20,
-          left: 40
-        },
-        axes: {
-          x: {
-            scale: 'linear'
+        config: {
+          margin: {
+            top: 20,
+            right: 40,
+            bottom: 20,
+            left: 40
           },
-          y: {
-            scale: 'ordinal'
+          axes: {
+            x: {
+              scale: 'linear'
+            },
+            y: {
+              scale: 'ordinal'
+            }
           }
         }
-      }
-    })
+      })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries
