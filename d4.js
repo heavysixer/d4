@@ -1,6 +1,6 @@
 /*! d4 - v0.8.10
  *  License: MIT Expat
- *  Date: 2014-10-16
+ *  Date: 2014-10-17
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -538,7 +538,7 @@
       characterEncoding = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+',
       identifier = characterEncoding.replace('w', 'w#'),
       attributes = '\\[' + whitespace + '*(' + characterEncoding + ')' + whitespace +
-      '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
+        '*(?:([*^$|!~]?=)' + whitespace + '*(?:([\'"])((?:\\\\.|[^\\\\])*?)\\3|(' + identifier + ')|)|)' + whitespace + '*\\]',
       order = ['TAG', 'ID', 'CLASS'],
       matchers = {
         'ID': new RegExp('#(' + characterEncoding + ')'),
@@ -1446,17 +1446,17 @@
    */
   d4.chart('donut', function donut() {
     return d4.baseChart({
-        config: {
-          accessors: {
-            radius: function() {
-              return Math.min(this.width, this.height) / 2;
-            },
-            arcWidth: function(radius) {
-              return radius / 3;
-            }
+      config: {
+        accessors: {
+          radius: function() {
+            return Math.min(this.width, this.height) / 2;
+          },
+          arcWidth: function(radius) {
+            return radius / 3;
           }
         }
-      })
+      }
+    })
       .mixin(
         [{
           'name': 'arcs',
@@ -1538,12 +1538,12 @@
     };
 
     return d4.baseChart({
-        config: {
-          accessors: {
-            groupsOf: 1
-          }
+      config: {
+        accessors: {
+          groupsOf: 1
         }
-      })
+      }
+    })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.groupedColumnSeries
@@ -1631,26 +1631,26 @@
     };
 
     return d4.baseChart({
-        config: {
-          accessors: {
-            groupsOf: 1
+      config: {
+        accessors: {
+          groupsOf: 1
+        },
+        margin: {
+          top: 20,
+          right: 40,
+          bottom: 20,
+          left: 40
+        },
+        axes: {
+          x: {
+            scale: 'linear'
           },
-          margin: {
-            top: 20,
-            right: 40,
-            bottom: 20,
-            left: 40
-          },
-          axes: {
-            x: {
-              scale: 'linear'
-            },
-            y: {
-              scale: 'ordinal'
-            }
+          y: {
+            scale: 'ordinal'
           }
         }
-      })
+      }
+    })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.groupedColumnSeries
@@ -1776,24 +1776,24 @@
    */
   d4.chart('row', function row() {
     return d4.baseChart({
-        config: {
-          margin: {
-            top: 20,
-            right: 40,
-            bottom: 20,
-            left: 40
+      config: {
+        margin: {
+          top: 20,
+          right: 40,
+          bottom: 20,
+          left: 40
+        },
+        valueKey: 'x',
+        axes: {
+          x: {
+            scale: 'linear'
           },
-          valueKey: 'x',
-          axes: {
-            x: {
-              scale: 'linear'
-            },
-            y: {
-              scale: 'ordinal'
-            }
+          y: {
+            scale: 'ordinal'
           }
         }
-      })
+      }
+    })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries
@@ -1937,18 +1937,18 @@
    */
   d4.chart('scatterPlot', function scatterPlot() {
     return d4.baseChart({
-        builder: scatterPlotBuilder,
-        config: {
-          axes: {
-            x: {
-              scale: 'linear'
-            },
-            z: {
-              scale: 'linear'
-            }
+      builder: scatterPlotBuilder,
+      config: {
+        axes: {
+          x: {
+            scale: 'linear'
+          },
+          z: {
+            scale: 'linear'
           }
         }
-      })
+      }
+    })
       .mixin([{
         'name': 'circles',
         'feature': d4.features.circleSeries,
@@ -2048,19 +2048,19 @@
           }.bind(this))
 
         .rollup(function(leaves) {
-            var text = d3.sum(leaves, function(d) {
-              return d[this.valueKey];
-            }.bind(this));
+          var text = d3.sum(leaves, function(d) {
+            return d[this.valueKey];
+          }.bind(this));
 
-            var size = d3.sum(leaves, function(d) {
-              return Math.max(0, d[this.valueKey]);
-            }.bind(this));
+          var size = d3.sum(leaves, function(d) {
+            return Math.max(0, d[this.valueKey]);
+          }.bind(this));
 
-            return {
-              text: text,
-              size: size
-            };
-          }.bind(this))
+          return {
+            text: text,
+            size: size
+          };
+        }.bind(this))
           .entries(arr);
       };
 
@@ -2192,19 +2192,19 @@
           }.bind(this))
 
         .rollup(function(leaves) {
-            var text = d3.sum(leaves, function(d) {
-              return d[this.valueKey];
-            }.bind(this));
+          var text = d3.sum(leaves, function(d) {
+            return d[this.valueKey];
+          }.bind(this));
 
-            var size = d3.sum(leaves, function(d) {
-              return Math.max(0, d[this.valueKey]);
-            }.bind(this));
+          var size = d3.sum(leaves, function(d) {
+            return Math.max(0, d[this.valueKey]);
+          }.bind(this));
 
-            return {
-              text: text,
-              size: size
-            };
-          }.bind(this))
+          return {
+            text: text,
+            size: size
+          };
+        }.bind(this))
           .entries(arr);
       };
 
@@ -2232,23 +2232,23 @@
     };
 
     return d4.baseChart({
-        config: {
-          margin: {
-            top: 20,
-            right: 40,
-            bottom: 20,
-            left: 40
+      config: {
+        margin: {
+          top: 20,
+          right: 40,
+          bottom: 20,
+          left: 40
+        },
+        axes: {
+          x: {
+            scale: 'linear'
           },
-          axes: {
-            x: {
-              scale: 'linear'
-            },
-            y: {
-              scale: 'ordinal'
-            }
+          y: {
+            scale: 'ordinal'
           }
         }
-      })
+      }
+    })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries
@@ -2467,8 +2467,8 @@
    */
   d4.chart('waterfall', function waterfallChart() {
     return d4.baseChart({
-        builder: waterfallChartBuilder
-      })
+      builder: waterfallChartBuilder
+    })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries,
