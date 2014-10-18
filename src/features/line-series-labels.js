@@ -8,7 +8,7 @@
    */
   d4.feature('lineSeriesLabels', function(name) {
     var addDataPoint = function(scope, data) {
-      var point = this.svg.select('.' + name).selectAll('.' + name + ' circle.dataPoint').data(data);
+      var point = this.container.select('.' + name).selectAll('.' + name + ' circle.dataPoint').data(data);
       point.enter().append('circle');
       point.exit().remove();
       point.attr('data-key', d4.functor(scope.accessors.key).bind(this))
@@ -20,7 +20,7 @@
     };
 
     var addDataPointLabel = function(scope, data) {
-      var xLabel = this.svg.select('.' + name).selectAll('.' + name + ' text.dataPoint').data(data);
+      var xLabel = this.container.select('.' + name).selectAll('.' + name + ' text.dataPoint').data(data);
       xLabel.enter().append('text');
       xLabel.exit().remove();
       xLabel
@@ -32,16 +32,16 @@
     };
 
     var addOverlay = function(scope) {
-      this.svg.select('.' + name).append('rect')
+      this.container.select('.' + name).append('rect')
         .attr('class', 'overlay')
         .style('fill-opacity', 0)
         .attr('width', this.width)
         .attr('height', this.height)
         .on('mouseover', function() {
-          this.svg.selectAll('.' + name + ' .dataPoint').style('display', null);
+          this.container.selectAll('.' + name + ' .dataPoint').style('display', null);
         }.bind(this))
         .on('mouseout', function() {
-          this.svg.selectAll('.' + name + ' .dataPoint').style('display', 'none');
+          this.container.selectAll('.' + name + ' .dataPoint').style('display', 'none');
         }.bind(this))
         .on('mousemove', d4.functor(scope.accessors.mouseMove).bind(this));
 
@@ -81,7 +81,7 @@
           var bisectX = d3.bisector(function(d) {
             return d[this.x.$key];
           }.bind(this)).right;
-          var overlay = this.svg.select('.' + name + ' rect.overlay')[0][0];
+          var overlay = this.container.select('.' + name + ' rect.overlay')[0][0];
           var x0 = this.x.invert(d3.mouse(overlay)[0]);
           d4.each(data, function(datum, n) {
             var i = bisectX(datum.values, x0, 1);
@@ -94,7 +94,7 @@
               d4.functor(this.features[name].accessors.showDataLabel).bind(this)(d, datum, n);
             } else {
               var selector = '.' + name + ' .dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum, n) + '"]';
-              var point = this.svg.select(selector);
+              var point = this.container.select(selector);
               point
                 .style('display', 'none');
             }
@@ -111,7 +111,7 @@
 
         showDataLabel: function(d, datum, n) {
           var pointLabelSelector = '.' + name + ' text.dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum, n) + '"]';
-          var label = this.svg.select(pointLabelSelector);
+          var label = this.container.select(pointLabelSelector);
           var offset = n * 20;
           label
             .style('display', null)
@@ -121,7 +121,7 @@
 
         showDataPoint: function(d, datum, n) {
           var pointSelector = '.' + name + ' circle.dataPoint[data-key="' + d4.functor(this.features[name].accessors.key).bind(this)(datum, n) + '"]';
-          var point = this.svg.select(pointSelector);
+          var point = this.container.select(pointSelector);
           point
             .style('display', null)
             .attr('transform', 'translate(' + this.x(d[this.x.$key]) + ',' + this.y(d[this.y.$key]) + ')');
@@ -142,7 +142,7 @@
 
       render: function(scope, data, selection) {
         selection.append('g').attr('class', name);
-        var label = this.svg.select('.' + name).selectAll('.' + name).data(data);
+        var label = this.container.select('.' + name).selectAll('.' + name).data(data);
         label.enter().append('text');
         label.exit().remove();
         label.attr('class', 'line-series-label')

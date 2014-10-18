@@ -58,7 +58,7 @@
 
     var positionText = function(obj, aligned, klass) {
       if (obj.text) {
-        var axis = this.svg.selectAll('.x.axis');
+        var axis = this.container.selectAll('.x.axis');
         var axisBB = axis.node().getBBox();
         var textHeight = obj.height * 0.8;
         var text = axis.append('text')
@@ -103,7 +103,7 @@
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = this.svg.select('g.margins')
+        var group = this.container.select('g.margins')
           .append('g')
           .attr('class', 'x axis ' + name)
           .attr('data-scale', this.x.$scale)

@@ -16,6 +16,53 @@ describe('smoke tests', function() {
     container.innerHTML = '<div id="chart"></div>';
   });
 
+  describe('when appending a chart', function() {
+    it('should append an svg and render the chart in if the target is not an svg or g', function() {
+      var chartData = [{
+        x: '2010',
+        y: -10
+      }];
+      var chart = d4.baseChart();
+
+      d3.select('div#chart')
+        .datum(chartData)
+        .call(chart);
+
+      expect(d3.select('div#chart > svg.chart.d4')[0][0]).to.not.be.an('null');
+    });
+
+    it('should render a chart in an svg if the target an svg', function() {
+      var chartData = [{
+        x: '2010',
+        y: -10
+      }];
+      var chart = d4.baseChart();
+
+      d3.select('#chart')
+        .append('svg')
+        .datum(chartData)
+        .call(chart);
+
+      expect(d3.select('#chart > svg.chart.d4')[0][0]).to.not.be.an('null');
+    });
+
+    it('should render a chart in a g if the target is a g', function() {
+      var chartData = [{
+        x: '2010',
+        y: -10
+      }];
+      var chart = d4.baseChart();
+
+      d3.select('#chart')
+        .append('svg')
+        .append('g')
+        .datum(chartData)
+        .call(chart);
+
+      expect(d3.select('#chart > svg > g.chart.d4')[0][0]).to.not.be.an('null');
+    });
+  });
+
   it('should render a basic column chart', function() {
     var data = [
         { x: '2010', y:-10 },

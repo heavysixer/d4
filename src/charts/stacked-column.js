@@ -79,19 +79,19 @@
           }.bind(this))
 
         .rollup(function(leaves) {
-          var text = d3.sum(leaves, function(d) {
-            return d[this.valueKey];
-          }.bind(this));
+            var text = d3.sum(leaves, function(d) {
+              return d[this.valueKey];
+            }.bind(this));
 
-          var size = d3.sum(leaves, function(d) {
-            return Math.max(0, d[this.valueKey]);
-          }.bind(this));
+            var size = d3.sum(leaves, function(d) {
+              return Math.max(0, d[this.valueKey]);
+            }.bind(this));
 
-          return {
-            text: text,
-            size: size
-          };
-        }.bind(this))
+            return {
+              text: text,
+              size: size
+            };
+          }.bind(this))
           .entries(arr);
       };
 

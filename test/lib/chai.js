@@ -2865,7 +2865,7 @@ module.exports = function (chai, util) {
         }
       , get: function(){
           if (this instanceof String || this instanceof Number) {
-            return new Assertion(this.constructor(this));
+            return new Assertion(this.containerstructor(this));
           } else if (this instanceof Boolean) {
             return new Assertion(this == true);
           }

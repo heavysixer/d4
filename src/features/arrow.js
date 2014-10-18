@@ -28,7 +28,7 @@
         }
       },
       render: function(scope, data, selection) {
-        var defs = this.svg.select('defs');
+        var defs = this.container.select('defs');
 
         d4.appendOnce(defs, 'marker#' + name + '-end')
           .attr('viewBox', '0 0 10 10')
@@ -52,7 +52,7 @@
 
         d4.appendOnce(selection, 'g.' + name);
 
-        var arrow = d4.appendOnce(this.svg.select('.' + name), 'line')
+        var arrow = d4.appendOnce(this.container.select('.' + name), 'line')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
           .attr('x2', d4.functor(scope.accessors.x2).bind(this))

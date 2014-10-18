@@ -193,8 +193,8 @@
    */
   d4.chart('waterfall', function waterfallChart() {
     return d4.baseChart({
-      builder: waterfallChartBuilder
-    })
+        builder: waterfallChartBuilder
+      })
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries,
