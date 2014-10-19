@@ -322,10 +322,10 @@
 
   var prepareDataForFeature = function(opts, name, data) {
     var feature = opts.features[name];
-    if (d4.isFunction(feature.prepare)) {
-      data = feature.prepare.bind(opts)(data);
-      if (d4.isUndefined(data)) {
-        err('"feature.prepare()" must return a data array. However, the prepare function for the "{0}" feature did not', name);
+    if (d4.isFunction(feature.beforeRender)) {
+      var result = feature.beforeRender.bind(opts)(data);
+      if (d4.isDefined(result)) {
+        data = result;
       }
     }
     return data;
@@ -352,16 +352,16 @@
   };
 
   var scaffoldChart = function(selection) {
-    if (selection.tagName == "svg") {
+    if (selection.tagName === 'svg') {
       this.container = d3.select(selection)
-        .classed("d4", true)
-        .classed("chart", true)
+        .classed('d4', true)
+        .classed('chart', true)
         .attr('width', Math.max(0, this.width + this.margin.left + this.margin.right))
         .attr('height', Math.max(0, this.height + this.margin.top + this.margin.bottom));
-    } else if (selection.tagName == "g") {
+    } else if (selection.tagName === 'g') {
       this.container = d3.select(selection)
-        .classed("d4", true)
-        .classed("chart", true)
+        .classed('d4', true)
+        .classed('chart', true);
 
     } else {
       this.container = d4.appendOnce(d3.select(selection), 'svg.d4.chart')

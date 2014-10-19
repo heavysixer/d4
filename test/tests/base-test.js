@@ -719,26 +719,6 @@ describe('d4.base', function() {
         .call(chart);
     });
 
-    it('should require a feature\'s prepare function to return a data array', function(){
-      var chartData = [];
-      var overrides = function() {
-        return {
-          prepare : function() {}
-        };
-      };
-      var chart = d4.charts.column();
-      chart.mixin({
-        'name' : 'grid',
-        'feature' : d4.features.grid,
-        'overrides': overrides
-      });
-      expect(function() {
-        d3.select('#chart')
-          .datum(chartData)
-          .call(chart);
-      }).to.throw(Error, ' "feature.prepare()" must return a data array. However, the prepare function for the "grid" feature did not');
-    });
-
     it('should allow the mixin to specify overrides to the feature at the point of being mixed in', function() {
       var spy = chai.spy(function(yAxis) {
         return yAxis.orient('left');
