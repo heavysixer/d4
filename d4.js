@@ -2079,7 +2079,7 @@
             return this.y(d.size) - padding;
           }
         },
-        prepare: function(data) {
+        beforeRender: function(data) {
           return calculateStackTotals.bind(this)(data);
         }
       };
@@ -2223,7 +2223,7 @@
             return this.x(d.size) + padding;
           }
         },
-        prepare: function(data) {
+        beforeRender: function(data) {
           return calculateStackTotals.bind(this)(data);
         }
       };
@@ -4035,7 +4035,7 @@
           }
         }
       },
-      prepare: function(data) {
+      beforeRender: function(data) {
         var d = data.map(function(o) {
           return o.values[0];
         });

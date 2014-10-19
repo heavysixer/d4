@@ -112,7 +112,7 @@
             return this.y(d.size) - padding;
           }
         },
-        prepare: function(data) {
+        beforeRender: function(data) {
           return calculateStackTotals.bind(this)(data);
         }
       };

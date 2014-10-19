@@ -50,7 +50,7 @@
           }
         }
       },
-      prepare: function(data) {
+      beforeRender: function(data) {
         var d = data.map(function(o) {
           return o.values[0];
         });
