@@ -321,12 +321,9 @@
   };
 
   var prepareDataForFeature = function(opts, name, data) {
-    var feature = opts.features[name];
-    if (d4.isFunction(feature.beforeRender)) {
-      var result = feature.beforeRender.bind(opts)(data);
-      if (d4.isDefined(result)) {
-        data = result;
-      }
+    var result = opts.features[name].accessors.beforeRender.bind(opts)(data);
+    if (d4.isDefined(result)) {
+      data = result;
     }
     return data;
   };
@@ -477,6 +474,7 @@
       var baseFeature = {
         accessors: {
           afterRender: function() {},
+          beforeRender : function(){}
         },
         proxies: []
       };
