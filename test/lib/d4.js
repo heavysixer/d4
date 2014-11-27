@@ -1,6 +1,6 @@
-/*! d4 - v0.8.15
+/*! d4 - v0.8.16
  *  License: MIT Expat
- *  Date: 2014-10-19
+ *  Date: 2014-11-27
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -479,7 +479,7 @@
       var baseFeature = {
         accessors: {
           afterRender: function() {},
-          beforeRender : function(){}
+          beforeRender: function() {}
         },
         proxies: []
       };
@@ -2074,13 +2074,13 @@
 
       return {
         accessors: {
+          beforeRender: function(data) {
+            return calculateStackTotals.bind(this)(data);
+          },
           y: function(d) {
             var padding = 5;
             return this.y(d.size) - padding;
           }
-        },
-        beforeRender: function(data) {
-          return calculateStackTotals.bind(this)(data);
         }
       };
     };
@@ -2218,14 +2218,15 @@
 
       return {
         accessors: {
+          beforeRender: function(data) {
+            return calculateStackTotals.bind(this)(data);
+          },
+
           x: function(d) {
             var padding = 5;
             return this.x(d.size) + padding;
           }
         },
-        beforeRender: function(data) {
-          return calculateStackTotals.bind(this)(data);
-        }
       };
     };
 
@@ -4002,6 +4003,13 @@
   d4.feature('waterfallConnectors', function(name) {
     return {
       accessors: {
+        beforeRender: function(data) {
+          var d = data.map(function(o) {
+            return o.values[0];
+          });
+          return d4.flatten(d);
+        },
+
         classes: function(d, i) {
           return 'series' + i;
         },
@@ -4034,12 +4042,6 @@
             return this.y(d[this.y.$key]);
           }
         }
-      },
-      beforeRender: function(data) {
-        var d = data.map(function(o) {
-          return o.values[0];
-        });
-        return d4.flatten(d);
       },
 
       render: function(scope, data, selection) {

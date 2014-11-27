@@ -2,7 +2,7 @@
   "name": "d4",
   "description": "A friendly charting DSL for D3",
   "main": "d4.js",
-  "version": "0.8.10",
+  "version": "0.8.16",
   "dependencies": {
     "d3": "~3.4.4"
   },

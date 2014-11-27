@@ -107,13 +107,13 @@
 
       return {
         accessors: {
+          beforeRender: function(data) {
+            return calculateStackTotals.bind(this)(data);
+          },
           y: function(d) {
             var padding = 5;
             return this.y(d.size) - padding;
           }
-        },
-        beforeRender: function(data) {
-          return calculateStackTotals.bind(this)(data);
         }
       };
     };

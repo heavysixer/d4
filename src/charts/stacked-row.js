@@ -107,14 +107,15 @@
 
       return {
         accessors: {
+          beforeRender: function(data) {
+            return calculateStackTotals.bind(this)(data);
+          },
+
           x: function(d) {
             var padding = 5;
             return this.x(d.size) + padding;
           }
         },
-        beforeRender: function(data) {
-          return calculateStackTotals.bind(this)(data);
-        }
       };
     };
 

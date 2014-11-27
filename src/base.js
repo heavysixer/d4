@@ -474,7 +474,7 @@
       var baseFeature = {
         accessors: {
           afterRender: function() {},
-          beforeRender : function(){}
+          beforeRender: function() {}
         },
         proxies: []
       };

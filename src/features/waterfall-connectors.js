@@ -17,6 +17,13 @@
   d4.feature('waterfallConnectors', function(name) {
     return {
       accessors: {
+        beforeRender: function(data) {
+          var d = data.map(function(o) {
+            return o.values[0];
+          });
+          return d4.flatten(d);
+        },
+
         classes: function(d, i) {
           return 'series' + i;
         },
@@ -49,12 +56,6 @@
             return this.y(d[this.y.$key]);
           }
         }
-      },
-      beforeRender: function(data) {
-        var d = data.map(function(o) {
-          return o.values[0];
-        });
-        return d4.flatten(d);
       },
 
       render: function(scope, data, selection) {
