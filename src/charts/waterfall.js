@@ -109,7 +109,17 @@
           return d.y + d.y0;
         });
       })));
-      ext[0] = Math.min(0, ext[0]);
+
+      if(d4.isDefined(chart[dimension].$min)){
+        ext[0] = chart[dimension].$min;
+      } else {
+        ext[0] = Math.min(0, ext[0]);
+      }
+
+      if(d4.isDefined(chart[dimension].$max)){
+        ext[1] = chart[dimension].$max;
+      }
+
       chart[dimension].domain(ext);
       chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
         .clamp(true)
