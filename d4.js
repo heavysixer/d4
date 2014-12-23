@@ -1,6 +1,6 @@
 /*! d4 - v0.8.16
  *  License: MIT Expat
- *  Date: 2014-11-27
+ *  Date: 2014-12-23
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   // false;
+   *                   console.log(chart.x.domain.$dirty) // false;
    *               }
    *           }
    *       });
@@ -645,7 +645,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -724,7 +724,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      
+     *      console.log(chart.features());
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -2382,7 +2382,13 @@
           return d.y + d.y0;
         });
       })));
-      ext[0] = Math.min(0, ext[0]);
+
+      ext[0] = d4.isDefined(chart[dimension].$min) ? chart[dimension].$min : Math.min(0, ext[0]);
+
+      if(d4.isDefined(chart[dimension].$max)){
+        ext[1] = chart[dimension].$max;
+      }
+
       chart[dimension].domain(ext);
       chart[dimension].range(rangeBoundsFor.bind(this)(chart, dimension))
         .clamp(true)

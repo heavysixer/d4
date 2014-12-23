@@ -110,11 +110,7 @@
         });
       })));
 
-      if(d4.isDefined(chart[dimension].$min)){
-        ext[0] = chart[dimension].$min;
-      } else {
-        ext[0] = Math.min(0, ext[0]);
-      }
+      ext[0] = d4.isDefined(chart[dimension].$min) ? chart[dimension].$min : Math.min(0, ext[0]);
 
       if(d4.isDefined(chart[dimension].$max)){
         ext[1] = chart[dimension].$max;
