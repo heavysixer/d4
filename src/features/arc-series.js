@@ -66,7 +66,7 @@
           .innerRadius(r)
           .outerRadius(r - aw);
 
-        var group = selection.selectAll('g.' + name);
+        var group = d4.appendOnce(selection, 'g.' + name);
         var arcGroups = group.selectAll('g')
           .data(data);
 
