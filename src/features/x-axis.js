@@ -103,9 +103,7 @@
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = this.container.select('g.margins')
-          .append('g')
-          .attr('class', 'x axis ' + name)
+        var group = d4.appendOnce(this.container.select('g.margins'), 'g.x.axis.' + name)
           .attr('data-scale', this.x.$scale)
           .call(axis);
         alignAxis.bind(this)(aligned, group);
