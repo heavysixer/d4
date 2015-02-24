@@ -76,6 +76,7 @@
         renderShapeAttributes.bind(this)(scope, shape);
 
         shape.exit().remove();
+        shapeGroups.exit().remove();
         return shape;
       }
     };

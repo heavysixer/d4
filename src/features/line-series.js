@@ -35,18 +35,23 @@
         var lineGroups = group.selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
 
-        lineGroups.exit().remove();
         lineGroups.enter().append('g')
           .attr('data-key', function(d) {
             return d.key;
           })
           .attr('class', d4.functor(scope.accessors.classes).bind(this));
 
-        d4.appendOnce(lineGroups, 'path');
+        var lines = lineGroups.selectAll('path')
+          .data(function(d) { return [d]; });
 
-        lineGroups.selectAll('path').attr('d', function(d) {
+        lines.enter().append('path');
+        lines.attr('d', function(d) {
           return line(d.values);
         });
+
+        lines.exit().remove();
+        lineGroups.exit().remove();
+
         return lineGroups;
       }
     };
