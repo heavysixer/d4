@@ -89,16 +89,19 @@
       },
 
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var group = this.container.select('.' + name).selectAll('g')
+        var group = d4.appendOnce(selection, 'g.' + name);
+
+        var labelGroups = group.selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
-        group.enter().append('g')
+
+        labelGroups.enter().append('g')
           .attr('class', function(d, i) {
             return 'series' + i + ' ' + this.x.$key;
           }.bind(this));
-        group.exit().remove();
 
-        var text = group.selectAll('text')
+        labelGroups.exit().remove();
+
+        var text = labelGroups.selectAll('text')
           .data(function(d) {
             return d.values;
           }.bind(this));
