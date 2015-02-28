@@ -141,11 +141,10 @@
       },
 
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var label = this.container.select('.' + name).selectAll('.' + name).data(data);
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var label = group.selectAll('.seriesLabel').data(data);
         label.enter().append('text');
-        label.exit().remove();
-        label.attr('class', 'line-series-label')
+        label
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
@@ -155,6 +154,7 @@
           }.bind(this));
         displayXValue.bind(this)(scope, data, selection);
 
+        label.exit().remove();
         return label;
       }
     };

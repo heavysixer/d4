@@ -105,13 +105,17 @@
           .data(function(d) {
             return d.values;
           }.bind(this));
-        text.enter().append('text')
+
+        text.enter().append('text');
+
+        text
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', d4.functor(scope.accessors.textAnchor).bind(this))
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this));
 
+        labelGroups.exit().remove();
         text.exit().remove();
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {

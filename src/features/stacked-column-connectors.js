@@ -57,21 +57,21 @@
       },
 
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var group = this.container.select('.' + name).selectAll('g')
-          .data(data)
-          .enter().append('g')
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var connectorGroups = group.selectAll('g')
+          .data(data);
+
+        connectorGroups.enter().append('g')
           .attr('class', function(d, i) {
             return 'series' + i + ' ' + this.y.$key;
           }.bind(this));
 
-        var lines = group.selectAll('lines')
+        var lines = connectorGroups.selectAll('line')
           .data(function(d) {
             return d.values;
           }.bind(this));
 
         lines.enter().append('line');
-        lines.exit().remove();
         lines
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('stroke-dasharray', '5, 5')
@@ -101,6 +101,8 @@
           });
         }.bind(this));
 
+        connectorGroups.exit().remove();
+        lines.exit().remove();
         return lines;
       }
     };

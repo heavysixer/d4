@@ -59,8 +59,8 @@
       },
 
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var lines = this.container.select('.' + name).selectAll('.' + name).data(data);
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var lines = group.selectAll('line').data(data);
         lines.enter().append('line');
         lines.exit().remove();
         lines
