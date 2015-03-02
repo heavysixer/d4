@@ -43,12 +43,12 @@
         }
       },
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var label = this.container.select('.' + name).selectAll('.' + name)
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var label = group.selectAll('text')
           .data(data, d4.functor(scope.accessors.key).bind(this));
         label.enter().append('text');
         label.exit().remove();
-        label.attr('class', 'column-label')
+        label.attr('class', 'column-label ' + name)
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', anchorText.bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this))

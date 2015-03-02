@@ -115,9 +115,6 @@
           .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this));
 
-        labelGroups.exit().remove();
-        text.exit().remove();
-
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
@@ -139,6 +136,8 @@
             });
           });
         });
+        labelGroups.exit().remove();
+        text.exit().remove();
         return text;
       }
     };

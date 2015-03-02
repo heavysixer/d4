@@ -30,8 +30,10 @@
         }
       },
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var referenceLine = d4.appendOnce(this.container.select('.' + name), 'line')
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var referenceLine = d4.appendOnce(group, 'line');
+
+        group.select('line')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
           .attr('x2', d4.functor(scope.accessors.x2).bind(this))
