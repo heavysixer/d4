@@ -121,6 +121,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-jsbeautifier');
+  grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-mocha');
   grunt.loadNpmTasks('grunt-plato');
   grunt.loadNpmTasks('grunt-remove-logging');

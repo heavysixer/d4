@@ -24,6 +24,7 @@
     "chai": "~1.9.0",
     "chai-spies": "~0.5.1",
     "grunt": "~0.4.0",
+    "grunt-browserify": "^3.5.0",
     "grunt-cli": "~0.1.11",
     "grunt-contrib-concat": "~0.1.3",
     "grunt-contrib-jshint": "~0.1.1",
