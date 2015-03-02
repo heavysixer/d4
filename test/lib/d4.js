@@ -1,6 +1,6 @@
 /*! d4 - v0.8.16
  *  License: MIT Expat
- *  Date: 2014-12-23
+ *  Date: 2015-03-02
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -2679,26 +2679,28 @@
           .innerRadius(r)
           .outerRadius(r - aw);
 
-        var group = selection.selectAll('g.' + name).data(data);
-        group.enter()
-          .append('g')
-          .attr('class', name)
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var arcGroups = group.selectAll('g.' + name + '-group')
+          .data(data);
+
+        arcGroups.enter().append('g');
+
+        arcGroups.attr('class', name + '-group')
           .attr('transform', 'translate(' + x + ',' + y + ')');
 
-        var arcs = group.selectAll('path')
+        var arcs = arcGroups.selectAll('path')
           .data(function(d) {
             return d.values;
           }, d4.functor(scope.accessors.key).bind(this));
 
+        arcs.enter().append('path');
         // update
         arcs.transition()
           .duration(d4.functor(scope.accessors.duration).bind(this)())
           .attrTween('d', arcTween);
 
         // create new elements as needed
-        arcs.enter()
-          .append('path')
-          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+        arcs.attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('data-key', d4.functor(scope.accessors.key).bind(this))
           .attr('d', arc)
           .each(function(d) {
@@ -2707,7 +2709,7 @@
 
         //remove old elements as needed
         arcs.exit().remove();
-        group.exit().remove();
+        arcGroups.exit().remove();
         return arc;
       }
     };
@@ -2928,12 +2930,12 @@
         }
       },
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var label = this.container.select('.' + name).selectAll('.' + name)
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var label = group.selectAll('text')
           .data(data, d4.functor(scope.accessors.key).bind(this));
         label.enter().append('text');
         label.exit().remove();
-        label.attr('class', 'column-label')
+        label.attr('class', 'column-label ' + name)
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', anchorText.bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this))
@@ -2980,28 +2982,31 @@
         var formattedXAxis = d4.functor(scope.accessors.formatXAxis).bind(this)(xAxis);
         var formattedYAxis = d4.functor(scope.accessors.formatYAxis).bind(this)(yAxis);
 
-        selection.append('g').attr('class', 'grid border ' + name)
+        var grid = d4.appendOnce(selection, 'g.grid.border.' + name);
+        var gridBg = d4.appendOnce(grid, 'rect');
+        var gridX = d4.appendOnce(grid, 'g.x.grid.' + name);
+        var gridY = d4.appendOnce(grid, 'g.y.grid.' + name);
+
+        gridBg
           .attr('transform', 'translate(0,0)')
-          .append('rect')
           .attr('x', 0)
           .attr('y', 0)
           .attr('width', this.width)
           .attr('height', this.height);
 
-        selection.append('g')
-          .attr('class', 'x grid ' + name)
+        gridX
           .attr('transform', 'translate(0,' + this.height + ')')
           .call(formattedXAxis
             .tickSize(-this.height, 0, 0)
             .tickFormat(''));
 
-        selection.append('g')
-          .attr('class', 'y grid ' + name)
+        gridY
           .attr('transform', 'translate(0,0)')
           .call(formattedYAxis
             .tickSize(-this.width, 0, 0)
             .tickFormat(''));
-        return selection;
+
+        return grid;
       }
     };
   });
@@ -3094,20 +3099,28 @@
         }
       },
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var group = this.container.select('.' + name).selectAll('g')
+        if (data.length > 0) {
+          this.groupsOf = this.groupsOf || data[0].values.length;
+        }
+
+        var group = d4.appendOnce(selection, 'g.' + name);
+
+        var columnGroups = group.selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
-        group.enter().append('g');
-        group.exit().remove();
-        group.attr('class', function(d, i) {
+
+        columnGroups.enter().append('g');
+        columnGroups.attr('class', function(d, i) {
           return 'series' + i + ' ' + this.x.$key;
         }.bind(this));
 
-        var rect = group.selectAll('rect')
+        var rect = columnGroups.selectAll('rect')
           .data(function(d) {
             return d.values;
           }.bind(this));
-        rect.enter().append('rect')
+
+        rect.enter().append('rect');
+
+        rect
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
@@ -3115,6 +3128,10 @@
           .attr('rx', d4.functor(scope.accessors.rx).bind(this))
           .attr('width', d4.functor(scope.accessors.width).bind(this))
           .attr('height', d4.functor(scope.accessors.height).bind(this));
+
+        rect.exit().remove();
+        columnGroups.exit().remove();
+
         return rect;
       }
     };
@@ -3264,11 +3281,10 @@
       },
 
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var label = this.container.select('.' + name).selectAll('.' + name).data(data);
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var label = group.selectAll('.seriesLabel').data(data);
         label.enter().append('text');
-        label.exit().remove();
-        label.attr('class', 'line-series-label')
+        label
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
@@ -3278,6 +3294,7 @@
           }.bind(this));
         displayXValue.bind(this)(scope, data, selection);
 
+        label.exit().remove();
         return label;
       }
     };
@@ -3313,24 +3330,32 @@
         target: line
       }],
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
+        var group = d4.appendOnce(selection, 'g.' + name);
         line
           .x(d4.functor(scope.accessors.x).bind(this))
           .y(d4.functor(scope.accessors.y).bind(this));
 
-        var group = selection.select('.' + name).selectAll('g')
+        var lineGroups = group.selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
-        group.exit().remove();
-        group.enter().append('g')
+
+        lineGroups.enter().append('g')
           .attr('data-key', function(d) {
             return d.key;
           })
-          .attr('class', d4.functor(scope.accessors.classes).bind(this))
-          .append('path')
-          .attr('d', function(d) {
-            return line(d.values);
-          });
-        return group;
+          .attr('class', d4.functor(scope.accessors.classes).bind(this));
+
+        var lines = lineGroups.selectAll('path')
+          .data(function(d) { return [d]; });
+
+        lines.enter().append('path');
+        lines.attr('d', function(d) {
+          return line(d.values);
+        });
+
+        lines.exit().remove();
+        lineGroups.exit().remove();
+
+        return lineGroups;
       }
     };
   });
@@ -3368,8 +3393,10 @@
         }
       },
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var referenceLine = d4.appendOnce(this.container.select('.' + name), 'line')
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var referenceLine = d4.appendOnce(group, 'line');
+
+        group.select('line')
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('x1', d4.functor(scope.accessors.x1).bind(this))
           .attr('x2', d4.functor(scope.accessors.x2).bind(this))
@@ -3440,21 +3467,21 @@
       },
 
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var group = this.container.select('.' + name).selectAll('g')
-          .data(data)
-          .enter().append('g')
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var connectorGroups = group.selectAll('g')
+          .data(data);
+
+        connectorGroups.enter().append('g')
           .attr('class', function(d, i) {
             return 'series' + i + ' ' + this.y.$key;
           }.bind(this));
 
-        var lines = group.selectAll('lines')
+        var lines = connectorGroups.selectAll('line')
           .data(function(d) {
             return d.values;
           }.bind(this));
 
         lines.enter().append('line');
-        lines.exit().remove();
         lines
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('stroke-dasharray', '5, 5')
@@ -3484,6 +3511,8 @@
           });
         }.bind(this));
 
+        connectorGroups.exit().remove();
+        lines.exit().remove();
         return lines;
       }
     };
@@ -3581,27 +3610,31 @@
       },
 
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var group = this.container.select('.' + name).selectAll('g')
+        var group = d4.appendOnce(selection, 'g.' + name);
+
+        var labelGroups = group.selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
-        group.enter().append('g')
+
+        labelGroups.enter().append('g')
           .attr('class', function(d, i) {
             return 'series' + i + ' ' + this.x.$key;
           }.bind(this));
-        group.exit().remove();
 
-        var text = group.selectAll('text')
+        labelGroups.exit().remove();
+
+        var text = labelGroups.selectAll('text')
           .data(function(d) {
             return d.values;
           }.bind(this));
-        text.enter().append('text')
+
+        text.enter().append('text');
+
+        text
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', d4.functor(scope.accessors.textAnchor).bind(this))
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this));
-
-        text.exit().remove();
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
@@ -3624,6 +3657,8 @@
             });
           });
         });
+        labelGroups.exit().remove();
+        text.exit().remove();
         return text;
       }
     };
@@ -3686,19 +3721,19 @@
       },
 
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
+        var group = d4.appendOnce(selection, 'g.' + name);
 
         // create data join with the series data
-        var group = this.container.select('.' + name).selectAll('g')
+        var shapeGroups = group.selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
 
-        group.enter().append('g')
+        shapeGroups.enter().append('g')
           .attr('class', function(d, i) {
             return 'series' + i + ' ' + this.y.$key;
           }.bind(this));
-        group.exit().remove();
+        shapeGroups.exit().remove();
 
-        var shape = group.selectAll(shapeType)
+        var shape = shapeGroups.selectAll(shapeType)
           .data(function(d) {
             return d.values;
           });
@@ -3708,6 +3743,7 @@
         renderShapeAttributes.bind(this)(scope, shape);
 
         shape.exit().remove();
+        shapeGroups.exit().remove();
         return shape;
       }
     };
@@ -4051,8 +4087,8 @@
       },
 
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var lines = this.container.select('.' + name).selectAll('.' + name).data(data);
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var lines = group.selectAll('line').data(data);
         lines.enter().append('line');
         lines.exit().remove();
         lines
@@ -4204,9 +4240,7 @@
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = this.container.select('g.margins')
-          .append('g')
-          .attr('class', 'x axis ' + name)
+        var group = d4.appendOnce(this.container.select('g.margins'), 'g.x.axis.' + name)
           .attr('data-scale', this.x.$scale)
           .call(axis);
         alignAxis.bind(this)(aligned, group);
@@ -4334,9 +4368,7 @@
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
 
-        var group = this.container.select('g.margins')
-          .append('g')
-          .attr('class', 'y axis ' + name)
+        var group = d4.appendOnce(this.container.select('g.margins'), 'g.y.axis.' + name)
           .attr('data-scale', this.y.$scale)
           .call(axis);
 
