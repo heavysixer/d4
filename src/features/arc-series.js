@@ -66,26 +66,28 @@
           .innerRadius(r)
           .outerRadius(r - aw);
 
-        var group = selection.selectAll('g.' + name).data(data);
-        group.enter()
-          .append('g')
-          .attr('class', name)
+        var group = d4.appendOnce(selection, 'g.' + name);
+        var arcGroups = group.selectAll('g.' + name + '-group')
+          .data(data);
+
+        arcGroups.enter().append('g');
+
+        arcGroups.attr('class', name + '-group')
           .attr('transform', 'translate(' + x + ',' + y + ')');
 
-        var arcs = group.selectAll('path')
+        var arcs = arcGroups.selectAll('path')
           .data(function(d) {
             return d.values;
           }, d4.functor(scope.accessors.key).bind(this));
 
+        arcs.enter().append('path');
         // update
         arcs.transition()
           .duration(d4.functor(scope.accessors.duration).bind(this)())
           .attrTween('d', arcTween);
 
         // create new elements as needed
-        arcs.enter()
-          .append('path')
-          .attr('class', d4.functor(scope.accessors.classes).bind(this))
+        arcs.attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('data-key', d4.functor(scope.accessors.key).bind(this))
           .attr('d', arc)
           .each(function(d) {
@@ -94,7 +96,7 @@
 
         //remove old elements as needed
         arcs.exit().remove();
-        group.exit().remove();
+        arcGroups.exit().remove();
         return arc;
       }
     };

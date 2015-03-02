@@ -27,24 +27,32 @@
         target: line
       }],
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
+        var group = d4.appendOnce(selection, 'g.' + name);
         line
           .x(d4.functor(scope.accessors.x).bind(this))
           .y(d4.functor(scope.accessors.y).bind(this));
 
-        var group = selection.select('.' + name).selectAll('g')
+        var lineGroups = group.selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
-        group.exit().remove();
-        group.enter().append('g')
+
+        lineGroups.enter().append('g')
           .attr('data-key', function(d) {
             return d.key;
           })
-          .attr('class', d4.functor(scope.accessors.classes).bind(this))
-          .append('path')
-          .attr('d', function(d) {
-            return line(d.values);
-          });
-        return group;
+          .attr('class', d4.functor(scope.accessors.classes).bind(this));
+
+        var lines = lineGroups.selectAll('path')
+          .data(function(d) { return [d]; });
+
+        lines.enter().append('path');
+        lines.attr('d', function(d) {
+          return line(d.values);
+        });
+
+        lines.exit().remove();
+        lineGroups.exit().remove();
+
+        return lineGroups;
       }
     };
   });

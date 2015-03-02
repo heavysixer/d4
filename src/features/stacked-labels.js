@@ -89,27 +89,31 @@
       },
 
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
-        var group = this.container.select('.' + name).selectAll('g')
+        var group = d4.appendOnce(selection, 'g.' + name);
+
+        var labelGroups = group.selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
-        group.enter().append('g')
+
+        labelGroups.enter().append('g')
           .attr('class', function(d, i) {
             return 'series' + i + ' ' + this.x.$key;
           }.bind(this));
-        group.exit().remove();
 
-        var text = group.selectAll('text')
+        labelGroups.exit().remove();
+
+        var text = labelGroups.selectAll('text')
           .data(function(d) {
             return d.values;
           }.bind(this));
-        text.enter().append('text')
+
+        text.enter().append('text');
+
+        text
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', d4.functor(scope.accessors.textAnchor).bind(this))
           .attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('x', d4.functor(scope.accessors.x).bind(this));
-
-        text.exit().remove();
 
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
@@ -132,6 +136,8 @@
             });
           });
         });
+        labelGroups.exit().remove();
+        text.exit().remove();
         return text;
       }
     };

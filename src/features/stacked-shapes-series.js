@@ -54,19 +54,19 @@
       },
 
       render: function(scope, data, selection) {
-        selection.append('g').attr('class', name);
+        var group = d4.appendOnce(selection, 'g.' + name);
 
         // create data join with the series data
-        var group = this.container.select('.' + name).selectAll('g')
+        var shapeGroups = group.selectAll('g')
           .data(data, d4.functor(scope.accessors.key).bind(this));
 
-        group.enter().append('g')
+        shapeGroups.enter().append('g')
           .attr('class', function(d, i) {
             return 'series' + i + ' ' + this.y.$key;
           }.bind(this));
-        group.exit().remove();
+        shapeGroups.exit().remove();
 
-        var shape = group.selectAll(shapeType)
+        var shape = shapeGroups.selectAll(shapeType)
           .data(function(d) {
             return d.values;
           });
@@ -76,6 +76,7 @@
         renderShapeAttributes.bind(this)(scope, shape);
 
         shape.exit().remove();
+        shapeGroups.exit().remove();
         return shape;
       }
     };
