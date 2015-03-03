@@ -112,7 +112,7 @@
 
       ext[0] = d4.isDefined(chart[dimension].$min) ? chart[dimension].$min : Math.min(0, ext[0]);
 
-      if(d4.isDefined(chart[dimension].$max)){
+      if (d4.isDefined(chart[dimension].$max)) {
         ext[1] = chart[dimension].$max;
       }
 
