@@ -60,8 +60,7 @@
           x: function(d, i) {
             var width = this.x.rangeBand() / this.groupsOf;
             var xPos = this.x(d[this.x.$key]) + width * i;
-            var gutter = width * 0.1;
-            return xPos + width / 2 - gutter;
+            return xPos + width / 2;
           }
         }
       };
@@ -69,8 +68,14 @@
 
     return d4.baseChart({
       config: {
+        axes: {
+          x1: {
+            scale: 'ordinal'
+          }
+        },
         accessors: {
-          groupsOf: 1
+          groupsOf: 1,
+          columnPadding: 0.1
         }
       }
     })

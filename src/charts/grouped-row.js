@@ -70,7 +70,8 @@
     return d4.baseChart({
       config: {
         accessors: {
-          groupsOf: 1
+          groupsOf: 1,
+          rowPadding: 0.1
         },
         margin: {
           top: 20,
@@ -83,6 +84,9 @@
             scale: 'linear'
           },
           y: {
+            scale: 'ordinal'
+          },
+          y1: {
             scale: 'ordinal'
           }
         }

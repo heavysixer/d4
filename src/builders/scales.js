@@ -7,7 +7,7 @@
         return i[key];
       }.bind(this));
     }.bind(this));
-    return d3.merge(values);
+    return d3.set(d3.merge(values)).values();
   };
 
   var rangeFor = function(chart, dimension) {
@@ -96,4 +96,5 @@
     }
     return axis;
   });
+
 }).call(this);

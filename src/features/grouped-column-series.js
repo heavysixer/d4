@@ -10,18 +10,23 @@
       return (val > 0) ? 'positive' : 'negative';
     };
 
-    var useDiscretePosition = function(dimension, d, i) {
+    var useDiscreteGroupPosition = function(dimension, d) {
       var axis = this[dimension];
-      var size = axis.rangeBand() / this.groupsOf;
-      var pos = axis(d[axis.$key]) + size * i;
+      var pos = axis(d.key);
+      var translate = (dimension === 'x') ? [pos, 0] : [0, pos];
+      return 'translate(' + translate + ')';
+    };
+
+    var useDiscretePosition = function(dimension, d) {
+      var axis = this[dimension];
+      var pos = axis(d[axis.$key]);
       return pos;
     };
 
     var useDiscreteSize = function(dimension) {
       var axis = this[dimension];
-      var size = axis.rangeBand() / this.groupsOf;
-      var gutter = size * 0.1;
-      return size - gutter;
+      var size = axis.rangeBand();
+      return size;
     };
 
     var useContinuousSize = function(dimension, d) {
@@ -48,7 +53,7 @@
 
         height: function(d) {
           if (d4.isOrdinalScale(this.y)) {
-            return useDiscreteSize.bind(this)('y');
+            return useDiscreteSize.bind(this)('y1');
           } else {
             return useContinuousSize.bind(this)('y', d);
           }
@@ -62,15 +67,23 @@
 
         width: function(d) {
           if (d4.isOrdinalScale(this.x)) {
-            return useDiscreteSize.bind(this)('x');
+            return useDiscreteSize.bind(this)('x1');
           } else {
             return useContinuousSize.bind(this)('x', d);
           }
         },
 
+        x1: function(d, i) {
+          if (d4.isOrdinalScale(this.x1)) {
+            return useDiscretePosition.bind(this)('x1', d, i);
+          } else {
+            return useContinuousPosition.bind(this)('x', d, i);
+          }
+        },
+
         x: function(d, i) {
           if (d4.isOrdinalScale(this.x)) {
-            return useDiscretePosition.bind(this)('x', d, i);
+            return useDiscreteGroupPosition.bind(this)('x', d, i);
           } else {
             return useContinuousPosition.bind(this)('x', d, i);
           }
@@ -78,16 +91,26 @@
 
         y: function(d, i) {
           if (d4.isOrdinalScale(this.y)) {
-            return useDiscretePosition.bind(this)('y', d, i);
+            return useDiscreteGroupPosition.bind(this)('y', d, i);
           } else {
             return useContinuousPosition.bind(this)('y', d, i);
           }
-        }
+        },
+
+        y1: function(d, i) {
+          if (d4.isOrdinalScale(this.y1)) {
+            return useDiscretePosition.bind(this)('y1', d, i);
+          } else {
+            return useContinuousPosition.bind(this)('y', d, i);
+          }
+        },
       },
       render: function(scope, data, selection) {
         if (data.length > 0) {
           this.groupsOf = this.groupsOf || data[0].values.length;
         }
+
+        this.x1.rangeRoundBands([0, this.x.rangeBand()], this.columnPadding);
 
         var group = d4.appendOnce(selection, 'g.' + name);
 
@@ -97,7 +120,8 @@
         columnGroups.enter().append('g');
         columnGroups.attr('class', function(d, i) {
           return 'series' + i + ' ' + this.x.$key;
-        }.bind(this));
+        }.bind(this))
+        .attr('transform', d4.functor(scope.accessors.x).bind(this));
 
         var rect = columnGroups.selectAll('rect')
           .data(function(d) {
