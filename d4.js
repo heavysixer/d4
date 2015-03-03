@@ -1,6 +1,6 @@
-/*! d4 - v0.8.16
+/*! d4 - v0.8.17
  *  License: MIT Expat
- *  Date: 2015-03-02
+ *  Date: 2015-03-03
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -201,7 +201,7 @@
    *       chart.builder(function() {
    *           return {
    *               link: function(chart, data) {
-   *                   console.log(chart.x.domain.$dirty) // false;
+   *                   // false;
    *               }
    *           }
    *       });
@@ -645,7 +645,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      console.log(chart.features());
+     *      
      *      // => ["bars", "barLabels", "xAxis"]
      *
      * @return {Array} An array of features.
@@ -724,7 +724,7 @@
      *      .mixout('yAxis');
      *
      *      // Now test that the feature has been removed.
-     *      console.log(chart.features());
+     *      
      *      => ["bars", "barLabels", "xAxis"]
      *
      * @param {String} name - accessor name for chart feature.
@@ -2385,7 +2385,7 @@
 
       ext[0] = d4.isDefined(chart[dimension].$min) ? chart[dimension].$min : Math.min(0, ext[0]);
 
-      if(d4.isDefined(chart[dimension].$max)){
+      if (d4.isDefined(chart[dimension].$max)) {
         ext[1] = chart[dimension].$max;
       }
 
@@ -3345,7 +3345,9 @@
           .attr('class', d4.functor(scope.accessors.classes).bind(this));
 
         var lines = lineGroups.selectAll('path')
-          .data(function(d) { return [d]; });
+          .data(function(d) {
+            return [d];
+          });
 
         lines.enter().append('path');
         lines.attr('d', function(d) {

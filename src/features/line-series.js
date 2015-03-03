@@ -42,7 +42,9 @@
           .attr('class', d4.functor(scope.accessors.classes).bind(this));
 
         var lines = lineGroups.selectAll('path')
-          .data(function(d) { return [d]; });
+          .data(function(d) {
+            return [d];
+          });
 
         lines.enter().append('path');
         lines.attr('d', function(d) {
