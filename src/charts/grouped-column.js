@@ -57,10 +57,11 @@
     var columnLabelOverrides = function() {
       return {
         accessors: {
-          x: function(d, i) {
-            var width = this.x.rangeBand() / this.groupsOf;
-            var xPos = this.x(d[this.x.$key]) + width * i;
-            return xPos + width / 2;
+          x: function(d) {
+            var groupX = this.x(d[this.x.$key]);
+            var rectX = this.groups(d[this.groups.$key]);
+            var rectWidthOffset = this.groups.rangeBand() / 2;
+            return groupX + rectX + rectWidthOffset;
           }
         }
       };
@@ -69,13 +70,14 @@
     return d4.baseChart({
       config: {
         axes: {
-          x1: {
-            scale: 'ordinal'
+          groups: {
+            scale: 'ordinal',
+            dimension: 'x',
+            roundBands: 0.1
           }
         },
         accessors: {
-          groupsOf: 1,
-          columnPadding: 0.1
+          groupsOf: 1
         }
       }
     })
