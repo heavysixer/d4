@@ -17,7 +17,7 @@
     var useDiscreteGroupPosition = function(d) {
       var dimension = this.groups.$dimension;
       var axis = this[dimension];
-      var pos = axis(d.key);
+      var pos = axis(d.values[0][axis.$key]);
       var translate;
       if (dimension === 'x') {
         translate = [pos, 0];
