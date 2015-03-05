@@ -57,11 +57,11 @@
     var rowLabelOverrides = function() {
       return {
         accessors: {
-          y: function(d, i) {
-            var height = this.y.rangeBand() / this.groupsOf;
-            var yPos = this.y(d[this.y.$key]) + height * i;
-            var gutter = height * 0.1;
-            return yPos + height / 4 + gutter;
+          y: function(d) {
+            var groupY = this.y(d[this.y.$key]);
+            var rectY = this.groups(d[this.groups.$key]);
+            var rectHeightOffset = this.groups.rangeBand() / 3;
+            return groupY + rectY + rectHeightOffset;
           }
         }
       };
@@ -84,6 +84,11 @@
           },
           y: {
             scale: 'ordinal'
+          },
+          groups: {
+            scale: 'ordinal',
+            dimension: 'y',
+            roundBands: 0.1
           }
         }
       }

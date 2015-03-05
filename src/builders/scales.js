@@ -7,7 +7,7 @@
         return i[key];
       }.bind(this));
     }.bind(this));
-    return d3.merge(values);
+    return d3.set(d3.merge(values)).values();
   };
 
   var rangeFor = function(chart, dimension) {
@@ -18,6 +18,14 @@
         return [0, chart.width];
       case 'y':
         return [chart.height, 0];
+      case 'groups':
+        var groupDimension = chart.axes.groups.$dimension;
+        if (groupDimension === 'x') {
+          return [0, chart.axes.x.rangeBand()];
+        } else {
+          return [chart.axes.y.rangeBand(), 0];
+        }
+        break;
       default:
         return [];
     }
@@ -85,7 +93,19 @@
    */
   d4.builder('ordinalScaleForNestedData', function(chart, data, dimension) {
     var parsedData = extractValues(data, chart[dimension].$key);
-    var bands = chart[dimension + 'RoundBands'] = chart[dimension + 'RoundBands'] || 0.3;
+
+    // Apply the padding to a `rangeRoundBands` d3 scale. Check for a custom
+    // or existing padding set by the scale, otherwise provide a default.
+    var bands;
+    if (chart[dimension + 'RoundBands']) {
+      bands = chart[dimension + 'RoundBands'];
+    } else if (chart[dimension].$roundBands) {
+      bands = chart[dimension].$roundBands;
+    } else {
+      bands = 0.3;
+    }
+    chart[dimension + 'RoundBands'] = bands;
+
     var axis = chart[dimension];
     if (!axis.domain.$dirty) {
       axis.domain(parsedData);
@@ -96,4 +116,5 @@
     }
     return axis;
   });
+
 }).call(this);
