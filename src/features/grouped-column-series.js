@@ -109,7 +109,7 @@
         columnGroups.attr('class', function(d, i) {
           return 'series' + i + ' ' + this.x.$key;
         }.bind(this))
-        .attr('transform', d4.functor(scope.accessors.groupPositions).bind(this));
+          .attr('transform', d4.functor(scope.accessors.groupPositions).bind(this));
 
         var rect = columnGroups.selectAll('rect')
           .data(function(d) {
