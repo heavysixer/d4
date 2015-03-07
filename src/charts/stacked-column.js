@@ -60,7 +60,8 @@
    *
    * @name stackedColumn
    */
-  d4.chart('stackedColumn', function stackedColumn() {
+  d4.chart('stackedColumn', function stackedColumn(config) {
+    var _config = config || {};
     var columnLabelsOverrides = function() {
       var extractValues = function(data) {
         var arr = [];
@@ -118,7 +119,7 @@
       };
     };
 
-    return d4.baseChart()
+    return d4.baseChart(_config)
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries
