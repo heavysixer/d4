@@ -197,10 +197,11 @@
    *
    * @name waterfall
    */
-  d4.chart('waterfall', function waterfallChart() {
-    return d4.baseChart({
+  d4.chart('waterfall', function waterfallChart(config) {
+    var _config = config || {};
+    return d4.baseChart(d4.extend({
       builder: waterfallChartBuilder
-    })
+    },_config))
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries,

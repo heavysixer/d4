@@ -51,8 +51,9 @@
    *
    * @name column
    */
-  d4.chart('column', function column() {
-    return d4.baseChart()
+  d4.chart('column', function column(config) {
+    var _config = config || {};
+    return d4.baseChart(_config)
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries

@@ -70,8 +70,9 @@
    *
    * @name donut
    */
-  d4.chart('donut', function donut() {
-    return d4.baseChart({
+  d4.chart('donut', function donut(config) {
+    var _config = config || {};
+    return d4.baseChart(d4.extend({
       config: {
         accessors: {
           radius: function() {
@@ -82,14 +83,13 @@
           }
         }
       }
-    })
-      .mixin(
-        [{
-          'name': 'arcs',
-          'feature': d4.features.arcSeries
-        }, {
-          'name': 'arcLabels',
-          'feature': d4.features.arcLabels
-        }]);
+    },_config))
+      .mixin([{
+        'name': 'arcs',
+        'feature': d4.features.arcSeries
+      }, {
+        'name': 'arcLabels',
+        'feature': d4.features.arcLabels
+      }]);
   });
 }).call(this);

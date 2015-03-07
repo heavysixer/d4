@@ -53,7 +53,8 @@
    *
    * @name groupedColumn
    */
-  d4.chart('groupedColumn', function groupedColumn() {
+  d4.chart('groupedColumn', function groupedColumn(config) {
+    var _config = config || {};
     var columnLabelOverrides = function() {
       return {
         accessors: {
@@ -67,7 +68,7 @@
       };
     };
 
-    return d4.baseChart({
+    return d4.baseChart(d4.extend({
       config: {
         axes: {
           groups: {
@@ -80,7 +81,7 @@
           groupsOf: 1
         }
       }
-    })
+    },_config))
       .mixin([{
         'name': 'bars',
         'feature': d4.features.groupedColumnSeries

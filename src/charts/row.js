@@ -29,8 +29,9 @@
    *
    * @name row
    */
-  d4.chart('row', function row() {
-    return d4.baseChart({
+  d4.chart('row', function row(config) {
+    var _config = config || {};
+    return d4.baseChart(d4.extend({
       config: {
         margin: {
           top: 20,
@@ -48,7 +49,7 @@
           }
         }
       }
-    })
+    },_config))
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries

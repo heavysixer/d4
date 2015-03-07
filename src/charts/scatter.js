@@ -123,8 +123,9 @@
    *
    * @name scatterPlot
    */
-  d4.chart('scatterPlot', function scatterPlot() {
-    return d4.baseChart({
+  d4.chart('scatterPlot', function scatterPlot(config) {
+    var _config = config || {};
+    return d4.baseChart(d4.extend({
       builder: scatterPlotBuilder,
       config: {
         axes: {
@@ -136,7 +137,7 @@
           }
         }
       }
-    })
+    },_config))
       .mixin([{
         'name': 'circles',
         'feature': d4.features.circleSeries,

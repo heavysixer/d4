@@ -56,8 +56,9 @@
    *
    * @name line
    */
-  d4.chart('line', function line() {
-    return d4.baseChart().mixin([{
+  d4.chart('line', function line(config) {
+    var _config = config || {};
+    return d4.baseChart(_config).mixin([{
       'name': 'lineSeries',
       'feature': d4.features.lineSeries
     }, {
