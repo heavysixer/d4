@@ -276,6 +276,9 @@
       link: function(chart, data) {
         d4.builders[chart.x.$scale + 'ScaleForNestedData'](chart, data, 'x');
         d4.builders[chart.y.$scale + 'ScaleForNestedData'](chart, data, 'y');
+        if (chart.groups) {
+          d4.builders[chart.groups.$scale + 'ScaleForNestedData'](chart, data, 'groups');
+        }
       }
     });
     var chartAccessors = d4.merge({}, config.accessors);
