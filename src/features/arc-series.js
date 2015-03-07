@@ -80,7 +80,9 @@
             return d.values;
           }, d4.functor(scope.accessors.key).bind(this));
 
-        arcs.enter().append('path');
+        arcs.enter().append('path')
+          .each(function(d) { this._current = d; });
+
         // update
         arcs.transition()
           .duration(d4.functor(scope.accessors.duration).bind(this)())
@@ -89,10 +91,7 @@
         // create new elements as needed
         arcs.attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('data-key', d4.functor(scope.accessors.key).bind(this))
-          .attr('d', arc)
-          .each(function(d) {
-            this._current = d;
-          });
+          .attr('d', arc);
 
         //remove old elements as needed
         arcs.exit().remove();
