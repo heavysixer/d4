@@ -137,7 +137,7 @@
           }
         }
       }
-    },_config))
+    }, _config))
       .mixin([{
         'name': 'circles',
         'feature': d4.features.circleSeries,

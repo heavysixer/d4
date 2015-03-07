@@ -94,7 +94,7 @@
 
         title: undefined,
 
-        scaleId : function(){
+        scaleId: function() {
           return 'x';
         }
       },

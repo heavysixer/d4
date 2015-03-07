@@ -94,7 +94,7 @@
 
         title: undefined,
 
-        scaleId : function(){
+        scaleId: function() {
           return 'y';
         }
       },
@@ -119,13 +119,13 @@
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
 
           // FIXME: This should be moved into a helper injected using DI.
-          this.container.selectAll('.' + scaleId +'.axis .tick text').call(d4.helpers.staggerTextHorizontally, -1);
+          this.container.selectAll('.' + scaleId + '.axis .tick text').call(d4.helpers.staggerTextHorizontally, -1);
         }
         if (aligned === 'left') {
-          positionText.bind(this)(title, aligned, 'title',scaleId);
+          positionText.bind(this)(title, aligned, 'title', scaleId);
           positionText.bind(this)(subtitle, aligned, 'subtitle', scaleId);
         } else {
-          positionText.bind(this)(subtitle, aligned, 'subtitle',scaleId);
+          positionText.bind(this)(subtitle, aligned, 'subtitle', scaleId);
           positionText.bind(this)(title, aligned, 'title', scaleId);
         }
         return group;

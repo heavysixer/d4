@@ -83,7 +83,7 @@
           }
         }
       }
-    },_config))
+    }, _config))
       .mixin([{
         'name': 'arcs',
         'feature': d4.features.arcSeries

@@ -81,7 +81,7 @@
           groupsOf: 1
         }
       }
-    },_config))
+    }, _config))
       .mixin([{
         'name': 'bars',
         'feature': d4.features.groupedColumnSeries

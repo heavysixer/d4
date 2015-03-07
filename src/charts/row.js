@@ -49,7 +49,7 @@
           }
         }
       }
-    },_config))
+    }, _config))
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries

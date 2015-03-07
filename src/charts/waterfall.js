@@ -201,7 +201,7 @@
     var _config = config || {};
     return d4.baseChart(d4.extend({
       builder: waterfallChartBuilder
-    },_config))
+    }, _config))
       .mixin([{
         'name': 'bars',
         'feature': d4.features.rectSeries,
