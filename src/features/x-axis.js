@@ -56,9 +56,9 @@
       return rect;
     };
 
-    var positionText = function(obj, aligned, klass) {
+    var positionText = function(obj, aligned, klass, scaleId) {
       if (obj.text) {
-        var axis = this.container.selectAll('.x.axis');
+        var axis = this.container.selectAll('.' + scaleId + '.axis');
         var axisBB = axis.node().getBBox();
         var textHeight = obj.height * 0.8;
         var text = axis.append('text')
@@ -93,18 +93,23 @@
         subtitle: undefined,
 
         title: undefined,
+
+        scaleId : function(){
+          return 'x';
+        }
       },
       proxies: [{
         target: axis
       }],
 
       render: function(scope) {
-        scope.scale(this.x);
+        var scaleId = d4.functor(scope.accessors.scaleId).bind(this)();
+        scope.scale(this[scaleId]);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = d4.appendOnce(this.container.select('g.margins'), 'g.x.axis.' + name)
-          .attr('data-scale', this.x.$scale)
+        var group = d4.appendOnce(this.container.select('g.margins'), 'g.' + scaleId + '.axis.' + name)
+          .attr('data-scale', this[scaleId].$scale)
           .call(axis);
         alignAxis.bind(this)(aligned, group);
         if (d4.functor(scope.accessors.stagger).bind(this)()) {
@@ -113,11 +118,11 @@
           group.selectAll('.tick text').call(d4.helpers.staggerTextVertically, 1);
         }
         if (aligned === 'top') {
-          positionText.bind(this)(subtitle, aligned, 'subtitle');
-          positionText.bind(this)(title, aligned, 'title');
+          positionText.bind(this)(subtitle, aligned, 'subtitle', scaleId);
+          positionText.bind(this)(title, aligned, 'title', scaleId);
         } else {
-          positionText.bind(this)(title, aligned, 'title');
-          positionText.bind(this)(subtitle, aligned, 'subtitle');
+          positionText.bind(this)(title, aligned, 'title', scaleId);
+          positionText.bind(this)(subtitle, aligned, 'subtitle', scaleId);
         }
         return group;
       }
