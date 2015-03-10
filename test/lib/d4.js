@@ -1,6 +1,6 @@
 /*! d4 - v0.9.2
  *  License: MIT Expat
- *  Date: 2015-03-07
+ *  Date: 2015-03-10
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -2717,7 +2717,9 @@
             return d.values;
           }, d4.functor(scope.accessors.key).bind(this));
 
-        arcs.enter().append('path');
+        arcs.enter().append('path')
+          .each(function(d) { this._current = d; });
+
         // update
         arcs.transition()
           .duration(d4.functor(scope.accessors.duration).bind(this)())
@@ -2726,10 +2728,7 @@
         // create new elements as needed
         arcs.attr('class', d4.functor(scope.accessors.classes).bind(this))
           .attr('data-key', d4.functor(scope.accessors.key).bind(this))
-          .attr('d', arc)
-          .each(function(d) {
-            this._current = d;
-          });
+          .attr('d', arc);
 
         //remove old elements as needed
         arcs.exit().remove();
@@ -4277,13 +4276,13 @@
         target: axis
       }],
 
-      render: function(scope) {
+      render: function(scope, data, selection) {
         var scaleId = d4.functor(scope.accessors.scaleId).bind(this)();
         scope.scale(this[scaleId]);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
-        var group = d4.appendOnce(this.container.select('g.margins'), 'g.' + scaleId + '.axis.' + name)
+        var group = d4.appendOnce(selection, 'g.' + scaleId + '.axis.' + name)
           .attr('data-scale', this[scaleId].$scale)
           .call(axis);
         alignAxis.bind(this)(aligned, group);
@@ -4409,14 +4408,14 @@
       proxies: [{
         target: axis
       }],
-      render: function(scope) {
+      render: function(scope, data, selection) {
         var scaleId = d4.functor(scope.accessors.scaleId).bind(this)();
         scope.scale(this[scaleId]);
         var title = textRect(d4.functor(scope.accessors.title).bind(this)(), 'title');
         var subtitle = textRect(d4.functor(scope.accessors.subtitle).bind(this)(), 'subtitle');
         var aligned = d4.functor(scope.accessors.align).bind(this)();
 
-        var group = d4.appendOnce(this.container.select('g.margins'), 'g.' + scaleId + '.axis.' + name)
+        var group = d4.appendOnce(selection, 'g.' + scaleId + '.axis.' + name)
           .attr('data-scale', this[scaleId].$scale)
           .call(axis);
 
@@ -5071,7 +5070,7 @@
     if (!axis.clamp.$dirty) {
       axis.clamp(true);
     }
-    return chart[dimension].nice();
+    return chart[dimension];
   };
 
   /**
