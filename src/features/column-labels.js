@@ -53,6 +53,8 @@
         }
       },
       render: function(scope, data, selection) {
+        var xScaleId = d4.functor(scope.accessors.xScaleId)();
+        var yScaleId = d4.functor(scope.accessors.yScaleId)();
         var group = d4.appendOnce(selection, 'g.' + name);
         var label = group.selectAll('text')
           .data(data, d4.functor(scope.accessors.key).bind(this));
@@ -61,8 +63,8 @@
         label.attr('class', 'column-label ' + name)
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', anchorText.bind(this))
-          .attr('x', d4.functor(scope.accessors.x).bind(this, scope.accessors.xScaleId()))
-          .attr('y', d4.functor(scope.accessors.y).bind(this, scope.accessors.yScaleId()));
+          .attr('x', d4.functor(scope.accessors.x).bind(this, xScaleId))
+          .attr('y', d4.functor(scope.accessors.y).bind(this, yScaleId));
         return label;
       }
     };
