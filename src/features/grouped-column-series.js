@@ -33,7 +33,9 @@
 
     var useContinuousSize = function(dimension, d) {
       var axis = this[dimension];
-      return Math.abs(axis(d[axis.$key]) - axis(0));
+      var domainMin = axis.domain()[0];
+      var axisMin = (domainMin < 0) ? 0 : domainMin;
+      return Math.abs(axis(d[axis.$key]) - axis(axisMin));
     };
 
     var useContinuousPosition = function(dimension, d) {
@@ -53,11 +55,11 @@
           return 'bar fill item' + i + ' ' + sign(d[this.valueKey]) + ' ' + d[this.valueKey];
         },
 
-        height: function(d) {
+        height: function(yScaleId, d) {
           if (d4.isOrdinalScale(this.y)) {
-            return useDiscreteSize.bind(this)('y');
+            return useDiscreteSize.bind(this)(yScaleId);
           } else {
-            return useContinuousSize.bind(this)('y', d);
+            return useContinuousSize.bind(this)(yScaleId, d);
           }
         },
 
@@ -67,11 +69,11 @@
 
         ry: 0,
 
-        width: function(d) {
+        width: function(xScaleId, d) {
           if (d4.isOrdinalScale(this.x)) {
             return useDiscreteSize.bind(this)();
           } else {
-            return useContinuousSize.bind(this)('x', d);
+            return useContinuousSize.bind(this)(xScaleId, d);
           }
         },
 
@@ -94,12 +96,22 @@
             return useContinuousPosition.bind(this)('y', d, i);
           }
         },
+
+        xScaleId: function() {
+          return 'x';
+        },
+
+        yScaleId: function() {
+          return 'y';
+        }
       },
       render: function(scope, data, selection) {
         if (data.length > 0) {
           this.groupsOf = this.groupsOf || data[0].values.length;
         }
 
+        var xScaleId = d4.functor(scope.accessors.xScaleId)();
+        var yScaleId = d4.functor(scope.accessors.yScaleId)();
         var group = d4.appendOnce(selection, 'g.' + name);
 
         var columnGroups = group.selectAll('g')
@@ -124,8 +136,8 @@
           .attr('y', d4.functor(scope.accessors.y).bind(this))
           .attr('ry', d4.functor(scope.accessors.ry).bind(this))
           .attr('rx', d4.functor(scope.accessors.rx).bind(this))
-          .attr('width', d4.functor(scope.accessors.width).bind(this))
-          .attr('height', d4.functor(scope.accessors.height).bind(this));
+          .attr('width', d4.functor(scope.accessors.width).bind(this, xScaleId))
+          .attr('height', d4.functor(scope.accessors.height).bind(this, yScaleId));
 
         rect.exit().remove();
         columnGroups.exit().remove();
