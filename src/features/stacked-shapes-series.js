@@ -16,10 +16,12 @@
 
   var useContinuousSize = function(dimension, d) {
     var axis = this[dimension];
+    var domainMin = axis.domain()[0];
+    var axisMin = (domainMin < 0) ? 0 : domainMin;
     if (d4.isDefined(d.y0)) {
       return Math.abs(axis(d.y0) - axis(d.y0 + d.y));
     } else {
-      return Math.abs(axis(d[axis.$key]) - axis(0));
+      return Math.abs(axis(d[axis.$key]) - axis(axisMin));
     }
   };
 
@@ -237,11 +239,11 @@
   d4.feature('rectSeries', function(name) {
     var rectObj = {
       accessors: {
-        height: function(d) {
-          if (d4.isOrdinalScale(this.y)) {
-            return useDiscreteSize.bind(this)('y');
+        height: function(yScaleId, d) {
+          if (d4.isOrdinalScale(this[yScaleId])) {
+            return useDiscreteSize.bind(this)(yScaleId);
           } else {
-            return useContinuousSize.bind(this)('y', d);
+            return useContinuousSize.bind(this)(yScaleId, d);
           }
         },
 
@@ -249,11 +251,11 @@
 
         ry: 0,
 
-        width: function(d) {
-          if (d4.isOrdinalScale(this.x)) {
-            return useDiscreteSize.bind(this)('x');
+        width: function(xScaleId, d) {
+          if (d4.isOrdinalScale(this[xScaleId])) {
+            return useDiscreteSize.bind(this)(xScaleId);
           } else {
-            return useContinuousSize.bind(this)('x', d);
+            return useContinuousSize.bind(this)(xScaleId, d);
           }
         },
 
@@ -271,17 +273,28 @@
           } else {
             return useContinuousPosition.bind(this)('y', d);
           }
+        },
+
+        xScaleId: function() {
+          return 'x';
+        },
+
+        yScaleId: function() {
+          return 'y';
         }
       }
     };
     var renderShape = function(scope, selection) {
+      var xScaleId = d4.functor(scope.accessors.xScaleId)();
+      var yScaleId = d4.functor(scope.accessors.yScaleId)();
+
       selection
         .attr('x', d4.functor(scope.accessors.x).bind(this))
         .attr('y', d4.functor(scope.accessors.y).bind(this))
         .attr('ry', d4.functor(scope.accessors.ry).bind(this))
         .attr('rx', d4.functor(scope.accessors.rx).bind(this))
-        .attr('width', d4.functor(scope.accessors.width).bind(this))
-        .attr('height', d4.functor(scope.accessors.height).bind(this));
+        .attr('width', d4.functor(scope.accessors.width).bind(this, xScaleId))
+        .attr('height', d4.functor(scope.accessors.height).bind(this, yScaleId));
     };
     var baseObj = baseShapeFeature.bind(this)(name, 'rect', renderShape);
     return d4.merge(baseObj, rectObj);

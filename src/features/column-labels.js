@@ -20,29 +20,41 @@
       accessors: {
         key: d4.functor(d4.defaultKey),
 
-        x: function(d) {
-          if (d4.isOrdinalScale(this.x)) {
-            return this.x(d[this.x.$key]) + (this.x.rangeBand() / 2);
+        x: function(xScaleId, d) {
+          var axis = this[xScaleId];
+          if (d4.isOrdinalScale(axis)) {
+            return axis(d[axis.$key]) + (axis.rangeBand() / 2);
           } else {
-            var width = Math.abs(this.x(d[this.x.$key]) - this.x(0));
-            return this.x(d[this.x.$key]) - width / 2;
+            var width = Math.abs(axis(d[axis.$key]) - axis(0));
+            return axis(d[axis.$key]) - width / 2;
           }
         },
 
-        y: function(d) {
-          if (d4.isOrdinalScale(this.y)) {
-            return this.y(d[this.y.$key]) + (this.y.rangeBand() / 2) + padding;
+        y: function(yScaleId, d) {
+          var axis = this[yScaleId];
+          if (d4.isOrdinalScale(axis)) {
+            return axis(d[axis.$key]) + (axis.rangeBand() / 2) + padding;
           } else {
-            var height = Math.abs(this.y(d[this.y.$key]) - this.y(0));
-            return (d[this.y.$key] < 0 ? this.y(d[this.y.$key]) - height : this.y(d[this.y.$key])) - padding;
+            var height = Math.abs(axis(d[axis.$key]) - axis(0));
+            return (d[axis.$key] < 0 ? axis(d[axis.$key]) - height : axis(d[axis.$key])) - padding;
           }
         },
 
         text: function(d) {
           return d[this.valueKey];
+        },
+
+        xScaleId: function() {
+          return 'x';
+        },
+
+        yScaleId: function() {
+          return 'y';
         }
       },
       render: function(scope, data, selection) {
+        var xScaleId = d4.functor(scope.accessors.xScaleId)();
+        var yScaleId = d4.functor(scope.accessors.yScaleId)();
         var group = d4.appendOnce(selection, 'g.' + name);
         var label = group.selectAll('text')
           .data(data, d4.functor(scope.accessors.key).bind(this));
@@ -51,8 +63,8 @@
         label.attr('class', 'column-label ' + name)
           .text(d4.functor(scope.accessors.text).bind(this))
           .attr('text-anchor', anchorText.bind(this))
-          .attr('x', d4.functor(scope.accessors.x).bind(this))
-          .attr('y', d4.functor(scope.accessors.y).bind(this));
+          .attr('x', d4.functor(scope.accessors.x).bind(this, xScaleId))
+          .attr('y', d4.functor(scope.accessors.y).bind(this, yScaleId));
         return label;
       }
     };
