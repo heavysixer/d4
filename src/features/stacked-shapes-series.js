@@ -17,7 +17,7 @@
   var useContinuousSize = function(dimension, d) {
     var axis = this[dimension];
     var domainMin = axis.domain()[0];
-    var axisMin = Math.max(domainMin,0);
+    var axisMin = Math.max(domainMin, 0);
     if (d4.isDefined(d.y0)) {
       return Math.abs(axis(d.y0) - axis(d.y0 + d.y));
     } else {

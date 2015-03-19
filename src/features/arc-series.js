@@ -81,7 +81,9 @@
           }, d4.functor(scope.accessors.key).bind(this));
 
         arcs.enter().append('path')
-          .each(function(d) { this._current = d; });
+          .each(function(d) {
+            this._current = d;
+          });
 
         // update
         arcs.transition()
