@@ -22,7 +22,7 @@
           }
         },
 
-        width: function(d) {
+        width: function(dimension, d) {
           if (d4.isOrdinalScale(this.x)) {
             return this.x.rangeBand();
           } else {
@@ -30,7 +30,7 @@
           }
         },
 
-        height: function(d) {
+        height: function(dimension, d) {
           if (d4.isContinuousScale(this.y)) {
             return Math.abs(this.y(d.y0) - this.y(d.y0 + d.y));
           } else {
