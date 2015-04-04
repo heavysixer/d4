@@ -2099,9 +2099,10 @@
           beforeRender: function(data) {
             return calculateStackTotals.bind(this)(data);
           },
-          y: function(d) {
+          y: function(yScaleId, d) {
+            var axis = this[yScaleId];
             var padding = 5;
-            return this.y(d.size) - padding;
+            return axis(d.size) - padding;
           }
         }
       };
