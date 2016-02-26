@@ -1,6 +1,6 @@
-/*! d4 - v0.9.4
+/*! d4 - v0.9.5
  *  License: MIT Expat
- *  Date: 2015-04-14
+ *  Date: 2016-02-26
  *  Copyright: Mark Daggett, D4 Team
  */
 /*!
@@ -2903,7 +2903,6 @@
           .call(brush);
 
         scope.accessors.selection.bind(this)(selection.select('.brush'));
-        scope.accessors.brush.bind(this)(brush);
         return brush;
       }
     };
