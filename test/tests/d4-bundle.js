@@ -1,3 +1,4 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*! d4 - v0.9.7
  *  License: MIT Expat
  *  Date: 2016-03-29
@@ -5169,3 +5170,20 @@ var d4;
   });
 
 }).call(this);
+
+},{}],2:[function(require,module,exports){
+/*global describe:true*/
+/*global it:true*/
+/*global beforeEach:true*/
+/*global document:true*/
+
+'use strict';
+
+describe( 'using browserify', function(){
+  it('should compile d4 with require', function() {
+     var d4 = require( '../lib/d4.js' );
+     expect(d4).to.not.be.an('undefined');
+  });
+});
+
+},{"../lib/d4.js":1}]},{},[2]);
