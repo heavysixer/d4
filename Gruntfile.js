@@ -53,6 +53,14 @@ module.exports = function(grunt) {
         }
       }
     },
+    browserify: {
+      specs: {
+        src: ["test/tests/browserify-test.js"],
+        dest: "test/tests/d4-bundle.js",
+        options: {
+        }
+      }
+    },
     mocha: {
       options: {
         run: true,
@@ -124,8 +132,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha');
   grunt.loadNpmTasks('grunt-plato');
   grunt.loadNpmTasks('grunt-remove-logging');
+  grunt.loadNpmTasks('grunt-browserify');
 
-  grunt.registerTask('test', ['concat', 'mocha']);
+  grunt.registerTask('test', ['concat', 'browserify', 'mocha']);
   grunt.registerTask('quality', ['plato']);
   grunt.registerTask('default', ['jsbeautifier', 'jshint', 'test']);
   grunt.registerTask('release', ['default', 'concat', 'uglify', 'removelogging']);

@@ -4,6 +4,9 @@
   (c) 2009-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
   Underscore may be freely distributed under the MIT license.
 */
+
+var d4;
+
 (function() {
   'use strict';
 
@@ -11,7 +14,7 @@
   var breaker = {};
 
   // Create a safe reference to the d4 object.
-  var d4 = function(obj) {
+  d4 = function(obj) {
     if (obj instanceof d4) {
       return obj;
     }
