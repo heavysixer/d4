@@ -29,7 +29,7 @@ Once you have a local copy of d4 simply include it **after** d3 in your source f
 </html>
 ```
 
-#####Hello World
+##### Hello World
 Here is the most basic example, which uses many of the preset defaults provided by d4.
 
 ```javascript
@@ -44,7 +44,7 @@ d3.select('someDomElement')
   .datum(data)
   .call(columnChart);
 ```
-#####Getting Fancy
+##### Getting Fancy
 d4 allows you to quickly build up sophisticated charts using a declarative and highly contextual API that allows you to mixin
 or mixout features from your chart.
 
@@ -65,7 +65,7 @@ d3.select('someDomElement')
   .call(columnChart);
 ```
 
-#####Additional Examples
+##### Additional Examples
 
 There are **many** more examples of d4 in the examples site inside the source code repository. Simply clone the repo and
 open the `examples/` folder in your favorite web browser.
@@ -120,7 +120,7 @@ __Dimension__ - A segment of the data described by the chart.
 
 __Parser__ - A parser prepares the data for a chart.
 
-####Base Charts
+#### Base Charts
 
 * Area Chart (Coming Soon)
 * [Column Chart](http://visible.io/charts/column/basic.html)
